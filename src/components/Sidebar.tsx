@@ -2,6 +2,7 @@ import { cn } from '@/utils/style';
 import Link from 'next/link';
 import { FC } from 'react';
 import { AiFillGithub, AiOutlineClose } from 'react-icons/ai';
+import IconButton from './IconButton';
 type SidebarProps = {
   close: () => void;
   isOpen: boolean;
@@ -15,7 +16,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, close }) => {
       )}
     >
       <div className="flex cursor-pointer justify-end lg:hidden">
-        <AiOutlineClose onClick={close} className="size-5" />
+        <IconButton Icon={AiOutlineClose} onClick={close} />
       </div>
       <Link href="/" className="w-48 font-medium text-gray-600 hover:underline">
         Home
@@ -32,9 +33,14 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, close }) => {
       >
         Web Development
       </Link>
-      <Link href="https://github.com/toris-dev" target="_blank">
-        <AiFillGithub className="size-6" />
-      </Link>
+      <div className="mt-10 flex items-center gap-4">
+        <IconButton
+          Icon={AiFillGithub}
+          component={Link}
+          href="https://github.com/toris-dev"
+          target="_blank"
+        />
+      </div>
     </div>
   );
 };
