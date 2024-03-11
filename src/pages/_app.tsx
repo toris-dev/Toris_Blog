@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div
       className={cn(
-        'flex h-screen w-screen text-sm lg:text-base',
+        'flex h-screen w-screen scroll-smooth text-sm lg:text-base',
         inter.className
       )}
     >
