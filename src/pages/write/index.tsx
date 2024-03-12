@@ -1,27 +1,49 @@
+import Input from '@/components/Input';
 import { MarkdownEditor } from '@/components/Markdown';
-import { createClient } from '@/utils/supabase/server';
-import { GetServerSideProps } from 'next';
+import { createClient } from '@/utils/supabase/client';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { FormEvent, useRef, useState } from 'react';
 import ReactSelect from 'react-select/creatable';
-type WriteProps = {
-  existingTags: string[];
-  existingCategories: string[];
-};
-export default function Write({
-  existingTags,
-  existingCategories
-}: WriteProps) {
+
+export default function Write() {
   const fileRef = useRef<HTMLInputElement>(null);
-  const [title, setTitle] = useState('');
+  const titleRef = useRef<HTMLInputElement>(null);
+
+  const { data: existingCategories } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const supabase = createClient();
+      const { data } = await supabase.from('Post').select('category');
+      return Array.from(new Set(data?.map((d) => d.category)));
+    }
+  });
+  const { data: existingTags } = useQuery({
+    queryKey: ['tags'],
+    queryFn: async () => {
+      const supabase = createClient();
+      const { data } = await supabase.from('Post').select('tags');
+      return Array.from(new Set(data?.flatMap((d) => JSON.parse(d.tags))));
+    }
+  });
+
   const [category, setCategory] = useState('');
   const [tags, setTags] = useState('');
   const [content, setContent] = useState('');
   const router = useRouter();
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!titleRef.current?.value || titleRef.current.value.length === 0)
+      return alert('제목을 입력해주세요');
+    if (category.length === 0) return alert('카테고리를 입력해주세요');
+    if (tags.length === 0) return alert('태그를 입력해주세요');
+    if (content.length === 0) return alert('본을 입력해주세요');
+
     const formData = new FormData();
-    formData.append('title', title);
+
+    formData.append('title', titleRef.current?.value ?? '');
     formData.append('category', category);
     formData.append('tags', tags);
     formData.append('content', content);
@@ -42,21 +64,10 @@ export default function Write({
       <h1 className="mb-8 text-2xl font-medium">새로운 글</h1>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="제목"
-            className="rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            className="rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400"
-            ref={fileRef}
-          />
+          <Input type="text" placeholder="제목" ref={titleRef} />
+          <Input type="file" accept="image/*" ref={fileRef} />
           <ReactSelect
-            options={existingCategories.map((category) => ({
+            options={(existingCategories ?? []).map((category) => ({
               label: category,
               value: category
             }))}
@@ -67,7 +78,7 @@ export default function Write({
             onChange={(e) => e && setCategory(e?.value)}
           />
           <ReactSelect
-            options={existingTags.map((tag) => ({
+            options={(existingTags ?? []).map((tag) => ({
               label: tag,
               value: tag
             }))}
@@ -95,19 +106,3 @@ export default function Write({
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps<WriteProps> = async ({
-  req
-}) => {
-  const supabase = createClient(req.cookies);
-  const { data } = await supabase.from('Post').select('category,tags');
-  console.log(data);
-  return {
-    props: {
-      existingCategories: Array.from(new Set(data?.map((d) => d.category))),
-      existingTags: Array.from(
-        new Set(data?.flatMap((d) => JSON.parse(d.tags)))
-      )
-    }
-  };
-};

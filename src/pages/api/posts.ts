@@ -20,7 +20,8 @@ export default async function handler(
   if (files.preview_image?.length === 1) {
     const file = files.preview_image[0];
     const fileContent = readFileSync(file.filepath);
-    const fileName = `${file.newFilename}_${file.originalFilename}`;
+    const fileName = `${file.newFilename}`; // 파일명 isValid 영단어 제외x https://github.com/supabase/storage/issues/273
+    console.log(fileName);
     const { data: uploadData, error } = await supabase.storage
       .from('blog-image')
       .upload(fileName, fileContent, {
