@@ -42,8 +42,7 @@ const PostList: FC<PostListProps> = ({ category, tag, className }) => {
       };
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextPage,
-    staleTime: 1
+    getNextPageParam: (lastPage) => lastPage.nextPage
   });
 
   useEffect(() => {
