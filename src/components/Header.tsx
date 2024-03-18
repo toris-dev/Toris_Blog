@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import { Dispatch, FC, SetStateAction } from 'react';
-import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
-import { BsRobot } from 'react-icons/bs';
+import {
+  AiOutlineClose,
+  AiOutlineMenu,
+  AiOutlineSetting
+} from 'react-icons/ai';
+import { BsPencilSquare, BsRobot } from 'react-icons/bs';
 import IconButton from './IconButton';
 
 type HeaderProps = {
@@ -19,7 +23,22 @@ const Header: FC<HeaderProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
         <h1 className="text-3xl font-medium text-slate-600">Blog</h1>
       </Link>
 
-      <IconButton Icon={BsRobot} component={Link} href="/search" />
+      <div className="flex items-center gap-2 lg:gap-3">
+        <div className="pr-1 text-sm lg:pr-2 lg:text-base">Admin</div>
+        <IconButton
+          Icon={AiOutlineSetting}
+          component={Link}
+          href="/admin"
+          className="text-gray-500 hover:text-gray-600"
+        />
+        <IconButton
+          Icon={BsPencilSquare}
+          component={Link}
+          href="/write"
+          className="pr-10 text-gray-500 hover:text-gray-600"
+        />
+        <IconButton Icon={BsRobot} component={Link} href="/search" />
+      </div>
     </header>
   );
 };
