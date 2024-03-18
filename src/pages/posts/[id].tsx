@@ -62,7 +62,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   const supabase = createClient(req.cookies);
   const { data } = await supabase.from('Post').select('*').eq('id', Number(id));
   if (!data || !data[0]) return { notFound: true };
-  console.log(data);
 
   const { title, category, content, created_at, preview_image_url, tags } =
     data[0];
