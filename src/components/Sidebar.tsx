@@ -11,7 +11,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, close }) => {
   return (
     <div
       className={cn(
-        'absolute min-h-screen flex-col gap-6 border-r bg-white py-10 pl-10 lg:relative',
+        'absolute z-10 min-h-screen flex-col gap-6 border-r bg-white py-10 pl-10 lg:relative',
         isOpen ? 'flex' : 'hidden'
       )}
     >
