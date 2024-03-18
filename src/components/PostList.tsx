@@ -21,16 +21,15 @@ const PostList: FC<PostListProps> = ({ category, tag, className }) => {
     fetchNextPage,
     hasNextPage
   } = useInfiniteQuery({
-    queryKey: ['posts'],
+    queryKey: [category ?? tag ?? 'posts'],
     queryFn: async ({ pageParam }) => {
       let request = supabase.from('Post').select('*');
 
       if (category) request = request.eq('category', category);
       if (tag) request = request.like('tags', `%${tag}%`);
-
       const { data } = await request
         .order('created_at', { ascending: false })
-        .range(pageParam, pageParam + 4);
+        .range(pageParam, pageParam + 9);
 
       if (!data)
         return {
@@ -39,11 +38,12 @@ const PostList: FC<PostListProps> = ({ category, tag, className }) => {
         };
       return {
         posts: data,
-        nextPage: data.length === 5 ? pageParam + 5 : null
+        nextPage: data.length === 10 ? pageParam + 10 : null
       };
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextPage
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+    staleTime: 1
   });
 
   useEffect(() => {
