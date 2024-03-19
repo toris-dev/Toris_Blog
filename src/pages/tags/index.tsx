@@ -13,7 +13,7 @@ const Tag = () => {
       <div className="container flex flex-wrap justify-center gap-2 px-10">
         {existingTags?.map((tag) => (
           <Link
-            href={`/category/${tag}`}
+            href={`/tags/${tag}`}
             className="text-xl text-gray-500 underline hover:text-gray-700"
             key={tag}
           >
