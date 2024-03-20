@@ -28,7 +28,7 @@ export default function Write() {
       return alert('제목을 입력해주세요');
     if (category.length === 0) return alert('카테고리를 입력해주세요');
     if (tags.length === 0) return alert('태그를 입력해주세요');
-    if (content.length === 0) return alert('본을 입력해주세요');
+    if (content.length === 0) return alert('본문을 입력해주세요');
 
     const formData = new FormData();
 
