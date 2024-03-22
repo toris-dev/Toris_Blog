@@ -1,17 +1,18 @@
+'use client';
+
 import { useCategories } from '@/utils/hooks';
 import { cn } from '@/utils/style';
-import { createClient } from '@/utils/supabase/client';
 import Link from 'next/link';
-import { FC } from 'react';
 import { AiFillGithub, AiOutlineClose } from 'react-icons/ai';
 import IconButton from './IconButton';
+import { useSidebar } from './Providers';
 type SidebarProps = {
   close: () => void;
   isOpen: boolean;
 };
 
-const supabase = createClient();
-const Sidebar: FC<SidebarProps> = ({ isOpen, close }) => {
+const Sidebar = () => {
+  const { isOpen, setIsOpen } = useSidebar();
   const { data: existingCategories } = useCategories();
   return (
     <div
@@ -23,7 +24,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, close }) => {
       <div className="flex cursor-pointer justify-end lg:hidden">
         <IconButton
           Icon={AiOutlineClose}
-          onClick={close}
+          onClick={() => setIsOpen(false)}
           label="sidebarClose"
         />
       </div>

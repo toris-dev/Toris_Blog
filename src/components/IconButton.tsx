@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/utils/style';
 import { ComponentPropsWithRef, ElementType, createElement } from 'react';
 import { IconType } from 'react-icons';

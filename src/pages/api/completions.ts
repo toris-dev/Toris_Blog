@@ -51,7 +51,7 @@ export default async function handler(
   if (req.method !== 'POST') return res.status(405).end();
 
   const messages = req.body.messages as ChatCompletionMessageParam[];
-  const supabase = createClient(req.cookies);
+  const supabase = createClient(undefined, req.cookies);
 
   if (messages.length === 1) {
     messages.unshift(await getFirstMessage(supabase));
