@@ -1,6 +1,6 @@
 name: End-to-end tests
 on:
-  pull-request:
+  pull_request:
     branches:
       - main
 jobs:
