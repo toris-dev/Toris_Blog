@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     messages: ChatCompletionMessageParam[];
   };
 
-  const supabase = await createClient(cookies());
+  const supabase = createClient(cookies());
 
   if (messages.length === 1) {
     messages.unshift(await getFirstMessage(supabase));

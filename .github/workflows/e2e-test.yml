@@ -3,6 +3,10 @@ on:
   pull_request:
     branches:
       - main
+      - develop
+  push:
+    branches:
+      - develop
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
