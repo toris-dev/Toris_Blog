@@ -1,13 +1,14 @@
 import { createClient } from '@/utils/supabase/server';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { cookies } from 'next/headers';
+import { NextRequest } from 'next/server';
 import OpenAI from 'openai';
 import type {
   ChatCompletionMessageParam,
   ChatCompletionSystemMessageParam
 } from 'openai/resources/index.mjs';
+
 const openai = new OpenAI({
-  apiKey: process.env.NEXT_PUBLIC_OPENAI_API,
-  organization: process.env.NEXT_PUBLIC_ORGANIZATION_API
+  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY
 });
 
 const getFirstMessage = async (
@@ -19,18 +20,17 @@ const getFirstMessage = async (
 
   return {
     role: 'system',
-    content: `너는 개발 전문 챗봇이야. 블로그 글을 참고하여 상대방의 질문에 답변을 해줘야해.
-    너가 모르는 질문이라면, 블로그 글들을 참고하여 답변해줘.
-    
-    [블로그 글 목록]
-    ${JSON.stringify(postMetadataList ?? [])}
+    content: `너는 개발 전문 챗봇이야. 블로그 글을 참고하여 상대방의 질문에 답변해줘야 해.
+너가 잘 모르는 질문이라면, 다음 블로그 글들을 참고하여 답변해줘.
 
-    너는 retrieve 함수를 사용하여 블로그 글을 가져올 수 있어. 참고하고 싶은 블로그 글이 있다면, retrieve 함수를 사용하여 블로그 글을 가져와서 성실하게 답변해줘.
-    `
+[블로그 글 목록]
+${JSON.stringify(postMetadataList ?? [])}
+
+너는 retrieve 함수를 사용하여 블로그 글을 가져올 수 있어. 참고하고 싶은 블로그 글이 있다면, retrieve 함수를 사용하여 블로그 글을 가져와서 답변해줘.`
   };
 };
 
-const getBlogContext = async (
+const getBlogContent = async (
   id: string,
   supabase: ReturnType<typeof createClient>
 ) => {
@@ -40,18 +40,12 @@ const getBlogContext = async (
   return data[0];
 };
 
-type CompletionsResponse = {
-  messages: ChatCompletionMessageParam[];
-};
+export async function POST(request: NextRequest) {
+  const { messages } = (await request.json()) as {
+    messages: ChatCompletionMessageParam[];
+  };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<CompletionsResponse>
-) {
-  if (req.method !== 'POST') return res.status(405).end();
-
-  const messages = req.body.messages as ChatCompletionMessageParam[];
-  const supabase = createClient(undefined, req.cookies);
+  const supabase = await createClient(cookies());
 
   if (messages.length === 1) {
     messages.unshift(await getFirstMessage(supabase));
@@ -60,7 +54,7 @@ export default async function handler(
   while (messages.at(-1)?.role !== 'assistant') {
     const response = await openai.chat.completions.create({
       messages,
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4-1106-preview',
       function_call: 'auto',
       functions: [
         {
@@ -73,16 +67,18 @@ export default async function handler(
                 description: '가져올 블로그 글의 id'
               }
             }
-          }
+          },
+          description: '특정 id를 가진 블로그 글의 전체 내용을 가져옵니다.'
         }
       ]
     });
+
     const responseMessage = response.choices[0].message;
 
     if (responseMessage.function_call) {
       const { id } = JSON.parse(responseMessage.function_call.arguments);
 
-      const functionResult = await getBlogContext(id, supabase);
+      const functionResult = await getBlogContent(id, supabase);
 
       messages.push({
         role: 'function',
@@ -94,5 +90,5 @@ export default async function handler(
     }
   }
 
-  res.status(200).json({ messages });
+  return Response.json({ messages });
 }
