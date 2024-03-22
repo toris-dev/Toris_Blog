@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/utils/style';
 import { FC } from 'react';
 import { BsFillPersonFill, BsRobot } from 'react-icons/bs';

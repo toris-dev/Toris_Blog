@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/utils/style';
 import { ComponentPropsWithRef, forwardRef } from 'react';
 
