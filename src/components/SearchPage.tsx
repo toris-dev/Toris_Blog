@@ -91,7 +91,7 @@ const SearchPage: FC = () => {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <Message content="무엇이든 물어보세요" role="assistant" />
+      <Message content="무엇이든 물어보세요!" role="assistant" />
       <div className="flex-1">
         {messagePropsList.map((props, index) => (
           <Message {...props} key={index} />
@@ -109,7 +109,11 @@ const SearchPage: FC = () => {
             className="flex-1 rounded-md p-2 pl-3"
             placeholder="NextJS가 뭐야?"
           />
-          <IconButton Icon={AiOutlineSearch} type="submit" />
+          <IconButton
+            Icon={AiOutlineSearch}
+            type="submit"
+            label="submitMessage"
+          />
         </form>
 
         <Button

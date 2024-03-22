@@ -21,12 +21,15 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, close }) => {
       )}
     >
       <div className="flex cursor-pointer justify-end lg:hidden">
-        <IconButton Icon={AiOutlineClose} onClick={close} />
+        <IconButton
+          Icon={AiOutlineClose}
+          onClick={close}
+          label="sidebarClose"
+        />
       </div>
-      <Link
-        href="/"
-        className="w-48 font-medium text-gray-600 hover:underline"
-      ></Link>
+      <Link href="/" className="w-48 font-medium text-gray-600 hover:underline">
+        홈
+      </Link>
       <Link
         href="/tags"
         className="w-48 font-medium text-gray-600 hover:underline"
@@ -48,6 +51,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, close }) => {
           component={Link}
           href="https://github.com/toris-dev"
           target="_blank"
+          label="githubLink"
         />
       </div>
       <a href="https://hits.seeyoufarm.com">

@@ -27,7 +27,7 @@ export default function PostPage({
         >
           {category}
         </Link>
-        {tags.map((tag) => (
+        {tags?.map((tag) => (
           <Link
             href={`/tags/${tag}`}
             key={tag}
@@ -54,36 +54,35 @@ export default function PostPage({
   );
 }
 
+export const getStaticPaths = (async () => {
+  const { data } = await supabase.from('Post').select('id');
+
+  return {
+    paths: data?.map(({ id }) => ({ params: { id: id.toString() } })) ?? [],
+    fallback: 'blocking'
+  };
+}) satisfies GetStaticPaths;
+
 export const getStaticProps = (async (context) => {
   const { data } = await supabase
     .from('Post')
     .select('*')
     .eq('id', Number(context.params?.id));
 
-  if (!data || !data[0]) {
-    return { notFound: true };
-  }
-  // { notFound: true };
+  if (!data || !data[0]) return { notFound: true };
 
-  const { id, title, category, content, created_at, preview_image_url, tags } =
+  const { id, title, category, tags, content, created_at, preview_image_url } =
     data[0];
+
   return {
     props: {
       id,
       title,
       category,
+      tags: JSON.parse(tags) as string[],
       content,
       created_at,
-      preview_image_url,
-      tags: JSON.parse(tags) as string[]
+      preview_image_url
     }
   };
 }) satisfies GetStaticProps<Post>;
-
-export const getStaticPaths = (async () => {
-  const { data } = await supabase.from('Post').select('id');
-  return {
-    paths: data?.map(({ id }) => ({ params: { id: id.toString() } })) ?? [],
-    fallback: false
-  };
-}) satisfies GetStaticPaths;

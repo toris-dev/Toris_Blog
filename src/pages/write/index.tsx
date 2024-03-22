@@ -62,6 +62,7 @@ export default function Write() {
             }))}
             id="long-value-select"
             instanceId="long-value-select"
+            inputId="category"
             placeholder="카테고리"
             isMulti={false}
             onChange={(e) => e && setCategory(e?.value)}
@@ -72,6 +73,7 @@ export default function Write() {
               value: tag
             }))}
             id="long-value-select"
+            inputId="tags"
             instanceId="long-value-select"
             placeholder="태그"
             isMulti
