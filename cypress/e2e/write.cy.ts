@@ -11,7 +11,7 @@ describe('글쓰기 페이지 테스트', () => {
     cy.get('input[placeholder="제목"').type('테스트');
     cy.get('input#category').type('Test{enter}');
     cy.get('input#tags').type('Test{enter}');
-    cy.get('textarea').type('테스트 본문 애용');
+    cy.get('textarea').type('# 테스트 본문 내용');
     cy.get('button[type="submit"]').click();
     cy.url().should('include', '/posts/');
   });
