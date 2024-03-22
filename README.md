@@ -71,6 +71,29 @@ graph LR
 
 ---
 
+### 기술스택
+
+- `Next.JS 14`
+- `TypeScript v5`
+- `Open AI API`
+- `tailwind-css`, `tailwind-merge`, `class-variance-authority`
+- `tanstack/react-query`
+- `@uiw/react-md-editor` & `@uiw/react-markdown-preview`
+- `Supabase`
+<div style="display:flex; flex-direction:row; gap:0.5rem">
+    <img src="https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=fff&style=for-the-badge" />
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
+    <img src="https://img.shields.io/badge/ReactQuery-000000?style=for-the-badge&logo=React-Query&logoColor=#FF4154" />
+    <img src="https://img.shields.io/badge/Open AI API-000000?style=for-the-badge&logo=OpenAI&logoColor=#412991" />
+    <img src="https://img.shields.io/badge/reactMarkdown-232F3E?style=for-the-badge&logo=markdown&logoColor=white" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+    <img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=yarn&logoColor=white" />
+    <img src="https://img.shields.io/badge/Cypress-200000?style=for-the-badge&logo=cypress&logoColor=#69D3A7" />
+    <img src="https://img.shields.io/badge/Supabase-000000?style=for-the-badge&logo=supabase&logoColor=#3FCF8E" />
+</div>
+
+---
+
 **OpenAI API Context**
 
 - 메시지 필드는 새로고침시 저장
@@ -92,6 +115,10 @@ graph LR
   - FID
   - NextJS 에서 SSR SSG ISR 을 효율적으로 사용!!
 - 테스트 코드를 잘 작성하려면 무엇을 신경써야 할까?
+  - 반복되는 일을 자동화 하기위해서 테스트 코드 작성
+  - 작성한 코드가 잘 동작하는지 테스트
+  - 코드가 변경될 때마다 해야하는 테스트를 자동화
+  - 요구사항이 변경될 때마다 신경써야 하는 코드가 증가
 - NextJS에 최적화 된 인프라는 어떻게 구성되어야 할까?
 - NextJS에 맞는 프로젝트 구조는 어떻게 생겼을까?
 
