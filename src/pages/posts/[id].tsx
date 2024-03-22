@@ -2,13 +2,13 @@ import { MarkdownViewer } from '@/components/Markdown';
 import type { Post } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 import { format } from 'date-fns';
-import { GetServerSideProps } from 'next';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
-type PostProps = Post;
+const supabase = createClient({});
 
-export default function Post({
+export default function PostPage({
   id,
   title,
   category,
@@ -16,7 +16,7 @@ export default function Post({
   created_at,
   preview_image_url,
   tags
-}: PostProps) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <div className="container flex flex-col gap-8 px-4 pb-40 pt-20">
       <h1 className="text-4xl font-bold">{title}</h1>
@@ -54,16 +54,18 @@ export default function Post({
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  req
-}) => {
-  const { id } = query;
-  const supabase = createClient(req.cookies);
-  const { data } = await supabase.from('Post').select('*').eq('id', Number(id));
-  if (!data || !data[0]) return { notFound: true };
+export const getStaticProps = (async (context) => {
+  const { data } = await supabase
+    .from('Post')
+    .select('*')
+    .eq('id', Number(context.params?.id));
 
-  const { title, category, content, created_at, preview_image_url, tags } =
+  if (!data || !data[0]) {
+    return { notFound: true };
+  }
+  // { notFound: true };
+
+  const { id, title, category, content, created_at, preview_image_url, tags } =
     data[0];
   return {
     props: {
@@ -73,7 +75,15 @@ export const getServerSideProps: GetServerSideProps = async ({
       content,
       created_at,
       preview_image_url,
-      tags: JSON.parse(tags) as string
+      tags: JSON.parse(tags) as string[]
     }
   };
-};
+}) satisfies GetStaticProps<Post>;
+
+export const getStaticPaths = (async () => {
+  const { data } = await supabase.from('Post').select('id');
+  return {
+    paths: data?.map(({ id }) => ({ params: { id: id.toString() } })) ?? [],
+    fallback: false
+  };
+}) satisfies GetStaticPaths;
