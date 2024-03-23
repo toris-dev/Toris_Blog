@@ -1,3 +1,5 @@
+'use client';
+
 import IconButton from '@/components/IconButton';
 import Message, { MessageProps } from '@/components/Message';
 import { useMutation } from '@tanstack/react-query';
@@ -12,6 +14,7 @@ const SearchPage: FC = () => {
   const [messageParams, setMessageParams] = useState<
     ChatCompletionMessageParam[]
   >(() => {
+    if (typeof window === 'undefined') return [];
     const existingMessages = localStorage.getItem('messages');
     if (!existingMessages) return [];
     return JSON.parse(existingMessages);
