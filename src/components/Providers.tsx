@@ -3,28 +3,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   Dispatch,
-  ReactNode,
   SetStateAction,
   createContext,
   useContext,
   useMemo,
   useState
 } from 'react';
-
-function makeQueryClient() {
-  return new QueryClient({});
-}
-
-let browserQueryClient: QueryClient | undefined = undefined;
-
-function getQueryClient() {
-  if (typeof window === 'undefined') {
-    return makeQueryClient();
-  } else {
-    if (!browserQueryClient) browserQueryClient = makeQueryClient();
-    return browserQueryClient;
-  }
-}
 
 const SidebarContext = createContext<{
   isOpen: boolean;
@@ -34,10 +18,13 @@ const SidebarContext = createContext<{
   setIsOpen: () => {}
 });
 
-const Providers = ({ children }: { children: ReactNode }) => {
+const Providers = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const queryClient = getQueryClient();
+
+  const [queryClient] = useState(() => new QueryClient());
+
   const sidebarContextValue = useMemo(() => ({ isOpen, setIsOpen }), [isOpen]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <SidebarContext.Provider value={sidebarContextValue}>
