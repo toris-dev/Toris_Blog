@@ -1,6 +1,6 @@
 import { MarkdownViewer } from '@/components/Markdown';
 import { Post } from '@/types';
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
@@ -33,7 +33,7 @@ const PostPage: FC<Post> = ({
           </Link>
         ))}
         <div className="text-sm text-gray-500">
-          {format(new Date(created_at), 'yyyy년 M월 d일 HH:mm')}
+          {dayjs(new Date(created_at)).format('YY년 MM월 DD일 HH:mm')}
         </div>
       </div>
       {preview_image_url && (
