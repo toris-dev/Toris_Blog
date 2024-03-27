@@ -67,3 +67,11 @@ export const getCategories = cache(async () => {
   const { data } = await supabase.from('Post').select('category');
   return Array.from(new Set(data?.map((d) => d.category))) as string[];
 });
+
+export const getPostId = cache(async () => {
+  const supabase = createBrowserClient();
+  const { data } = await supabase.from('Post').select('id,created_at');
+  return (
+    data?.map(({ id, created_at }) => ({ id: id.toString(), created_at })) ?? []
+  );
+});
