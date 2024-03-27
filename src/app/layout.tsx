@@ -4,10 +4,16 @@ import Providers from '@/components/Providers';
 import Sidebar from '@/components/Sidebar';
 import '@/styles/globals.css';
 import { cn } from '@/utils/style';
+import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
+
+export const metadata: Metadata = {
+  title: 'toris-dev의 블로그',
+  description: '개발 프로젝트의 이야기를 공유하는 블로그입니다.'
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
