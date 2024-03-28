@@ -2,8 +2,9 @@
 
 import { useCategories } from '@/utils/hooks';
 import { cn } from '@/utils/style';
+import { AiFillGithub } from '@react-icons/all-files/ai/AiFillGithub';
+import { AiOutlineClose } from '@react-icons/all-files/ai/AiOutlineClose';
 import Link from 'next/link';
-import { AiFillGithub, AiOutlineClose } from 'react-icons/ai';
 import IconButton from './IconButton';
 import { useSidebar } from './Providers';
 type SidebarProps = {

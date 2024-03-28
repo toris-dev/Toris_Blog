@@ -1,8 +1,9 @@
 'use client';
 
 import { cn } from '@/utils/style';
+import { AiOutlineRobot } from '@react-icons/all-files/ai/AiOutlineRobot';
+import { BsFillPersonFill } from '@react-icons/all-files/bs/BsFillPersonFill';
 import { FC } from 'react';
-import { BsFillPersonFill, BsRobot } from 'react-icons/bs';
 import PostCard, { type PostCardProps } from './PostCard';
 
 export type MessageProps = {
@@ -21,7 +22,7 @@ const Message: FC<MessageProps> = ({ content, role, posts }) => {
         {role === 'user' ? (
           <BsFillPersonFill className="size-6 shrink-0" />
         ) : (
-          <BsRobot className="size-6 shrink-0" />
+          <AiOutlineRobot className="size-6 shrink-0" />
         )}
         <div className="flex flex-col items-start">
           <div className="whitespace-pre-wrap">{content}</div>

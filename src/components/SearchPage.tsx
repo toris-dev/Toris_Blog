@@ -2,11 +2,11 @@
 
 import IconButton from '@/components/IconButton';
 import Message, { MessageProps } from '@/components/Message';
+import { AiOutlineSearch } from '@react-icons/all-files/ai/AiOutlineSearch';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import type { ChatCompletionMessageParam } from 'openai/resources/index';
 import { FC, FormEvent, useCallback, useMemo, useRef, useState } from 'react';
-import { AiOutlineSearch } from 'react-icons/ai';
 import Button from './Button';
 import { PostCardProps } from './PostCard';
 const SearchPage: FC = () => {
