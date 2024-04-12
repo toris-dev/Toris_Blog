@@ -25,10 +25,11 @@
     "openai": "^4.29.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-file-drop": "^3.1.6",
     "react-intersection-observer": "^9.8.1",
     "react-select": "^5.8.0",
     "rss": "^1.2.2",
-    "tailwind-merge": "^2.2.1"
+    "tailwind-merge": "^2.2.2"
   },
   "devDependencies": {
     "@types/node": "^20",

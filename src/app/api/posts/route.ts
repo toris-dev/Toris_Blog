@@ -36,7 +36,8 @@ export async function POST(request: NextRequest) {
   let preview_image_url: string | null = null;
 
   if (preview_image) {
-    const fileName = `${preview_image.name}_${dayjs(new Date(new Date())).format('YYMMDDHHmm')}`; // 파일명 isValid 영단어 제외x https://github.com/supabase/storage/issues/273
+    const fileName = `${dayjs(new Date(new Date())).format('YYMMDDHHmmss')}`; // 파일명 isValid 영단어 제외x https://github.com/supabase/storage/issues/273
+
     const { data: uploadData, error } = await supabase.storage
       .from('blog-image')
       .upload(fileName, preview_image, {

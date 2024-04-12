@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
   while (messages.at(-1)?.role !== 'assistant') {
     const response = await openai.chat.completions.create({
       messages,
-      model: 'gpt-4-1106-preview',
+      model: 'gpt-3.5-turbo',
       function_call: 'auto',
       functions: [
         {

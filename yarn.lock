@@ -4635,7 +4635,7 @@ process@^0.11.10:
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==
 
-prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.8.1:
+prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -4706,6 +4706,13 @@ react-dom@^18:
   dependencies:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
+
+react-file-drop@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/react-file-drop/-/react-file-drop-3.1.6.tgz#968abee56d03db6824af9a0038497330610e699f"
+  integrity sha512-G1IKKP5ql0FYlWl7X5+ZEDQfzeF5bT4meV6vg3wySs1+NvPOZgoNxTZxAqayENzW+zOf/WVQ81FPaK+yLuryuw==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-intersection-observer@^9.8.1:
   version "9.8.1"
@@ -5400,7 +5407,7 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-tailwind-merge@^2.2.1:
+tailwind-merge@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-2.2.2.tgz#87341e7604f0e20499939e152cd2841f41f7a3df"
   integrity sha512-tWANXsnmJzgw6mQ07nE3aCDkCK4QdT3ThPMCzawoYA2Pws7vSTCvz3Vrjg61jVUGfFZPJzxEP+NimbcW+EdaDw==
