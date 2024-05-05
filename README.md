@@ -15,7 +15,7 @@ flowchart LR
   Home --- SideBar
   Home --- List
 
-  Create[글 작성 화면]
+  Delete[글 삭제 화면]
   Admin[어드민 화면]
   Chatbot[챗봇 화면]
   ChatbotResult(챗봇 답변)
@@ -30,9 +30,9 @@ flowchart LR
   Header -.-> Chatbot --- ChatbotResult -.-> Detail
   SideBar -.-> TagList -.-> Tag -.-> Detail
   SideBar -.-> Category -.-> Detail
-  Footer --> Authorize -.->|YES|Create -.-> Detail
+  Footer --> Authorize -.->|YES|Delete -.-> Detail
   Authorize -.->|No|Admin
-  Footer -.-> Admin -.-> Create
+  Footer -.-> Admin -.-> Delete
 
   List -.-> Detail
 ```
@@ -131,6 +131,24 @@ graph LR
     - CDN 서버 설정 AWS CloudFront(Edge Function) CDN 캐시가 만료될 때마다 동적 리소스 사용 요청
     - 동적 리소스 Scaling, Rolling Update
 - NextJS에 맞는 프로젝트 구조는 어떻게 생겼을까?
+  - client component, server components 적절한 분리
+
+---
+
+### 개선할 점
+
+- [x] 적절한 캐싱작업
+- [ ] 플립효과(앞:제목, 카테고리, 태그 뒤:본문)
+- [ ] 비회원(작성 시 ID,PWD 입력) 작성할 수 있게 댓글 기능 구현 (CRUD)
+  - 수정, 삭제시 입력했던 ID,PWD 입력
+- [ ] 방문록 기능 구현 (CR)
+
+  - [ ] 작성 시 닉네임만 작성
+  - [ ] 삭제, 수정 불가
+
+- [ ] 위에 기능 구현 후 실시간 채팅 구현
+
+---
 
 ### 실행방법
 
