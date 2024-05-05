@@ -59,21 +59,21 @@ export type Database = {
           content: string
           created_at: string
           id: string
-          post_id: string
+          post_id: number
           writer: string
         }
         Insert: {
           content: string
           created_at?: string
           id?: string
-          post_id: string
+          post_id: number
           writer: string
         }
         Update: {
           content?: string
           created_at?: string
           id?: string
-          post_id?: string
+          post_id?: number
           writer?: string
         }
         Relationships: []
@@ -84,7 +84,7 @@ export type Database = {
           content: string
           created_at: string
           id: number
-          preview_image_url: string | null
+          preview_image: string | null
           tags: string
           title: string
         }
@@ -93,7 +93,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: number
-          preview_image_url?: string | null
+          preview_image?: string | null
           tags: string
           title: string
         }
@@ -102,7 +102,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: number
-          preview_image_url?: string | null
+          preview_image?: string | null
           tags?: string
           title?: string
         }
@@ -115,7 +115,7 @@ export type Database = {
           content: string
           created_at: string
           depth: number
-          id: string
+          id: number
           parent_reply_id: string | null
           update_at: string | null
           update_status: boolean | null
@@ -126,7 +126,7 @@ export type Database = {
           content: string
           created_at?: string
           depth: number
-          id?: string
+          id?: number
           parent_reply_id?: string | null
           update_at?: string | null
           update_status?: boolean | null
@@ -137,7 +137,7 @@ export type Database = {
           content?: string
           created_at?: string
           depth?: number
-          id?: string
+          id?: number
           parent_reply_id?: string | null
           update_at?: string | null
           update_status?: boolean | null
@@ -151,6 +151,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      users: {
+        Row: {
+          created_at: string
+          id: string
+          userid: string
+          userpwd: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          userid: string
+          userpwd: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          userid?: string
+          userpwd?: string
+        }
+        Relationships: []
       }
     }
     Views: {
