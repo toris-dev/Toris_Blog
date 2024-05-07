@@ -21,18 +21,25 @@ const AboutBox: FC<AboutBoxProps> = ({
       <Icon size={32} />
       <div className="flex flex-col gap-2">
         <h4 className="text-xl font-bold text-slate-600">{title}</h4>
-        {type ? (
+        {type === 'email' ? (
+          <div>
+            <Link href={`mailto:${description}`} className="hover:text-red-300">
+              {description}
+            </Link>
+          </div>
+        ) : null}
+        {type === 'github' ? (
           <div>
             <Link
-              href="mailto:ironjustlikethat@gmail.com"
+              href={`https://github.com/toris-dev`}
               className="hover:text-red-300"
+              target="_blank"
             >
               {description}
             </Link>
           </div>
-        ) : (
-          <p>{description}</p>
-        )}
+        ) : null}
+        {type === undefined ? <div>{description}</div> : null}
       </div>
     </article>
   );

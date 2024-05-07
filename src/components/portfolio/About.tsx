@@ -1,9 +1,9 @@
 'use client';
 
+import { AiFillGithub } from '@react-icons/all-files/ai/AiFillGithub';
 import { AiTwotoneMail } from '@react-icons/all-files/ai/AiTwotoneMail';
 import { FaCalendarAlt } from '@react-icons/all-files/fa/FaCalendarAlt';
 import { FaSearchLocation } from '@react-icons/all-files/fa/FaSearchLocation';
-import { MdCall } from '@react-icons/all-files/md/MdCall';
 import { MdCast } from '@react-icons/all-files/md/MdCast';
 import { MdPeople } from '@react-icons/all-files/md/MdPeople';
 import AboutBox from './AboutBox';
@@ -21,7 +21,12 @@ const About = () => {
         description="서울특별시 관악구"
         icon={FaSearchLocation}
       />
-      <AboutBox title="연락처" description="010-3352-3921" icon={MdCall} />
+      <AboutBox
+        title="깃허브"
+        description="toris-dev"
+        icon={AiFillGithub}
+        type="github"
+      />
       <AboutBox
         title="이메일"
         description="ironjustlikethat@gmail.com"
