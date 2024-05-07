@@ -9,11 +9,12 @@ import Link from 'next/link';
 import { FC } from 'react';
 import IconButton from './IconButton';
 import { useSidebar } from './Providers';
-
 const Header: FC = () => {
   const { isOpen, setIsOpen } = useSidebar();
   return (
-    <header className="flex h-16 items-center justify-between border-b px-4 lg:px-10">
+    <header
+      className={`flex h-16 w-full items-center justify-between border-b px-4 lg:px-10`}
+    >
       <IconButton
         onClick={() => setIsOpen((prev) => !prev)}
         Icon={isOpen ? AiOutlineClose : AiOutlineMenu}

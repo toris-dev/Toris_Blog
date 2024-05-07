@@ -3,13 +3,10 @@
 import { Post } from '@/types';
 import { getPosts } from '@/utils/fetch';
 import { cn } from '@/utils/style';
-import { createClient } from '@/utils/supabase/client';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { FC, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import PostCard from './PostCard';
-
-const supabase = createClient();
 
 type PostListProps = {
   category?: string;
