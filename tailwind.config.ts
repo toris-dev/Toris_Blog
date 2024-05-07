@@ -19,6 +19,16 @@ const config: Config = {
       container: {
         center: true,
         padding: '16px'
+      },
+      lineClamp: {
+        '10': '10',
+        '12': '12'
+      },
+      width: {
+        '70/100': '70%',
+        '80/100': '80%',
+        '90/100': '90%',
+        '100/100': '100%'
       }
     }
   },
