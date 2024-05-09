@@ -8,7 +8,7 @@ export default async function Post({ params }: { params: { id: string } }) {
   const post = await getPost(params.id);
   if (!post) return notFound();
 
-  return <PostPage {...post} />;
+  return <PostPage {...post} postId={Number(params.id)} />;
 }
 
 export const generateStaticParams = async () => {

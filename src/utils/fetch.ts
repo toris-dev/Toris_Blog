@@ -73,3 +73,18 @@ export const getPostId = async () => {
     data?.map(({ id, created_at }) => ({ id: id.toString(), created_at })) ?? []
   );
 };
+
+export const getComments = async (postId: number) => {
+  const supabase =
+    typeof window === 'undefined'
+      ? createServerClient()
+      : createBrowserClient();
+  const { data } = await supabase
+    .from('Comments')
+    .select(
+      'content, created_at, id ,like ,parent_comment_id ,post_id, writer_id'
+    )
+    .eq('post_id', postId)
+    .order('created_at', { ascending: false });
+  return data! ?? [];
+};

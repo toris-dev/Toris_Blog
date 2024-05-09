@@ -54,29 +54,53 @@ export type Database = {
         }
         Relationships: []
       }
-      comments: {
+      Comments: {
         Row: {
           content: string
           created_at: string
-          id: string
+          id: number
+          like: number | null
+          parent_comment_id: number | null
+          password: string
           post_id: number
-          writer: string
+          writer_id: string
         }
         Insert: {
           content: string
           created_at?: string
-          id?: string
+          id?: number
+          like?: number | null
+          parent_comment_id?: number | null
+          password: string
           post_id: number
-          writer: string
+          writer_id: string
         }
         Update: {
           content?: string
           created_at?: string
-          id?: string
+          id?: number
+          like?: number | null
+          parent_comment_id?: number | null
+          password?: string
           post_id?: number
-          writer?: string
+          writer_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "Comments_parent_comment_id_fkey"
+            columns: ["parent_comment_id"]
+            isOneToOne: false
+            referencedRelation: "Comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "Post"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       Post: {
         Row: {
@@ -108,50 +132,6 @@ export type Database = {
         }
         Relationships: []
       }
-      replies: {
-        Row: {
-          author_id: string
-          comment_id: string
-          content: string
-          created_at: string
-          depth: number
-          id: number
-          parent_reply_id: string | null
-          update_at: string | null
-          update_status: boolean | null
-        }
-        Insert: {
-          author_id: string
-          comment_id: string
-          content: string
-          created_at?: string
-          depth: number
-          id?: number
-          parent_reply_id?: string | null
-          update_at?: string | null
-          update_status?: boolean | null
-        }
-        Update: {
-          author_id?: string
-          comment_id?: string
-          content?: string
-          created_at?: string
-          depth?: number
-          id?: number
-          parent_reply_id?: string | null
-          update_at?: string | null
-          update_status?: boolean | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_replies_comment_id_fkey"
-            columns: ["comment_id"]
-            isOneToOne: false
-            referencedRelation: "comments"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       users: {
         Row: {
           created_at: string
@@ -178,7 +158,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_like: {
+        Args: {
+          comment_id: number
+        }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never

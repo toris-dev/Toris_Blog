@@ -11,7 +11,8 @@ const Input = forwardRef<HTMLInputElement, InputPorps>(
     return (
       <input
         className={cn(
-          'rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400'
+          'rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400',
+          className
         )}
         ref={ref}
         {...rest}
