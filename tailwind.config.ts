@@ -29,6 +29,16 @@ const config: Config = {
         '80/100': '80%',
         '90/100': '90%',
         '100/100': '100%'
+      },
+      keyframes: {
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%, 75%': { transform: 'translateX(-10px)' },
+          '50%': { transform: 'translateX(10px)' }
+        }
+      },
+      animation: {
+        shake: 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both'
       }
     }
   },
