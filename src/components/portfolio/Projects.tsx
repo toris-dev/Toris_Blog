@@ -36,9 +36,9 @@ const selfBlogImages = [
     label: '챗봇'
   },
   {
-    url: 'https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F38552da6-340d-42c1-a9a1-b181ff331f03%2F805f8749-deb7-42d4-acca-5af36f3ac814%2F%25E1%2584%258F%25E1%2585%25A1%25E1%2584%258F%25E1%2585%25A1%25E1%2584%258B%25E1%2585%25A9SW02_page-0006.jpg&blockId=8a5ea47a-4c36-4d6c-b3ae-57af4e4f7067',
-    alt: '백엔드 개발',
-    label: '백엔드 개발'
+    url: '/comment.png',
+    alt: '댓글 이미지',
+    label: '블로그 댓글'
   }
 ];
 
@@ -107,7 +107,7 @@ const Projects = () => {
                 <li>의사소통을 비용을 줄이기 위해 Express + Graphql 개발.</li>
                 <li>단일 엔드포인트 API 개발</li>
                 <li>
-                  <b>나의 역할: </b>백엔드 파트로 진행하였지만 프론트엔드분들의
+                  <b>역할: </b>백엔드 파트로 진행하였지만 프론트엔드분들의
                   부재로 인해 React의 경험을 살려 React Native를 이용하여 개발
                   진행
                 </li>
@@ -162,7 +162,7 @@ const Projects = () => {
           </span>
           <div className="flex flex-row justify-between">
             <Carousel height={300} className="w-[500px]" animation="slide">
-              {shelterImages.map((image) => (
+              {selfBlogImages.map((image) => (
                 <div key={image.alt}>
                   <Image
                     src={image.url}
@@ -174,21 +174,29 @@ const Projects = () => {
               ))}
             </Carousel>
             <div className="mt-0 flex w-4/5 flex-col gap-1 pl-8 ">
-              <b>Next.JS로 SEO, 성능 최적화 개인 블로그 제작</b>
-              <span>
-                Supabase를 인증.인가 등록한 계정으로 markdown으로 블로그
-                게시물을 작성하고 사용자는 그 게시물을 볼 수 있게 하였습니다.
-              </span>
-              <b>
-                백엔드 개발을 최소화 하기위해 Supabase 와 Next.JS API 기능을
-                활용하여 풀스택 개발 진행하였습니다.
-              </b>
-              <p>
-                OpenAi API를 활용하여 블로그 게시글을 학습 시킨 후 챗봇 질문에
-                게시글에 해당하는 질문이 온다면 PostCard 컴포넌트로 게시물을
-                미리볼 수 있으며, 클릭 시 해당 게시물로 이동하게 하였습니다.
-              </p>
-
+              <ul>
+                <li>
+                  <b>Next.JS로 SEO, 성능 최적화 개인 블로그 제작</b>
+                </li>
+                <li>
+                  <span>Next.JS + Supabase 이용하여 블로그 제작</span>
+                </li>
+                <li>
+                  <b>게시글, 댓글, 대댓글, 좋아요 구현</b>
+                </li>
+                <li>
+                  <p>
+                    Next.JS Pages Router 에서 App Router로 마이그레이션 작업을
+                    통해 최적화 진행.
+                  </p>
+                </li>
+                <li>
+                  <p>번들 사이즈 36% 감소</p>
+                </li>
+                <li>
+                  <p>light house </p>
+                </li>
+              </ul>
               <hr />
 
               <a
