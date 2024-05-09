@@ -30,7 +30,9 @@ const PostCard: FC<PostCardProps> = ({
         className
       )}
     >
-      <div className={`${styles.flipCard} h-72 bg-amber-50 shadow-2xl`}>
+      <div
+        className={`${styles.flipCard} h-72 bg-red-50 text-black shadow-2xl`}
+      >
         <div className={`${styles.front} `}>
           <div className="relative aspect-[1.8/1] ">
             <Image
@@ -42,8 +44,8 @@ const PostCard: FC<PostCardProps> = ({
               priority
             />
           </div>
-          <div className="flex w-full flex-1 flex-col items-center justify-between p-2 lg:flex-row">
-            <h1 className="text-lg font-medium">{title}</h1>
+          <div className="ml-2 flex w-full flex-1 flex-col items-start justify-between">
+            <h1 className="mb-3 mt-2 text-lg font-medium">{title}</h1>
             <div className="flex gap-3">
               <p className="rounded-md bg-slate-800 px-2 py-1 text-sm text-white lg:flex-1">
                 {category}

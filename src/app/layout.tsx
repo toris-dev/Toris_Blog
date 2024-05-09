@@ -2,6 +2,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Providers from '@/components/Providers';
 import Sidebar from '@/components/Sidebar';
+import ToasterContext from '@/components/context/ToasterContext';
 import '@/styles/globals.css';
 import { cn } from '@/utils/style';
 import { Metadata } from 'next';
@@ -20,16 +21,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <title>Toris-Blog</title>
       </head>
-      <body>
+      <body className="sm:p-8 isolate grid place-items-center overflow-hidden bg-bkg text-content">
         <Providers>
           <div
             className={cn(
-              'flex h-screen w-screen scroll-smooth text-sm lg:text-base',
+              'flex h-screen min-h-screen w-screen before:absolute before:-z-10 before:h-1/2 before:w-3/4 before:animate-spin-slower before:rounded-bl-full before:rounded-tr-full before:bg-accent-2 before:blur-3xl after:absolute after:-z-10 after:size-2/3 after:animate-spin-slow after:rounded-bl-full after:rounded-tr-full after:bg-accent-1/80 after:blur-3xl',
               inter.className
             )}
           >
             <title>Toris-Blog</title>
             <Sidebar />
+            <ToasterContext />
             <div className="flex flex-1 flex-col">
               <Header />
               <div className="flex flex-1 flex-col overflow-y-auto">

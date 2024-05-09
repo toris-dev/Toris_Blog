@@ -23,7 +23,6 @@ const ReplyInput: React.FC<{
       const id = idRef.current?.value;
       const pwd = pwdRef.current?.value;
       const content = contentRef.current?.value;
-      console.log(postId);
       axios.post('/api/comment', {
         id,
         pwd,

@@ -3,9 +3,9 @@
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { FC, FormEvent, useEffect, useRef } from 'react';
+import toast from 'react-hot-toast';
 import Button from './Button';
 import Input from './Input';
-
 type CommentInputProps = {
   commentId: number;
   writerId: string;
@@ -49,14 +49,13 @@ const CommentUpdateInput: FC<CommentInputProps> = ({
           content
         });
         router.refresh();
-        console.log('Success', response.data);
+        toast.success('Success', response.data);
       } catch (error) {
-        console.error('Error posting comment:', error);
+        toast.error('다시 시도해주세요.');
       }
     } else {
       // 필수 값 중 하나라도 없는 경우
-      console.error('All fields are required.');
-      alert('제대로 입력해주세요.');
+      toast.error('입력값을 제대로 작성하세요.');
     }
   };
 
@@ -64,7 +63,7 @@ const CommentUpdateInput: FC<CommentInputProps> = ({
     <div className="m-3 w-4/5 max-w-xl rounded-lg bg-white p-4 shadow-md">
       <div className="flex items-start ">
         <div className="grid gap-2">{/* Your comment content here */}</div>
-        <div className=" border-gray-200 p-4 dark:border-gray-400">
+        <div className=" border-gray-200 p-4 ">
           <Input
             ref={idRef}
             placeholder="닉네임 입력"

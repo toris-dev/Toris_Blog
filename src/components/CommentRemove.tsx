@@ -3,6 +3,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { FC, useRef } from 'react';
+import toast from 'react-hot-toast';
 import Button from './Button';
 import Input from './Input';
 
@@ -17,9 +18,14 @@ const CommentRemove: FC<ModalProps> = ({ commentId, onClose, writerId }) => {
   const router = useRouter();
   const handleRemove = async () => {
     const password = pwdRef.current?.value;
-    await axios.delete('/api/comment', {
+    const { data } = await axios.delete('/api/comment', {
       data: { comment_id: commentId, writer_id: writerId, password }
     });
+    if (data.error) {
+      toast.error('댓글 삭제 실패😥');
+    } else {
+      toast.success('댓글 삭제 성공😁');
+    }
     router.refresh();
   };
   return (

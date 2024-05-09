@@ -115,7 +115,7 @@ const Activity = () => {
   ];
 
   return (
-    <article id="activity" className="flex w-full justify-center bg-pink-200">
+    <article id="activity" className="flex w-full justify-center ">
       <Carousel
         animation="slide"
         className="flex h-[700px] w-full flex-col items-center justify-center"

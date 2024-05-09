@@ -12,7 +12,7 @@ const About = () => {
   return (
     <article
       id="about"
-      className="grid size-full h-[320px] grid-cols-3 gap-6 bg-blue-400 p-10"
+      className="grid size-full h-[320px] grid-cols-3 items-center justify-center gap-6 p-10"
     >
       <AboutBox title="이름" description="유주환" icon={MdPeople} />
       <AboutBox title="생년월일" description="00.09.21" icon={FaCalendarAlt} />

@@ -6,11 +6,10 @@ import { SiTistory } from 'react-icons/si';
 
 const Archiving = () => {
   return (
-    <article
-      id="archiving"
-      className="flex w-full flex-1 flex-col bg-slate-900"
-    >
-      <h2 className="py-5 text-center text-2xl text-white">Archiving</h2>
+    <article id="archiving" className="flex w-full flex-1 flex-col ">
+      <h2 className="py-5 text-center text-2xl font-semibold text-black">
+        Archiving
+      </h2>
       <div className="flex justify-center">
         <Link
           href={'https://github.com/toris-dev'}

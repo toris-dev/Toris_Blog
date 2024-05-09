@@ -63,10 +63,7 @@ const Projects = () => {
     }
   };
   return (
-    <article
-      id="projects"
-      className="flex w-full flex-col items-center bg-sky-500 pb-8"
-    >
+    <article id="projects" className="flex w-full flex-col items-center pb-8">
       <h2 className="mb-5 mt-7 text-center text-2xl font-bold">
         프로젝트 소개
       </h2>
@@ -179,22 +176,31 @@ const Projects = () => {
                   <b>Next.JS로 SEO, 성능 최적화 개인 블로그 제작</b>
                 </li>
                 <li>
-                  <span>Next.JS + Supabase 이용하여 블로그 제작</span>
-                </li>
-                <li>
-                  <b>게시글, 댓글, 대댓글, 좋아요 구현</b>
-                </li>
-                <li>
                   <p>
                     Next.JS Pages Router 에서 App Router로 마이그레이션 작업을
                     통해 최적화 진행.
                   </p>
                 </li>
                 <li>
+                  <p>
+                    light house 지표를 [100, 100, 74, 100] 통해 성능개선 확인
+                  </p>
+                </li>
+                <li>
+                  <b>
+                    게시글, 댓글, 대댓글, 좋아요, 태그, 카테고리, 관리자 계정
+                    구현
+                  </b>
+                </li>
+
+                <li>
                   <p>번들 사이즈 36% 감소</p>
                 </li>
                 <li>
-                  <p>light house </p>
+                  <p>
+                    Github Actions + Vercel 을 통해 CI/CD 구축하여 vercel 에
+                    배포
+                  </p>
                 </li>
               </ul>
               <hr />

@@ -19,7 +19,7 @@ const Sidebar = () => {
   return (
     <div
       className={cn(
-        'absolute z-10 flex min-h-screen flex-col gap-6 border-r bg-white py-10 text-center lg:relative',
+        'absolute z-10 flex min-h-screen flex-col gap-6 border-r bg-white py-10 text-center lg:relative ',
         isOpen
           ? 'size-auto overflow-visible opacity-100'
           : 'size-0 overflow-hidden opacity-0'

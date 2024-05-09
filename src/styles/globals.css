@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  scroll-behavior: smooth;
-  scroll-snap-type: proximity;
-}
-
 ul {
   list-style-type: disc;
 }

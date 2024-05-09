@@ -31,7 +31,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const supabase = createClient();
     const { comment_id, writer_id, password } = await request.json();
-    const { statusText } = await supabase
+    const { data } = await supabase
       .from('Comments')
       .delete()
       .match({
@@ -40,13 +40,19 @@ export async function DELETE(request: NextRequest) {
         password: password
       })
       .select('*');
-    if (statusText !== 'OK') {
-      return NextResponse.json({ message: '댓글을 삭제하지 못했습니다.' });
+    if (data?.length !== 1) {
+      return NextResponse.json({
+        message: '댓글을 삭제하지 못했습니다.',
+        error: true
+      });
     }
-    return NextResponse.json({ message: '댓글이 삭제되었습니다.' });
+    return NextResponse.json({
+      message: '댓글이 삭제되었습니다.',
+      error: false
+    });
   } catch (error) {
     return NextResponse.json(
-      { message: '댓글을 삭제하지 못했습니다.' },
+      { message: '댓글을 삭제하지 못했습니다.', error: true },
       { status: 500 }
     );
   }
