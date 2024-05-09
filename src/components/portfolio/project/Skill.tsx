@@ -15,7 +15,11 @@ const Skill: FC<SkillProps> = ({ title, tech, type, url }) => {
     <div className="flex">
       <p className="text-orange-500">{title}</p>
       {type ? (
-        <Link href={url as Url} className="inline text-sky-400 hover:underline">
+        <Link
+          href={url as Url}
+          className="inline text-sky-400 hover:underline"
+          target="_blank"
+        >
           {url}
         </Link>
       ) : (
