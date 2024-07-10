@@ -1,4 +1,5 @@
 import PostPage from '@/components/PostPage';
+import { CommentsProvider } from '@/components/context/CommentContext';
 import { getPost } from '@/utils/fetch';
 import { createClient } from '@/utils/supabase/server';
 import { Metadata } from 'next';
@@ -8,7 +9,11 @@ export default async function Post({ params }: { params: { id: string } }) {
   const post = await getPost(params.id);
   if (!post) return notFound();
 
-  return <PostPage {...post} postId={Number(params.id)} />;
+  return (
+    <CommentsProvider postId={Number(params.id)}>
+      <PostPage {...post} postId={Number(params.id)} />;
+    </CommentsProvider>
+  );
 }
 
 export const generateStaticParams = async () => {
