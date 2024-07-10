@@ -1,11 +1,11 @@
 'use client';
 
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import { FC, useRef } from 'react';
 import toast from 'react-hot-toast';
 import Button from './Button';
 import Input from './Input';
+import { useComments } from './context/CommentContext';
 
 type ModalProps = {
   commentId: number;
@@ -15,18 +15,38 @@ type ModalProps = {
 
 const CommentRemove: FC<ModalProps> = ({ commentId, onClose, writerId }) => {
   const pwdRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
+  const { setOrganizedComments } = useComments();
+
   const handleRemove = async () => {
     const password = pwdRef.current?.value;
     const { data } = await axios.delete('/api/comment', {
       data: { comment_id: commentId, writer_id: writerId, password }
+    });
+    setOrganizedComments((prevComments) => {
+      // 대댓글 삭제
+      if (data.parent_comment_id) {
+        return prevComments.map((comment) =>
+          comment.id === data.parent_comment_id
+            ? {
+                ...comment,
+                replies: comment.replies?.filter(
+                  (reply) => reply.id !== commentId
+                )
+              }
+            : comment
+        );
+      }
+      // 댓글 삭제
+      else {
+        return prevComments.filter((comment) => comment.id !== commentId);
+      }
     });
     if (data.error) {
       toast.error('댓글 삭제 실패😥');
     } else {
       toast.success('댓글 삭제 성공😁');
     }
-    router.refresh();
+    onClose();
   };
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-[0.5]">

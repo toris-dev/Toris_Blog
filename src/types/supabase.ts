@@ -9,51 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      chat_messages: {
-        Row: {
-          chat_room: string
-          create_by: string
-          created_at: string
-          id: string
-          message: string
-        }
-        Insert: {
-          chat_room: string
-          create_by: string
-          created_at?: string
-          id?: string
-          message: string
-        }
-        Update: {
-          chat_room?: string
-          create_by?: string
-          created_at?: string
-          id?: string
-          message?: string
-        }
-        Relationships: []
-      }
-      chat_rooms: {
-        Row: {
-          created_at: string
-          from_anon_id: string
-          id: string
-          to_owner_id: string
-        }
-        Insert: {
-          created_at?: string
-          from_anon_id?: string
-          id?: string
-          to_owner_id?: string
-        }
-        Update: {
-          created_at?: string
-          from_anon_id?: string
-          id?: string
-          to_owner_id?: string
-        }
-        Relationships: []
-      }
       Comments: {
         Row: {
           content: string
@@ -101,6 +56,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      GuestBook: {
+        Row: {
+          content: string
+          created_at: string
+          id: number
+          password: string
+          writer: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: number
+          password: string
+          writer: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: number
+          password?: string
+          writer?: string
+        }
+        Relationships: []
       }
       Post: {
         Row: {

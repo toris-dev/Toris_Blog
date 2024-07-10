@@ -1,5 +1,6 @@
 'use client';
 
+import { CommentType } from '@/types';
 import { FcLike } from '@react-icons/all-files/fc/FcLike';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -9,8 +10,8 @@ import ReactModal from 'react-modal';
 import Button from './Button';
 import CommentRemove from './CommentRemove';
 import CommentUpdateInput from './CommentUpdateInput';
-import { CommentType } from './PostPage';
 import ReplyInput from './Reply';
+import { useComments } from './context/CommentContext';
 
 const customModalStyles: ReactModal.Styles = {
   overlay: {
@@ -56,6 +57,8 @@ const Comment: FC<CommentType> = ({
       setLikeCount((prev) => prev + 1);
     });
   };
+  const { organizedComments } = useComments();
+  console.log(organizedComments);
   return (
     <div className="w-full rounded-xl bg-white p-4 shadow-xl">
       <div className="flex items-start">

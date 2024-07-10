@@ -5,6 +5,7 @@ import { AiOutlineMenu } from '@react-icons/all-files/ai/AiOutlineMenu';
 import { AiOutlineRobot } from '@react-icons/all-files/ai/AiOutlineRobot';
 import { AiOutlineSetting } from '@react-icons/all-files/ai/AiOutlineSetting';
 import { BsPencilSquare } from '@react-icons/all-files/bs/BsPencilSquare';
+import { GiBookCover } from '@react-icons/all-files/gi/GiBookCover';
 import Link from 'next/link';
 import { FC } from 'react';
 import IconButton from './IconButton';
@@ -27,6 +28,15 @@ const Header: FC = () => {
       </Link>
 
       <div className="flex items-center gap-2 lg:gap-3">
+        <IconButton
+          Icon={GiBookCover}
+          component={Link}
+          href="/guestbook"
+          className="text-gray-500 hover:text-gray-600"
+          label="guestbook"
+          id="guestbook"
+          aria-label="guestbook"
+        />
         <div className="pr-1 text-sm lg:pr-2 lg:text-base">Admin</div>
         <IconButton
           Icon={AiOutlineSetting}

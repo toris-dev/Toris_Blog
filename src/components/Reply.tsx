@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
 import Button from './Button';
+import { useComments } from './context/CommentContext';
 
 const ReplyInput: React.FC<{
   commentId: number;
@@ -14,7 +15,8 @@ const ReplyInput: React.FC<{
   const pwdRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
-  const handleSubmit = (e: React.FormEvent) => {
+  const { setOrganizedComments } = useComments();
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (
       idRef.current?.value.length! <= 4 &&
@@ -23,15 +25,26 @@ const ReplyInput: React.FC<{
       const id = idRef.current?.value;
       const pwd = pwdRef.current?.value;
       const content = contentRef.current?.value;
-      axios.post('/api/comment', {
+      const { data } = await axios.post('/api/comment', {
         id,
         pwd,
         content,
         postId,
         parent_comment_id: commentId
       });
+      setOrganizedComments((prev) =>
+        prev.map((comment) => {
+          if (comment.id === data.parent_comment_id) {
+            return {
+              ...comment,
+              replies: [...comment.replies, { ...data, replies: [] }]
+            };
+          }
+          return comment;
+        })
+      );
     }
-    router.refresh();
+    setReplyOpen();
   };
 
   return (

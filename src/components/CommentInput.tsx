@@ -6,6 +6,7 @@ import { FC, FormEvent, useRef } from 'react';
 import toast from 'react-hot-toast';
 import Button from './Button';
 import Input from './Input';
+import { useComments } from './context/CommentContext';
 
 type CommentInputProps = {
   postId: number;
@@ -13,6 +14,7 @@ type CommentInputProps = {
 
 const CommentInput: FC<CommentInputProps> = ({ postId }) => {
   const router = useRouter();
+  const { setOrganizedComments } = useComments();
   const idRef = useRef<HTMLInputElement>(null);
   const pwdRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
@@ -34,6 +36,10 @@ const CommentInput: FC<CommentInputProps> = ({ postId }) => {
         });
         router.refresh();
         toast.success('댓글 작성 성공😁', response.data);
+        setOrganizedComments((prev) => [
+          ...prev,
+          { ...response.data, replies: [] }
+        ]);
       } catch (error) {
         toast.error('댓글 작성 실패😥');
       }

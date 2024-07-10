@@ -30,9 +30,7 @@ const PostCard: FC<PostCardProps> = ({
         className
       )}
     >
-      <div
-        className={`${styles.flipCard} h-72 bg-red-50 text-black shadow-2xl`}
-      >
+      <div className={`${styles.flipCard} h-72 text-black shadow-2xl`}>
         <div className={`${styles.front} `}>
           <div className="relative aspect-[1.8/1] ">
             <Image
@@ -60,7 +58,7 @@ const PostCard: FC<PostCardProps> = ({
           className={`${styles.back} flex size-full items-center justify-center`}
         >
           <div
-            className="line-clamp-6 text-ellipsis p-3 text-sm text-zinc-950"
+            className="line-clamp-6 text-ellipsis bg-white p-3 text-sm text-zinc-950"
             style={{ maxHeight: '300px', overflowY: 'auto', minHeight: '100%' }}
           >
             <MarkdownViewer source={content} className="line-clamp-12" />

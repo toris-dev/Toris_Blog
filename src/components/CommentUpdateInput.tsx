@@ -6,6 +6,7 @@ import { FC, FormEvent, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import Button from './Button';
 import Input from './Input';
+import { useComments } from './context/CommentContext';
 type CommentInputProps = {
   commentId: number;
   writerId: string;
@@ -23,7 +24,7 @@ const CommentUpdateInput: FC<CommentInputProps> = ({
   const idRef = useRef<HTMLInputElement>(null);
   const pwdRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-
+  const { setOrganizedComments } = useComments();
   useEffect(() => {
     if (idRef.current && contentRef.current) {
       idRef.current.value = writerId;
@@ -31,7 +32,7 @@ const CommentUpdateInput: FC<CommentInputProps> = ({
     }
 
     return () => {};
-  }, []);
+  }, [content, writerId]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -43,13 +44,23 @@ const CommentUpdateInput: FC<CommentInputProps> = ({
     if (id && pwd && content) {
       try {
         // 서버에 POST 요청 보내기
-        const response = await axios.patch('/api/comment', {
+        const { data } = await axios.patch('/api/comment', {
           id,
           pwd,
           content
         });
+        setOrganizedComments((prevComments) => {
+          return prevComments.map((comment) => {
+            if (comment.id === data.id) {
+              return { ...comment, content: data.content };
+            }
+            return comment;
+          });
+        });
+        console.log(data);
         router.refresh();
-        toast.success('Success', response.data);
+        toast.success('수정 성공✔️', data);
+        onClose();
       } catch (error) {
         toast.error('다시 시도해주세요.');
       }
