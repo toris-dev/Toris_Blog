@@ -33,8 +33,9 @@ const PostPage: FC<Post> = ({
   const { organizedComments } = useComments();
 
   return (
-    <div className="container my-8 flex flex-col gap-8 rounded-3xl bg-white pb-40 pt-20 shadow-2xl">
+    <div className="container my-8 flex flex-col gap-8 rounded-3xl bg-white p-12 shadow-2xl">
       <h1 className="text-4xl font-bold">{title}</h1>
+      <hr />
       <div className="flex flex-row items-center gap-2">
         <Link
           href={`/categories/${category}`}

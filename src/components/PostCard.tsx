@@ -45,7 +45,7 @@ const PostCard: FC<PostCardProps> = ({
           <div className="ml-2 flex w-full flex-1 flex-col items-start justify-between">
             <h1 className="mb-3 mt-2 text-lg font-medium">{title}</h1>
             <div className="flex gap-3">
-              <p className="rounded-md bg-slate-800 px-2 py-1 text-sm text-white lg:flex-1">
+              <p className="rounded-md bg-slate-800 px-2 py-1 text-sm text-white md:flex-1">
                 {category}
               </p>
               <p className="rounded-md bg-slate-200 px-2 py-1 text-sm text-slate-900">

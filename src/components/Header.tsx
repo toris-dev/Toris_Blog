@@ -14,7 +14,7 @@ const Header: FC = () => {
   const { isOpen, setIsOpen } = useSidebar();
   return (
     <header
-      className={`flex h-16 w-full items-center justify-between border-b px-4 lg:px-10`}
+      className={`flex h-16 w-full items-center justify-between border-b px-4 md:px-10`}
     >
       <IconButton
         onClick={() => setIsOpen((prev) => !prev)}
@@ -27,7 +27,7 @@ const Header: FC = () => {
         <h1 className="text-3xl font-medium text-slate-600">Blog</h1>
       </Link>
 
-      <div className="flex items-center gap-2 lg:gap-3">
+      <div className="flex items-center gap-2 md:gap-3">
         <IconButton
           Icon={GiBookCover}
           component={Link}
@@ -37,7 +37,7 @@ const Header: FC = () => {
           id="guestbook"
           aria-label="guestbook"
         />
-        <div className="pr-1 text-sm lg:pr-2 lg:text-base">Admin</div>
+        <div className="pr-1 text-sm md:pr-2 md:text-base">Admin</div>
         <IconButton
           Icon={AiOutlineSetting}
           component={Link}

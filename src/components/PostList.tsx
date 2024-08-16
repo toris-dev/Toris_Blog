@@ -65,7 +65,7 @@ const PostList: FC<PostListProps> = ({
       <h1 className={cn('text-2xl font-medium', !category && !tag && 'hidden')}>
         {category ? category : `#${tag}`}
       </h1>
-      <div className="container grid grid-cols-2 gap-x-4 gap-y-6 pb-24 lg:gap-x-7 lg:gap-y-12">
+      <div className="container grid gap-x-4 gap-y-6 pb-24 md:grid-cols-2 md:gap-x-7 md:gap-y-12 2xl:grid-cols-4">
         {postPages?.pages
           .flatMap((page) => page.posts)
           .map((post) => <PostCard key={post.id} {...post} />)}

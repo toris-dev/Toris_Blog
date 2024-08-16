@@ -11,7 +11,7 @@ export default async function Post({ params }: { params: { id: string } }) {
 
   return (
     <CommentsProvider postId={Number(params.id)}>
-      <PostPage {...post} postId={Number(params.id)} />;
+      <PostPage {...post} postId={Number(params.id)} />
     </CommentsProvider>
   );
 }

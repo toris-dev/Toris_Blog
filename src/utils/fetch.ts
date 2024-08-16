@@ -2,34 +2,36 @@ import { cache } from 'react';
 import { createClient as createBrowserClient } from './supabase/client';
 import { createClient as createServerClient } from './supabase/server';
 
-export const getPosts = async ({
-  category,
-  tag,
-  page = 0
-}: {
-  category?: string;
-  tag?: string;
-  page?: number;
-}) => {
-  const supabase =
-    typeof window === 'undefined'
-      ? createServerClient()
-      : createBrowserClient();
+export const getPosts = cache(
+  async ({
+    category,
+    tag,
+    page = 0
+  }: {
+    category?: string;
+    tag?: string;
+    page?: number;
+  }) => {
+    const supabase =
+      typeof window === 'undefined'
+        ? createServerClient()
+        : createBrowserClient();
 
-  let request = supabase.from('Post').select('*');
+    let request = supabase.from('Post').select('*');
 
-  if (category) request = request.eq('category', category);
-  if (tag) request = request.like('tags', `%${tag}%`);
+    if (category) request = request.eq('category', category);
+    if (tag) request = request.like('tags', `%${tag}%`);
 
-  const { data } = await request
-    .order('created_at', { ascending: false })
-    .range(page, page + 4);
+    const { data } = await request
+      .order('created_at', { ascending: false })
+      .range(page, page + 4);
 
-  return data?.map((post) => ({
-    ...post,
-    tags: JSON.parse(post.tags) as string[]
-  }));
-};
+    return data?.map((post) => ({
+      ...post,
+      tags: JSON.parse(post.tags) as string[]
+    }));
+  }
+);
 
 export const getPost = cache(async (id: string) => {
   const supabase =
@@ -46,7 +48,7 @@ export const getPost = cache(async (id: string) => {
   };
 });
 
-export const getTags = async () => {
+export const getTags = cache(async () => {
   const supabase =
     typeof window === 'undefined'
       ? createServerClient()
@@ -55,7 +57,7 @@ export const getTags = async () => {
   return Array.from(
     new Set(data?.flatMap((d) => JSON.parse(d.tags)))
   ) as string[];
-};
+});
 
 export const getCategories = cache(async () => {
   const supabase =
@@ -66,15 +68,15 @@ export const getCategories = cache(async () => {
   return Array.from(new Set(data?.map((d) => d.category))) as string[];
 });
 
-export const getPostId = async () => {
+export const getPostId = cache(async () => {
   const supabase = createBrowserClient();
   const { data } = await supabase.from('Post').select('id,created_at');
   return (
     data?.map(({ id, created_at }) => ({ id: id.toString(), created_at })) ?? []
   );
-};
+});
 
-export const getComments = async (postId: number) => {
+export const getComments = cache(async (postId: number) => {
   const supabase =
     typeof window === 'undefined'
       ? createServerClient()
@@ -87,4 +89,4 @@ export const getComments = async (postId: number) => {
     .eq('post_id', postId)
     .order('created_at', { ascending: false });
   return data! ?? [];
-};
+});

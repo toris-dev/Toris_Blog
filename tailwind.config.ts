@@ -8,7 +8,9 @@ const config: Config = {
   ],
   theme: {
     screens: {
-      lg: '780px'
+      sm: '480px',
+      md: '780px',
+      '2xl': '1500px'
     },
     extend: {
       backgroundImage: {
@@ -20,6 +22,11 @@ const config: Config = {
         center: true,
         padding: '16px'
       },
+      // screens: {
+      //   sm: '400px',
+      //   md: '780px',
+      //   '2xl': '1500px'
+      // },
       lineClamp: {
         '10': '10',
         '12': '12'
