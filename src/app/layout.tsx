@@ -5,6 +5,7 @@ import Sidebar from '@/components/Sidebar';
 import ToasterContext from '@/components/context/ToasterContext';
 import '@/styles/globals.css';
 import { cn } from '@/utils/style';
+import { GoogleTagManager } from '@next/third-parties/google';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
@@ -21,7 +22,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <title>Toris-Blog</title>
       </head>
-      <body className="sm:p-8 isolate grid place-items-center overflow-hidden bg-bkg text-content">
+      <body className="isolate grid place-items-center overflow-hidden bg-bkg text-content">
+        <GoogleTagManager gtmId="G-0KV4YD773C" />
         <Providers>
           <div
             className={cn(

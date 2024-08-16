@@ -11,6 +11,7 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
+    "@next/third-parties": "^14.2.5",
     "@react-icons/all-files": "^4.1.0",
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.39.7",
