@@ -1,5 +1,6 @@
 'use client';
 
+import ToasterContext from '@/components/context/ToasterContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   Dispatch,
@@ -27,6 +28,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ToasterContext />
       <SidebarContext.Provider value={sidebarContextValue}>
         {children}
       </SidebarContext.Provider>

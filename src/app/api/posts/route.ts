@@ -1,74 +1,19 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { PostRequest } from '@/types';
-import { createClient } from '@/utils/supabase/server';
-import dayjs from 'dayjs';
-import { cookies } from 'next/headers';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function DELETE() {
-  const supabase = createClient(cookies());
-  const { error } = await supabase.from('Post').delete().eq('category', 'Test');
-  if (error) {
-    return Response.json({ error });
-  } else {
-    return Response.json({ message: 'success' }, { status: 200 });
-  }
+// Redirect all post API calls to markdown
+export async function GET(request: NextRequest) {
+  return NextResponse.redirect(new URL('/api/markdown', request.url));
 }
 
 export async function POST(request: NextRequest) {
-  const supabase = createClient(cookies());
+  return NextResponse.redirect(new URL('/api/markdown', request.url));
+}
 
-  const formEntries = Array.from((await request.formData()).entries());
-
-  const formData = formEntries.reduce<Record<string, FormDataEntryValue>>(
-    (acc, [key, value]) => {
-      acc[key] = value;
-      return acc;
-    },
-    {}
+// Delete API는 지금은 필요없음
+export async function DELETE(request: NextRequest) {
+  return NextResponse.json(
+    { message: 'This endpoint is no longer available' },
+    { status: 410 }
   );
-  const { preview_image, ...fields } = formData as unknown as Omit<
-    PostRequest,
-    'preview_image_url'
-  > & {
-    preview_image?: File;
-  };
-  let preview_image_url: string | null = null;
-
-  if (preview_image) {
-    const fileName = `${dayjs(new Date(new Date())).format('YYMMDDHHmmss')}`; // 파일명 isValid 영단어 제외x https://github.com/supabase/storage/issues/273
-
-    const { data: uploadData, error } = await supabase.storage
-      .from('blog-image')
-      .upload(fileName, preview_image, {
-        contentType: preview_image.type ?? undefined
-      });
-    if (error) {
-      return Response.json({ error }, { status: 403 });
-    }
-    if (uploadData?.path) {
-      const { data } = supabase.storage
-        .from('blog-image')
-        .getPublicUrl(uploadData.path);
-      preview_image_url = data.publicUrl;
-    }
-  }
-
-  const { data } = await supabase
-    .from('Post')
-    .insert([{ ...fields, preview_image_url }])
-    .select();
-  if (data && data.length === 1) {
-    const { tags, ...reset } = data[0];
-    return Response.json(
-      {
-        ...reset,
-        tags: JSON.parse(tags) as string[]
-      },
-      {
-        status: 200
-      }
-    );
-  } else
-    return Response.json({ message: 'Internal Server Error' }, { status: 500 });
 }

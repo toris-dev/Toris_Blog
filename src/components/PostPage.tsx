@@ -1,8 +1,7 @@
 'use client';
 
 import { MarkdownViewer } from '@/components/Markdown';
-import { Post } from '@/types';
-
+import { CommentType } from '@/types';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,24 +9,23 @@ import { FC } from 'react';
 import Comment from './Comment';
 import CommentInput from './CommentInput';
 import { useComments } from './context/CommentContext';
-export type CommentType = {
-  content: string;
-  created_at: string;
-  id: number;
-  like: number;
-  parent_comment_id: number | null;
-  post_id: number;
-  writer_id: string;
-  replies: CommentType[];
-};
 
-const PostPage: FC<Post> = ({
+// 마크다운 파일에서 가져올 때 사용할 인터페이스에 맞게 props를 수정합니다
+const PostPage: FC<{
+  title: string;
+  category?: string;
+  tags?: string[];
+  content: string;
+  date?: string;
+  image?: string;
+  postId: number | string;
+}> = ({
   title,
-  category,
-  tags,
+  category = 'Uncategorized',
+  tags = [],
   content,
-  created_at,
-  preview_image_url,
+  date,
+  image,
   postId
 }) => {
   const { organizedComments } = useComments();
@@ -53,12 +51,12 @@ const PostPage: FC<Post> = ({
           </Link>
         ))}
         <div className="text-sm text-gray-500">
-          {dayjs(new Date(created_at)).format('YY년 MM월 DD일 HH:mm')}
+          {dayjs(new Date(date || '')).format('YY년 MM월 DD일 HH:mm')}
         </div>
       </div>
-      {preview_image_url && (
+      {image && (
         <Image
-          src={preview_image_url}
+          src={image}
           width={0}
           height={0}
           sizes="100vw"
@@ -66,13 +64,17 @@ const PostPage: FC<Post> = ({
           className="h-auto w-full"
         />
       )}
-      <MarkdownViewer source={content} className="min-w-full rounded-md" />
+      <div className="min-w-full rounded-md">
+        <MarkdownViewer value={content} />
+      </div>
       <hr />
-      {organizedComments.map((comment) => (
+      {organizedComments.map((comment: CommentType) => (
         <Comment key={comment.id} {...comment} />
       ))}
       <div className="flex flex-col items-center">
-        <CommentInput postId={postId as number} />
+        <CommentInput
+          postId={typeof postId === 'string' ? parseInt(postId, 10) : postId}
+        />
       </div>
     </div>
   );

@@ -1,60 +1,67 @@
-import { getCategories, getPostId, getTags } from '@/utils/fetch';
+import { getCategories, getPosts, getTags } from '@/utils/fetch';
 import { MetadataRoute } from 'next';
-// 블로그 글마다 sitemap 생성해야함
+
+// 6시간마다 재생성
+export const revalidate = 60 * 60 * 6;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const posts = await getPostId();
-  const tags = await getTags();
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-dev.vercel.app';
+  const posts = await getPosts({});
   const categories = await getCategories();
-  const postSitemap = posts.map(({ id, created_at }) => {
-    return {
-      url: `https://toris-blog.vercel.app/posts/${id}`,
-      lastModified: new Date(created_at),
-      priority: 0.7
-    };
-  });
+  const tags = await getTags();
 
-  const tagsSitemap = tags.map((tag) => {
-    return {
-      url: `https://toris-blog.vercel.app/posts/${tag}`,
-      lastModified: new Date(),
-      priority: 0.7
-    };
-  });
-
-  const categoriesSitemap = categories.map((category) => {
-    return {
-      url: `https://toris-blog.vercel.app/categories/${category}`,
-      lastModified: new Date(),
-      priority: 0.7
-    };
-  });
-  const sitemap = [...postSitemap, ...tagsSitemap, ...categoriesSitemap];
-  return [
+  // 정적 라우트
+  const routes = [
     {
-      url: 'https://toris-blog.vercel.app',
+      url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'daily',
+      changeFrequency: 'daily' as const,
       priority: 1
     },
     {
-      url: 'https://toris-blog.vercel.app/search',
+      url: `${baseUrl}/about`,
       lastModified: new Date(),
-      changeFrequency: 'daily',
+      changeFrequency: 'weekly' as const,
+      priority: 0.8
+    },
+    {
+      url: `${baseUrl}/portfolio`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
       priority: 0.5
-    },
-    {
-      url: 'https://toris-blog.vercel.app/tags',
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.6
-    },
-    {
-      url: 'https://toris-blog.vercel.app/categories',
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.6
-    },
-    ...sitemap
+    }
   ];
+
+  // 포스트 라우트
+  const postRoutes = posts.map((post) => ({
+    url: `${baseUrl}/posts/${post.slug}`,
+    lastModified: new Date(post.date),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7
+  }));
+
+  // 카테고리 라우트
+  const categoryRoutes = categories.map((category) => ({
+    url: `${baseUrl}/categories/${encodeURIComponent(category)}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6
+  }));
+
+  // 태그 라우트
+  const tagRoutes = tags.map((tag) => ({
+    url: `${baseUrl}/tags/${encodeURIComponent(tag)}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6
+  }));
+
+  return [...routes, ...postRoutes, ...categoryRoutes, ...tagRoutes];
 }

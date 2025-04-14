@@ -1,19 +1,9 @@
-import AdminDashboard from '@/components/AdminDashboard';
-import LoginForm from '@/components/LoginForm';
-import { createClient } from '@/utils/supabase/server';
-import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-export default async function Admin() {
-  const supabase = createClient(cookies());
-  const userResponse = await supabase.auth.getUser();
-
-  return (
-    <div className="container flex flex-col px-4 pb-20 pt-12">
-      {!!userResponse?.data.user ? (
-        <AdminDashboard user={userResponse?.data.user} />
-      ) : (
-        <LoginForm />
-      )}
-    </div>
-  );
+export default function Admin() {
+  // 로그인 페이지로 리다이렉트
+  // 마크다운 시스템에서는 바로 /login 페이지로 안내
+  redirect('/login');
 }
+
+export const dynamic = 'force-dynamic';

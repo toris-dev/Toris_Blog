@@ -9,7 +9,7 @@ export default function RootLayout({
 }>) {
   const router = useRouter();
   return (
-    <div className="">
+    <div className="text-black dark:text-white">
       <div className="fixed z-50 flex w-full  justify-between">
         <h4 className="ml-9 mt-5 text-2xl">Toris&apos;s Portpolio</h4>
         <nav className="mr-3 mt-5 flex justify-between gap-8 pr-6">
@@ -46,7 +46,12 @@ export default function RootLayout({
               장점입니다.
             </span>
           </p>
-          <button onClick={() => router.push('#about')}>더 알아보기</button>
+          <button
+            onClick={() => router.push('#about')}
+            className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+          >
+            더 알아보기
+          </button>
         </article>
       </div>
       <article>{children}</article>

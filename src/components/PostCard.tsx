@@ -22,6 +22,8 @@ const PostCard: FC<PostCardProps> = ({
 }) => {
   if (typeof tags === 'string') tags = JSON.parse(tags);
 
+  const tagArray = Array.isArray(tags) ? tags : [];
+
   return (
     <Link
       href={`/posts/${id}`}
@@ -49,7 +51,7 @@ const PostCard: FC<PostCardProps> = ({
                 {category}
               </p>
               <p className="rounded-md bg-slate-200 px-2 py-1 text-sm text-slate-900">
-                {tags.map((tag) => tag).join(', ')}
+                {tagArray.map((tag: string) => tag).join(', ')}
               </p>
             </div>
           </div>
@@ -61,7 +63,7 @@ const PostCard: FC<PostCardProps> = ({
             className="line-clamp-6 text-ellipsis bg-white p-3 text-sm text-zinc-950"
             style={{ maxHeight: '300px', overflowY: 'auto', minHeight: '100%' }}
           >
-            <MarkdownViewer source={content} className="line-clamp-12" />
+            <MarkdownViewer value={content} />
           </div>
         </div>
       </div>

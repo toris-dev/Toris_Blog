@@ -1,8 +1,8 @@
 'use client';
 
 import { cn } from '@/utils/style';
-import { IconType } from '@react-icons/all-files';
 import { ComponentPropsWithRef, ElementType, createElement } from 'react';
+import { IconType } from 'react-icons';
 
 type IconButtonProps<Component extends ElementType> =
   ComponentPropsWithRef<Component> & {
@@ -29,7 +29,7 @@ const IconButton = <Component extends ElementType = 'button'>({
       'data-cy': label,
       ...props
     },
-    <Icon className={(cn('size-5 transition-all md:size-6'), iconClassName)} />
+    <Icon className={cn('size-5 transition-all md:size-6', iconClassName)} />
   );
 };
 

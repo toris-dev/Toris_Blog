@@ -1,44 +1,58 @@
 'use client';
 
-import { AiFillGithub } from '@react-icons/all-files/ai/AiFillGithub';
-import { AiTwotoneMail } from '@react-icons/all-files/ai/AiTwotoneMail';
-import { FaCalendarAlt } from '@react-icons/all-files/fa/FaCalendarAlt';
-import { FaSearchLocation } from '@react-icons/all-files/fa/FaSearchLocation';
-import { MdCast } from '@react-icons/all-files/md/MdCast';
-import { MdPeople } from '@react-icons/all-files/md/MdPeople';
+import { motion } from 'framer-motion';
 import AboutBox from './AboutBox';
 
 const About = () => {
+  const aboutBoxInfo = [
+    {
+      emoji: '🎓',
+      title: '학력',
+      desc: (
+        <div>
+          <p>학점은행제 학사</p>
+          <p>2020.03 ~ 2025.08(졸업)</p>
+        </div>
+      )
+    },
+    {
+      emoji: '🏠',
+      title: '거주지',
+      desc: '대한민국 서울'
+    },
+    {
+      emoji: '💼',
+      title: '경력',
+      desc: (
+        <div>
+          <p>(주)셈웨어</p>
+          <p>2024.08 ~ (1년차)</p>
+        </div>
+      )
+    }
+  ];
+
   return (
-    <article
+    <motion.article
       id="about"
-      className="grid size-full h-[320px] grid-cols-3 items-center justify-center gap-6 p-10"
+      className="flex w-full flex-1 flex-col py-16"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      viewport={{ once: true }}
     >
-      <AboutBox title="이름" description="유주환" icon={MdPeople} />
-      <AboutBox title="생년월일" description="00.09.21" icon={FaCalendarAlt} />
-      <AboutBox
-        title="주소지"
-        description="서울특별시 관악구"
-        icon={FaSearchLocation}
-      />
-      <AboutBox
-        title="깃허브"
-        description="toris-dev"
-        icon={AiFillGithub}
-        type="github"
-      />
-      <AboutBox
-        title="이메일"
-        description="ironjustlikethat@gmail.com"
-        type="email"
-        icon={AiTwotoneMail}
-      />
-      <AboutBox
-        title="학력"
-        description="학점은행제 컴퓨터공학"
-        icon={MdCast}
-      />
-    </article>
+      <motion.h2
+        className="mb-8 py-5 text-center text-3xl font-semibold text-black dark:text-white"
+        initial={{ y: -50, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.3, type: 'spring' }}
+      >
+        About me
+      </motion.h2>
+      <div className="flex justify-evenly">
+        <AboutBox info={aboutBoxInfo} />
+      </div>
+    </motion.article>
   );
 };
 

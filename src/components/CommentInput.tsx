@@ -9,7 +9,7 @@ import Input from './Input';
 import { useComments } from './context/CommentContext';
 
 type CommentInputProps = {
-  postId: number;
+  postId: number | string;
 };
 
 const CommentInput: FC<CommentInputProps> = ({ postId }) => {
@@ -18,6 +18,11 @@ const CommentInput: FC<CommentInputProps> = ({ postId }) => {
   const idRef = useRef<HTMLInputElement>(null);
   const pwdRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
+
+  // postId가 string인 경우 number로 변환
+  const numericPostId =
+    typeof postId === 'string' ? parseInt(postId, 10) : postId;
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const id = idRef.current?.value;
@@ -32,7 +37,7 @@ const CommentInput: FC<CommentInputProps> = ({ postId }) => {
           id,
           pwd,
           content,
-          postId
+          postId: numericPostId
         });
         router.refresh();
         toast.success('댓글 작성 성공😁', response.data);

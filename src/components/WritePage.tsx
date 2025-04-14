@@ -3,85 +3,196 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { MarkdownEditor } from '@/components/Markdown';
-import { useCategories, useTags } from '@/utils/hooks';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { FileDrop } from 'react-file-drop';
-import ReactSelect from 'react-select/creatable';
-export default function WritePage() {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const titleRef = useRef<HTMLInputElement>(null);
-  const [boardColor, setBoardColor] = useState(false);
-  const { data: existingCategories } = useTags();
-  const { data: existingTags } = useCategories();
 
-  const [category, setCategory] = useState('');
-  const [tags, setTags] = useState('');
+export default function WritePage() {
+  const titleRef = useRef<HTMLInputElement>(null);
+  const categoryRef = useRef<HTMLInputElement>(null);
+  const tagsRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [boardColor, setBoardColor] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [issueUrl, setIssueUrl] = useState<string | null>(null);
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState('');
+
   const [content, setContent] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
   const router = useRouter();
+
+  // Check authentication
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/check-auth');
+        const data = await response.json();
+        setIsAuthenticated(data.authenticated);
+      } catch (error) {
+        console.error('Failed to check authentication:', error);
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.push('/login');
+    }
+  }, [loading, isAuthenticated, router]);
+
+  // 태그 입력 처리
+  const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTagInput(value);
+
+    // 콤마 입력 시 태그 추가
+    if (value.endsWith(',')) {
+      const newTag = value.slice(0, -1).trim();
+      if (newTag && !tags.includes(newTag)) {
+        setTags([...tags, newTag]);
+        setTagInput('');
+      } else {
+        setTagInput('');
+      }
+    }
+  };
+
+  // 태그 삭제
+  const removeTag = (tagToRemove: string) => {
+    setTags(tags.filter((tag) => tag !== tagToRemove));
+  };
+
+  // 엔터 키 이벤트 처리
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    // 엔터키 눌렀을 때
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 폼 제출 방지
+
+      // 태그 입력 필드에서 엔터 키 눌렀을 때 태그 추가
+      if (e.currentTarget === tagsRef.current && tagInput.trim()) {
+        if (!tags.includes(tagInput.trim())) {
+          setTags([...tags, tagInput.trim()]);
+          setTagInput('');
+        }
+      }
+    }
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!titleRef.current?.value || titleRef.current.value.length === 0)
       return alert('제목을 입력해주세요');
-    if (category.length === 0) return alert('카테고리를 입력해주세요');
-    if (tags.length === 0) return alert('태그를 입력해주세요');
     if (content.length === 0) return alert('본문을 입력해주세요');
 
+    setSubmitting(true);
+    setIssueUrl(null);
+
+    // Save as markdown file
     const formData = new FormData();
-
     formData.append('title', titleRef.current?.value ?? '');
-    formData.append('category', category);
-    formData.append('tags', tags);
     formData.append('content', content);
+    formData.append('category', categoryRef.current?.value ?? 'Uncategorized');
+    formData.append('tags', tags.join(','));
 
-    if (fileRef.current?.files?.[0]) {
-      formData.append('preview_image', fileRef.current.files[0]);
+    try {
+      const response = await fetch('/api/markdown', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to save markdown');
+      }
+
+      const data = await response.json();
+
+      // 이슈 URL 저장
+      if (data.issueUrl) {
+        setIssueUrl(data.issueUrl);
+      }
+
+      alert('마크다운 파일이 성공적으로 저장되었습니다.');
+
+      // 3초 후에 새 글 페이지로 이동
+      setTimeout(() => {
+        router.push(`/markdown/${data.slug}`);
+      }, 3000);
+    } catch (error) {
+      console.error('Error saving markdown:', error);
+      alert('마크다운 파일 저장에 실패했습니다.');
+    } finally {
+      setSubmitting(false);
     }
-
-    const response = await fetch('/api/posts', {
-      method: 'POST',
-      body: formData
-    });
-    const data = await response.json();
-    if (data.id) router.push(`/posts/${data.id}`);
   };
+
+  if (loading) {
+    return <div className="container p-4">로딩 중...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return null; // Will redirect to login page
+  }
+
   return (
     <div className="container flex flex-col px-4 pb-20 pt-12">
       <h1 className="mb-8 text-2xl font-medium">새로운 글</h1>
-      <form onSubmit={handleSubmit}>
+      <form ref={formRef} onSubmit={handleSubmit}>
         <div className="flex flex-col gap-3">
-          <Input type="text" placeholder="제목" ref={titleRef} />
-          <Input type="file" accept="image/*" ref={fileRef} multiple />
-          <ReactSelect
-            options={(existingCategories ?? []).map((category) => ({
-              label: category,
-              value: category
-            }))}
-            id="long-value-select"
-            instanceId="long-value-select"
-            inputId="category"
+          <Input
+            type="text"
+            placeholder="제목"
+            ref={titleRef}
+            onKeyDown={handleKeyDown}
+          />
+
+          <Input
+            type="text"
             placeholder="카테고리"
-            isMulti={false}
-            onChange={(e) => e && setCategory(e?.value)}
+            ref={categoryRef}
+            onKeyDown={handleKeyDown}
           />
-          <ReactSelect
-            options={(existingTags ?? []).map((tag) => ({
-              label: tag,
-              value: tag
-            }))}
-            id="long-value-select"
-            inputId="tags"
-            instanceId="long-value-select"
-            placeholder="태그"
-            isMulti
-            onChange={(e) =>
-              e && setTags(JSON.stringify(e.map((e) => e.value)))
-            }
-          />
+
+          <div className="relative">
+            <Input
+              type="text"
+              placeholder="태그 (쉼표로 구분, 예: JavaScript, React, NextJS)"
+              ref={tagsRef}
+              value={tagInput}
+              onChange={handleTagInputChange}
+              onKeyDown={handleKeyDown}
+            />
+            {tags.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary"
+                  >
+                    {tag}
+                    <button
+                      type="button"
+                      className="ml-1 text-sm"
+                      onClick={() => removeTag(tag)}
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
           <FileDrop
             onDragOver={(event) => {
               setBoardColor(true);
@@ -124,18 +235,42 @@ export default function WritePage() {
 
               setBoardColor(false);
             }}
+            className={boardColor ? 'border-blue-500' : ''}
           >
-            <MarkdownEditor
-              height={500}
-              value={content}
-              onChange={(s) => setContent(s ?? '')}
-              style={{
-                backgroundColor: boardColor ? '#adb5bd' : '#FFFFFF'
-              }}
-            />
+            <div className="min-h-96 w-full">
+              <MarkdownEditor
+                height="500"
+                value={content}
+                onChange={(s) => {
+                  setContent(s ?? '');
+                }}
+              />
+            </div>
           </FileDrop>
-          <Button type="submit" className="mt-4">
-            작성하기
+
+          {issueUrl && (
+            <div className="mt-2 rounded-md bg-green-50 p-4 text-green-700">
+              <p className="mb-2">
+                ✅ 글이 성공적으로 저장되었으며 GitHub 이슈가 생성되었습니다.
+              </p>
+              <p>
+                <a
+                  href={issueUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-green-800 underline hover:text-green-900"
+                >
+                  GitHub 이슈 보기 →
+                </a>
+              </p>
+              <p className="mt-2 text-sm">
+                잠시 후 새 글 페이지로 이동합니다...
+              </p>
+            </div>
+          )}
+
+          <Button type="submit" className="mt-4" disabled={submitting}>
+            {submitting ? '저장 중...' : '마크다운 파일로 저장'}
           </Button>
         </div>
       </form>

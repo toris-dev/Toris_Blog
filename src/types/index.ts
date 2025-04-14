@@ -1,19 +1,55 @@
-import { Database } from './supabase';
-
-export type PostRequest = Database['public']['Tables']['Post']['Insert'];
-
-export type Post = Omit<Database['public']['Tables']['Post']['Row'], 'tags'> & {
+// Markdown file type
+export interface MarkdownFile {
+  id: number;
+  title: string;
+  date: string;
+  slug: string;
+  content: string;
+  filePath: string;
   tags: string[];
-  postId?: number;
-};
+  category: string;
+  image?: string;
+  description?: string;
+}
 
-export type CommentType = {
+// Post type for PostCard component
+export interface Post {
+  id: number;
+  title: string;
+  content: string;
+  preview_image_url?: string;
+  category: string;
+  tags: string[] | string;
+  date: string;
+  slug: string;
+  filePath: string;
+}
+
+// GitHub comment types
+export interface GitHubUser {
+  login: string;
+  avatar: string;
+  url: string;
+}
+
+export interface GitHubComment {
+  id: number;
+  title: string;
+  body: string;
+  createdAt: string;
+  updatedAt: string;
+  user: GitHubUser;
+  url: string;
+}
+
+// CommentType for Comment component
+export interface CommentType {
+  id: number;
   content: string;
   created_at: string;
-  id: number;
-  like: number;
-  parent_comment_id: number | null;
-  post_id: number;
   writer_id: string;
+  like: number;
+  post_id: number;
+  parent_comment_id: number | null;
   replies: CommentType[];
-};
+}

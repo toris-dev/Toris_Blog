@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Carousel from 'react-material-ui-carousel';
 
@@ -9,7 +10,7 @@ const Activity = () => {
       src: '/portfolio/activityImg/엘리스 우수 수료증.jpg',
       alt: '엘리스 우수 수료증',
       description: (
-        <div>
+        <div className="text-black dark:text-white">
           <b className="text-xl">엘리스 우수 수료증</b>
           <p>엘리스에서 400시간이라는 교육시간을 성실하게 이수하였습니다.</p>
           <p>
@@ -23,7 +24,7 @@ const Activity = () => {
       src: '/portfolio/activityImg/EC-22-76028982_유주환_[고급] 웹 개발 프로젝트.jpg',
       alt: '엘리스 고급 웹 개발 수료증',
       description: (
-        <div>
+        <div className="text-black dark:text-white">
           <b className="text-xl">엘리스 우수 수료증</b>
           <p>
             JS 고급개념을 클로저, 익명함수, 프로토타입에 대해서 알아보는
@@ -40,7 +41,7 @@ const Activity = () => {
       src: '/portfolio/activityImg/엘리스_웹개발 중급 수료증.jpg',
       alt: '엘리스 SW[중급] 수료증',
       description: (
-        <div>
+        <div className="text-black dark:text-white">
           <b className="text-xl">엘리스 SW[중급] 수료증</b>
           <p>
             Express를 이용하여 백엔드 로직이 어떤식으로 구성되는지
@@ -58,7 +59,7 @@ const Activity = () => {
       src: '/portfolio/activityImg/구름 AI 군장병 웹개발 고급 수료증_page-0001.jpg',
       alt: '구름 SW[고급] 수료증',
       description: (
-        <div>
+        <div className="text-black dark:text-white">
           <b className="text-xl">구름 SW[고급] 수료증</b>
           <p>엘리스에서 400시간이라는 교육시간을 성실하게 이수하였습니다.</p>
           <p>
@@ -72,7 +73,7 @@ const Activity = () => {
       src: '/portfolio/activityImg/구름 AI 군장병 SW개발 고급과정 수료증_page-0001.jpg',
       alt: '구름 SW[고급] 수료증',
       description: (
-        <div>
+        <div className="text-black dark:text-white">
           <b className="text-xl">구름 SW[고급] 수료증</b>
           <p>엘리스에서 400시간이라는 교육시간을 성실하게 이수하였습니다.</p>
           <p>
@@ -86,7 +87,7 @@ const Activity = () => {
       src: '/portfolio/activityImg/구름 SW 개발 프로젝트 과정2.jpg',
       alt: '구름 SW개발 프로젝트 수료증',
       description: (
-        <div>
+        <div className="text-black dark:text-white">
           <b className="text-xl">구름 SW개발 하반기 프로젝트 수료증</b>
           <p>구름에서 진행한 SW개발 하반기 프로젝트 참여</p>
           <p>
@@ -115,25 +116,69 @@ const Activity = () => {
   ];
 
   return (
-    <article id="activity" className="flex w-full justify-center ">
-      <Carousel
-        animation="slide"
-        className="flex h-[700px] w-full flex-col items-center justify-center"
-      >
-        {imgs.map((img) => (
-          <div key={img.alt} className="flex justify-center">
-            <Image
-              src={img.src}
-              alt="activityImg"
-              width={500}
-              height={500}
-              className="size-[500px]"
-            />
-            <span className="pl-6">{img.description}</span>
-          </div>
-        ))}
-      </Carousel>
-    </article>
+    <motion.article
+      id="activity"
+      className="flex w-full justify-center py-10"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+    >
+      <div className="w-full px-4">
+        <motion.h3
+          className="mb-8 text-center text-3xl font-semibold text-black dark:text-white"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          Activity
+        </motion.h3>
+
+        <Carousel
+          animation="slide"
+          className="flex min-h-[500px] w-full flex-col items-center justify-center md:min-h-[600px] lg:min-h-[700px]"
+          navButtonsAlwaysVisible
+          autoPlay={false}
+          indicators={true}
+        >
+          {imgs.map((img) => (
+            <motion.div
+              key={img.alt}
+              className="mx-auto flex max-w-full flex-col items-center justify-center rounded-xl bg-white p-4 dark:bg-gray-800 lg:max-w-6xl lg:flex-row lg:p-6"
+              whileHover={{ scale: 1.01 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="relative mb-4 lg:mb-0">
+                <Image
+                  src={img.src}
+                  alt="activityImg"
+                  width={400}
+                  height={400}
+                  className="h-auto max-w-full rounded-lg object-contain shadow-md lg:max-w-[400px]"
+                />
+                <motion.div
+                  className="absolute inset-0 rounded-lg border-2 border-blue-400"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  animate={{
+                    scale: [1, 1.02, 1],
+                    rotate: [0, 0.5, 0]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: 'reverse'
+                  }}
+                />
+              </div>
+              <div className="max-w-full pl-0 lg:max-w-[600px] lg:pl-6">
+                {img.description}
+              </div>
+            </motion.div>
+          ))}
+        </Carousel>
+      </div>
+    </motion.article>
   );
 };
 

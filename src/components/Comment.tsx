@@ -49,12 +49,12 @@ const Comment: FC<CommentType> = ({
   writer_id
 }) => {
   const [replyOpen, setReplyOpen] = useState(false);
-  const [likeCount, setLikeCount] = useState(like);
+  const [likeCount, setLikeCount] = useState<number>(like);
   const [update, setUpdate] = useState(false);
   const [removeModal, setRemoveModal] = useState(false);
   const handlerLike = () => {
     axios.put('/api/comment/like', { commentId: id }).then(() => {
-      setLikeCount((prev) => prev + 1);
+      setLikeCount((prev: number) => prev + 1);
     });
   };
   const { organizedComments } = useComments();
@@ -152,7 +152,7 @@ const Comment: FC<CommentType> = ({
       </div>
       {replies.length > 0 && (
         <div className="mt-4">
-          {replies.map((reply) => (
+          {replies.map((reply: CommentType) => (
             <div className="ml-4" key={reply.id}>
               <Comment key={reply.id} {...reply} />
             </div>

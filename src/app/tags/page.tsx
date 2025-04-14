@@ -1,7 +1,7 @@
 import { getTags } from '@/utils/fetch';
 import Link from 'next/link';
 
-export default async function Tag() {
+export default async function TagsPage() {
   const tags = await getTags();
 
   return (
@@ -21,3 +21,5 @@ export default async function Tag() {
     </div>
   );
 }
+
+export const dynamic = 'force-dynamic';

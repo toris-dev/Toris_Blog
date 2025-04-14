@@ -1,47 +1,44 @@
 'use client';
 
-import { IconType } from '@react-icons/all-files';
-import Link from 'next/link';
-import { FC } from 'react';
+import { motion } from 'framer-motion';
+import { FC, ReactNode } from 'react';
+
+type AboutBoxItemProps = {
+  emoji: string;
+  title: string;
+  desc: string | ReactNode;
+};
 
 type AboutBoxProps = {
-  icon: IconType;
-  title: string;
-  description: string;
-  type?: string;
+  info: AboutBoxItemProps[];
 };
-const AboutBox: FC<AboutBoxProps> = ({
-  icon: Icon,
-  title,
-  description,
-  type
-}) => {
+
+const AboutBox: FC<AboutBoxProps> = ({ info }) => {
   return (
-    <article className="flex gap-4">
-      <Icon size={32} />
-      <div className="flex flex-col gap-2">
-        <h4 className="text-xl font-bold text-slate-600">{title}</h4>
-        {type === 'email' ? (
-          <div>
-            <Link href={`mailto:${description}`} className="hover:text-red-300">
-              {description}
-            </Link>
+    <div className="flex w-full flex-col justify-evenly gap-4 p-4 md:flex-row md:p-8">
+      {info.map((item, index) => (
+        <motion.div
+          key={index}
+          className="flex w-full flex-col items-center rounded-xl border bg-white p-6 shadow-lg transition-all hover:shadow-xl dark:border-gray-700 dark:bg-gray-800 dark:text-white md:w-64"
+          whileHover={{ scale: 1.05 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: index * 0.1 }}
+        >
+          <motion.div
+            className="mb-4 text-4xl"
+            whileHover={{ scale: 1.2, rotate: [0, 5, -5, 0] }}
+            transition={{ duration: 0.5 }}
+          >
+            {item.emoji}
+          </motion.div>
+          <h3 className="mb-2 text-xl font-bold">{item.title}</h3>
+          <div className="text-center text-gray-600 dark:text-gray-300">
+            {item.desc}
           </div>
-        ) : null}
-        {type === 'github' ? (
-          <div>
-            <Link
-              href={`https://github.com/toris-dev`}
-              className="hover:text-red-300"
-              target="_blank"
-            >
-              {description}
-            </Link>
-          </div>
-        ) : null}
-        {type === undefined ? <div>{description}</div> : null}
-      </div>
-    </article>
+        </motion.div>
+      ))}
+    </div>
   );
 };
 

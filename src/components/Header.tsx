@@ -1,71 +1,243 @@
 'use client';
 
-import { AiOutlineClose } from '@react-icons/all-files/ai/AiOutlineClose';
-import { AiOutlineMenu } from '@react-icons/all-files/ai/AiOutlineMenu';
-import { AiOutlineRobot } from '@react-icons/all-files/ai/AiOutlineRobot';
-import { AiOutlineSetting } from '@react-icons/all-files/ai/AiOutlineSetting';
-import { BsPencilSquare } from '@react-icons/all-files/bs/BsPencilSquare';
-import { GiBookCover } from '@react-icons/all-files/gi/GiBookCover';
+import {
+  AiOutlineClose,
+  AiOutlineFire,
+  AiOutlineMenu,
+  BsGrid,
+  BsMoonStarsFill,
+  BsPencilSquare,
+  BsSunFill,
+  FaEthereum,
+  FaSearch
+} from '@/components/icons';
+import { useSidebar } from '@/components/Providers';
+import { cn } from '@/utils/style';
 import Link from 'next/link';
-import { FC } from 'react';
+import { usePathname } from 'next/navigation';
+import { FC, useEffect, useState } from 'react';
 import IconButton from './IconButton';
-import { useSidebar } from './Providers';
+
 const Header: FC = () => {
   const { isOpen, setIsOpen } = useSidebar();
-  return (
-    <header
-      className={`flex h-16 w-full items-center justify-between border-b px-4 md:px-10`}
-    >
-      <IconButton
-        onClick={() => setIsOpen((prev) => !prev)}
-        Icon={isOpen ? AiOutlineClose : AiOutlineMenu}
-        label="sidebarToggle"
-        id="sidebarToggle"
-        aria-label="sidebarToggle"
-      />
-      <Link href="/">
-        <h1 className="text-3xl font-medium text-slate-600">Blog</h1>
-      </Link>
+  const [scrolled, setScrolled] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [navVisible, setNavVisible] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
+  const pathname = usePathname();
+  const [lastScrollY, setLastScrollY] = useState(0);
 
-      <div className="flex items-center gap-2 md:gap-3">
-        <IconButton
-          Icon={GiBookCover}
-          component={Link}
-          href="/guestbook"
-          className="text-gray-500 hover:text-gray-600"
-          label="guestbook"
-          id="guestbook"
-          aria-label="guestbook"
-        />
-        <div className="pr-1 text-sm md:pr-2 md:text-base">Admin</div>
-        <IconButton
-          Icon={AiOutlineSetting}
-          component={Link}
-          href="/admin"
-          className="text-gray-500 hover:text-gray-600"
-          label="adminLink"
-          id="adminlink"
-          aria-label="adminlink"
-        />
-        <IconButton
-          Icon={BsPencilSquare}
-          component={Link}
-          href="/write"
-          className="pr-10 text-gray-500 hover:text-gray-600"
-          label="writeLink"
-          id="writeLink"
-          aria-label="writeLink"
-        />
-        <IconButton
-          Icon={AiOutlineRobot}
-          component={Link}
-          href="/search"
-          label="chatbotLink"
-          id="chatbotLink"
-          aria-label="chatbotLink"
-        />
+  // 스크롤 감지하여 헤더 스타일 변경
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // 스크롤 위치에 따라 scrolled 상태 업데이트
+      if (currentScrollY > 10) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+
+      // 이전 스크롤 위치와 비교하여 헤더 표시 여부 결정
+      // 10px 이상 스크롤 된 경우에만 변경 (작은 움직임은 무시)
+      if (Math.abs(currentScrollY - lastScrollY) < 10) return;
+
+      // 상단 헤더: 스크롤 다운 - 헤더 숨김, 스크롤 업 - 헤더 표시
+      if (currentScrollY > lastScrollY) {
+        setHeaderVisible(false);
+      } else {
+        setHeaderVisible(true);
+      }
+
+      // 하단 모바일 네비게이션: 항상 표시 (독립적으로 작동)
+      setNavVisible(true);
+
+      setLastScrollY(currentScrollY);
+    };
+
+    // 이벤트 리스너 등록
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // 초기 설정
+    handleScroll();
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
+
+  // Toggle dark mode
+  useEffect(() => {
+    // Check if user prefers dark mode
+    const isDarkMode =
+      localStorage.getItem('darkMode') === 'true' ||
+      (!('darkMode' in localStorage) &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    setDarkMode(isDarkMode);
+    document.documentElement.classList.toggle('dark', isDarkMode);
+  }, []);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('darkMode', (!darkMode).toString());
+  };
+
+  return (
+    <>
+      {/* 상단 헤더 */}
+      <header
+        className={cn(
+          'fixed inset-x-0 top-0 z-50 w-full transition-all duration-300',
+          scrolled
+            ? 'bg-bkg-dark/80 py-3 shadow-md backdrop-blur-md'
+            : 'bg-transparent py-5',
+          headerVisible ? 'translate-y-0' : '-translate-y-full'
+        )}
+      >
+        <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center">
+            <IconButton
+              onClick={() => setIsOpen(!isOpen)}
+              Icon={isOpen ? AiOutlineClose : AiOutlineMenu}
+              label="사이드바 토글"
+              id="sidebarToggle"
+              aria-label="사이드바 토글"
+              className="mr-3 text-content hover:text-primary lg:hidden"
+            />
+
+            <Link href="/" className="group flex items-center">
+              <div className="relative size-10 overflow-hidden rounded-full border-2 border-primary p-1">
+                <div className="flex size-full items-center justify-center rounded-full bg-primary/10">
+                  <AiOutlineFire className="size-5 text-primary" />
+                </div>
+              </div>
+              <span className="bg-gradient-to-r from-primary to-accent-1 bg-clip-text text-xl font-bold text-transparent">
+                Toris
+                <span className="text-content">Blog</span>
+              </span>
+            </Link>
+          </div>
+
+          <nav className="hidden items-center space-x-1 lg:flex">
+            {[
+              { href: '/', label: '홈', isActive: pathname === '/' },
+              {
+                href: '/posts',
+                label: '블로그',
+                isActive:
+                  pathname === '/posts' || pathname.startsWith('/posts/')
+              },
+              {
+                href: '/categories',
+                label: '카테고리',
+                isActive: pathname.startsWith('/categories')
+              },
+              { href: '/tags', label: '태그', isActive: pathname === '/tags' },
+              {
+                href: '/guestbook',
+                label: '방명록',
+                isActive: pathname === '/guestbook'
+              },
+              {
+                href: '/portfolio',
+                label: '포트폴리오',
+                isActive: pathname === '/portfolio'
+              },
+              {
+                href: '/search',
+                label: '검색',
+                isActive: pathname === '/search'
+              }
+            ].map(({ href, label, isActive }) => (
+              <Link
+                key={href}
+                href={href}
+                className={cn(
+                  'rounded-lg px-4 py-2 font-medium transition-all',
+                  isActive
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-content/80 hover:bg-bkg-light/30 hover:text-primary'
+                )}
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <IconButton
+              Icon={darkMode ? BsSunFill : BsMoonStarsFill}
+              onClick={toggleDarkMode}
+              label="테마 변경"
+              className="text-content hover:text-primary"
+            />
+
+            <IconButton
+              Icon={FaSearch}
+              component={Link}
+              href="/search"
+              className="text-content hover:text-primary"
+              label="검색"
+              id="searchButton"
+              aria-label="검색"
+            />
+
+            <IconButton
+              Icon={BsGrid}
+              component={Link}
+              href="/admin"
+              className="text-content hover:text-primary"
+              label="관리자"
+              id="adminButton"
+              aria-label="관리자"
+            />
+
+            <Link
+              href="/write"
+              className="web3-button group ml-2 hidden items-center rounded-lg bg-gradient-to-r from-primary to-accent-1 px-4 py-2 text-white shadow-md transition-all hover:scale-105 hover:shadow-lg lg:flex"
+            >
+              <BsPencilSquare className="mr-2 size-4 group-hover:animate-pulse" />
+              <span>글쓰기</span>
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      {/* 모바일 네비게이션 - 하단 고정 (분리됨) */}
+      <div
+        className={cn(
+          'fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-bkg-dark/90 shadow-lg backdrop-blur-md transition-all duration-300 lg:hidden',
+          navVisible ? 'translate-y-0' : 'translate-y-full'
+        )}
+      >
+        <div className="flex justify-between px-6 py-3">
+          {[
+            { href: '/', Icon: FaEthereum, label: '홈' },
+            { href: '/posts', Icon: BsGrid, label: '블로그' },
+            { href: '/search', Icon: FaSearch, label: '검색' },
+            { href: '/write', Icon: BsPencilSquare, label: '글쓰기' }
+          ].map(({ href, Icon, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className={cn(
+                'flex flex-col items-center justify-center text-xs',
+                pathname === href
+                  ? 'text-primary'
+                  : 'text-content/70 hover:text-primary'
+              )}
+            >
+              <Icon className="mb-1 size-5" />
+              <span>{label}</span>
+            </Link>
+          ))}
+        </div>
       </div>
-    </header>
+    </>
   );
 };
 
