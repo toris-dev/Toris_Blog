@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import GitHubComments from './GitHubComments';
+import GitHubComments from '../comments/GitHubComments';
 import { MarkdownViewer } from './Markdown';
 
 interface MarkdownFileViewerProps {

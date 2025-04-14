@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from '@/utils/style';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -77,39 +78,49 @@ export default function LoginPage() {
 
   return (
     <div className="container mx-auto my-10 max-w-md">
-      <div className="rounded-lg bg-white p-8 shadow-lg">
-        <h1 className="mb-6 text-center text-2xl font-bold">관리자 로그인</h1>
+      <div className="rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800">
+        <h1 className="mb-6 text-center text-2xl font-bold text-gray-900 dark:text-white">
+          관리자 로그인
+        </h1>
 
         {error && (
-          <div className="mb-4 rounded-md bg-red-50 p-4 text-red-800">
+          <div className="mb-4 rounded-md bg-red-50 p-4 text-red-800 dark:bg-red-900/20 dark:text-red-200">
             {error}
           </div>
         )}
 
         {authStatus === 'checking' ? (
           <div className="flex justify-center p-4">
-            <div className="size-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+            <div className="size-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent dark:border-blue-400"></div>
           </div>
         ) : authStatus === 'authenticated' ? (
-          <div className="mb-4 rounded-md bg-green-50 p-4 text-center">
-            <p className="font-medium text-green-800">
+          <div className="mb-4 rounded-md bg-green-50 p-4 text-center dark:bg-green-900/20">
+            <p className="font-medium text-green-800 dark:text-green-200">
               이미 로그인되어 있습니다.
             </p>
-            <p className="mt-2">잠시 후 대시보드로 이동합니다...</p>
+            <p className="mt-2 text-green-700 dark:text-green-300">
+              잠시 후 대시보드로 이동합니다...
+            </p>
           </div>
         ) : (
           <div className="text-center">
-            <p className="mb-4 text-gray-600">
+            <p className="mb-4 text-gray-600 dark:text-gray-300">
               관리자 로그인을 위해 GitHub 계정으로 로그인해주세요.
               <br />
-              <strong className="text-black">toris-dev</strong> 계정만 로그인할
-              수 있습니다.
+              <strong className="text-black dark:text-white">
+                toris-dev
+              </strong>{' '}
+              계정만 로그인할 수 있습니다.
             </p>
 
             <button
               onClick={handleGitHubLogin}
               disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-md bg-gray-800 p-2 text-white hover:bg-gray-700 disabled:bg-gray-500"
+              className={cn(
+                'flex w-full items-center justify-center gap-2 rounded-md p-2 text-white',
+                'bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600',
+                'disabled:cursor-not-allowed disabled:bg-gray-500 dark:disabled:bg-gray-600'
+              )}
             >
               {loading ? (
                 <>

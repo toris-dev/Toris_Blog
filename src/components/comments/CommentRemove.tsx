@@ -3,9 +3,9 @@
 import axios from 'axios';
 import { FC, useRef } from 'react';
 import toast from 'react-hot-toast';
-import Button from './Button';
-import Input from './Input';
-import { useComments } from './context/CommentContext';
+import { useComments } from '../context/CommentContext';
+import Button from '../ui/Button';
+import Input from '../ui/Input';
 
 type ModalProps = {
   commentId: number;
@@ -49,17 +49,28 @@ const CommentRemove: FC<ModalProps> = ({ commentId, onClose, writerId }) => {
     onClose();
   };
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-[0.5]">
-      <div className="flex flex-col gap-3 rounded p-5">
+    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-[0.5] dark:bg-gray-900 dark:bg-opacity-[0.5]">
+      <div className="flex flex-col gap-3 rounded bg-white p-5 shadow-md dark:bg-gray-800 dark:shadow-gray-900/30">
         <Input
           placeholder="댓글의 패스워드를 작성하세요"
           type="password"
           ref={pwdRef}
+          className="dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
         />
-        <p className="text-xl">정말 삭제하시겠습니까?</p>
+        <p className="text-xl dark:text-white">정말 삭제하시겠습니까?</p>
         <div className="flex gap-3">
-          <Button onClick={handleRemove}>삭제하기</Button>
-          <Button onClick={onClose}>닫기</Button>
+          <Button
+            onClick={handleRemove}
+            className="dark:bg-gray-700 dark:hover:bg-gray-600"
+          >
+            삭제하기
+          </Button>
+          <Button
+            onClick={onClose}
+            className="dark:bg-gray-700 dark:hover:bg-gray-600"
+          >
+            닫기
+          </Button>
         </div>
       </div>
     </div>

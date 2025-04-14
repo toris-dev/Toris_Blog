@@ -1,10 +1,10 @@
 import {
   BsLightningCharge,
   FaArrowRight,
-  FaEthereum,
+  FaCode,
   FaReact,
-  SiNextdotjs,
-  SiSolidity
+  FaServer,
+  SiNextdotjs
 } from '@/components/icons';
 import { getPosts } from '@/utils/fetch';
 import { cn } from '@/utils/style';
@@ -35,31 +35,31 @@ export default async function Home() {
       '이 포스트에 대한 간략한 설명이 이곳에 표시됩니다. 마크다운 파일에 설명을 추가해보세요.'
   }));
 
-  // Web3 기술 카테고리
+  // 기술 카테고리
   const techCategories = [
     {
-      name: 'Blockchain',
-      description: '블록체인 개발 및 응용',
-      icon: FaEthereum,
-      color: 'bg-crypto-ethereum text-white'
+      name: 'Next.js',
+      description: '서버 컴포넌트와 앱 라우터 기반 웹 개발',
+      icon: SiNextdotjs,
+      color: 'bg-gray-800 text-white'
     },
     {
-      name: 'Smart Contracts',
-      description: '스마트 컨트랙트 개발',
-      icon: SiSolidity,
-      color: 'bg-crypto-polygon text-white'
-    },
-    {
-      name: 'Web3 Frontend',
-      description: '분산 앱 프론트엔드',
+      name: 'Frontend',
+      description: 'React 기반 모던 UI 개발',
       icon: FaReact,
       color: 'bg-sky-500 text-white'
     },
     {
-      name: 'Next.js',
-      description: '모던 웹 개발',
-      icon: SiNextdotjs,
-      color: 'bg-gray-800 text-white'
+      name: 'Full Stack',
+      description: '프론트엔드부터 백엔드까지',
+      icon: FaCode,
+      color: 'bg-violet-600 text-white'
+    },
+    {
+      name: 'API & Backend',
+      description: 'REST API와 서버사이드 개발',
+      icon: FaServer,
+      color: 'bg-green-600 text-white'
     }
   ];
 
@@ -71,18 +71,18 @@ export default async function Home() {
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-8">
             <div className="flex flex-col justify-center">
               <div className="mb-4 inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm text-primary">
-                <FaEthereum className="mr-2 size-4" />
-                <span>Web3 개발 블로그</span>
+                <SiNextdotjs className="mr-2 size-4" />
+                <span>프론트엔드 개발 블로그</span>
               </div>
               <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                <span className="gradient-text">Web3</span> 기술로
+                <span className="gradient-text">Next.js</span> 기반
                 <br />
-                <span className="text-content">미래를 개발하다</span>
+                <span className="text-content">풀스택 개발자</span>
               </h1>
               <p className="mb-8 text-lg text-content-dark">
-                블록체인, 스마트 컨트랙트, 분산 애플리케이션 개발에 대한
-                이야기를 나눕니다. Web3 기술로 만들어가는 새로운 세상에 함께
-                하세요.
+                React, Next.js, TypeScript를 활용한 모던 웹 개발과 풀스택 경험을
+                공유합니다. 최신 프론트엔드 기술로 만들어가는 웹의 미래에
+                함께하세요.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="/posts" className="web3-button">
@@ -102,7 +102,7 @@ export default async function Home() {
                 <div className="absolute inset-0 animate-spin-slow rounded-full bg-gradient-to-r from-primary via-purple-500 to-accent-2 opacity-70 blur-xl"></div>
                 <div className="absolute inset-4 rounded-full bg-bkg backdrop-blur-md"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <FaEthereum className="size-32 animate-float text-primary" />
+                  <SiNextdotjs className="size-32 animate-float text-white" />
                 </div>
               </div>
             </div>
@@ -115,10 +115,11 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold tracking-tight">
-              <span className="gradient-text">Web3 기술</span> 탐험하기
+              <span className="gradient-text">모던 웹 개발</span> 기술 스택
             </h2>
             <p className="mt-4 text-content-dark">
-              블록체인과 Web3 세계의 다양한 기술을 함께 알아보세요
+              프론트엔드부터 백엔드까지 풀스택 개발에 사용하는 기술들을
+              소개합니다
             </p>
           </div>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -177,7 +178,7 @@ export default async function Home() {
                       </div>
                     ) : (
                       <div className="flex h-40 items-center justify-center bg-primary/5">
-                        <FaEthereum className="size-12 text-primary/30" />
+                        <SiNextdotjs className="size-12 text-primary/30" />
                       </div>
                     )}
                   </div>
@@ -185,7 +186,7 @@ export default async function Home() {
                 <div className="flex-1">
                   <div className="mb-2 flex items-center">
                     <span className="mr-2 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-                      {post.category || 'Web3'}
+                      {post.category || 'Next.js'}
                     </span>
                     <span className="text-xs text-content-dark">
                       {new Date(post.date).toLocaleDateString('ko-KR')}
@@ -211,19 +212,18 @@ export default async function Home() {
       </section>
 
       {/* 뉴스레터 섹션 */}
-      <section className="py-16">
+      {/* <section className="py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-2xl bg-primary/10 p-8 backdrop-blur-xl sm:p-12">
             <div className="absolute -right-24 -top-24 size-64 rounded-full bg-primary/20 blur-3xl"></div>
             <div className="relative grid gap-8 lg:grid-cols-2">
               <div>
                 <h2 className="text-3xl font-bold tracking-tight text-content">
-                  Web3 소식을 놓치지 마세요
+                  최신 개발 소식을 놓치지 마세요
                 </h2>
                 <p className="mt-4 text-content-dark">
-                  매주 최신 블록체인 및 Web3 개발 소식, 튜토리얼, 팁을
-                  받아보세요. 뉴스레터를 구독하고 Web3 기술의 최전방에 함께
-                  하세요.
+                  매주 최신 Next.js, React 개발 소식, 튜토리얼, 팁을 받아보세요.
+                  뉴스레터를 구독하고 프론트엔드 기술의 최전선에 함께하세요.
                 </p>
               </div>
               <div className="flex items-center">
@@ -250,7 +250,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }

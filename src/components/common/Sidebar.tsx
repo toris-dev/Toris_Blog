@@ -1,6 +1,6 @@
 'use client';
 
-import IconButton from '@/components/IconButton';
+import { useSidebar } from '@/components/common/Providers';
 import {
   AiOutlineBook,
   AiOutlineClose,
@@ -17,7 +17,6 @@ import {
   HiBadgeCheck,
   RiUserFollowLine
 } from '@/components/icons';
-import { useSidebar } from '@/components/Providers';
 import { useCategories } from '@/utils/hooks';
 import { cn } from '@/utils/style';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -25,6 +24,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC, ReactNode, useEffect, useState } from 'react';
+import IconButton from '../ui/IconButton';
 
 interface NavItemProps {
   href: string;
@@ -337,27 +337,6 @@ const Sidebar: FC = () => {
                 </span>
               ))}
             </div>
-          </div>
-        )}
-
-        {/* 방문자 수 */}
-        {!isCollapsed && (
-          <div className="mt-auto border-t border-white/10 p-4">
-            <a
-              href="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fnextjs-blog-torisblog.vercel.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center"
-            >
-              <Image
-                src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fnextjs-blog-torisblog.vercel.app&count_bg=%236D28D9&title_bg=%23000000&icon=ethereum.svg&icon_color=%23E7E7E7&title=방문자&edge_flat=false"
-                alt="방문자 수"
-                width={100}
-                height={24}
-                className="h-6"
-                unoptimized
-              />
-            </a>
           </div>
         )}
       </motion.aside>

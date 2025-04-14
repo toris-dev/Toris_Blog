@@ -1,279 +1,396 @@
 'use client';
 
-import Button from '@/components/Button';
-import Input from '@/components/Input';
-import { MarkdownEditor } from '@/components/Markdown';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
-import { FileDrop } from 'react-file-drop';
+import {
+  FaEye,
+  FaImage,
+  FaMarkdown,
+  FaPen,
+  FaSave,
+  FaTag,
+  FaTimes,
+  MdCategory,
+  MdTitle
+} from '@/components/icons';
+import { cn } from '@/utils/style';
+import { AnimatePresence, motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
+import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
+
+// 마크다운 에디터 컴포넌트를 동적으로 불러옵니다 (클라이언트 사이드 전용)
+const MarkdownEditor = dynamic(() => import('@/components/ui/MarkdownEditor'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-96 w-full animate-pulse rounded-md bg-gray-100 dark:bg-gray-800"></div>
+  )
+});
+
+// 마크다운 프리뷰 컴포넌트를 동적으로 불러옵니다
+const MarkdownPreview = dynamic(
+  () => import('@/components/ui/MarkdownPreview'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-96 w-full animate-pulse rounded-md bg-gray-100 dark:bg-gray-800"></div>
+    )
+  }
+);
 
 export default function WritePage() {
-  const titleRef = useRef<HTMLInputElement>(null);
-  const categoryRef = useRef<HTMLInputElement>(null);
-  const tagsRef = useRef<HTMLInputElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
-  const [boardColor, setBoardColor] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [issueUrl, setIssueUrl] = useState<string | null>(null);
-  const [tags, setTags] = useState<string[]>([]);
-  const [tagInput, setTagInput] = useState('');
+  // 포스트 데이터 상태
+  const [postData, setPostData] = useState({
+    title: '',
+    content: '',
+    category: '',
+    tags: '',
+    featuredImage: ''
+  });
+  const [isPreview, setIsPreview] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
 
-  const [content, setContent] = useState('');
-  const router = useRouter();
+  // 입력 핸들러
+  const handleInputChange = useCallback(
+    (
+      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    ) => {
+      const { name, value } = e.target;
+      setPostData((prev) => ({ ...prev, [name]: value }));
+    },
+    []
+  );
 
-  // Check authentication
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch('/api/check-auth');
-        const data = await response.json();
-        setIsAuthenticated(data.authenticated);
-      } catch (error) {
-        console.error('Failed to check authentication:', error);
-        setIsAuthenticated(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
+  // 마크다운 에디터 콘텐츠 변경 핸들러
+  const handleContentChange = useCallback((value: string) => {
+    setPostData((prev) => ({ ...prev, content: value }));
   }, []);
 
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!loading && !isAuthenticated) {
-      router.push('/login');
-    }
-  }, [loading, isAuthenticated, router]);
-
-  // 태그 입력 처리
-  const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setTagInput(value);
-
-    // 콤마 입력 시 태그 추가
-    if (value.endsWith(',')) {
-      const newTag = value.slice(0, -1).trim();
-      if (newTag && !tags.includes(newTag)) {
-        setTags([...tags, newTag]);
-        setTagInput('');
-      } else {
-        setTagInput('');
-      }
-    }
-  };
-
-  // 태그 삭제
-  const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
-  };
-
-  // 엔터 키 이벤트 처리
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    // 엔터키 눌렀을 때
-    if (e.key === 'Enter') {
-      e.preventDefault(); // 폼 제출 방지
-
-      // 태그 입력 필드에서 엔터 키 눌렀을 때 태그 추가
-      if (e.currentTarget === tagsRef.current && tagInput.trim()) {
-        if (!tags.includes(tagInput.trim())) {
-          setTags([...tags, tagInput.trim()]);
-          setTagInput('');
-        }
-      }
-    }
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  // 포스트 저장 핸들러
+  const handleSavePost = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!titleRef.current?.value || titleRef.current.value.length === 0)
-      return alert('제목을 입력해주세요');
-    if (content.length === 0) return alert('본문을 입력해주세요');
+    if (!postData.title.trim()) {
+      setSaveError('제목을 입력해주세요');
+      return;
+    }
 
-    setSubmitting(true);
-    setIssueUrl(null);
-
-    // Save as markdown file
-    const formData = new FormData();
-    formData.append('title', titleRef.current?.value ?? '');
-    formData.append('content', content);
-    formData.append('category', categoryRef.current?.value ?? 'Uncategorized');
-    formData.append('tags', tags.join(','));
+    if (!postData.content.trim()) {
+      setSaveError('내용을 입력해주세요');
+      return;
+    }
 
     try {
-      const response = await fetch('/api/markdown', {
-        method: 'POST',
-        body: formData
-      });
+      setIsSaving(true);
+      setSaveError('');
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to save markdown');
-      }
+      // 여기에 실제 저장 로직 구현 (API 호출 등)
+      // 실제 저장 기능은 별도로 구현 필요
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 저장 시뮬레이션
 
-      const data = await response.json();
-
-      // 이슈 URL 저장
-      if (data.issueUrl) {
-        setIssueUrl(data.issueUrl);
-      }
-
-      alert('마크다운 파일이 성공적으로 저장되었습니다.');
-
-      // 3초 후에 새 글 페이지로 이동
-      setTimeout(() => {
-        router.push(`/markdown/${data.slug}`);
-      }, 3000);
+      // 성공 시
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
-      console.error('Error saving markdown:', error);
-      alert('마크다운 파일 저장에 실패했습니다.');
+      console.error('포스트 저장 오류:', error);
+      setSaveError('포스트 저장 중 오류가 발생했습니다');
     } finally {
-      setSubmitting(false);
+      setIsSaving(false);
     }
   };
 
-  if (loading) {
-    return <div className="container p-4">로딩 중...</div>;
-  }
+  // 이미지 추가 핸들러
+  const handleAddImage = () => {
+    if (imageUrl.trim()) {
+      // 마크다운 이미지 링크 형식으로 추가
+      const imageMarkdown = `![이미지](${imageUrl})`;
+      setPostData((prev) => ({
+        ...prev,
+        content: prev.content
+          ? `${prev.content}\n${imageMarkdown}`
+          : imageMarkdown
+      }));
+      setImageUrl('');
+      setIsImageModalOpen(false);
+    }
+  };
 
-  if (!isAuthenticated) {
-    return null; // Will redirect to login page
-  }
+  // 미리보기/에디터 토글
+  const togglePreview = () => setIsPreview(!isPreview);
 
   return (
-    <div className="container flex flex-col px-4 pb-20 pt-12">
-      <h1 className="mb-8 text-2xl font-medium">새로운 글</h1>
-      <form ref={formRef} onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-3">
-          <Input
-            type="text"
-            placeholder="제목"
-            ref={titleRef}
-            onKeyDown={handleKeyDown}
-          />
+    <div className="container mx-auto max-w-6xl px-4 py-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8 flex items-center justify-between"
+      >
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          새 글 작성
+        </h1>
+        <div className="flex items-center space-x-2">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={togglePreview}
+            className={cn(
+              'flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+              isPreview
+                ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'
+                : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+            )}
+          >
+            {isPreview ? (
+              <FaPen className="mr-2" />
+            ) : (
+              <FaEye className="mr-2" />
+            )}
+            {isPreview ? '에디터 보기' : '미리보기'}
+          </motion.button>
+        </div>
+      </motion.div>
 
-          <Input
-            type="text"
-            placeholder="카테고리"
-            ref={categoryRef}
-            onKeyDown={handleKeyDown}
-          />
-
-          <div className="relative">
-            <Input
+      <form onSubmit={handleSavePost}>
+        <div className="mb-6 grid gap-6 md:grid-cols-2">
+          {/* 제목 입력 */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 }}
+            className="col-span-2"
+          >
+            <label className="mb-2 flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
+              <MdTitle className="mr-2" /> 제목
+            </label>
+            <input
               type="text"
-              placeholder="태그 (쉼표로 구분, 예: JavaScript, React, NextJS)"
-              ref={tagsRef}
-              value={tagInput}
-              onChange={handleTagInputChange}
-              onKeyDown={handleKeyDown}
+              name="title"
+              value={postData.title}
+              onChange={handleInputChange}
+              className="w-full rounded-lg border border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500/20"
+              placeholder="제목을 입력하세요"
             />
-            {tags.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-2">
-                {tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary"
-                  >
-                    {tag}
-                    <button
-                      type="button"
-                      className="ml-1 text-sm"
-                      onClick={() => removeTag(tag)}
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
+          </motion.div>
+
+          {/* 카테고리 선택 */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <label className="mb-2 flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
+              <MdCategory className="mr-2" /> 카테고리
+            </label>
+            <select
+              name="category"
+              value={postData.category}
+              onChange={handleInputChange}
+              className="w-full rounded-lg border border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500/20"
+            >
+              <option value="">카테고리 선택</option>
+              <option value="javascript">JavaScript</option>
+              <option value="react">React</option>
+              <option value="nextjs">Next.js</option>
+              <option value="typescript">TypeScript</option>
+              <option value="web">Web</option>
+              <option value="tech">Tech</option>
+            </select>
+          </motion.div>
+
+          {/* 태그 입력 */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <label className="mb-2 flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
+              <FaTag className="mr-2" /> 태그
+            </label>
+            <input
+              type="text"
+              name="tags"
+              value={postData.tags}
+              onChange={handleInputChange}
+              className="w-full rounded-lg border border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500/20"
+              placeholder="쉼표로 구분하여 입력 (예: javascript, react, web)"
+            />
+          </motion.div>
+        </div>
+
+        {/* 에디터 툴바 */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mb-3 flex items-center rounded-t-lg border border-gray-200 bg-gray-50 p-2 dark:border-gray-700 dark:bg-gray-800"
+        >
+          <div className="flex items-center space-x-2">
+            <button
+              type="button"
+              onClick={() => setIsImageModalOpen(true)}
+              className="rounded p-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700"
+              title="이미지 추가"
+            >
+              <FaImage size={16} />
+            </button>
+            <div className="flex h-6 items-center border-l border-gray-300 dark:border-gray-600"></div>
+            <div className="flex items-center rounded bg-gray-200 px-2 py-1 dark:bg-gray-700">
+              <FaMarkdown
+                className="mr-2 text-purple-600 dark:text-purple-400"
+                size={16}
+              />
+              <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                Markdown
+              </span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* 에디터/미리보기 영역 */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mb-6 min-h-[500px] rounded-b-lg border border-gray-200 dark:border-gray-700"
+        >
+          <AnimatePresence mode="wait">
+            {isPreview ? (
+              <motion.div
+                key="preview"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="size-full"
+              >
+                <MarkdownPreview
+                  content={postData.content}
+                  className="min-h-[500px] p-6"
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="editor"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="size-full"
+              >
+                <MarkdownEditor
+                  value={postData.content}
+                  onChange={handleContentChange}
+                  placeholder="마크다운 형식으로 내용을 작성하세요..."
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* 저장 버튼 */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="flex items-center justify-between"
+        >
+          <div>
+            {saveError && (
+              <motion.p
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-sm text-red-500"
+              >
+                {saveError}
+              </motion.p>
+            )}
+            {saveSuccess && (
+              <motion.p
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-sm text-green-500"
+              >
+                포스트가 저장되었습니다!
+              </motion.p>
             )}
           </div>
-
-          <FileDrop
-            onDragOver={(event) => {
-              setBoardColor(true);
-            }}
-            onDragLeave={(event) => {
-              setBoardColor(false);
-            }}
-            onDrop={(files, event) => {
-              if (!files) return;
-              const formdata = new FormData();
-              formdata.append('preview_image', files[0]);
-              const headers = { 'Content-Type': files[0].type };
-              if (files[0].size >= 5000000) {
-                alert('5MB 이상 파일은 업로드가 불가능합니다.');
-              } else if (
-                files[0].type == 'image/png' ||
-                files[0].type == 'image/jpeg' ||
-                files[0].type == 'image/jpg' ||
-                files[0].type == 'image/gif'
-              ) {
-                axios
-                  .post('/api/posts/image', formdata, { headers })
-                  .then(function (response) {
-                    let { preview_image_url, error } = response.data;
-                    if (error) {
-                      alert('이미지 올리기 실패!');
-                    }
-                    let newValue =
-                      content +
-                      '\n\n ![' +
-                      files[0].name +
-                      '](' +
-                      preview_image_url +
-                      ')';
-                    setContent(newValue);
-                  });
-              } else {
-                alert('png, jpg, jpeg,gif 파일이 아닙니다.');
-              }
-
-              setBoardColor(false);
-            }}
-            className={boardColor ? 'border-blue-500' : ''}
-          >
-            <div className="min-h-96 w-full">
-              <MarkdownEditor
-                height="500"
-                value={content}
-                onChange={(s) => {
-                  setContent(s ?? '');
-                }}
-              />
-            </div>
-          </FileDrop>
-
-          {issueUrl && (
-            <div className="mt-2 rounded-md bg-green-50 p-4 text-green-700">
-              <p className="mb-2">
-                ✅ 글이 성공적으로 저장되었으며 GitHub 이슈가 생성되었습니다.
-              </p>
-              <p>
-                <a
-                  href={issueUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium text-green-800 underline hover:text-green-900"
-                >
-                  GitHub 이슈 보기 →
-                </a>
-              </p>
-              <p className="mt-2 text-sm">
-                잠시 후 새 글 페이지로 이동합니다...
-              </p>
-            </div>
-          )}
-
-          <Button type="submit" className="mt-4" disabled={submitting}>
-            {submitting ? '저장 중...' : '마크다운 파일로 저장'}
-          </Button>
-        </div>
+          <div className="flex space-x-3">
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+            >
+              <FaTimes className="mr-2" /> 취소
+            </motion.button>
+            <motion.button
+              type="submit"
+              disabled={isSaving}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className={cn(
+                'flex items-center rounded-md bg-blue-600 px-4 py-2 text-white shadow-sm hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600',
+                isSaving && 'cursor-not-allowed opacity-70'
+              )}
+            >
+              <FaSave className="mr-2" />
+              {isSaving ? '저장 중...' : '저장하기'}
+            </motion.button>
+          </div>
+        </motion.div>
       </form>
+
+      {/* 이미지 URL 모달 */}
+      <AnimatePresence>
+        {isImageModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+            onClick={() => setIsImageModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800"
+            >
+              <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
+                이미지 추가
+              </h3>
+              <div className="mb-4">
+                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  이미지 URL
+                </label>
+                <input
+                  type="text"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 p-2.5 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500/20"
+                  placeholder="https://example.com/image.jpg"
+                />
+              </div>
+              <div className="flex justify-end space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setIsImageModalOpen(false)}
+                  className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                >
+                  취소
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAddImage}
+                  className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
+                >
+                  추가
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

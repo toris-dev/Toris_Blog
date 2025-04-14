@@ -1,22 +1,22 @@
 'use client';
 
+import { useSidebar } from '@/components/common/Providers';
 import {
   AiOutlineClose,
-  AiOutlineFire,
   AiOutlineMenu,
   BsGrid,
   BsMoonStarsFill,
   BsPencilSquare,
   BsSunFill,
   FaEthereum,
-  FaSearch
+  FaSearch,
+  SiNextjs
 } from '@/components/icons';
-import { useSidebar } from '@/components/Providers';
 import { cn } from '@/utils/style';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
-import IconButton from './IconButton';
+import IconButton from '../ui/IconButton';
 
 const Header: FC = () => {
   const { isOpen, setIsOpen } = useSidebar();
@@ -109,15 +109,14 @@ const Header: FC = () => {
               className="mr-3 text-content hover:text-primary lg:hidden"
             />
 
-            <Link href="/" className="group flex items-center">
+            <Link href="/" className="group flex items-center gap-1">
               <div className="relative size-10 overflow-hidden rounded-full border-2 border-primary p-1">
                 <div className="flex size-full items-center justify-center rounded-full bg-primary/10">
-                  <AiOutlineFire className="size-5 text-primary" />
+                  <SiNextjs className="size-5 text-primary" />
                 </div>
               </div>
               <span className="bg-gradient-to-r from-primary to-accent-1 bg-clip-text text-xl font-bold text-transparent">
-                Toris
-                <span className="text-content">Blog</span>
+                Toris Blog
               </span>
             </Link>
           </div>
@@ -146,11 +145,6 @@ const Header: FC = () => {
                 href: '/portfolio',
                 label: '포트폴리오',
                 isActive: pathname === '/portfolio'
-              },
-              {
-                href: '/search',
-                label: '검색',
-                isActive: pathname === '/search'
               }
             ].map(({ href, label, isActive }) => (
               <Link
@@ -179,7 +173,7 @@ const Header: FC = () => {
             <IconButton
               Icon={FaSearch}
               component={Link}
-              href="/search"
+              href="/posts"
               className="text-content hover:text-primary"
               label="검색"
               id="searchButton"

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { FC } from 'react';
-import Button from './Button';
+import Button from '../ui/Button';
 
 type AdminDashboardProps = {
   username: string;

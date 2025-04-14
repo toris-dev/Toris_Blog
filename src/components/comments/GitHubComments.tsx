@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { MarkdownEditor, MarkdownViewer } from './Markdown';
+import { MarkdownEditor, MarkdownViewer } from '../blog/Markdown';
 
 interface GitHubUser {
   login: string;
@@ -236,9 +236,9 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
   return (
     <div className="mt-6">
       {loading ? (
-        <p>Loading comments...</p>
+        <p className="dark:text-gray-300">Loading comments...</p>
       ) : error ? (
-        <p className="text-red-500">{error}</p>
+        <p className="text-red-500 dark:text-red-400">{error}</p>
       ) : (
         <>
           {comments.length > 0 ? (
@@ -246,7 +246,7 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
               {comments.map((comment) => (
                 <div
                   key={comment.id}
-                  className="rounded-lg border p-4 shadow-sm"
+                  className="rounded-lg border p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"
                 >
                   <div className="mb-2 flex items-center">
                     <Image
@@ -257,14 +257,14 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
                       height={32}
                     />
                     <div>
-                      <span className="font-medium">
+                      <span className="font-medium dark:text-white">
                         {/* 닉네임 추출 (첫 번째 Bold 텍스트) */}
                         {comment.body.startsWith('**') &&
                         comment.body.includes('**님의 댓글:')
                           ? comment.body.split('**')[1]
                           : comment.user.login}
                       </span>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         {new Date(comment.createdAt).toLocaleDateString(
                           'ko-KR',
                           {
@@ -276,7 +276,7 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
                       </p>
                     </div>
                   </div>
-                  <div className="prose mt-2">
+                  <div className="prose mt-2 dark:prose-invert">
                     {/* 닉네임 부분을 제외한 본문만 표시 */}
                     <MarkdownViewer
                       value={
@@ -292,7 +292,7 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
                       href={comment.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-gray-500 hover:text-gray-700"
+                      className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                     >
                       GitHub에서 보기
                     </a>
@@ -301,7 +301,7 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
               ))}
             </div>
           ) : (
-            <p className="mb-6 text-gray-500">
+            <p className="mb-6 text-gray-500 dark:text-gray-400">
               아직 댓글이 없습니다. 첫 댓글을 남겨보세요!
             </p>
           )}
@@ -309,14 +309,16 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
       )}
 
       <div className="mt-8">
-        <h3 className="mb-4 text-xl font-semibold">댓글 남기기</h3>
+        <h3 className="mb-4 text-xl font-semibold dark:text-white">
+          댓글 남기기
+        </h3>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="mb-2 block text-sm font-medium">
+            <label className="mb-2 block text-sm font-medium dark:text-gray-300">
               댓글 작성 방식
             </label>
             <div className="flex space-x-4">
-              <label className="flex items-center">
+              <label className="flex items-center dark:text-gray-300">
                 <input
                   type="radio"
                   name="commentMode"
@@ -326,7 +328,7 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
                 />
                 <span>익명으로 작성</span>
               </label>
-              <label className="flex items-center">
+              <label className="flex items-center dark:text-gray-300">
                 <input
                   type="radio"
                   name="commentMode"
@@ -343,7 +345,7 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
             <div className="mb-4">
               <label
                 htmlFor="nickname"
-                className="mb-2 block text-sm font-medium"
+                className="mb-2 block text-sm font-medium dark:text-gray-300"
               >
                 닉네임
               </label>
@@ -353,7 +355,7 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
                 ref={nicknameRef}
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
-                className="w-full rounded-md border p-2"
+                className="w-full rounded-md border p-2 dark:border-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                 placeholder="닉네임을 입력해주세요"
                 required
                 maxLength={20}
@@ -362,9 +364,11 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
           )}
 
           {commentMode === 'github' && (
-            <div className="mb-4 rounded-md border bg-gray-50 p-4">
+            <div className="mb-4 rounded-md border bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
               {isCheckingLogin ? (
-                <p className="text-sm">GitHub 로그인 상태 확인 중...</p>
+                <p className="text-sm dark:text-gray-300">
+                  GitHub 로그인 상태 확인 중...
+                </p>
               ) : gitHubUser ? (
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
@@ -376,10 +380,10 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
                       className="mr-2 rounded-full"
                     />
                     <div>
-                      <p className="font-medium">
+                      <p className="font-medium dark:text-white">
                         {gitHubUser.name || gitHubUser.login}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         @{gitHubUser.login}
                       </p>
                     </div>
@@ -387,20 +391,20 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="text-sm text-gray-500 hover:text-gray-700"
+                    className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                   >
                     로그아웃
                   </button>
                 </div>
               ) : (
                 <>
-                  <p className="text-sm">
+                  <p className="text-sm dark:text-gray-300">
                     GitHub으로 댓글을 작성하면 GitHub 계정과 연결됩니다. 댓글은
                     GitHub 이슈로 생성됩니다.
                   </p>
                   <a
                     href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(`${window.location.origin}/api/auth/github-callback?redirect=${encodeURIComponent(window.location.href)}`)}`}
-                    className="mt-2 inline-block rounded-md bg-gray-800 px-4 py-2 text-white hover:bg-gray-700"
+                    className="mt-2 inline-block rounded-md bg-gray-800 px-4 py-2 text-white hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600"
                   >
                     GitHub으로 로그인
                   </a>
@@ -410,7 +414,10 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
           )}
 
           <div className="mb-4">
-            <label htmlFor="comment" className="mb-2 block text-sm font-medium">
+            <label
+              htmlFor="comment"
+              className="mb-2 block text-sm font-medium dark:text-gray-300"
+            >
               댓글 내용
             </label>
             <MarkdownEditor
@@ -421,13 +428,13 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
           </div>
 
           {showSuccess && (
-            <div className="mb-4 rounded-md bg-green-50 p-4 text-green-800">
+            <div className="mb-4 rounded-md bg-green-50 p-4 text-green-800 dark:bg-green-900/20 dark:text-green-300">
               댓글이 성공적으로 등록되었습니다.
             </div>
           )}
 
           {error && (
-            <div className="mb-4 rounded-md bg-red-50 p-4 text-red-800">
+            <div className="mb-4 rounded-md bg-red-50 p-4 text-red-800 dark:bg-red-900/20 dark:text-red-300">
               <p className="font-medium">오류 발생:</p>
               <p>{error}</p>
               <p className="mt-2 text-sm">
@@ -444,7 +451,7 @@ const GitHubComments: React.FC<GitHubCommentsProps> = ({ slug, title }) => {
               (commentMode === 'anonymous' && !nickname.trim()) ||
               (commentMode === 'github' && !gitHubUser)
             }
-            className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:bg-gray-400"
+            className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:bg-gray-400 dark:bg-blue-700 dark:hover:bg-blue-800 dark:disabled:bg-gray-600"
           >
             {submitting ? '등록 중...' : '댓글 등록하기'}
           </button>

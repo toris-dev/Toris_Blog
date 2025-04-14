@@ -4,9 +4,9 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { FC, FormEvent, useRef } from 'react';
 import toast from 'react-hot-toast';
-import Button from './Button';
-import Input from './Input';
-import { useComments } from './context/CommentContext';
+import { useComments } from '../context/CommentContext';
+import Button from '../ui/Button';
+import Input from '../ui/Input';
 
 type CommentInputProps = {
   postId: number | string;
@@ -61,27 +61,27 @@ const CommentInput: FC<CommentInputProps> = ({ postId }) => {
   };
 
   return (
-    <div className="m-3 w-4/5 max-w-xl rounded-lg bg-white p-4 shadow-md">
+    <div className="m-3 w-4/5 max-w-xl rounded-lg bg-white p-4 shadow-md dark:bg-gray-800 dark:shadow-gray-900/30">
       <div className="flex items-start ">
         <div className="grid gap-2">{/* Your comment content here */}</div>
-        <div className=" border-gray-200 p-4 ">
+        <div className="border-gray-200 p-4">
           <Input
             ref={idRef}
             placeholder="닉네임 입력"
-            className="mr-3 transition-all duration-300 ease-in-out focus:ring-2 focus:ring-blue-500"
+            className="mr-3 transition-all duration-300 ease-in-out focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
             type="id"
           />
           <Input
             ref={pwdRef}
             placeholder="PWD입력"
             type="password"
-            className="transition-all duration-300 ease-in-out focus:ring-2 focus:ring-blue-500"
+            className="transition-all duration-300 ease-in-out focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
           />
           <form className="grid gap-4" onSubmit={handleSubmit}>
             <div className="w-full">
               <span className="sr-only">Comment</span>
               <textarea
-                className="mt-3 min-h-[80px] w-full resize-none rounded-lg border border-solid border-gray-300 p-2 text-sm transition-all duration-300 ease-in-out focus:ring-2 focus:ring-blue-500"
+                className="mt-3 min-h-[80px] w-full resize-none rounded-lg border border-solid border-gray-300 p-2 text-sm transition-all duration-300 ease-in-out focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                 id="comment"
                 placeholder="What are your thoughts?"
                 style={{ maxHeight: '200px' }}
@@ -89,11 +89,14 @@ const CommentInput: FC<CommentInputProps> = ({ postId }) => {
               />
             </div>
             <div className="flex items-center gap-2">
-              <Button className="peer text-sm" type="submit">
+              <Button
+                className="peer text-sm dark:bg-gray-700 dark:hover:bg-gray-600"
+                type="submit"
+              >
                 Submit
               </Button>
               <Button
-                className="peer text-sm"
+                className="peer text-sm dark:bg-gray-700 dark:hover:bg-gray-600"
                 type="button"
                 onClick={handleCancel}
               >

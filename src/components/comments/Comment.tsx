@@ -7,11 +7,11 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import { FC, useState } from 'react';
 import ReactModal from 'react-modal';
-import Button from './Button';
+import { useComments } from '../context/CommentContext';
+import Button from '../ui/Button';
 import CommentRemove from './CommentRemove';
 import CommentUpdateInput from './CommentUpdateInput';
 import ReplyInput from './Reply';
-import { useComments } from './context/CommentContext';
 
 const customModalStyles: ReactModal.Styles = {
   overlay: {
@@ -60,7 +60,7 @@ const Comment: FC<CommentType> = ({
   const { organizedComments } = useComments();
   console.log(organizedComments);
   return (
-    <div className="w-full rounded-xl bg-white p-4 shadow-xl">
+    <div className="w-full rounded-xl bg-white p-4 shadow-xl dark:bg-gray-800 dark:shadow-gray-900/30">
       <div className="flex items-start">
         <div className="mr-4 flex size-24 items-center justify-center overflow-hidden rounded-full">
           <Image
@@ -97,31 +97,35 @@ const Comment: FC<CommentType> = ({
             <div className="flex items-center justify-between">
               <div className="flex w-full items-center justify-start gap-3">
                 <div>
-                  <span>Writer: </span>
-                  <h5 className="inline text-lg font-bold">{writer_id}</h5>
+                  <span className="dark:text-gray-300">Writer: </span>
+                  <h5 className="inline text-lg font-bold dark:text-white">
+                    {writer_id}
+                  </h5>
                 </div>
                 <Button
-                  className="flex h-7 w-10 items-center justify-center bg-gray-300 hover:bg-gray-500"
+                  className="flex h-7 w-10 items-center justify-center bg-gray-300 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700"
                   onClick={() => setUpdate(true)}
                 >
                   수정
                 </Button>
                 <Button
-                  className="flex h-7 w-10 items-center justify-center bg-gray-300 hover:bg-gray-500"
+                  className="flex h-7 w-10 items-center justify-center bg-gray-300 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700"
                   onClick={() => setRemoveModal(true)}
                 >
                   삭제
                 </Button>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
                 {dayjs(new Date(created_at)).format('YY년 MM월 DD일 HH:mm')}
               </p>
             </div>
-            <hr className="my-3 w-full border" />
-            <p className="text-sm text-gray-700">{content}</p>
+            <hr className="my-3 w-full border dark:border-gray-700" />
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              {content}
+            </p>
             <div className="mt-4 flex justify-center space-x-2">
               <Button
-                className="flex h-10 w-32 items-center justify-center self-end rounded bg-blue-500 px-2 py-1 text-xs text-white hover:bg-blue-600"
+                className="flex h-10 w-32 items-center justify-center self-end rounded bg-blue-500 px-2 py-1 text-xs text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
                 onClick={handlerLike}
               >
                 좋아요
@@ -139,7 +143,7 @@ const Comment: FC<CommentType> = ({
               ) : (
                 <>
                   <Button
-                    className="rounded bg-gray-500 px-2 py-1 text-xs text-white hover:bg-gray-600"
+                    className="rounded bg-gray-500 px-2 py-1 text-xs text-white hover:bg-gray-600 dark:bg-gray-600 dark:hover:bg-gray-700"
                     onClick={() => setReplyOpen(true)}
                   >
                     답글 달기

@@ -1,12 +1,17 @@
+import {
+  AiOutlineMail,
+  FaCode,
+  FaGithub,
+  FaTwitter,
+  SiNextdotjs
+} from '@/components/icons';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AiOutlineMail } from 'react-icons/ai';
-import { FaEthereum, FaGithub, FaTwitter } from 'react-icons/fa';
 
 export const metadata: Metadata = {
   title: '소개 - toris-dev',
-  description: 'Web3 개발자 toris-dev에 대해 알아보세요.'
+  description: '프론트엔드 및 Next.js 개발자 toris-dev에 대해 알아보세요.'
 };
 
 export default function AboutPage() {
@@ -14,19 +19,41 @@ export default function AboutPage() {
   const skills = [
     {
       category: 'Frontend',
-      technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS']
+      technologies: [
+        'React',
+        'Next.js',
+        'TypeScript',
+        'Tailwind CSS',
+        'Framer Motion',
+        'Redux'
+      ]
     },
     {
       category: 'Backend',
-      technologies: ['Node.js', 'Express', 'NestJS', 'MongoDB', 'PostgreSQL']
+      technologies: [
+        'Node.js',
+        'Express',
+        'NestJS',
+        'MongoDB',
+        'PostgreSQL',
+        'Supabase'
+      ]
     },
     {
-      category: 'Blockchain',
-      technologies: ['Solidity', 'Ethers.js', 'Hardhat', 'IPFS']
+      category: 'DevOps & Tools',
+      technologies: [
+        'Git',
+        'Docker',
+        'AWS',
+        'CI/CD',
+        'Vercel',
+        'Jest',
+        'Cypress'
+      ]
     },
     {
-      category: 'Tools & Others',
-      technologies: ['Git', 'Docker', 'AWS', 'CI/CD', 'Vercel']
+      category: 'Web3 (부수적)',
+      technologies: ['Solidity', 'Ethers.js', 'IPFS', 'Smart Contracts']
     }
   ];
 
@@ -34,21 +61,21 @@ export default function AboutPage() {
   const experiences = [
     {
       period: '2022 - 현재',
-      company: 'Web3 Studio',
-      role: '선임 블록체인 개발자',
-      description: '블록체인 기반 DApp 개발 및 프로젝트 리드'
+      company: 'Frontend Studio',
+      role: '시니어 프론트엔드 개발자',
+      description: 'Next.js, React 기반 웹 애플리케이션 개발 및 프로젝트 리드'
     },
     {
       period: '2020 - 2022',
       company: 'Tech Innovators',
-      role: '웹 개발자',
-      description: '풀스택 웹 애플리케이션 개발'
+      role: '풀스택 개발자',
+      description: 'React 기반 웹 애플리케이션 및 Node.js 백엔드 서비스 개발'
     },
     {
       period: '2018 - 2020',
       company: 'Digital Solutions',
       role: '프론트엔드 개발자',
-      description: '반응형 웹사이트 및 UI/UX 구현'
+      description: '반응형 웹사이트 및 UI/UX 구현, JavaScript 프레임워크 활용'
     }
   ];
 
@@ -70,7 +97,7 @@ export default function AboutPage() {
           안녕하세요, <span className="gradient-text">toris-dev</span>입니다
         </h1>
         <p className="mb-6 text-xl text-content-dark">
-          Web3 및 블록체인 기술을 활용한 풀스택 개발자
+          Next.js 기반 프론트엔드 및 풀스택 개발자
         </p>
         <div className="flex justify-center gap-4">
           <Link
@@ -107,19 +134,20 @@ export default function AboutPage() {
           </h2>
           <div className="space-y-4 text-content">
             <p>
-              안녕하세요! 저는 Web3와 블록체인 기술에 열정을 가진 풀스택
-              개발자입니다. 블록체인의 탈중앙화 철학에 매료되어 이 분야에서
-              혁신적인 프로젝트를 개발하고 있습니다.
+              안녕하세요! 저는 React와 Next.js에 열정을 가진 프론트엔드 중심의
+              풀스택 개발자입니다. 현대적인 웹 개발 기술과 사용자 경험에 중점을
+              두고 다양한 프로젝트를 개발하고 있습니다.
             </p>
             <p>
-              3년 이상의 블록체인 개발 경험과 5년 이상의 웹 개발 경험을 바탕으로
-              사용자 친화적이면서도 기술적으로 견고한 애플리케이션을 구축하는 데
-              집중하고 있습니다.
+              5년 이상의 프론트엔드 개발 경험과 3년 이상의 Next.js 경험을
+              바탕으로 사용자 친화적이면서도 기술적으로 견고한 애플리케이션을
+              구축하는 데 집중하고 있습니다. 백엔드 기술에도 능숙하여 풀스택
+              개발을 즐깁니다.
             </p>
             <p>
-              분산 애플리케이션(DApp), 스마트 컨트랙트, NFT 프로젝트 등 다양한
-              Web3 프로젝트를 진행해왔으며, 블록체인 기술이 가져올 미래에 대한
-              비전을 갖고 있습니다.
+              React 기반 SPA, Next.js를 활용한 SSR/SSG 웹사이트, REST API 설계,
+              데이터베이스 모델링에 이르기까지 웹 개발의 전 영역에 관심이
+              있으며, 최신 웹 기술 트렌드를 꾸준히 탐구하고 있습니다.
             </p>
           </div>
         </div>
@@ -145,8 +173,8 @@ export default function AboutPage() {
                     key={tech}
                     className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
                   >
-                    {skillGroup.category === 'Blockchain' && (
-                      <FaEthereum className="mr-1 size-3" />
+                    {tech === 'Next.js' && (
+                      <SiNextdotjs className="mr-1 size-3" />
                     )}
                     {tech}
                   </span>
@@ -169,7 +197,7 @@ export default function AboutPage() {
               className="web3-card relative border-l-4 border-primary"
             >
               <span className="absolute -left-3 top-6 flex size-6 items-center justify-center rounded-full bg-primary text-white">
-                <FaEthereum size={14} />
+                <FaCode size={14} />
               </span>
               <div className="ml-4">
                 <div className="mb-2 text-sm font-medium text-primary">
@@ -189,7 +217,8 @@ export default function AboutPage() {
         <div className="web3-card bg-gradient-to-r from-primary/20 to-accent-1/20">
           <h2 className="mb-4 text-2xl font-bold">프로젝트 협업 문의</h2>
           <p className="mb-6 text-content-dark">
-            Web3 프로젝트를 함께 개발하고 싶으신가요? 언제든지 연락 주세요!
+            모던 웹 개발 프로젝트를 함께 만들고 싶으신가요? 언제든지 연락
+            주세요!
           </p>
           <Link
             href="/contact"

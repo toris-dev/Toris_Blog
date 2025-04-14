@@ -10,6 +10,7 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.1",
     "@next/third-parties": "^14.2.5",
     "@react-icons/all-files": "^4.1.0",
     "@tailwindcss/forms": "^0.5.10",
@@ -37,15 +38,20 @@
     "react-modal": "^3.16.1",
     "react-select": "^5.8.0",
     "react-simplemde-editor": "^5.2.0",
+    "react-syntax-highlighter": "^15.6.1",
     "rehype-highlight": "^7.0.2",
+    "rehype-raw": "^7.0.0",
+    "rehype-sanitize": "^6.0.0",
+    "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.1",
     "rss": "^1.2.2",
     "tailwind-merge": "^2.2.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.17.30",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "@types/rss": "^0.0.32",
     "autoprefixer": "^10.0.1",
     "cypress": "^13.7.1",

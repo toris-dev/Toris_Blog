@@ -8,6 +8,7 @@ import {
   FaTags,
   IoClose
 } from '@/components/icons';
+import Button from '@/components/ui/Button';
 import { Post } from '@/types';
 import { cn } from '@/utils/style';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -33,14 +34,15 @@ function debounce<T extends (...args: any[]) => any>(
   };
 }
 
-// 정적 재생성 설정 (6시간)
-export const revalidate = 60 * 60 * 6;
-
 // 인터페이스 정의
 interface SearchResultProps {
   posts: Post[];
   searchTerm: string;
   setSelectedPost: (post: Post | null) => void;
+}
+
+interface ClientSearchPageProps {
+  initialPosts: Post[];
 }
 
 // 스켈레톤 카드 컴포넌트
@@ -88,11 +90,11 @@ const SearchSkeleton = () => {
   );
 };
 
-const SearchPage = () => {
+const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [posts] = useState<Post[]>(initialPosts);
+  const [filteredPosts, setFilteredPosts] = useState<Post[]>(initialPosts);
+  const [loading, setLoading] = useState(false);
   const [activeFilters, setActiveFilters] = useState<{
     categories: string[];
     tags: string[];
@@ -110,45 +112,27 @@ const SearchPage = () => {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
-  // 포스트 데이터 가져오기
+  // 초기 필터 설정
   useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch('/api/markdown');
-        if (!response.ok) throw new Error('Failed to fetch posts');
-        const data = await response.json();
-        setPosts(data);
+    // 사용 가능한 카테고리와 태그 추출
+    const categories = Array.from(
+      new Set(initialPosts.map((post) => post.category))
+    );
+    const tags = Array.from(
+      new Set(
+        initialPosts.flatMap((post) =>
+          typeof post.tags === 'string'
+            ? post.tags.split(',').map((tag) => tag.trim())
+            : post.tags
+        )
+      )
+    );
 
-        // 사용 가능한 카테고리와 태그 추출
-        const categories = Array.from(
-          new Set(data.map((post: Post) => post.category))
-        );
-        const tags = Array.from(
-          new Set(
-            data.flatMap((post: Post) =>
-              typeof post.tags === 'string'
-                ? post.tags.split(',').map((tag) => tag.trim())
-                : post.tags
-            )
-          )
-        );
-
-        setAvailableFilters({
-          categories: categories as string[],
-          tags: tags as string[]
-        });
-
-        setFilteredPosts(data);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
+    setAvailableFilters({
+      categories: categories as string[],
+      tags: tags as string[]
+    });
+  }, [initialPosts]);
 
   // 검색 및 필터링 로직
   const filterPosts = useCallback(
@@ -291,12 +275,12 @@ const SearchPage = () => {
                   >
                     <FaFolder className="mr-1" />
                     {category}
-                    <button
+                    <Button
                       onClick={() => toggleCategoryFilter(category)}
                       className="ml-1 rounded-full p-0.5 hover:bg-primary/20"
                     >
                       <IoClose size={14} />
-                    </button>
+                    </Button>
                   </motion.span>
                 ))}
 
@@ -658,4 +642,4 @@ const SearchResults: React.FC<SearchResultProps> = ({
   );
 };
 
-export default SearchPage;
+export default ClientSearchPage;

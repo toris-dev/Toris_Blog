@@ -1,4 +1,4 @@
-import PostPage from '@/components/PostPage';
+import PostPage from '@/components/blog/PostPage';
 import { CommentsProvider } from '@/components/context/CommentContext';
 import { getMarkdownFile, getMarkdownFilesFromDisk } from '@/utils/fetch';
 import { Metadata } from 'next';

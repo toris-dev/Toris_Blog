@@ -14,13 +14,13 @@ export const generateStaticParams = async () => {
 };
 
 export const metadata: Metadata = {
-  title: '토리스 포트폴리오',
+  title: '토리스 포트폴리오 | Next.js 풀스택 개발자',
   description:
-    '웹 개발자 토리스의 포트폴리오입니다. 프로젝트, 스킬, 아카이빙을 확인해보세요.',
+    'Next.js와 React를 활용하는 프론트엔드 중심의 풀스택 개발자 토리스의 포트폴리오입니다. 모던 웹 프로젝트와 기술 스택을 확인해보세요.',
   openGraph: {
-    title: '토리스 포트폴리오',
+    title: '토리스 포트폴리오 | Next.js 풀스택 개발자',
     description:
-      '웹 개발자 토리스의 포트폴리오입니다. 프로젝트, 스킬, 아카이빙을 확인해보세요.'
+      'Next.js와 React를 활용하는 프론트엔드 중심의 풀스택 개발자 토리스의 포트폴리오입니다. 모던 웹 프로젝트와 기술 스택을 확인해보세요.'
   }
 };
 

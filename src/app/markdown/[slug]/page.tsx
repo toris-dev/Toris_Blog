@@ -1,4 +1,4 @@
-import MarkdownFileViewer from '@/components/MarkdownFileViewer';
+import MarkdownFileViewer from '@/components/blog/MarkdownFileViewer';
 import { getPosts } from '@/utils/fetch';
 import { Metadata } from 'next';
 

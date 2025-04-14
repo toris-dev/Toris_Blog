@@ -4,53 +4,48 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     const cookieStore = cookies();
-    const userCookie = cookieStore.get('github_user');
-    const tokenCookie = cookieStore.get('github_token');
+    const token = cookieStore.get('github_token')?.value;
+    const userCookie = cookieStore.get('github_user')?.value;
 
-    if (!userCookie || !tokenCookie) {
-      console.log('GitHub status check: No cookies found');
+    if (!token || !userCookie) {
       return NextResponse.json({ loggedIn: false });
     }
 
+    // 사용자 정보 파싱
+    let user;
     try {
-      // 사용자 정보 파싱
-      const user = JSON.parse(userCookie.value);
-      console.log(`GitHub status check: Found user cookie for ${user.login}`);
-
-      // 토큰 유효성 체크 (간단한 GitHub API 호출)
-      const apiResponse = await fetch('https://api.github.com/user', {
-        headers: {
-          Authorization: `Bearer ${tokenCookie.value}`
-        }
-      });
-
-      if (!apiResponse.ok) {
-        console.log('GitHub status check: Invalid token');
-        // 토큰이 유효하지 않음, 쿠키 삭제
-        return NextResponse.json(
-          { loggedIn: false, error: 'Invalid token' },
-          { status: 401 }
-        );
-      }
-
-      console.log(`GitHub status check: User ${user.login} is logged in`);
-      return NextResponse.json({
-        loggedIn: true,
-        user: {
-          id: user.id,
-          login: user.login,
-          name: user.name,
-          avatar_url: user.avatar_url
-        }
-      });
-    } catch (error) {
-      console.error('Error parsing github_user cookie:', error);
-      return NextResponse.json({ loggedIn: false, error: 'Invalid user data' });
+      user = JSON.parse(userCookie);
+    } catch (e) {
+      console.error('사용자 쿠키 파싱 오류:', e);
+      return NextResponse.json({ loggedIn: false });
     }
+
+    // 토큰 유효성 검사 (선택적)
+    try {
+      const response = await fetch('https://api.github.com/user', {
+        headers: {
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'User-Agent': 'Toris-Blog'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('토큰이 유효하지 않습니다.');
+      }
+    } catch (error) {
+      console.error('GitHub 토큰 검증 오류:', error);
+      // 토큰이 유효하지 않으면 쿠키 삭제
+      cookieStore.delete('github_token');
+      cookieStore.delete('github_user');
+      return NextResponse.json({ loggedIn: false });
+    }
+
+    return NextResponse.json({ loggedIn: true, user });
   } catch (error) {
-    console.error('Error checking GitHub login status:', error);
+    console.error('GitHub 상태 확인 오류:', error);
     return NextResponse.json(
-      { loggedIn: false, error: 'Server error' },
+      { loggedIn: false, error: '상태 확인 중 오류가 발생했습니다.' },
       { status: 500 }
     );
   }

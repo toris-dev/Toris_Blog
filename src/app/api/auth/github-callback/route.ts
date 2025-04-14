@@ -1,144 +1,98 @@
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  const url = new URL(request.url);
-  const code = url.searchParams.get('code');
-  const redirect = url.searchParams.get('redirect') || '/';
-
-  console.log(`GitHub callback: Processing request from ${request.url}`);
-  console.log(
-    `GitHub callback: Received code=${code ? 'yes' : 'no'}, redirect=${redirect}`
-  );
-  console.log(
-    `GitHub callback: GITHUB_CLIENT_ID=${process.env.GITHUB_CLIENT_ID ? 'set' : 'not set'}`
-  );
-  console.log(
-    `GitHub callback: GITHUB_CLIENT_SECRET=${process.env.GITHUB_CLIENT_SECRET ? 'set' : 'not set'}`
-  );
+  // URL에서 코드와 리다이렉트 경로 추출
+  const searchParams = request.nextUrl.searchParams;
+  const code = searchParams.get('code');
+  const redirectPath = searchParams.get('redirect') || '/guestbook';
 
   if (!code) {
-    console.error('GitHub callback: No code provided');
+    // 코드가 없을 경우 오류 페이지로 리다이렉트
     return NextResponse.redirect(
-      new URL(`${redirect}?error=no_code&time=${Date.now()}`, request.url)
+      `${process.env.NEXT_PUBLIC_SITE_URL}/login?error=no_code&message=${encodeURIComponent('GitHub 인증 코드가 없습니다.')}`
     );
   }
 
   try {
-    console.log('GitHub callback: Received code, fetching token');
-
-    // GitHub에서 액세스 토큰 가져오기
-    const tokenUrl = 'https://github.com/login/oauth/access_token';
-    console.log(`GitHub callback: Requesting token from ${tokenUrl}`);
-
-    const tokenResponse = await fetch(tokenUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify({
-        client_id: process.env.GITHUB_CLIENT_ID,
-        client_secret: process.env.GITHUB_CLIENT_SECRET,
-        code
-      })
-    });
-
-    console.log(
-      `GitHub callback: Token response status: ${tokenResponse.status}`
+    // 액세스 토큰 요청
+    const tokenResponse = await fetch(
+      'https://github.com/login/oauth/access_token',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          client_id: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
+          client_secret: process.env.GITHUB_CLIENT_SECRET,
+          code
+        })
+      }
     );
-    const tokenData = await tokenResponse.json();
 
-    if (!tokenResponse.ok || tokenData.error) {
-      console.error('GitHub token error:', tokenData);
-      return NextResponse.redirect(
-        new URL(
-          `${redirect}?error=token_error&message=${encodeURIComponent(tokenData.error_description || 'Unknown error')}&time=${Date.now()}`,
-          request.url
-        )
-      );
+    if (!tokenResponse.ok) {
+      throw new Error('액세스 토큰 요청 실패');
     }
 
-    const accessToken = tokenData.access_token;
-    console.log('GitHub callback: Token received successfully');
+    const tokenData = await tokenResponse.json();
 
-    // 사용자 정보 가져오기
+    if (tokenData.error) {
+      throw new Error(tokenData.error_description || '액세스 토큰 요청 실패');
+    }
+
+    const { access_token } = tokenData;
+
+    // 사용자 정보 요청
     const userResponse = await fetch('https://api.github.com/user', {
       headers: {
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `token ${access_token}`,
+        Accept: 'application/vnd.github.v3+json',
+        'User-Agent': 'Toris-Blog'
       }
     });
 
+    if (!userResponse.ok) {
+      throw new Error('사용자 정보 요청 실패');
+    }
+
     const userData = await userResponse.json();
 
-    if (!userResponse.ok) {
-      console.error('GitHub user data error:', userData);
-      return NextResponse.redirect(
-        new URL(
-          `${redirect}?error=user_data_error&time=${Date.now()}`,
-          request.url
-        )
-      );
-    }
+    // 쿠키에 토큰 및 사용자 정보 저장
+    const cookieStore = cookies();
+    cookieStore.set('github_token', access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24 * 7, // 7일
+      path: '/'
+    });
 
-    console.log(
-      'GitHub callback: User data fetched successfully',
-      userData.login
-    );
-
-    // 세션 쿠키 설정 (자동 만료 시간 설정)
-    const expiresDate = new Date();
-    expiresDate.setHours(expiresDate.getHours() + 24); // 24시간 유효
-
-    // 실제 리다이렉트 URL 생성 (절대 URL로 변환)
-    let redirectUrl = redirect;
-    if (!redirectUrl.startsWith('http')) {
-      // 상대 URL을 절대 URL로 변환
-      redirectUrl = new URL(redirect, request.url).toString();
-    }
-
-    console.log(`GitHub callback: Will redirect to ${redirectUrl}`);
-
-    // 사용자 정보 쿠키에 저장
-    const response = NextResponse.redirect(
-      new URL(
-        `${redirectUrl}?auth_success=true&user=${encodeURIComponent(userData.login)}&time=${Date.now()}`
-      )
-    );
-
-    response.cookies.set({
-      name: 'github_user',
-      value: JSON.stringify({
+    cookieStore.set(
+      'github_user',
+      JSON.stringify({
         id: userData.id,
         login: userData.login,
-        avatar_url: userData.avatar_url,
-        name: userData.name || userData.login
+        avatar_url: userData.avatar_url
       }),
-      expires: expiresDate,
-      path: '/',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax'
-    });
+      {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 60 * 60 * 24 * 7, // 7일
+        path: '/'
+      }
+    );
 
-    response.cookies.set({
-      name: 'github_token',
-      value: accessToken,
-      expires: expiresDate,
-      path: '/',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax'
-    });
-
-    console.log('GitHub callback: Redirecting to', redirectUrl);
-    return response;
-  } catch (error) {
-    console.error('GitHub OAuth error:', error);
+    // 성공 리다이렉트
     return NextResponse.redirect(
-      new URL(
-        `${redirect}?error=server_error&message=${encodeURIComponent(error instanceof Error ? error.message : 'Unknown error')}&time=${Date.now()}`,
-        request.url
-      )
+      `${process.env.NEXT_PUBLIC_SITE_URL}${redirectPath}?auth_success=true`
+    );
+  } catch (error) {
+    console.error('GitHub 인증 오류:', error);
+
+    // 오류 리다이렉트
+    return NextResponse.redirect(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/login?error=auth_failed&message=${encodeURIComponent('GitHub 인증에 실패했습니다.')}`
     );
   }
 }

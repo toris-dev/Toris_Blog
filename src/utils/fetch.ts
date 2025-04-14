@@ -1,4 +1,4 @@
-import { MarkdownFile } from '@/types';
+import { CategoryWithCount, MarkdownFile, TagWithCount } from '@/types';
 
 // Only import fs and path in server context
 const fs = typeof window === 'undefined' ? require('fs/promises') : null;
@@ -300,5 +300,108 @@ export async function getPostId(): Promise<
   } catch (error) {
     console.error('Error getting post IDs:', error);
     return [];
+  }
+}
+
+// 카테고리 관련 함수 추가
+// 모든 카테고리와 포스트 수 가져오기
+export async function getAllCategories(): Promise<CategoryWithCount[]> {
+  try {
+    // 여기서는 모든 포스트를 가져와서 카테고리를 집계하는 방식을 사용합니다
+    const posts = await getPosts({ page: 0 });
+
+    // 카테고리별 포스트 수 집계
+    const categoryCounts: Record<string, number> = {};
+
+    posts.forEach((post) => {
+      if (post.category) {
+        categoryCounts[post.category] =
+          (categoryCounts[post.category] || 0) + 1;
+      }
+    });
+
+    // 카테고리 배열로 변환
+    const categories: CategoryWithCount[] = Object.entries(categoryCounts).map(
+      ([name, count]) => ({
+        name,
+        count
+      })
+    );
+
+    // 카테고리 이름 기준으로 정렬
+    return categories.sort((a, b) => a.name.localeCompare(b.name));
+  } catch (error) {
+    console.error('카테고리 가져오기 오류:', error);
+    return [];
+  }
+}
+
+// 특정 카테고리와 해당 카테고리의 포스트 가져오기
+export async function getCategoryWithPosts(categoryName: string) {
+  try {
+    const posts = await getPosts({ page: 0 });
+    const categoryPosts = posts.filter(
+      (post) => post.category === categoryName
+    );
+
+    return {
+      name: categoryName,
+      count: categoryPosts.length,
+      posts: categoryPosts
+    };
+  } catch (error) {
+    console.error(`${categoryName} 카테고리 가져오기 오류:`, error);
+    return { name: categoryName, count: 0, posts: [] };
+  }
+}
+
+// 태그 관련 함수 추가
+// 모든 태그와 포스트 수 가져오기
+export async function getTagsWithCount(): Promise<TagWithCount[]> {
+  try {
+    // 모든 포스트를 가져와서 태그 집계
+    const posts = await getPosts({ page: 0 });
+
+    // 태그별 포스트 수 집계
+    const tagCounts: Record<string, number> = {};
+
+    posts.forEach((post) => {
+      if (post.tags && post.tags.length > 0) {
+        post.tags.forEach((tag) => {
+          tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+        });
+      }
+    });
+
+    // 태그 배열로 변환
+    const tags: TagWithCount[] = Object.entries(tagCounts).map(
+      ([name, count]) => ({
+        name,
+        count
+      })
+    );
+
+    // 태그 이름 기준으로 정렬
+    return tags.sort((a, b) => a.name.localeCompare(b.name));
+  } catch (error) {
+    console.error('태그 가져오기 오류:', error);
+    return [];
+  }
+}
+
+// 특정 태그와 해당 태그의 포스트 가져오기
+export async function getTagWithPosts(tagName: string) {
+  try {
+    const posts = await getPosts({ page: 0 });
+    const tagPosts = posts.filter((post) => post.tags?.includes(tagName));
+
+    return {
+      name: tagName,
+      count: tagPosts.length,
+      posts: tagPosts
+    };
+  } catch (error) {
+    console.error(`${tagName} 태그 가져오기 오류:`, error);
+    return { name: tagName, count: 0, posts: [] };
   }
 }

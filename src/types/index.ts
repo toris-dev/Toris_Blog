@@ -51,5 +51,17 @@ export interface CommentType {
   like: number;
   post_id: number;
   parent_comment_id: number | null;
-  replies: CommentType[];
+  replies: CommentType[]; // Recursive for nested comments
+}
+
+// 카테고리 타입 정의
+export interface CategoryWithCount {
+  name: string;
+  count: number;
+}
+
+// 태그 타입 정의
+export interface TagWithCount {
+  name: string;
+  count: number;
 }

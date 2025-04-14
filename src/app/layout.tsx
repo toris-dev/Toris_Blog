@@ -1,7 +1,7 @@
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
-import Providers from '@/components/Providers';
-import Sidebar from '@/components/Sidebar';
+import Footer from '@/components/common/Footer';
+import Header from '@/components/common/Header';
+import Providers from '@/components/common/Providers';
+import Sidebar from '@/components/common/Sidebar';
 import ToasterContext from '@/components/context/ToasterContext';
 import '@/styles/globals.css';
 import { cn } from '@/utils/style';

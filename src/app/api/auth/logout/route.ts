@@ -3,35 +3,17 @@ import { NextResponse } from 'next/server';
 
 export async function POST() {
   try {
-    const response = NextResponse.json({ success: true });
-
-    // GitHub 관련 쿠키 삭제
     const cookieStore = cookies();
 
-    // 쿠키가 존재하는 경우에만 삭제
-    if (cookieStore.has('github_user')) {
-      response.cookies.set({
-        name: 'github_user',
-        value: '',
-        expires: new Date(0),
-        path: '/'
-      });
-    }
+    // GitHub 관련 쿠키 삭제
+    cookieStore.delete('github_token');
+    cookieStore.delete('github_user');
 
-    if (cookieStore.has('github_token')) {
-      response.cookies.set({
-        name: 'github_token',
-        value: '',
-        expires: new Date(0),
-        path: '/'
-      });
-    }
-
-    return response;
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error logging out:', error);
+    console.error('로그아웃 오류:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to logout' },
+      { success: false, message: '로그아웃 중 오류가 발생했습니다.' },
       { status: 500 }
     );
   }

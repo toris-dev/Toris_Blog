@@ -1,11 +1,18 @@
 'use client';
 
-import Button from '@/components/Button';
+import {
+  AiOutlineMail,
+  AiOutlineSend,
+  FaDiscord,
+  FaGithub,
+  FaServer,
+  FaTwitter,
+  SiNextdotjs
+} from '@/components/icons';
+import Button from '@/components/ui/Button';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
-import { AiOutlineMail, AiOutlineSend } from 'react-icons/ai';
-import { FaDiscord, FaEthereum, FaGithub, FaTwitter } from 'react-icons/fa';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -185,8 +192,9 @@ export default function ContactForm() {
                   className="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-content backdrop-blur-sm focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/50"
                 >
                   <option value="">선택하세요</option>
-                  <option value="프로젝트 문의">프로젝트 문의</option>
-                  <option value="협업 제안">협업 제안</option>
+                  <option value="프론트엔드 개발">프론트엔드 개발</option>
+                  <option value="풀스택 프로젝트">풀스택 프로젝트</option>
+                  <option value="Next.js 컨설팅">Next.js 컨설팅</option>
                   <option value="블로그 관련">블로그 관련</option>
                   <option value="기타">기타</option>
                 </select>
@@ -280,17 +288,36 @@ export default function ContactForm() {
 
           <div className="web3-card">
             <h2 className="mb-6 text-2xl font-bold">
-              <span className="gradient-text">기술</span> 프로젝트 문의
+              <span className="gradient-text">프론트엔드</span> 프로젝트 문의
             </h2>
             <div className="flex items-start">
               <div className="mr-3 flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                <FaEthereum className="size-5 text-primary" />
+                <SiNextdotjs className="size-5 text-primary" />
               </div>
               <div>
                 <p className="text-content">
-                  Next.js, Supabase, AI 도구 등을 활용한 웹 애플리케이션 개발 및
-                  프로젝트 협업 문의는 언제든지 환영합니다. 함께 혁신적인
-                  서비스를 개발해보세요.
+                  Next.js, React, TypeScript 및 최신 프론트엔드 기술을 활용한 웹
+                  애플리케이션 개발 및 프로젝트 협업 문의는 언제든지 환영합니다.
+                  사용자 경험을 중심으로 한 서비스를 함께 만들어보세요.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="web3-card">
+            <h2 className="mb-6 text-2xl font-bold">
+              <span className="gradient-text">풀스택</span> 개발 서비스
+            </h2>
+            <div className="flex items-start">
+              <div className="mr-3 flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                <FaServer className="size-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-content">
+                  프론트엔드부터 백엔드까지 풀스택 개발 서비스를 제공합니다.
+                  Supabase, MongoDB, PostgreSQL 등의 데이터베이스와 함께 확장
+                  가능한 API 설계 및 구현 경험을 바탕으로 완성도 높은 서비스를
+                  구축해 드립니다.
                 </p>
               </div>
             </div>
