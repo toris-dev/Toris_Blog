@@ -2,7 +2,6 @@
 
 import { useSidebar } from '@/components/common/Providers';
 import {
-  AiOutlineBook,
   AiOutlineClose,
   AiOutlineFire,
   AiOutlineGithub,
@@ -112,11 +111,6 @@ const Sidebar: FC = () => {
       href: '/tags',
       icon: AiOutlineTag,
       label: '태그'
-    },
-    {
-      href: '/markdown',
-      icon: AiOutlineBook,
-      label: '마크다운 문서'
     },
     {
       href: '/about',
@@ -254,7 +248,7 @@ const Sidebar: FC = () => {
         </AnimatePresence>
 
         {/* 네비게이션 메뉴 */}
-        <nav className="hide-scrollbar mb-8 flex-1 overflow-y-auto px-4">
+        <nav className="hide-scrollbar mb-8 flex-1 px-4">
           <div className="space-y-1">
             {menuItems.map((item) => (
               <Link

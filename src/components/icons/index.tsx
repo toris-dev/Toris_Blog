@@ -37,6 +37,7 @@ import { FaArrowLeft } from '@react-icons/all-files/fa/FaArrowLeft';
 import { FaArrowRight } from '@react-icons/all-files/fa/FaArrowRight';
 import { FaBlog } from '@react-icons/all-files/fa/FaBlog';
 import { FaCalendarAlt } from '@react-icons/all-files/fa/FaCalendarAlt';
+import { FaChevronRight } from '@react-icons/all-files/fa/FaChevronRight';
 import { FaCloudUploadAlt } from '@react-icons/all-files/fa/FaCloudUploadAlt';
 import { FaCode } from '@react-icons/all-files/fa/FaCode';
 import { FaCodeBranch } from '@react-icons/all-files/fa/FaCodeBranch';
@@ -49,6 +50,7 @@ import { FaFolderOpen } from '@react-icons/all-files/fa/FaFolderOpen';
 import { FaGithub } from '@react-icons/all-files/fa/FaGithub';
 import { FaImage } from '@react-icons/all-files/fa/FaImage';
 import { FaLaptopCode } from '@react-icons/all-files/fa/FaLaptopCode';
+import { FaListAlt } from '@react-icons/all-files/fa/FaListAlt';
 import { FaMarkdown } from '@react-icons/all-files/fa/FaMarkdown';
 import { FaNodeJs } from '@react-icons/all-files/fa/FaNodeJs';
 import { FaPaperPlane } from '@react-icons/all-files/fa/FaPaperPlane';
@@ -57,6 +59,7 @@ import { FaReact } from '@react-icons/all-files/fa/FaReact';
 import { FaSave } from '@react-icons/all-files/fa/FaSave';
 import { FaSearch } from '@react-icons/all-files/fa/FaSearch';
 import { FaServer } from '@react-icons/all-files/fa/FaServer';
+import { FaSignInAlt } from '@react-icons/all-files/fa/FaSignInAlt';
 import { FaSignOutAlt } from '@react-icons/all-files/fa/FaSignOutAlt';
 import { FaTag } from '@react-icons/all-files/fa/FaTag';
 import { FaTags } from '@react-icons/all-files/fa/FaTags';
@@ -64,6 +67,7 @@ import { FaTimes } from '@react-icons/all-files/fa/FaTimes';
 import { FaTimesCircle } from '@react-icons/all-files/fa/FaTimesCircle';
 import { FaTools } from '@react-icons/all-files/fa/FaTools';
 import { FaTwitter } from '@react-icons/all-files/fa/FaTwitter';
+import { FaUserCircle } from '@react-icons/all-files/fa/FaUserCircle';
 
 //  FaCloudUploadAlt, FaImage, FaTimesCircle
 
@@ -116,6 +120,7 @@ export {
   FaArrowRight,
   FaBlog,
   FaCalendarAlt,
+  FaChevronRight,
   FaCloudUploadAlt,
   FaCode,
   FaCodeBranch,
@@ -128,6 +133,7 @@ export {
   FaGithub,
   FaImage,
   FaLaptopCode,
+  FaListAlt,
   FaMarkdown,
   FaNodeJs,
   FaPaperPlane,
@@ -136,6 +142,7 @@ export {
   FaSave,
   FaSearch,
   FaServer,
+  FaSignInAlt,
   FaSignOutAlt,
   FaTag,
   FaTags,
@@ -143,6 +150,7 @@ export {
   FaTimesCircle,
   FaTools,
   FaTwitter,
+  FaUserCircle,
 
   // hi 아이콘들
   HiBadgeCheck,

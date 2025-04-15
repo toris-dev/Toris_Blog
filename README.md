@@ -105,7 +105,6 @@ graph LR
 
 ---
 
-
 ### 성능 최적화
 
 **트러블슈팅**
@@ -159,3 +158,5 @@ yarn install
 
 yarn dev
 ```
+
+![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=yourusername.yourusername)

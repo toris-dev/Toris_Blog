@@ -1,12 +1,13 @@
 'use client';
 
-import Button from '@/components/Button';
-import Input from '@/components/Input';
-import { MarkdownEditor } from '@/components/Markdown';
+import { useAuth } from '@/hooks/useAuth';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, KeyboardEvent, useRef, useState } from 'react';
 import { FileDrop } from 'react-file-drop';
+import Button from '../ui/Button';
+import Input from '../ui/Input';
+import { MarkdownEditor } from './Markdown';
 
 export default function WritePage() {
   const titleRef = useRef<HTMLInputElement>(null);
@@ -14,40 +15,14 @@ export default function WritePage() {
   const tagsRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [boardColor, setBoardColor] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [issueUrl, setIssueUrl] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
-
   const [content, setContent] = useState('');
+
   const router = useRouter();
-
-  // Check authentication
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch('/api/check-auth');
-        const data = await response.json();
-        setIsAuthenticated(data.authenticated);
-      } catch (error) {
-        console.error('Failed to check authentication:', error);
-        setIsAuthenticated(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
-
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!loading && !isAuthenticated) {
-      router.push('/login');
-    }
-  }, [loading, isAuthenticated, router]);
+  const { isAuthenticated, loading } = useAuth();
 
   // 태그 입력 처리
   const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,11 +112,18 @@ export default function WritePage() {
   };
 
   if (loading) {
-    return <div className="container p-4">로딩 중...</div>;
+    return (
+      <div className="container flex items-center justify-center p-4">
+        <div className="flex flex-col items-center">
+          <div className="size-10 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">로딩 중...</p>
+        </div>
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
-    return null; // Will redirect to login page
+    return null; // useAuth 훅에서 자동으로 로그인 페이지로 리다이렉트
   }
 
   return (

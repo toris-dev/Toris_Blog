@@ -1,3 +1,5 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { getServerSession } from 'next-auth';
 import { cookies } from 'next/headers';
 
 interface GithubUser {
@@ -7,28 +9,21 @@ interface GithubUser {
   name: string;
 }
 
-// 관리자 인증 확인 (서버 사이드)
-export function isAuthenticated(): boolean {
-  const cookieStore = cookies();
-
-  // 기본 인증 확인
-  const isAuthed = cookieStore.get('authed')?.value === 'true';
-
-  // 관리자 토큰 확인 (추가 보안)
-  const adminToken = cookieStore.get('admin_token');
-  const isTokenValid =
-    !!adminToken &&
-    (process.env.ADMIN_TOKEN
-      ? adminToken.value === process.env.ADMIN_TOKEN
-      : adminToken.value === 'admin_secret_token');
-
-  // GitHub 사용자 확인 (toris-dev만 허용)
-  const githubUser = getGithubUser();
-  const isValidGithubUser = !!githubUser && githubUser.login === 'toris-dev';
-
-  // 모든 조건이 만족되어야 함
-  return !!isAuthed && isTokenValid && isValidGithubUser;
+// Next-Auth 서버 세션 가져오기
+export async function getServerAuthSession() {
+  return await getServerSession(authOptions);
 }
+
+// 관리자 인증 확인 (서버 사이드)
+export async function isAuthenticated(): Promise<boolean> {
+  const session = await getServerAuthSession();
+
+  // 세션이 있고, 사용자가 toris-dev인 경우에만 인증됨
+  return !!session && session.user?.login === 'toris-dev';
+}
+
+// 기존 쿠키 기반 인증 함수들은 하위 호환성을 위해 유지
+// 추후 제거할 예정
 
 export function getGithubUser(): GithubUser | null {
   try {

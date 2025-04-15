@@ -69,6 +69,11 @@ const nextConfig = {
         hostname: 'avatars.githubusercontent.com',
         port: '',
         pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'komarev.com',
+        pathname: '/**'
       }
     ],
     // domains 속성 제거 (remotePatterns으로 대체)

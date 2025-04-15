@@ -2,6 +2,7 @@
 
 import ToasterContext from '@/components/context/ToasterContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { SessionProvider } from 'next-auth/react';
 import {
   Dispatch,
   SetStateAction,
@@ -27,12 +28,14 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   const sidebarContextValue = useMemo(() => ({ isOpen, setIsOpen }), [isOpen]);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ToasterContext />
-      <SidebarContext.Provider value={sidebarContextValue}>
-        {children}
-      </SidebarContext.Provider>
-    </QueryClientProvider>
+    <SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        <ToasterContext />
+        <SidebarContext.Provider value={sidebarContextValue}>
+          {children}
+        </SidebarContext.Provider>
+      </QueryClientProvider>
+    </SessionProvider>
   );
 };
 

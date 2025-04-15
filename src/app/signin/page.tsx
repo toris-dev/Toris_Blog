@@ -1,79 +1,36 @@
 'use client';
 
+import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/utils/style';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function LoginPage() {
+export default function SigninPage() {
+  const { isAuthenticated, loading, error: authError, signin } = useAuth();
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [authStatus, setAuthStatus] = useState<
-    'checking' | 'authenticated' | 'unauthenticated'
-  >('checking');
-  const router = useRouter();
 
-  // 로그인 상태 확인
+  // URL에서 에러 파라미터 확인
   useEffect(() => {
-    async function checkAuthStatus() {
-      try {
-        setLoading(true);
-        const response = await fetch('/api/auth/github-status');
-        const data = await response.json();
-
-        if (data.loggedIn && data.user) {
-          // toris-dev 계정만 허용
-          if (data.user.login === 'toris-dev') {
-            setAuthStatus('authenticated');
-            // 이미 로그인되어 있으면 대시보드로 리다이렉트
-            router.push('/dashboard');
-          } else {
-            // 권한 없는 GitHub 계정
-            await fetch('/api/auth/logout', { method: 'POST' });
-            setError(
-              '관리자 권한이 없는 GitHub 계정입니다. toris-dev 계정으로 로그인해주세요.'
-            );
-            setAuthStatus('unauthenticated');
-          }
-        } else {
-          setAuthStatus('unauthenticated');
-        }
-      } catch (err) {
-        console.error('로그인 상태 확인 실패:', err);
-        setAuthStatus('unauthenticated');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    // URL에 auth_success 파라미터가 있으면 확인
     const urlParams = new URLSearchParams(window.location.search);
-    const authSuccess = urlParams.get('auth_success');
-    const authError = urlParams.get('error');
+    const errorParam = urlParams.get('error');
     const errorMsg = urlParams.get('message');
 
-    if (authError) {
+    if (errorParam) {
       setError(
-        `로그인 중 오류가 발생했습니다: ${decodeURIComponent(errorMsg || authError)}`
+        `로그인 중 오류가 발생했습니다: ${decodeURIComponent(errorMsg || errorParam)}`
       );
       // URL 정리
       window.history.replaceState({}, document.title, window.location.pathname);
-    } else if (authSuccess) {
-      // URL 정리하고 상태 재확인
-      window.history.replaceState({}, document.title, window.location.pathname);
     }
 
-    checkAuthStatus();
-  }, [router]);
+    // 인증 훅에서 발생한 에러가 있으면 표시
+    if (authError) {
+      setError(authError);
+    }
+  }, [authError]);
 
   // GitHub 로그인 처리
-  const handleGitHubLogin = () => {
-    setLoading(true);
-
-    // 현재 URL을 리다이렉트 URL로 설정
-    const redirectUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/github-callback?redirect=${encodeURIComponent('/login')}`;
-
-    // GitHub OAuth 로그인 URL로 리다이렉트
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}`;
+  const handleGitHubSignin = () => {
+    signin();
   };
 
   return (
@@ -89,17 +46,20 @@ export default function LoginPage() {
           </div>
         )}
 
-        {authStatus === 'checking' ? (
-          <div className="flex justify-center p-4">
+        {loading ? (
+          <div className="flex flex-col items-center justify-center p-4">
             <div className="size-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent dark:border-blue-400"></div>
+            <p className="mt-2 text-gray-600 dark:text-gray-300">
+              로그인 상태 확인 중...
+            </p>
           </div>
-        ) : authStatus === 'authenticated' ? (
+        ) : isAuthenticated ? (
           <div className="mb-4 rounded-md bg-green-50 p-4 text-center dark:bg-green-900/20">
             <p className="font-medium text-green-800 dark:text-green-200">
               이미 로그인되어 있습니다.
             </p>
             <p className="mt-2 text-green-700 dark:text-green-300">
-              잠시 후 대시보드로 이동합니다...
+              잠시 후 홈 페이지로 이동합니다...
             </p>
           </div>
         ) : (
@@ -114,7 +74,7 @@ export default function LoginPage() {
             </p>
 
             <button
-              onClick={handleGitHubLogin}
+              onClick={handleGitHubSignin}
               disabled={loading}
               className={cn(
                 'flex w-full items-center justify-center gap-2 rounded-md p-2 text-white',

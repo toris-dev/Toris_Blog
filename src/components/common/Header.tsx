@@ -10,8 +10,10 @@ import {
   BsSunFill,
   FaEthereum,
   FaSearch,
+  FaSignInAlt,
   SiNextjs
 } from '@/components/icons';
+import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/utils/style';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -20,6 +22,7 @@ import IconButton from '../ui/IconButton';
 
 const Header: FC = () => {
   const { isOpen, setIsOpen } = useSidebar();
+  const { isAuthenticated, loading, signout } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [navVisible, setNavVisible] = useState(true);
@@ -84,6 +87,11 @@ const Header: FC = () => {
     setDarkMode(!darkMode);
     document.documentElement.classList.toggle('dark');
     localStorage.setItem('darkMode', (!darkMode).toString());
+  };
+
+  // 로그아웃 처리 함수
+  const handleSignout = () => {
+    signout();
   };
 
   return (
@@ -180,23 +188,50 @@ const Header: FC = () => {
               aria-label="검색"
             />
 
-            <IconButton
-              Icon={BsGrid}
-              component={Link}
-              href="/admin"
-              className="text-content hover:text-primary"
-              label="관리자"
-              id="adminButton"
-              aria-label="관리자"
-            />
+            {loading ? (
+              <div className="flex size-10 items-center justify-center">
+                <div className="size-5 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+              </div>
+            ) : isAuthenticated ? (
+              <>
+                <IconButton
+                  Icon={BsGrid}
+                  component={Link}
+                  href="/dashboard"
+                  className="text-content hover:text-primary"
+                  label="대시보드"
+                  id="dashboardButton"
+                  aria-label="대시보드"
+                />
 
-            <Link
-              href="/write"
-              className="web3-button group ml-2 hidden items-center rounded-lg bg-gradient-to-r from-primary to-accent-1 px-4 py-2 text-white shadow-md transition-all hover:scale-105 hover:shadow-lg lg:flex"
-            >
-              <BsPencilSquare className="mr-2 size-4 group-hover:animate-pulse" />
-              <span>글쓰기</span>
-            </Link>
+                <IconButton
+                  Icon={FaSignInAlt}
+                  onClick={handleSignout}
+                  className="text-content hover:text-primary"
+                  label="로그아웃"
+                  id="signoutButton"
+                  aria-label="로그아웃"
+                />
+
+                <Link
+                  href="/write"
+                  className="web3-button group ml-2 hidden items-center rounded-lg bg-gradient-to-r from-primary to-accent-1 px-4 py-2 text-white shadow-md transition-all hover:scale-105 hover:shadow-lg lg:flex"
+                >
+                  <BsPencilSquare className="mr-2 size-4 group-hover:animate-pulse" />
+                  <span>글쓰기</span>
+                </Link>
+              </>
+            ) : (
+              <IconButton
+                Icon={FaSignInAlt}
+                component={Link}
+                href="/signin"
+                className="text-content hover:text-primary"
+                label="로그인"
+                id="signinButton"
+                aria-label="로그인"
+              />
+            )}
           </div>
         </div>
       </header>
@@ -213,22 +248,46 @@ const Header: FC = () => {
             { href: '/', Icon: FaEthereum, label: '홈' },
             { href: '/posts', Icon: BsGrid, label: '블로그' },
             { href: '/search', Icon: FaSearch, label: '검색' },
-            { href: '/write', Icon: BsPencilSquare, label: '글쓰기' }
-          ].map(({ href, Icon, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className={cn(
-                'flex flex-col items-center justify-center text-xs',
-                pathname === href
-                  ? 'text-primary'
-                  : 'text-content/70 hover:text-primary'
-              )}
-            >
-              <Icon className="mb-1 size-5" />
-              <span>{label}</span>
-            </Link>
-          ))}
+            ...(isAuthenticated
+              ? [
+                  { href: '/write', Icon: BsPencilSquare, label: '글쓰기' },
+                  {
+                    href: '#',
+                    Icon: FaSignInAlt,
+                    label: '로그아웃',
+                    onClick: handleSignout
+                  }
+                ]
+              : [{ href: '/signin', Icon: FaSignInAlt, label: '로그인' }])
+          ].map(({ href, Icon, label, onClick }) =>
+            onClick ? (
+              <button
+                key={label}
+                onClick={onClick}
+                className={cn(
+                  'flex flex-col items-center justify-center text-xs',
+                  'text-content/70 hover:text-primary'
+                )}
+              >
+                <Icon className="mb-1 size-5" />
+                <span>{label}</span>
+              </button>
+            ) : (
+              <Link
+                key={href}
+                href={href}
+                className={cn(
+                  'flex flex-col items-center justify-center text-xs',
+                  pathname === href
+                    ? 'text-primary'
+                    : 'text-content/70 hover:text-primary'
+                )}
+              >
+                <Icon className="mb-1 size-5" />
+                <span>{label}</span>
+              </Link>
+            )
+          )}
         </div>
       </div>
     </>
