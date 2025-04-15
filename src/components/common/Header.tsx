@@ -5,9 +5,7 @@ import {
   AiOutlineClose,
   AiOutlineMenu,
   BsGrid,
-  BsMoonStarsFill,
   BsPencilSquare,
-  BsSunFill,
   FaEthereum,
   FaSearch,
   FaSignInAlt,
@@ -171,12 +169,12 @@ const Header: FC = () => {
           </nav>
 
           <div className="flex items-center gap-2">
-            <IconButton
+            {/* <IconButton
               Icon={darkMode ? BsSunFill : BsMoonStarsFill}
               onClick={toggleDarkMode}
               label="테마 변경"
               className="text-content hover:text-primary"
-            />
+            /> */}
 
             <IconButton
               Icon={FaSearch}

@@ -113,8 +113,8 @@ export default function TermsPage() {
               <ol className="ml-5 list-decimal space-y-2">
                 <li>
                   <strong>사전 허가 요청:</strong> 블로그 운영자에게 이메일
-                  (toris.devblog@gmail.com)로 사용 목적과 범위를 상세히 기술한
-                  허가 요청을 보내야 합니다.
+                  (ironjustlikethat@gmail.com)로 사용 목적과 범위를 상세히
+                  기술한 허가 요청을 보내야 합니다.
                 </li>
                 <li>
                   <strong>서면 동의:</strong> 블로그 운영자로부터 서면 동의를
@@ -171,10 +171,10 @@ export default function TermsPage() {
               <p className="rounded-md bg-primary/5 p-4 dark:bg-primary/10">
                 <strong>이메일:</strong>{' '}
                 <a
-                  href="mailto:toris.devblog@gmail.com"
+                  href="mailto:ironjustlikethat@gmail.com"
                   className="text-primary underline"
                 >
-                  toris.devblog@gmail.com
+                  ironjustlikethat@gmail.com
                 </a>
               </p>
               <p>
