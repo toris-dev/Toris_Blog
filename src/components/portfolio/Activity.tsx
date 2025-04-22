@@ -118,7 +118,7 @@ const Activity = () => {
   return (
     <motion.article
       id="activity"
-      className="flex w-full justify-center py-10"
+      className="flex w-full justify-center py-16"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}

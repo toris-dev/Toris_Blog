@@ -50,6 +50,8 @@ export default function WritePage() {
   const [saveError, setSaveError] = useState('');
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
+  const [issueUrl, setIssueUrl] = useState<string | null>(null);
+  const [issueNumber, setIssueNumber] = useState<number | null>(null);
 
   // 입력 핸들러
   const handleInputChange = useCallback(
@@ -84,17 +86,62 @@ export default function WritePage() {
     try {
       setIsSaving(true);
       setSaveError('');
+      setIssueUrl(null);
+      setIssueNumber(null);
 
-      // 여기에 실제 저장 로직 구현 (API 호출 등)
-      // 실제 저장 기능은 별도로 구현 필요
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 저장 시뮬레이션
+      // API 호출을 위한 FormData 생성
+      const formData = new FormData();
+      formData.append('title', postData.title);
+      formData.append('content', postData.content);
+      formData.append('category', postData.category || 'Uncategorized');
+      formData.append('tags', postData.tags);
+
+      if (postData.featuredImage) {
+        formData.append('featuredImage', postData.featuredImage);
+      }
+
+      // API 호출
+      const response = await fetch('/api/markdown', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || '포스트 저장에 실패했습니다');
+      }
+
+      const data = await response.json();
+      console.log('저장 성공:', data);
+
+      // 이슈 URL과 번호 저장 (GitHub 이슈가 생성된 경우)
+      if (data.issueUrl) {
+        setIssueUrl(data.issueUrl);
+
+        // GitHub 이슈 URL에서 이슈 번호 추출
+        const issueMatch = data.issueUrl.match(/\/issues\/(\d+)$/);
+        if (issueMatch && issueMatch[1]) {
+          const extractedIssueNumber = parseInt(issueMatch[1], 10);
+          setIssueNumber(extractedIssueNumber);
+        }
+      }
 
       // 성공 시
       setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
+
+      // 저장 성공 후 폼을 초기화할지 여부 (선택적)
+      if (data.slug) {
+        setTimeout(() => {
+          window.location.href = `/posts/${data.slug}${issueNumber ? `?issueNumber=${issueNumber}` : ''}`;
+        }, 3000);
+      }
     } catch (error) {
       console.error('포스트 저장 오류:', error);
-      setSaveError('포스트 저장 중 오류가 발생했습니다');
+      setSaveError(
+        error instanceof Error
+          ? error.message
+          : '포스트 저장 중 오류가 발생했습니다'
+      );
     } finally {
       setIsSaving(false);
     }
@@ -304,13 +351,30 @@ export default function WritePage() {
               </motion.p>
             )}
             {saveSuccess && (
-              <motion.p
+              <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="text-sm text-green-500"
+                className="rounded-md bg-green-50 p-3 text-sm text-green-600 dark:bg-green-900/20 dark:text-green-300"
               >
-                포스트가 저장되었습니다!
-              </motion.p>
+                <p>✅ 포스트가 성공적으로 저장되었습니다!</p>
+                {issueUrl && (
+                  <div className="mt-2">
+                    <p>
+                      GitHub 이슈가 생성되었습니다
+                      {issueNumber && ` (이슈 번호: #${issueNumber})`}
+                    </p>
+                    <a
+                      href={issueUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1 inline-block font-medium text-green-700 underline hover:text-green-800 dark:text-green-400 dark:hover:text-green-300"
+                    >
+                      GitHub 이슈 보기 →
+                    </a>
+                  </div>
+                )}
+                <p className="mt-2">잠시 후 포스트 페이지로 이동합니다...</p>
+              </motion.div>
             )}
           </div>
           <div className="flex space-x-3">

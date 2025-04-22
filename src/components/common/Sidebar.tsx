@@ -16,7 +16,7 @@ import {
   HiBadgeCheck,
   RiUserFollowLine
 } from '@/components/icons';
-import { useCategories } from '@/utils/hooks';
+import { useCategories, useCategoryPostCounts } from '@/utils/hooks';
 import { cn } from '@/utils/style';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
@@ -36,6 +36,7 @@ interface NavItemProps {
 const Sidebar: FC = () => {
   const { isOpen, setIsOpen } = useSidebar();
   const { data: existingCategories = [] } = useCategories();
+  const { data: categoryPostCounts = {} } = useCategoryPostCounts();
   const pathname = usePathname();
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -153,7 +154,7 @@ const Sidebar: FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-black/60 lg:hidden"
+            className="fixed inset-0 z-40 bg-white/80 backdrop-blur-sm dark:bg-black/60 lg:hidden"
             onClick={() => setIsOpen(false)}
           />
         )}
@@ -165,7 +166,7 @@ const Sidebar: FC = () => {
         initial="closed"
         animate={isOpen || isLargeScreen ? 'open' : 'closed'}
         className={cn(
-          'fixed left-0 top-0 z-50 flex h-full w-[280px] flex-col overflow-hidden border-r border-white/10 pt-20 backdrop-blur-xl transition-all duration-300',
+          'fixed left-0 top-0 z-50 flex h-full w-[280px] flex-col overflow-y-auto border-r border-white/10 pt-20 backdrop-blur-xl transition-all duration-300',
           'bg-card/30 dark:bg-bkg-light/30',
           isCollapsed ? 'lg:w-20' : ''
         )}
@@ -271,45 +272,51 @@ const Sidebar: FC = () => {
           </div>
 
           {/* 카테고리 섹션 */}
-          {existingCategories.length > 0 && !isCollapsed && (
+          {!isCollapsed && (
             <div className="mt-8">
               <h4 className="mb-3 flex items-center px-4 text-xs font-semibold uppercase tracking-wider text-content-dark">
                 <BiCategory className="mr-2 size-4" />
-                카테고리
+                카테고리 {existingCategories.length === 0 && '(로딩 중...)'}
               </h4>
 
-              <div className="space-y-1">
-                {existingCategories.map((category) => (
-                  <Link
-                    key={category}
-                    href={`/categories/${category}`}
-                    onClick={() => setIsOpen(false)}
-                    className={cn(
-                      'group flex items-center justify-between rounded-lg px-4 py-2 font-medium transition-all',
-                      pathname === `/categories/${category}`
-                        ? 'bg-primary/10 text-primary'
-                        : 'text-content hover:bg-white/5 hover:text-primary'
-                    )}
-                    onMouseEnter={() => setHoveredCategory(category)}
-                    onMouseLeave={() => setHoveredCategory(null)}
-                  >
-                    <span>{category}</span>
-                    <span
+              {existingCategories.length > 0 ? (
+                <div className="space-y-1">
+                  {existingCategories.map((category) => (
+                    <Link
+                      key={category}
+                      href={`/categories/${category}`}
+                      onClick={() => setIsOpen(false)}
                       className={cn(
-                        'rounded-full text-xs transition-all',
-                        pathname === `/categories/${category}` ||
-                          hoveredCategory === category
-                          ? 'bg-primary/20 text-primary'
-                          : 'bg-bkg text-content-dark'
+                        'group flex items-center justify-between rounded-lg px-4 py-2 font-medium transition-all',
+                        pathname === `/categories/${category}`
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-content hover:bg-white/5 hover:text-primary'
                       )}
+                      onMouseEnter={() => setHoveredCategory(category)}
+                      onMouseLeave={() => setHoveredCategory(null)}
                     >
-                      <span className="flex h-5 min-w-5 items-center justify-center px-1">
-                        {Math.floor(Math.random() * 10) + 1}
+                      <span>{category}</span>
+                      <span
+                        className={cn(
+                          'rounded-full text-xs transition-all',
+                          pathname === `/categories/${category}` ||
+                            hoveredCategory === category
+                            ? 'bg-primary/20 text-primary'
+                            : 'bg-bkg text-content-dark'
+                        )}
+                      >
+                        <span className="flex h-5 min-w-5 items-center justify-center px-1">
+                          {categoryPostCounts[category] || 0}
+                        </span>
                       </span>
-                    </span>
-                  </Link>
-                ))}
-              </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <div className="px-4 py-2 text-sm text-content-dark">
+                  카테고리를 불러오는 중입니다...
+                </div>
+              )}
             </div>
           )}
         </nav>

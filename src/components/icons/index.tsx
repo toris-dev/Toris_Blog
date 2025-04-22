@@ -43,6 +43,7 @@ import { FaCode } from '@react-icons/all-files/fa/FaCode';
 import { FaCodeBranch } from '@react-icons/all-files/fa/FaCodeBranch';
 import { FaDatabase } from '@react-icons/all-files/fa/FaDatabase';
 import { FaDiscord } from '@react-icons/all-files/fa/FaDiscord';
+import { FaEdit } from '@react-icons/all-files/fa/FaEdit';
 import { FaEthereum } from '@react-icons/all-files/fa/FaEthereum';
 import { FaEye } from '@react-icons/all-files/fa/FaEye';
 import { FaFolder } from '@react-icons/all-files/fa/FaFolder';
@@ -66,6 +67,7 @@ import { FaTags } from '@react-icons/all-files/fa/FaTags';
 import { FaTimes } from '@react-icons/all-files/fa/FaTimes';
 import { FaTimesCircle } from '@react-icons/all-files/fa/FaTimesCircle';
 import { FaTools } from '@react-icons/all-files/fa/FaTools';
+import { FaTrash } from '@react-icons/all-files/fa/FaTrash';
 import { FaTwitter } from '@react-icons/all-files/fa/FaTwitter';
 import { FaUserCircle } from '@react-icons/all-files/fa/FaUserCircle';
 
@@ -126,6 +128,7 @@ export {
   FaCodeBranch,
   FaDatabase,
   FaDiscord,
+  FaEdit,
   FaEthereum,
   FaEye,
   FaFolder,
@@ -149,6 +152,7 @@ export {
   FaTimes,
   FaTimesCircle,
   FaTools,
+  FaTrash,
   FaTwitter,
   FaUserCircle,
 

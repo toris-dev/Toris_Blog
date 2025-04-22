@@ -5,7 +5,9 @@ import {
   AiOutlineClose,
   AiOutlineMenu,
   BsGrid,
+  BsMoonStarsFill,
   BsPencilSquare,
+  BsSunFill,
   FaEthereum,
   FaSearch,
   FaSignInAlt,
@@ -71,11 +73,8 @@ const Header: FC = () => {
 
   // Toggle dark mode
   useEffect(() => {
-    // Check if user prefers dark mode
-    const isDarkMode =
-      localStorage.getItem('darkMode') === 'true' ||
-      (!('darkMode' in localStorage) &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches);
+    // 기본적으로 다크모드로 설정하고, localStorage에 'false'가 명시적으로 저장된 경우에만 라이트모드 사용
+    const isDarkMode = localStorage.getItem('darkMode') !== 'false';
 
     setDarkMode(isDarkMode);
     document.documentElement.classList.toggle('dark', isDarkMode);
@@ -169,12 +168,13 @@ const Header: FC = () => {
           </nav>
 
           <div className="flex items-center gap-2">
-            {/* <IconButton
+            <IconButton
               Icon={darkMode ? BsSunFill : BsMoonStarsFill}
               onClick={toggleDarkMode}
               label="테마 변경"
               className="text-content hover:text-primary"
-            /> */}
+              data-cy="darkModeToggle"
+            />
 
             <IconButton
               Icon={FaSearch}

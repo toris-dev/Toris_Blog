@@ -17,6 +17,7 @@ export default function WritePage() {
   const [boardColor, setBoardColor] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [issueUrl, setIssueUrl] = useState<string | null>(null);
+  const [issueNumber, setIssueNumber] = useState<number | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
   const [content, setContent] = useState('');
@@ -71,6 +72,7 @@ export default function WritePage() {
 
     setSubmitting(true);
     setIssueUrl(null);
+    setIssueNumber(null);
 
     // Save as markdown file
     const formData = new FormData();
@@ -92,16 +94,44 @@ export default function WritePage() {
 
       const data = await response.json();
 
-      // 이슈 URL 저장
+      // 이슈 URL과 번호 저장
       if (data.issueUrl) {
         setIssueUrl(data.issueUrl);
+
+        // GitHub 이슈 URL에서 이슈 번호 추출
+        const issueMatch = data.issueUrl.match(/\/issues\/(\d+)$/);
+        if (issueMatch && issueMatch[1]) {
+          const extractedIssueNumber = parseInt(issueMatch[1], 10);
+          setIssueNumber(extractedIssueNumber);
+
+          // 서버에 이슈 번호 연결 요청 보내기 (선택적)
+          try {
+            await fetch('/api/linkIssue', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                slug: data.slug,
+                issueNumber: extractedIssueNumber
+              })
+            });
+          } catch (linkError) {
+            console.error('이슈 번호 연결 실패:', linkError);
+            // 실패해도 계속 진행
+          }
+        }
       }
 
       alert('마크다운 파일이 성공적으로 저장되었습니다.');
 
       // 3초 후에 새 글 페이지로 이동
       setTimeout(() => {
-        router.push(`/markdown/${data.slug}`);
+        // 이슈 번호가 있으면 쿼리 파라미터로 포함시켜 전달
+        const url = issueNumber
+          ? `/markdown/${data.slug}?issueNumber=${issueNumber}`
+          : `/markdown/${data.slug}`;
+        router.push(url);
       }, 3000);
     } catch (error) {
       console.error('Error saving markdown:', error);
@@ -234,6 +264,7 @@ export default function WritePage() {
             <div className="mt-2 rounded-md bg-green-50 p-4 text-green-700">
               <p className="mb-2">
                 ✅ 글이 성공적으로 저장되었으며 GitHub 이슈가 생성되었습니다.
+                {issueNumber && ` (이슈 번호: #${issueNumber})`}
               </p>
               <p>
                 <a

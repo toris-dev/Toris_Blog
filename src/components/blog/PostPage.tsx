@@ -1,11 +1,8 @@
 'use client';
 
 import { Markdown } from '@/components/blog/Markdown';
-import Comment from '@/components/comments/Comment';
 import CommentInput from '@/components/comments/CommentInput';
-import { useComments } from '@/components/context/CommentContext';
 import { FaCalendarAlt, FaFolder, FaTags } from '@/components/icons';
-import { CommentType } from '@/types';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { FC } from 'react';
@@ -28,8 +25,6 @@ const PostPage: FC<{
   image,
   postId
 }) => {
-  const { organizedComments } = useComments();
-
   const formattedDate = dayjs(new Date(date || '')).format(
     'YY년 MM월 DD일 HH:mm'
   );
@@ -68,14 +63,11 @@ const PostPage: FC<{
         <Markdown>{content}</Markdown>
       </div>
 
-      <hr />
-      {organizedComments.map((comment: CommentType) => (
-        <Comment key={comment.id} {...comment} />
-      ))}
-      <div className="flex flex-col items-center">
-        <CommentInput
-          postId={typeof postId === 'string' ? parseInt(postId, 10) : postId}
-        />
+      <hr className="my-8" />
+
+      {/* GitHub 댓글 시스템 */}
+      <div className="mt-8">
+        <CommentInput postId={postId} />
       </div>
     </article>
   );

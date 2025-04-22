@@ -11,21 +11,15 @@ export default function TermsPage() {
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-3xl">
         <div className="mb-12 text-center">
-          <h1 className="text-4xl font-bold text-content dark:text-content-dark">
-            이용약관
-          </h1>
-          <p className="mt-4 text-content/70 dark:text-content-dark/70">
-            최종 업데이트: 2025년 4월 15일
-          </p>
+          <h1 className="text-4xl font-bold text-content">이용약관</h1>
+          <p className="mt-4 text-content/70">최종 업데이트: 2025년 4월 15일</p>
         </div>
 
         <div className="space-y-8">
           {/* 서문 */}
           <section className="rounded-lg bg-white p-6 shadow-sm dark:bg-bkg-dark">
-            <h2 className="mb-4 text-xl font-semibold text-content dark:text-content-dark">
-              1. 서문
-            </h2>
-            <div className="space-y-3 text-content/80 dark:text-content-dark/90">
+            <h2 className="mb-4 text-xl font-semibold text-content">1. 서문</h2>
+            <div className="space-y-3 text-content/80">
               <p>
                 Toris Dev Blog(이하 &quot;블로그&quot;)는 개발 지식과 경험을
                 공유하기 위한 목적으로 운영되고 있습니다. 본 블로그를 방문하거나
@@ -44,10 +38,10 @@ export default function TermsPage() {
 
           {/* 저작권 */}
           <section className="rounded-lg bg-white p-6 shadow-sm dark:bg-bkg-dark">
-            <h2 className="mb-4 text-xl font-semibold text-content dark:text-content-dark">
+            <h2 className="mb-4 text-xl font-semibold text-content">
               2. 저작권 및 소유권
             </h2>
-            <div className="space-y-3 text-content/80 dark:text-content-dark/90">
+            <div className="space-y-3 text-content/80">
               <p>
                 본 블로그에 게시된 모든 콘텐츠(텍스트, 이미지, 코드, 디자인 요소
                 등)는 Toris Dev Blog와 그 제작자의 지적 재산이며 저작권법에 의해
@@ -67,10 +61,10 @@ export default function TermsPage() {
 
           {/* 콘텐츠 이용 */}
           <section className="rounded-lg bg-white p-6 shadow-sm dark:bg-bkg-dark">
-            <h2 className="mb-4 text-xl font-semibold text-content dark:text-content-dark">
+            <h2 className="mb-4 text-xl font-semibold text-content">
               3. 콘텐츠 이용 조건
             </h2>
-            <div className="space-y-3 text-content/80 dark:text-content-dark/90">
+            <div className="space-y-3 text-content/80">
               <p>
                 <strong>개인적인 학습 및 참고:</strong> 블로그 콘텐츠를 개인적인
                 학습이나 참고 목적으로 읽고 활용하는 것은 자유롭게 허용됩니다.
@@ -102,10 +96,10 @@ export default function TermsPage() {
 
           {/* 블로그 포크 및 재사용 */}
           <section className="rounded-lg bg-white p-6 shadow-sm dark:bg-bkg-dark">
-            <h2 className="mb-4 text-xl font-semibold text-content dark:text-content-dark">
+            <h2 className="mb-4 text-xl font-semibold text-content">
               4. 블로그 포크 및 재사용 조건
             </h2>
-            <div className="space-y-3 text-content/80 dark:text-content-dark/90">
+            <div className="space-y-3 text-content/80">
               <p>
                 본 블로그의 소스 코드, 디자인, 구조 또는 그 일부를 포크하거나
                 재사용하고자 하는 경우, 다음 절차를 따라야 합니다:
@@ -141,10 +135,10 @@ export default function TermsPage() {
 
           {/* 면책 조항 */}
           <section className="rounded-lg bg-white p-6 shadow-sm dark:bg-bkg-dark">
-            <h2 className="mb-4 text-xl font-semibold text-content dark:text-content-dark">
+            <h2 className="mb-4 text-xl font-semibold text-content">
               5. 면책 조항
             </h2>
-            <div className="space-y-3 text-content/80 dark:text-content-dark/90">
+            <div className="space-y-3 text-content/80">
               <p>
                 블로그에 게시된 정보와 코드는 정확성과 유용성을 위해 최선을
                 다하고 있으나, 어떠한 보증도 제공하지 않습니다. 모든 콘텐츠는
@@ -160,10 +154,10 @@ export default function TermsPage() {
 
           {/* 연락처 */}
           <section className="rounded-lg bg-white p-6 shadow-sm dark:bg-bkg-dark">
-            <h2 className="mb-4 text-xl font-semibold text-content dark:text-content-dark">
+            <h2 className="mb-4 text-xl font-semibold text-content">
               6. 연락처
             </h2>
-            <div className="space-y-3 text-content/80 dark:text-content-dark/90">
+            <div className="space-y-3 text-content/80">
               <p>
                 본 이용약관에 관한 질문이나 콘텐츠 사용 허가 요청, 저작권 관련
                 문의는 아래 연락처로 보내주시기 바랍니다:
@@ -185,7 +179,7 @@ export default function TermsPage() {
           </section>
         </div>
 
-        <div className="mt-12 text-center text-sm text-content/60 dark:text-content-dark/60">
+        <div className="mt-12 text-center text-sm text-content/60">
           이 이용약관은 2025년 4월 15일부터 유효합니다. Toris Dev Blog는 이
           약관을 언제든지 변경할 권리가 있으며, 변경 사항은 블로그에
           게시됨으로써 효력이 발생합니다.

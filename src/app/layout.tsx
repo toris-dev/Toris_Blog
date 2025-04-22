@@ -80,16 +80,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body
         className={cn(
-          'min-h-screen bg-slate-900 font-sans antialiased',
+          'min-h-screen bg-slate-50 font-sans antialiased dark:bg-slate-900',
           inter.variable,
           spaceGrotesk.variable
         )}
       >
         <GoogleTagManager gtmId="G-0KV4YD773C" />
         <Providers>
-          {/* 배경 그라디언트 효과 */}
-          <div className="bg-gradient">
+          {/* 배경 그라디언트 효과 - 다크모드에서만 표시 */}
+          <div className="bg-gradient hidden dark:block">
             <div className="fixed -z-10 h-screen w-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 to-slate-900"></div>
+          </div>
+
+          {/* 라이트모드 배경 */}
+          <div className="bg-gradient block dark:hidden">
+            <div className="fixed -z-10 h-screen w-full bg-gradient-to-b from-white to-slate-50"></div>
           </div>
 
           <div className="flex min-h-screen flex-col">

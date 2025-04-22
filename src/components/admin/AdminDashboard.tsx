@@ -3,9 +3,11 @@
 import {
   BsPencilSquare,
   FaChevronRight,
+  FaEdit,
   FaEye,
   FaListAlt,
   FaSignOutAlt,
+  FaTrash,
   FaUserCircle
 } from '@/components/icons';
 import { MarkdownFile } from '@/types';
@@ -34,6 +36,8 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ username }) => {
   });
   const [recentPosts, setRecentPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteSlug, setDeleteSlug] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,6 +108,46 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ username }) => {
     }
   };
 
+  const handleEdit = (slug: string) => {
+    router.push(`/edit/${slug}`);
+  };
+
+  const confirmDelete = (slug: string) => {
+    setDeleteSlug(slug);
+  };
+
+  const cancelDelete = () => {
+    setDeleteSlug(null);
+  };
+
+  const handleDelete = async (slug: string) => {
+    try {
+      setIsDeleting(true);
+
+      const response = await fetch(`/api/markdown/${slug}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        // 성공적으로 삭제된 경우 목록에서 제거
+        setRecentPosts(recentPosts.filter((post) => post.slug !== slug));
+        setStats((prev) => ({
+          ...prev,
+          posts: prev.posts - 1
+        }));
+        setDeleteSlug(null);
+      } else {
+        console.error('게시글 삭제 실패');
+        alert('게시글 삭제에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('게시글 삭제 오류:', error);
+      alert('게시글 삭제 중 오류가 발생했습니다.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -132,6 +176,38 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ username }) => {
       initial="hidden"
       animate="visible"
     >
+      {deleteSlug && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800">
+            <h3 className="mb-4 text-xl font-bold text-gray-800 dark:text-white">
+              게시글 삭제 확인
+            </h3>
+            <p className="mb-6 text-gray-600 dark:text-gray-300">
+              &apos;{recentPosts.find((p) => p.slug === deleteSlug)?.title}
+              &apos; 게시글을 정말 삭제하시겠습니까?
+              <br />이 작업은 되돌릴 수 없습니다.
+            </p>
+            <div className="flex justify-end gap-3">
+              <Button
+                type="button"
+                onClick={cancelDelete}
+                className="bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+              >
+                취소
+              </Button>
+              <Button
+                type="button"
+                onClick={() => handleDelete(deleteSlug)}
+                className="bg-red-500 text-white hover:bg-red-600"
+                disabled={isDeleting}
+              >
+                {isDeleting ? '삭제 중...' : '삭제'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <motion.div
         className="flex flex-col justify-between gap-4 rounded-xl bg-gradient-to-br from-primary/10 to-accent-1/10 p-6 shadow-sm dark:from-primary/5 dark:to-accent-1/5 sm:flex-row sm:items-center"
         variants={itemVariants}
@@ -238,7 +314,7 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ username }) => {
             최근 글
           </h2>
           <Link
-            href="/markdown"
+            href="/posts"
             className="flex items-center gap-1 text-sm text-primary hover:underline"
           >
             <span>모든 글 보기</span>
@@ -265,7 +341,6 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ username }) => {
                 <motion.div
                   key={post.slug}
                   className="group flex cursor-pointer items-center justify-between rounded-lg p-3 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={() => router.push(`/markdown/${post.slug}`)}
                   whileHover={{ scale: 1.01 }}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{
@@ -277,15 +352,40 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ username }) => {
                     }
                   }}
                 >
-                  <div className="flex items-center gap-3">
+                  <div
+                    className="flex items-center gap-3"
+                    onClick={() => router.push(`/posts/${post.slug}`)}
+                  >
                     <div className="size-2 rounded-full bg-primary"></div>
                     <h3 className="font-medium text-gray-800 group-hover:text-primary dark:text-gray-200">
                       {post.title}
                     </h3>
                   </div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {post.date}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {post.date}
+                    </p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(post.slug);
+                      }}
+                      className="rounded p-1 text-blue-500 hover:bg-blue-100 dark:hover:bg-blue-900/20"
+                      aria-label="게시글 수정"
+                    >
+                      <FaEdit className="size-4" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        confirmDelete(post.slug);
+                      }}
+                      className="rounded p-1 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/20"
+                      aria-label="게시글 삭제"
+                    >
+                      <FaTrash className="size-4" />
+                    </button>
+                  </div>
                 </motion.div>
               ))
             ) : (

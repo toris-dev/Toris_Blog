@@ -66,7 +66,7 @@ ${content}`;
         const issueResponse = await octokit.rest.issues.create({
           owner: OWNER,
           repo: REPO,
-          title: `[새 글] ${title}`,
+          title: `[게시글] ${title}`,
           body: issueBody,
           labels: ['blog-post', 'article']
         });

@@ -1,5 +1,4 @@
 import PostPage from '@/components/blog/PostPage';
-import { CommentsProvider } from '@/components/context/CommentContext';
 import { getMarkdownFile, getMarkdownFilesFromDisk } from '@/utils/fetch';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -10,16 +9,23 @@ export const revalidate = 60 * 60 * 6;
 // 동적 렌더링 설정 추가
 export const dynamic = 'force-dynamic';
 
-export default async function Post({ params }: { params: { id: string } }) {
+export default async function Post({
+  params,
+  searchParams
+}: {
+  params: { id: string };
+  searchParams: { issueNumber?: string };
+}) {
   try {
     const post = await getMarkdownFile(params.id);
     if (!post) return notFound();
 
-    return (
-      <CommentsProvider postId={params.id}>
-        <PostPage {...post} postId={params.id} />
-      </CommentsProvider>
-    );
+    // 쿼리 파라미터로 전달된 이슈 번호 추출
+    const issueNumber = searchParams.issueNumber
+      ? parseInt(searchParams.issueNumber, 10)
+      : undefined;
+
+    return <PostPage {...post} postId={issueNumber || params.id} />;
   } catch (error) {
     console.error('Error loading post:', error);
     return notFound();

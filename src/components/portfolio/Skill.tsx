@@ -17,7 +17,7 @@ const Skills = () => {
   return (
     <motion.article
       id="skills"
-      className="flex min-h-[600px] w-full flex-col items-center justify-center py-10"
+      className="flex min-h-[600px] w-full flex-col items-center justify-center py-16"
       initial="hidden"
       whileInView="show"
       viewport={{ once: true }}

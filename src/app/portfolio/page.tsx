@@ -41,5 +41,4 @@ export default function Portfolio() {
   );
 }
 
-// 동적 렌더링 설정을 제거하고 정적 생성으로 변경
-// export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';

@@ -1,10 +1,6 @@
-import {
-  AiFillGithub,
-  FaDiscord,
-  FaServer,
-  FaTwitter
-} from '@/components/icons';
+import { AiFillGithub, FaDiscord, FaTwitter } from '@/components/icons';
 import { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -131,7 +127,13 @@ export default function AboutPage() {
               <div className="relative mb-4 size-40 overflow-hidden rounded-full border-4 border-primary/20">
                 {/* 프로필 이미지 자리 - 실제 이미지로 교체하세요 */}
                 <div className="flex size-full items-center justify-center bg-gradient-to-br from-primary/30 to-accent-1/30">
-                  <FaServer className="size-20 text-white/60" />
+                  <Image
+                    src="https://github.com/toris-dev.png"
+                    alt="토리스 프로필 이미지"
+                    width={100}
+                    height={100}
+                    className="size-full rounded-full object-cover"
+                  />
                 </div>
               </div>
               <h3 className="mb-2 text-xl font-semibold text-content dark:text-content-dark">

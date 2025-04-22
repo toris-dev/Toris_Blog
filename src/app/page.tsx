@@ -102,7 +102,7 @@ export default async function Home() {
                 <div className="absolute inset-0 animate-spin-slow rounded-full bg-gradient-to-r from-primary via-purple-500 to-accent-2 opacity-70 blur-xl"></div>
                 <div className="absolute inset-4 rounded-full bg-bkg backdrop-blur-md"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <SiNextdotjs className="size-32 animate-float text-white" />
+                  <SiNextdotjs className="size-32 animate-float text-primary dark:text-white" />
                 </div>
               </div>
             </div>

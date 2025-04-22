@@ -213,7 +213,7 @@ export const metadata = {
 // 메인 프로젝트 컴포넌트
 const Projects = () => {
   return (
-    <section id="projects" className="flex w-full flex-col items-center pb-16">
+    <section id="projects" className="flex w-full flex-col items-center py-16">
       <AnimatedContainer className="relative mb-16 flex flex-col items-center">
         <div className="absolute -z-10 size-20 rounded-full bg-blue-100 blur-xl dark:bg-blue-900/30" />
         <div className="mb-3 flex items-center space-x-3">

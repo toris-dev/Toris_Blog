@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const Archiving = () => {
   return (
-    <article id="archiving" className="flex w-full flex-1 flex-col">
+    <article id="archiving" className="flex w-full flex-1 flex-col py-16">
       <h2 className="py-5 text-center text-2xl font-semibold text-black dark:text-white">
         Archiving
       </h2>

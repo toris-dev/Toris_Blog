@@ -10,11 +10,11 @@
     --color-accent-1: 0, 204, 153; /* Teal */
     --color-accent-2: 255, 140, 0; /* Amber */
 
-    /* Light theme */
-    --color-background: 250, 250, 255;
+    /* Light theme - 더 밝고 생생한 색상 */
+    --color-background: 250, 250, 252;
     --color-card: 255, 255, 255;
-    --color-content: 30, 41, 59;
-    --color-content-dark: 100, 116, 139;
+    --color-content: 23, 37, 84; /* 더 진한 텍스트 */
+    --color-content-dark: 71, 85, 105; /* 보조 텍스트 */
     --color-border: 226, 232, 240;
   }
 
@@ -38,32 +38,47 @@
       'calt' 1;
   }
 
+  /* 수정: 텍스트 선택 스타일 */
   ::selection {
-    @apply bg-primary/30 text-white;
+    @apply bg-primary/40 text-black dark:text-white;
   }
 }
 
 @layer components {
   /* 웹3 스타일 컴포넌트 클래스 */
   .web3-card {
-    @apply bg-card/30 border border-white/10 backdrop-blur-xl rounded-xl p-6 transition-all 
-           hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20
-           transform hover:-translate-y-1 duration-300
-           dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200;
+    @apply rounded-xl p-6 transition-all transform hover:-translate-y-1 duration-300
+           /* 라이트 모드 */
+           bg-white border border-slate-100 shadow-sm
+           hover:shadow-lg hover:shadow-slate-200/60 hover:border-primary/10
+           /* 다크 모드 */
+           dark:bg-card/30 dark:border-white/10 dark:backdrop-blur-xl 
+           dark:hover:shadow-lg dark:hover:shadow-primary/5 dark:hover:border-primary/20;
   }
 
   .web3-glass {
-    @apply bg-card/30 border border-white/10 backdrop-blur-xl rounded-xl p-6 transition-all;
+    @apply rounded-xl p-6 transition-all
+           /* 라이트 모드 */
+           bg-white/80 border border-slate-200 backdrop-blur-sm
+           /* 다크 모드 */
+           dark:bg-card/30 dark:border-white/10 dark:backdrop-blur-xl;
   }
 
   .web3-button {
-    @apply bg-primary text-white flex items-center justify-center px-6 py-3 rounded-lg 
-           font-medium transition-all hover:brightness-110 hover:shadow-md hover:shadow-primary/20
-           active:brightness-90 active:scale-95 transform duration-200;
+    @apply flex items-center justify-center px-6 py-3 rounded-lg 
+           font-medium transition-all 
+           hover:brightness-110 hover:shadow-md hover:shadow-primary/20
+           active:brightness-90 active:scale-95 transform duration-200
+           /* 색상 설정 */
+           bg-primary text-white;
   }
 
   .neon-text {
-    @apply animate-pulse-glow text-web3-neon;
+    @apply animate-pulse-glow;
+    /* 라이트 모드에서는 더 은은한 효과 - 가시성 개선 */
+    @apply text-primary-dark;
+    /* 다크 모드에서는 더 강한 네온 효과 */
+    @apply dark:text-web3-neon;
     text-shadow:
       0 0 5px rgba(14, 165, 233, 0.7),
       0 0 10px rgba(14, 165, 233, 0.5);
@@ -76,14 +91,27 @@
   .cyber-grid {
     @apply relative;
     background-size: 50px 50px;
+    /* 라이트 모드에서는 더 밝은 그리드 - 가시성 개선 */
     background-image: linear-gradient(
         to right,
-        rgba(255, 255, 255, 0.05) 1px,
+        rgba(71, 85, 105, 0.2) 1px,
         transparent 1px
       ),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      linear-gradient(to bottom, rgba(71, 85, 105, 0.2) 1px, transparent 1px);
   }
+}
 
+/* 다크 모드에서는 더 어두운 그리드 */
+.dark .cyber-grid {
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+@layer components {
   .floating {
     @apply animate-float;
   }
@@ -151,12 +179,19 @@
 
 @layer utilities {
   .glass-morphism {
-    @apply backdrop-blur-lg bg-white/10 border border-white/20;
+    /* 라이트 모드 */
+    @apply backdrop-blur-sm bg-white/40 border border-slate-200/70;
+    /* 다크 모드 */
+    @apply dark:backdrop-blur-lg dark:bg-white/10 dark:border-white/20;
   }
 
   .text-stroke {
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+    -webkit-text-stroke: 1px rgba(30, 41, 59, 0.5);
   }
+}
+
+.dark .text-stroke {
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.3);
 }
 
 /* 기존 스타일 유지 */

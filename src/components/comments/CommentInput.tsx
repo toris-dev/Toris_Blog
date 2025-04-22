@@ -1,111 +1,147 @@
 'use client';
 
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import { FC, FormEvent, useRef } from 'react';
-import toast from 'react-hot-toast';
-import { useComments } from '../context/CommentContext';
-import Button from '../ui/Button';
-import Input from '../ui/Input';
+import { FC, useEffect, useRef, useState } from 'react';
 
 type CommentInputProps = {
   postId: number | string;
 };
 
 const CommentInput: FC<CommentInputProps> = ({ postId }) => {
-  const router = useRouter();
-  const { setOrganizedComments } = useComments();
-  const idRef = useRef<HTMLInputElement>(null);
-  const pwdRef = useRef<HTMLInputElement>(null);
-  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const utterancesRef = useRef<HTMLDivElement>(null);
+  const [error, setError] = useState<string | null>(null);
+  const scriptLoaded = useRef<boolean>(false);
 
-  // postId가 string인 경우 number로 변환
-  const numericPostId =
-    typeof postId === 'string' ? parseInt(postId, 10) : postId;
+  useEffect(() => {
+    // 이미 스크립트가 로드되었으면 중복 실행 방지
+    if (scriptLoaded.current) return;
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    const id = idRef.current?.value;
-    const pwd = pwdRef.current?.value;
-    const content = contentRef.current?.value;
+    // 컨테이너가 없으면 실행 중단
+    const utterancesContainer = utterancesRef.current;
+    if (!utterancesContainer) return;
 
-    // 값이 모두 존재하는지 확인
-    if (id && pwd && content) {
-      try {
-        // 서버에 POST 요청 보내기
-        const response = await axios.post('/api/comment', {
-          id,
-          pwd,
-          content,
-          postId: numericPostId
-        });
-        router.refresh();
-        toast.success('댓글 작성 성공😁', response.data);
-        setOrganizedComments((prev) => [
-          ...prev,
-          { ...response.data, replies: [] }
-        ]);
-      } catch (error) {
-        toast.error('댓글 작성 실패😥');
-      }
-    } else {
-      // 필수 값 중 하나라도 없는 경우
-      toast.error('빈 값을 제대로 작성해주세요');
+    // 모든 자식 요소 제거
+    while (utterancesContainer.firstChild) {
+      utterancesContainer.removeChild(utterancesContainer.firstChild);
     }
-  };
 
-  const handleCancel = () => {
-    idRef.current && (idRef.current.value = '');
-    pwdRef.current && (pwdRef.current.value = '');
-    contentRef.current && (contentRef.current.value = '');
-  };
+    try {
+      // utterances 스크립트 생성
+      const script = document.createElement('script');
+
+      // 필수 속성 설정
+      script.src = 'https://utteranc.es/client.js';
+      script.setAttribute('repo', 'toris-dev/Toris_Blog');
+
+      // issue-term 대신 issue-number 사용 (postId가 있을 경우)
+      console.log('postId', postId);
+
+      script.setAttribute('issue-term', '[새 글] ' + String(postId));
+
+      script.setAttribute('label', 'blog-comment');
+      script.setAttribute('theme', 'github-light');
+      script.setAttribute('crossorigin', 'anonymous');
+      script.async = true;
+
+      // 에러 처리를 위한 이벤트 리스너 추가
+      script.onerror = () => {
+        setError('댓글을 불러오는데 실패했습니다. GitHub 연결을 확인해주세요.');
+      };
+
+      // DOM에 스크립트 추가하기 전에 이전 스크립트 제거
+      const existingScript = utterancesContainer.querySelector(
+        'script[src*="utteranc.es"]'
+      );
+      if (existingScript) {
+        existingScript.remove();
+      }
+
+      // 컨테이너에 스크립트 추가
+      utterancesContainer.appendChild(script);
+      scriptLoaded.current = true;
+    } catch (err) {
+      console.error('Utterances 로드 오류:', err);
+      setError('댓글 시스템을 초기화하는데 문제가 발생했습니다.');
+    }
+
+    // 다크모드 감지 및 테마 변경
+    const updateTheme = () => {
+      const isDarkMode = document.documentElement.classList.contains('dark');
+      const utterancesFrame =
+        document.querySelector<HTMLIFrameElement>('.utterances-frame');
+
+      if (utterancesFrame && utterancesFrame.contentWindow) {
+        try {
+          const message = {
+            type: 'set-theme',
+            theme: isDarkMode ? 'github-dark' : 'github-light'
+          };
+          utterancesFrame.contentWindow.postMessage(
+            message,
+            'https://utteranc.es'
+          );
+        } catch (err) {
+          console.error('테마 변경 실패:', err);
+        }
+      }
+    };
+
+    const darkModeObserver = new MutationObserver(updateTheme);
+
+    darkModeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
+    // 초기 테마 설정을 위해 한 번 실행
+    setTimeout(updateTheme, 1000);
+
+    return () => {
+      darkModeObserver.disconnect();
+    };
+  }, [postId]);
 
   return (
-    <div className="m-3 w-4/5 max-w-xl rounded-lg bg-white p-4 shadow-md dark:bg-gray-800 dark:shadow-gray-900/30">
-      <div className="flex items-start ">
-        <div className="grid gap-2">{/* Your comment content here */}</div>
-        <div className="border-gray-200 p-4">
-          <Input
-            ref={idRef}
-            placeholder="닉네임 입력"
-            className="mr-3 transition-all duration-300 ease-in-out focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
-            type="id"
-          />
-          <Input
-            ref={pwdRef}
-            placeholder="PWD입력"
-            type="password"
-            className="transition-all duration-300 ease-in-out focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
-          />
-          <form className="grid gap-4" onSubmit={handleSubmit}>
-            <div className="w-full">
-              <span className="sr-only">Comment</span>
-              <textarea
-                className="mt-3 min-h-[80px] w-full resize-none rounded-lg border border-solid border-gray-300 p-2 text-sm transition-all duration-300 ease-in-out focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
-                id="comment"
-                placeholder="What are your thoughts?"
-                style={{ maxHeight: '200px' }}
-                ref={contentRef}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                className="peer text-sm dark:bg-gray-700 dark:hover:bg-gray-600"
-                type="submit"
-              >
-                Submit
-              </Button>
-              <Button
-                className="peer text-sm dark:bg-gray-700 dark:hover:bg-gray-600"
-                type="button"
-                onClick={handleCancel}
-              >
-                Cancel
-              </Button>
-            </div>
-          </form>
-        </div>
+    <div className="my-8 w-full">
+      <div className="prose prose-sm mb-4 dark:prose-invert">
+        <h3 className="text-lg font-semibold text-content dark:text-content-dark">
+          댓글 남기기
+        </h3>
+        <p className="text-sm text-content-dark">
+          GitHub 계정으로 댓글을 남길 수 있습니다.
+        </p>
       </div>
+
+      {error ? (
+        <div className="rounded-md bg-red-50 p-4 text-red-700 dark:bg-red-900/20 dark:text-red-300">
+          <p>{error}</p>
+          <button
+            className="mt-2 text-sm font-medium underline"
+            onClick={() => {
+              setError(null);
+              scriptLoaded.current = false;
+              // 재시도 로직 트리거
+              const currentPostId = postId;
+              setTimeout(() => {
+                if (utterancesRef.current) {
+                  utterancesRef.current.innerHTML = '';
+                  scriptLoaded.current = false;
+                  // effect 다시 실행하기 위한 트릭
+                  const script = document.createElement('script');
+                  utterancesRef.current.appendChild(script);
+                  utterancesRef.current.removeChild(script);
+                }
+              }, 100);
+            }}
+          >
+            다시 시도하기
+          </button>
+        </div>
+      ) : (
+        <div
+          ref={utterancesRef}
+          className="utterances-container w-full rounded-md bg-white p-2 dark:bg-gray-800"
+        />
+      )}
     </div>
   );
 };

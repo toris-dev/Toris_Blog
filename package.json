@@ -7,7 +7,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:run:navigation": "cypress run --spec 'cypress/e2e/navigation.cy.ts'",
+    "cypress:run:blog": "cypress run --spec 'cypress/e2e/blog.cy.ts'",
+    "cypress:run:responsive": "cypress run --spec 'cypress/e2e/responsive.cy.ts'",
+    "cypress:run:search": "cypress run --spec 'cypress/e2e/search.cy.ts'",
+    "cypress:run:portfolio": "cypress run --spec 'cypress/e2e/portfolio.cy.ts'",
+    "cypress:run:auth": "cypress run --spec 'cypress/e2e/auth.cy.ts'",
+    "test": "cypress run",
+    "test:ci": "start-server-and-test dev http://localhost:3000 cypress:run"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.1",
