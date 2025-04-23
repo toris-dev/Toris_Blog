@@ -167,7 +167,7 @@ const Sidebar: FC = () => {
         animate={isOpen || isLargeScreen ? 'open' : 'closed'}
         className={cn(
           'fixed left-0 top-0 z-50 flex h-full w-[280px] flex-col overflow-y-auto border-r border-white/10 pt-20 backdrop-blur-xl transition-all duration-300',
-          'bg-card/30 dark:bg-bkg-light/30',
+          'hide-scrollbar overscroll-none bg-card/30 dark:bg-bkg-light/30',
           isCollapsed ? 'lg:w-20' : ''
         )}
       >
