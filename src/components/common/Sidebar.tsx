@@ -3,10 +3,10 @@
 import { useSidebar } from '@/components/common/Providers';
 import {
   AiOutlineClose,
-  AiOutlineFire,
   AiOutlineGithub,
   AiOutlineInfoCircle,
   AiOutlineMail,
+  AiOutlineMenu,
   AiOutlineTag,
   AiOutlineTwitter,
   BiCategory,
@@ -166,7 +166,7 @@ const Sidebar: FC = () => {
         initial="closed"
         animate={isOpen || isLargeScreen ? 'open' : 'closed'}
         className={cn(
-          'fixed left-0 top-0 z-50 flex h-full w-[280px] flex-col overflow-y-auto border-r border-white/10 pt-20 backdrop-blur-xl transition-all duration-300',
+          'fixed left-0 top-0 z-50 flex h-full w-[280px] flex-col overflow-y-auto border-r border-white/10 pt-10 backdrop-blur-xl transition-all duration-300',
           'hide-scrollbar overscroll-none bg-card/30 dark:bg-bkg-light/30',
           isCollapsed ? 'lg:w-20' : ''
         )}
@@ -180,9 +180,9 @@ const Sidebar: FC = () => {
           />
         </div>
 
-        <div className="flex justify-center lg:justify-start lg:px-4">
+        <div className="flex justify-start px-7 lg:my-4 lg:justify-center lg:px-4">
           <IconButton
-            Icon={AiOutlineFire}
+            Icon={isCollapsed ? AiOutlineMenu : AiOutlineClose}
             label={isCollapsed ? '펼치기' : '접기'}
             className={cn(
               'transition-all hover:bg-primary/10',
@@ -249,7 +249,7 @@ const Sidebar: FC = () => {
         </AnimatePresence>
 
         {/* 네비게이션 메뉴 */}
-        <nav className="hide-scrollbar mb-8 flex-1 px-4">
+        <nav className="hide-scrollbar mb-8 mt-2 flex-1 px-4">
           <div className="space-y-1">
             {menuItems.map((item) => (
               <Link
@@ -260,7 +260,10 @@ const Sidebar: FC = () => {
                   'flex items-center rounded-lg px-4 py-2.5 font-medium transition-all',
                   pathname === item.href || pathname.startsWith(`${item.href}/`)
                     ? 'bg-primary/10 text-primary'
-                    : 'text-content hover:bg-white/5 hover:text-primary'
+                    : 'text-content hover:bg-white/5 hover:text-primary',
+                  isCollapsed
+                    ? 'justify-start px-4 lg:justify-center lg:px-0'
+                    : ''
                 )}
               >
                 <item.icon
