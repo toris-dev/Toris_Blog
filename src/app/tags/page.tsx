@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import TagList from './_components/TagList';
 
 // 정적 재생성 설정 (6시간)
-export const revalidate = 60 * 60 * 6;
+export const revalidate = 21600;
 
 export const metadata: Metadata = {
   title: '태그 목록',

@@ -6,7 +6,7 @@ const DOMAIN =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-dev.vercel.app';
 
 // 6시간마다 재생성
-export const revalidate = 60 * 60 * 6;
+export const revalidate = 21600;
 
 export async function GET() {
   // 모든 게시물 가져오기
@@ -42,7 +42,7 @@ export async function GET() {
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
       // ISG를 위한 캐시 제어 헤더 설정
-      'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate`
+      'Cache-Control': `public, s-maxage=${21600}, stale-while-revalidate`
     }
   });
 }

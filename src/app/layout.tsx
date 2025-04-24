@@ -23,7 +23,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 // 6시간마다 재생성
-export const revalidate = 60 * 60 * 6;
+export const revalidate = 21600;
 
 export const metadata: Metadata = {
   title: {

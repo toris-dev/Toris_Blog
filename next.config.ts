@@ -1,8 +1,10 @@
-const removeImports = require('next-remove-imports')();
-const path = require('path');
+import type { NextConfig } from 'next';
+import withRemoveImports from 'next-remove-imports';
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const removeImports = withRemoveImports();
+
+// Next.js 15에 맞는 설정
+const nextConfig: NextConfig = {
   // 빌드 오류 무시 설정
   typescript: {
     ignoreBuildErrors: true
@@ -11,33 +13,29 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true
   },
-  // 웹팩 설정 추가
-  webpack: (config, { dev, isServer }) => {
-    // Babel 경고 메시지 출력 감소를 위한 설정
-    config.optimization = {
-      ...config.optimization,
-      moduleIds: 'named'
-    };
-
-    // 웹팩 캐시 설정 추가
-    if (dev) {
-      config.cache = {
-        ...config.cache,
-        type: 'filesystem',
-        cacheDirectory: path.resolve(__dirname, '.next/cache'),
-        name: isServer ? 'server' : 'client',
-        buildDependencies: {
-          config: [__filename]
-        }
-      };
+  // Next.js 15에서는 turbopack이 안정화되어 최상위 설정으로 이동
+  turbopack: {
+    // 파일 확장자별 로더 설정
+    resolveExtensions: ['.tsx', '.ts', '.jsx', '.js', '.json', '.mdx'],
+    // 모듈 규칙
+    rules: {
+      // API 라우트는 서버에서만 실행
+      '*.api.*': ['server-only']
     }
-
-    return config;
   },
   // 기타 설정
   reactStrictMode: true,
-  swcMinify: true, // SWC 최적화 사용
   poweredByHeader: false, // 'X-Powered-By' 헤더 제거
+  // 기타 experimental 설정
+  experimental: {
+    // 캐시 시간 설정
+    staleTimes: {
+      dynamic: 30
+    },
+    // React 컴파일러 활성화
+    reactCompiler: true
+  },
+  // 이미지 최적화 및 외부 도메인 설정
   images: {
     remotePatterns: [
       {
@@ -76,9 +74,9 @@ const nextConfig = {
         pathname: '/**'
       }
     ],
-    // domains 속성 제거 (remotePatterns으로 대체)
-    unoptimized: true // placeholder 이미지 오류 방지를 위해 이미지 최적화 비활성화
+    // placeholder 이미지 오류 방지를 위해 이미지 최적화 비활성화
+    unoptimized: true
   }
 };
 
-module.exports = removeImports(nextConfig);
+export default removeImports(nextConfig);

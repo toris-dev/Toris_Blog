@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 // ISG를 위한 revalidate 설정 (6시간)
-export const revalidate = 60 * 60 * 6;
+export const revalidate = 21600;
 
 // 동적 렌더링 설정 추가
 export const dynamic = 'force-dynamic';

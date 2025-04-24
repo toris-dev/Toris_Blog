@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 // ISG를 위한 revalidate 설정 (6시간)
-export const revalidate = 60 * 60 * 6;
+export const revalidate = 21600;
 
 export const dynamic = 'force-dynamic';
 

@@ -25,9 +25,9 @@ export async function isAuthenticated(): Promise<boolean> {
 // 기존 쿠키 기반 인증 함수들은 하위 호환성을 위해 유지
 // 추후 제거할 예정
 
-export function getGithubUser(): GithubUser | null {
+export async function getGithubUser(): Promise<GithubUser | null> {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const userCookie = cookieStore.get('github_user');
 
     if (!userCookie) return null;
@@ -39,8 +39,8 @@ export function getGithubUser(): GithubUser | null {
   }
 }
 
-export function getGithubToken(): string | null {
-  const cookieStore = cookies();
+export async function getGithubToken(): Promise<string | null> {
+  const cookieStore = await cookies();
   const tokenCookie = cookieStore.get('github_token');
 
   return tokenCookie ? tokenCookie.value : null;
@@ -52,13 +52,16 @@ export function isGithubLoggedIn(): boolean {
 }
 
 // toris-dev 계정인지 확인
-export function isTorisDevAccount(): boolean {
-  const user = getGithubUser();
+export async function isTorisDevAccount(): Promise<boolean> {
+  const user = await getGithubUser();
   return !!user && user.login === 'toris-dev';
 }
 
 // 기존 사용자/비밀번호 검증 (더 이상 사용하지 않음)
-export const validateCredentials = (username: string, password: string) => {
+export const validateCredentials = async (
+  username: string,
+  password: string
+): Promise<boolean> => {
   const envUsername = process.env.ADMIN_USERNAME;
   const envPassword = process.env.ADMIN_PASSWORD;
 

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
 
     // 관리자 인증 쿠키 삭제
     cookieStore.delete('authed');

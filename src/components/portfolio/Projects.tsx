@@ -1,18 +1,8 @@
+'use client';
 import { HiBriefcase } from '@/components/icons';
 import '@/styles/carousel.module.css';
-import dynamic from 'next/dynamic';
-
-// 동적으로 클라이언트 컴포넌트 불러오기
-const AnimatedContainer = dynamic(() => import('./project/AnimatedContainer'), {
-  ssr: false
-});
-const ProjectCarousel = dynamic(() => import('./project/ProjectCarousel'), {
-  ssr: false
-});
-const AnimatedProjectSection = dynamic(
-  () => import('./project/AnimatedProjectSection'),
-  { ssr: false }
-);
+import AnimatedContainer from './project/AnimatedContainer';
+import AnimatedProjectSection from './project/AnimatedProjectSection';
 
 // 프로젝트 데이터 정적 정의
 const shelterImages = [
@@ -197,18 +187,6 @@ const projectsData = [
     images: selfBlogImages
   }
 ];
-
-// 정적 사이트 생성 설정
-export const generateStaticParams = async () => {
-  return [{ locale: 'ko' }];
-};
-
-// 메타데이터 설정
-export const metadata = {
-  title: '프로젝트 소개 | 토리스 포트폴리오',
-  description:
-    '토리스의 프로젝트 포트폴리오 - 웹 개발 및 소프트웨어 엔지니어링 프로젝트들을 소개합니다'
-};
 
 // 메인 프로젝트 컴포넌트
 const Projects = () => {

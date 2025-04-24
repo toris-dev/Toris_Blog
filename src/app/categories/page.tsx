@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import CategoryList from './_components/CategoryList';
 
 // 정적 재생성 설정 (6시간)
-export const revalidate = 60 * 60 * 6;
+export const revalidate = 21600;
 
 export const metadata: Metadata = {
   title: '카테고리 목록',

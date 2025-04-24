@@ -12,7 +12,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 // 6시간마다 재생성
-export const revalidate = 60 * 60 * 6;
+export const revalidate = 21600;
 
 // 정적 생성 파라미터
 export const generateStaticParams = async () => {

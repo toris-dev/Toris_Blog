@@ -2,7 +2,7 @@ import { getCategories, getPosts, getTags } from '@/utils/fetch';
 import { MetadataRoute } from 'next';
 
 // 6시간마다 재생성
-export const revalidate = 60 * 60 * 6;
+export const revalidate = 21600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl =
