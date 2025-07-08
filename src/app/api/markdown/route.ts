@@ -116,107 +116,64 @@ ${content}`;
   }
 }
 
-const getAllMarkdownFilesFromGitHub = async () => {
-  const octokit = getOctokit();
-
-  const repoInfo = await octokit.rest.repos.get({
-    owner: OBSIDIAN_OWNER,
-    repo: OBSIDIAN_REPO
-  });
-  const mainBranch = repoInfo.data.default_branch;
-
-  const { data: tree } = await octokit.rest.git.getTree({
-    owner: OBSIDIAN_OWNER,
-    repo: OBSIDIAN_REPO,
-    tree_sha: mainBranch,
-    recursive: 'true'
-  });
-
-  const markdownFiles = tree.tree.filter(
-    (file) =>
-      file.path &&
-      file.path.endsWith('.md') &&
-      file.type === 'blob' &&
-      !file.path.includes('.obsidian/') &&
-      !file.path.includes('images/') &&
-      !file.path.includes('template/')
-  );
-
-  const posts = await Promise.all(
-    markdownFiles.map(async (file) => {
-      try {
-        if (!file.path) return null;
-
-        const { data: contentData } = await octokit.rest.repos.getContent({
-          owner: OBSIDIAN_OWNER,
-          repo: OBSIDIAN_REPO,
-          path: file.path
-        });
-
-        if ('content' in contentData) {
-          const content = Buffer.from(contentData.content, 'base64').toString(
-            'utf-8'
-          );
-
-          const metadataMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
-          const metadata: Record<string, string> = {};
-
-          if (metadataMatch) {
-            const metadataContent = metadataMatch[1];
-            const lines = metadataContent.split('\n');
-
-            for (const line of lines) {
-              const [key, ...valueParts] = line.split(':');
-              if (key && valueParts.length > 0) {
-                metadata[key.trim()] = valueParts.join(':').trim();
-              }
-            }
-          }
-
-          const pathParts = file.path.split('/');
-          const category =
-            pathParts.length > 1 ? pathParts[0] : 'Uncategorized';
-          const slug = path.basename(file.path, '.md');
-
-          let tags: string[] = [];
-          if (metadata.tags) {
-            tags = metadata.tags
-              .replace(/^\[|\]$/g, '')
-              .split(',')
-              .map((tag) => tag.trim());
-          }
-
-          return {
-            slug: slug,
-            filePath: `https://github.com/${OBSIDIAN_OWNER}/${OBSIDIAN_REPO}/blob/main/${file.path}`,
-            title: metadata.title || 'Untitled',
-            date: metadata.date || new Date().toISOString(),
-            category: category,
-            tags,
-            content: content.replace(/^---\n[\s\S]*?\n---\n/, '')
-          };
-        }
-      } catch (error) {
-        console.error(`Error fetching or parsing file ${file.path}:`, error);
-        return null;
-      }
-      return null;
-    })
-  );
-
-  return posts.filter(
-    (post): post is NonNullable<typeof post> => post !== null
-  );
-};
-
 export async function GET(request: NextRequest) {
   try {
-    const markdownContents = await getAllMarkdownFilesFromGitHub();
+    const markdownDir = path.join(process.cwd(), 'public', 'markdown');
+
+    // Create the directory if it doesn't exist
+    await fs.mkdir(markdownDir, { recursive: true });
+
+    // Get all markdown files
+    const files = await fs.readdir(markdownDir);
+    const markdownFiles = files.filter((file) => file.endsWith('.md'));
+
+    // Read the metadata from each file
+    const markdownContents = await Promise.all(
+      markdownFiles.map(async (file) => {
+        const content = await fs.readFile(
+          path.join(markdownDir, file),
+          'utf-8'
+        );
+
+        // Extract metadata
+        const metadataMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+        const metadata: Record<string, string> = {};
+
+        if (metadataMatch) {
+          const metadataContent = metadataMatch[1];
+          const lines = metadataContent.split('\n');
+
+          for (const line of lines) {
+            const [key, value] = line.split(': ');
+            if (key && value) {
+              metadata[key.trim()] = value.trim();
+            }
+          }
+        }
+
+        // Parse tags to array
+        let tags: string[] = [];
+        if (metadata.tags) {
+          tags = metadata.tags.split(',').map((tag) => tag.trim());
+        }
+
+        return {
+          slug: file.replace('.md', ''),
+          filePath: `/markdown/${file}`,
+          title: metadata.title || 'Untitled',
+          date: metadata.date || new Date().toISOString(),
+          category: metadata.category || 'Uncategorized',
+          tags,
+          content: content.replace(/^---\n[\s\S]*?\n---\n/, '')
+        };
+      })
+    );
+
     return NextResponse.json(markdownContents);
   } catch (error) {
-    console.error('Error listing markdown files from GitHub:', error);
+    console.error('Error listing markdown files:', error);
     return NextResponse.json(
-      { error: 'Failed to list markdown files from GitHub' },
+      { error: 'Failed to list markdown files' },
       { status: 500 }
     );
   }

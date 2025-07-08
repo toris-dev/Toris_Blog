@@ -99,7 +99,7 @@ const MarkdownFileViewer: React.FC<MarkdownFileViewerProps> = ({ slug }) => {
         </>
       )}
 
-      <MarkdownViewer value={content} />
+      <MarkdownViewer>{content}</MarkdownViewer>
 
       {metadata && (
         <>

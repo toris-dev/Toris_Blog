@@ -2,6 +2,105 @@
 @tailwind components;
 @tailwind utilities;
 
+/* highlight.js github-dark theme */
+/* From: https://github.com/highlightjs/highlight.js/blob/main/src/styles/github-dark.css */
+.hljs {
+  color: #c9d1d9;
+  background: #0d1117;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+  color: #ff7b72;
+}
+
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+  color: #d2a8ff;
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-builtin-name,
+.hljs-comment,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable {
+  color: #79c0ff;
+}
+
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id,
+.hljs-selector-pseudo,
+.hljs-string {
+  color: #a5d6ff;
+}
+
+.hljs-subst {
+  color: #c9d1d9;
+}
+
+.hljs-regexp,
+.hljs-selector-tag {
+  color: #7ee787;
+}
+
+.hljs-code,
+.hljs-quotation,
+.hljs-symbol {
+  color: #79c0ff;
+}
+
+.hljs-bullet,
+.hljs-link,
+.hljs-meta .hljs-string,
+.hljs-section,
+.hljs-tag,
+.hljs-title.built_in_,
+.hljs-title.pseudo__ {
+  color: #79c0ff;
+}
+
+.hljs-emphasis {
+  color: #c9d1d9;
+  font-style: italic;
+}
+
+.hljs-strong {
+  color: #c9d1d9;
+  font-weight: 700;
+}
+
+.hljs-addition {
+  color: #aff5b4;
+  background-color: #033a16;
+}
+
+.hljs-deletion {
+  color: #ffdcd7;
+  background-color: #67060c;
+}
+
+.hljs-char.escape_,
+.hljs-doctag,
+.hljs-kwd {
+  color: #ff7b72;
+}
+
+.hljs-name.tag {
+  color: #8b949e;
+}
+
 @layer base {
   :root {
     /* Bright Web3 color palette */

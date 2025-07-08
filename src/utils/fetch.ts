@@ -4,20 +4,65 @@ import { CategoryWithCount, MarkdownFile, TagWithCount } from '@/types';
 const fs = typeof window === 'undefined' ? require('fs/promises') : null;
 const path = typeof window === 'undefined' ? require('path') : null;
 
-// Client-side markdown file fetching (for browser)
+// Server-side functions for direct file access
 export async function getMarkdownFiles(): Promise<MarkdownFile[]> {
+  // Check if running on server
+  if (typeof window !== 'undefined') {
+    console.error(
+      'getMarkdownFiles should only be called on the server'
+    );
+    return [];
+  }
+
   try {
-    const response = await fetch('/api/markdown', {
-      next: { revalidate: 60 } // Revalidate every 60 seconds
-    });
+    const markdownDir = path.join(process.cwd(), 'public', 'markdown');
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch markdown files');
-    }
+    // Create the directory if it doesn't exist
+    await fs.mkdir(markdownDir, { recursive: true });
 
-    return await response.json();
+    // Get all markdown files
+    const files = await fs.readdir(markdownDir);
+    const markdownFiles = files.filter((file: string) => file.endsWith('.md'));
+
+    // Read the metadata from each file
+    const markdownContents = await Promise.all(
+      markdownFiles.map(async (file: string) => {
+        const filePath = path.join(markdownDir, file);
+        const content = await fs.readFile(filePath, 'utf-8');
+
+        // Extract metadata
+        const metadataMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+        const metadata: Record<string, string> = {};
+
+        if (metadataMatch) {
+          const metadataContent = metadataMatch[1];
+          const lines = metadataContent.split('\n');
+
+          for (const line of lines) {
+            const [key, value] = line.split(': ');
+            if (key && value) {
+              metadata[key.trim()] = value.trim();
+            } 
+          }
+        }
+
+        return {
+          title: metadata.title || 'Untitled',
+          date: metadata.date || new Date().toISOString(),
+          slug: file.replace('.md', ''),
+          content: content.replace(/^---\n[\s\S]*?\n---\n/, ''),
+          filePath: `/markdown/${file}`,
+          tags: metadata.tags
+            ? metadata.tags.split(',').map((tag) => tag.trim())
+            : [],
+          category: metadata.category || 'Uncategorized'
+        };
+      })
+    );
+
+    return markdownContents;
   } catch (error) {
-    console.error('Error fetching markdown files:', error);
+    console.error('Error listing markdown files:', error);
     return [];
   }
 }
@@ -27,9 +72,32 @@ export async function getMarkdownFile(
   slug: string
 ): Promise<MarkdownFile | null> {
   try {
-    const files = await getMarkdownFiles();
-    const file = files.find((file) => file.slug === slug);
-    return file || null;
+    // Check if running on server or client
+    if (typeof window !== 'undefined') {
+      // Client-side (브라우저) 구현
+      const response = await fetch(`/markdown/${slug}.md`, {
+        next: { revalidate: 60 } // Revalidate every 60 seconds
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch markdown file');
+      }
+
+      const text = await response.text();
+      return parseMarkdownContent(text, slug);
+    } else {
+      // Server-side 구현 - 파일 시스템에서 직접 읽기
+      const markdownDir = path.join(process.cwd(), 'public', 'markdown');
+      const filePath = path.join(markdownDir, `${slug}.md`);
+
+      try {
+        const content = await fs.readFile(filePath, 'utf-8');
+        return parseMarkdownContent(content, slug);
+      } catch (fileError) {
+        console.error(`File not found: ${filePath}`, fileError);
+        return null;
+      }
+    }
   } catch (error) {
     console.error('Error fetching markdown file:', error);
     return null;

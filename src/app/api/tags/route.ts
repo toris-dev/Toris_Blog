@@ -1,4 +1,4 @@
-import { getMarkdownFilesFromDisk } from '@/utils/fetch';
+import { getMarkdownFiles } from '@/utils/fetch';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
