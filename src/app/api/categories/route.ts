@@ -1,9 +1,9 @@
-import { getMarkdownFilesFromDisk } from '@/utils/fetch';
+import { getMarkdownFiles } from '@/utils/fetch';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const files = await getMarkdownFilesFromDisk();
+    const files = await getMarkdownFiles();
     const allCategories = files.map((file) => file.category || 'Uncategorized');
 
     // Return unique categories using Array.filter for compatibility

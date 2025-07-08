@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const files = await getMarkdownFilesFromDisk();
+    const files = await getMarkdownFiles();
     const allTags = files.flatMap((file) => file.tags || []);
 
     // Return unique tags without using Set

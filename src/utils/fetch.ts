@@ -27,32 +27,9 @@ export async function getMarkdownFile(
   slug: string
 ): Promise<MarkdownFile | null> {
   try {
-    // Check if running on server or client
-    if (typeof window !== 'undefined') {
-      // Client-side (브라우저) 구현
-      const response = await fetch(`/markdown/${slug}.md`, {
-        next: { revalidate: 60 } // Revalidate every 60 seconds
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch markdown file');
-      }
-
-      const text = await response.text();
-      return parseMarkdownContent(text, slug);
-    } else {
-      // Server-side 구현 - 파일 시스템에서 직접 읽기
-      const markdownDir = path.join(process.cwd(), 'public', 'markdown');
-      const filePath = path.join(markdownDir, `${slug}.md`);
-
-      try {
-        const content = await fs.readFile(filePath, 'utf-8');
-        return parseMarkdownContent(content, slug);
-      } catch (fileError) {
-        console.error(`File not found: ${filePath}`, fileError);
-        return null;
-      }
-    }
+    const files = await getMarkdownFiles();
+    const file = files.find((file) => file.slug === slug);
+    return file || null;
   } catch (error) {
     console.error('Error fetching markdown file:', error);
     return null;
@@ -95,69 +72,6 @@ function parseMarkdownContent(text: string, slug: string): MarkdownFile {
   };
 }
 
-// Server-side functions for direct file access
-export async function getMarkdownFilesFromDisk(): Promise<MarkdownFile[]> {
-  // Check if running on server
-  if (typeof window !== 'undefined') {
-    console.error(
-      'getMarkdownFilesFromDisk should only be called on the server'
-    );
-    return [];
-  }
-
-  try {
-    const markdownDir = path.join(process.cwd(), 'public', 'markdown');
-
-    // Create the directory if it doesn't exist
-    await fs.mkdir(markdownDir, { recursive: true });
-
-    // Get all markdown files
-    const files = await fs.readdir(markdownDir);
-    const markdownFiles = files.filter((file: string) => file.endsWith('.md'));
-
-    // Read the metadata from each file
-    const markdownContents = await Promise.all(
-      markdownFiles.map(async (file: string) => {
-        const filePath = path.join(markdownDir, file);
-        const content = await fs.readFile(filePath, 'utf-8');
-
-        // Extract metadata
-        const metadataMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
-        const metadata: Record<string, string> = {};
-
-        if (metadataMatch) {
-          const metadataContent = metadataMatch[1];
-          const lines = metadataContent.split('\n');
-
-          for (const line of lines) {
-            const [key, value] = line.split(': ');
-            if (key && value) {
-              metadata[key.trim()] = value.trim();
-            }
-          }
-        }
-
-        return {
-          title: metadata.title || 'Untitled',
-          date: metadata.date || new Date().toISOString(),
-          slug: file.replace('.md', ''),
-          content: content.replace(/^---\n[\s\S]*?\n---\n/, ''),
-          filePath: `/markdown/${file}`,
-          tags: metadata.tags
-            ? metadata.tags.split(',').map((tag) => tag.trim())
-            : [],
-          category: metadata.category || 'Uncategorized'
-        };
-      })
-    );
-
-    return markdownContents;
-  } catch (error) {
-    console.error('Error listing markdown files:', error);
-    return [];
-  }
-}
-
 // Get all tags from markdown files
 export async function getTags(): Promise<string[]> {
   // Check if running in browser
@@ -176,7 +90,7 @@ export async function getTags(): Promise<string[]> {
   } else {
     // Server-side implementation
     try {
-      const files = await getMarkdownFilesFromDisk();
+      const files = await getMarkdownFiles();
       const allTags = files.flatMap((file) => file.tags || []);
       // Return unique tags without using Set
       const uniqueTags: string[] = [];
@@ -211,7 +125,7 @@ export async function getCategories(): Promise<string[]> {
   } else {
     // 서버 측에서 실행 중일 때
     try {
-      const files = await getMarkdownFilesFromDisk();
+      const files = await getMarkdownFiles();
       const allCategories = files.map(
         (file) => file.category || 'Uncategorized'
       );
@@ -241,7 +155,7 @@ export async function getPosts({
   page?: number;
 }): Promise<MarkdownFile[]> {
   try {
-    const files = await getMarkdownFilesFromDisk();
+    const files = await getMarkdownFiles();
 
     let filteredFiles = files;
 
@@ -273,7 +187,7 @@ export async function getPosts({
 // Get all posts for sitemap and feed (without pagination)
 export async function getAllPosts(): Promise<MarkdownFile[]> {
   try {
-    const files = await getMarkdownFilesFromDisk();
+    const files = await getMarkdownFiles();
 
     // Sort by date descending
     files.sort((a, b) => {
@@ -292,7 +206,7 @@ export async function getPostId(): Promise<
   { id: string; created_at: string }[]
 > {
   try {
-    const files = await getMarkdownFilesFromDisk();
+    const files = await getMarkdownFiles();
     return files.map((file) => ({
       id: file.slug,
       created_at: file.date

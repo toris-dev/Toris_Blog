@@ -1,8 +1,10 @@
 import { isAuthenticated } from '@/utils/auth';
 import { OWNER, REPO, USE_MOCK_DATA, getOctokit } from '@/utils/github';
-import fs from 'fs/promises';
 import { NextRequest, NextResponse } from 'next/server';
 import path from 'path';
+
+const OBSIDIAN_OWNER = 'toris-dev';
+const OBSIDIAN_REPO = 'obsidian_note';
 
 export async function POST(request: NextRequest) {
   // Check if user is authenticated
@@ -37,34 +39,30 @@ title: ${title}
 date: ${timestamp}
 slug: ${slug}
 category: ${category}
-tags: ${tagsStr}
+tags: [${tagsStr}]
 ---
 
 ${content}`;
 
-    // Ensure the directory exists
-    const markdownDir = path.join(process.cwd(), 'public', 'markdown');
-    await fs.mkdir(markdownDir, { recursive: true });
-
-    // Write the file
-    const filePath = path.join(markdownDir, `${slug}.md`);
-    await fs.writeFile(filePath, metadataContent, 'utf-8');
-
     // GitHub 이슈 생성 및 커밋 처리
     let issueNumber: number | null = null;
     let issueUrl: string | null = null;
+    let commitUrl: string | null = null;
 
     if (!USE_MOCK_DATA) {
       try {
         const octokit = getOctokit();
 
-        // 1. GitHub 이슈 생성
+        // 1. GitHub 이슈 생성 (기존 블로그 레포에)
         const tagsFormatted = tagsStr ? `\n\n**태그**: \`${tagsStr}\`` : '';
         const categoryFormatted = `\n\n**카테고리**: \`${category}\``;
-        const issueBody = `새 블로그 글이 작성되었습니다.${categoryFormatted}${tagsFormatted}\n\n${content.substring(0, 500)}${content.length > 500 ? '...' : ''}`;
+        const issueBody = `새 블로그 글이 작성되었습니다.${categoryFormatted}${tagsFormatted}\n\n${content.substring(
+          0,
+          500
+        )}${content.length > 500 ? '...' : ''}`;
 
         const issueResponse = await octokit.rest.issues.create({
-          owner: OWNER,
+          owner: OWNER, // toris-dev/torisblog
           repo: REPO,
           title: `[게시글] ${title}`,
           body: issueBody,
@@ -74,75 +72,40 @@ ${content}`;
         if (issueResponse.status === 201) {
           issueNumber = issueResponse.data.number;
           issueUrl = issueResponse.data.html_url;
-
-          // 2. 커밋 생성 시도 (파일 업로드)
-          try {
-            // 현재 리포지토리의 기본 브랜치 정보 가져오기
-            const repoResponse = await octokit.rest.repos.get({
-              owner: OWNER,
-              repo: REPO
-            });
-
-            const defaultBranch = repoResponse.data.default_branch;
-
-            // 파일이 이미 존재하는지 확인하고 SHA 가져오기
-            let fileSha = '';
-            try {
-              const fileResponse = await octokit.rest.repos.getContent({
-                owner: OWNER,
-                repo: REPO,
-                path: `content/${slug}.md`,
-                ref: defaultBranch
-              });
-
-              if ('sha' in fileResponse.data) {
-                fileSha = fileResponse.data.sha;
-              }
-            } catch (fileError) {
-              // 파일이 없는 경우 새로 생성하므로 에러 무시
-              console.log('File does not exist yet, creating new file');
-            }
-
-            // 파일 생성 또는 업데이트 매개변수
-            const commitParams: any = {
-              owner: OWNER,
-              repo: REPO,
-              path: `content/${slug}.md`, // GitHub 리포지토리 내 파일 경로
-              message: `New blog post: ${title} (Closes #${issueNumber})`,
-              content: Buffer.from(metadataContent).toString('base64'),
-              branch: defaultBranch
-            };
-
-            // 파일이 이미 있는 경우 SHA 추가
-            if (fileSha) {
-              commitParams.sha = fileSha;
-            }
-
-            // 파일 생성 또는 업데이트 요청
-            const commitResponse =
-              await octokit.rest.repos.createOrUpdateFileContents(commitParams);
-
-            console.log(
-              'Blog post committed to GitHub:',
-              commitResponse.data.commit.html_url
-            );
-          } catch (commitError) {
-            // 커밋 에러는 로깅만 하고 계속 진행 (로컬 파일은 이미 저장됨)
-            console.error('Error creating commit:', commitError);
-          }
         }
+
+        // 2. obsidian_note 리포지토리에 파일 생성
+        const filePath = `${category}/${slug}.md`;
+        const commitResponse =
+          await octokit.rest.repos.createOrUpdateFileContents({
+            owner: OBSIDIAN_OWNER,
+            repo: OBSIDIAN_REPO,
+            path: filePath,
+            message: `New post: ${title} (Closes #${issueNumber})`,
+            content: Buffer.from(metadataContent).toString('base64'),
+            branch: 'main'
+          });
+
+        commitUrl = commitResponse.data.commit.html_url || null;
+
+        console.log('Blog post committed to obsidian_note:', commitUrl);
       } catch (githubError) {
-        // GitHub 관련 오류는 로깅만 하고 마크다운 파일은 로컬에 저장
         console.error('Error integrating with GitHub:', githubError);
+        // GitHub 관련 오류가 발생해도 로컬 처리 없이 오류 응답 반환
+        return NextResponse.json(
+          { error: 'Failed to integrate with GitHub' },
+          { status: 500 }
+        );
       }
     }
 
     return NextResponse.json({
       success: true,
       slug,
-      filePath: `/markdown/${slug}.md`,
+      filePath: `/${category}/${slug}.md`,
       issueNumber,
-      issueUrl
+      issueUrl,
+      commitUrl
     });
   } catch (error) {
     console.error('Error saving markdown file:', error);
@@ -153,64 +116,107 @@ ${content}`;
   }
 }
 
-export async function GET(request: NextRequest) {
-  try {
-    const markdownDir = path.join(process.cwd(), 'public', 'markdown');
+const getAllMarkdownFilesFromGitHub = async () => {
+  const octokit = getOctokit();
 
-    // Create the directory if it doesn't exist
-    await fs.mkdir(markdownDir, { recursive: true });
+  const repoInfo = await octokit.rest.repos.get({
+    owner: OBSIDIAN_OWNER,
+    repo: OBSIDIAN_REPO
+  });
+  const mainBranch = repoInfo.data.default_branch;
 
-    // Get all markdown files
-    const files = await fs.readdir(markdownDir);
-    const markdownFiles = files.filter((file) => file.endsWith('.md'));
+  const { data: tree } = await octokit.rest.git.getTree({
+    owner: OBSIDIAN_OWNER,
+    repo: OBSIDIAN_REPO,
+    tree_sha: mainBranch,
+    recursive: 'true'
+  });
 
-    // Read the metadata from each file
-    const markdownContents = await Promise.all(
-      markdownFiles.map(async (file) => {
-        const content = await fs.readFile(
-          path.join(markdownDir, file),
-          'utf-8'
-        );
+  const markdownFiles = tree.tree.filter(
+    (file) =>
+      file.path &&
+      file.path.endsWith('.md') &&
+      file.type === 'blob' &&
+      !file.path.includes('.obsidian/') &&
+      !file.path.includes('images/') &&
+      !file.path.includes('template/')
+  );
 
-        // Extract metadata
-        const metadataMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
-        const metadata: Record<string, string> = {};
+  const posts = await Promise.all(
+    markdownFiles.map(async (file) => {
+      try {
+        if (!file.path) return null;
 
-        if (metadataMatch) {
-          const metadataContent = metadataMatch[1];
-          const lines = metadataContent.split('\n');
+        const { data: contentData } = await octokit.rest.repos.getContent({
+          owner: OBSIDIAN_OWNER,
+          repo: OBSIDIAN_REPO,
+          path: file.path
+        });
 
-          for (const line of lines) {
-            const [key, value] = line.split(': ');
-            if (key && value) {
-              metadata[key.trim()] = value.trim();
+        if ('content' in contentData) {
+          const content = Buffer.from(contentData.content, 'base64').toString(
+            'utf-8'
+          );
+
+          const metadataMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+          const metadata: Record<string, string> = {};
+
+          if (metadataMatch) {
+            const metadataContent = metadataMatch[1];
+            const lines = metadataContent.split('\n');
+
+            for (const line of lines) {
+              const [key, ...valueParts] = line.split(':');
+              if (key && valueParts.length > 0) {
+                metadata[key.trim()] = valueParts.join(':').trim();
+              }
             }
           }
+
+          const pathParts = file.path.split('/');
+          const category =
+            pathParts.length > 1 ? pathParts[0] : 'Uncategorized';
+          const slug = path.basename(file.path, '.md');
+
+          let tags: string[] = [];
+          if (metadata.tags) {
+            tags = metadata.tags
+              .replace(/^\[|\]$/g, '')
+              .split(',')
+              .map((tag) => tag.trim());
+          }
+
+          return {
+            slug: slug,
+            filePath: `https://github.com/${OBSIDIAN_OWNER}/${OBSIDIAN_REPO}/blob/main/${file.path}`,
+            title: metadata.title || 'Untitled',
+            date: metadata.date || new Date().toISOString(),
+            category: category,
+            tags,
+            content: content.replace(/^---\n[\s\S]*?\n---\n/, '')
+          };
         }
+      } catch (error) {
+        console.error(`Error fetching or parsing file ${file.path}:`, error);
+        return null;
+      }
+      return null;
+    })
+  );
 
-        // Parse tags to array
-        let tags: string[] = [];
-        if (metadata.tags) {
-          tags = metadata.tags.split(',').map((tag) => tag.trim());
-        }
+  return posts.filter(
+    (post): post is NonNullable<typeof post> => post !== null
+  );
+};
 
-        return {
-          slug: file.replace('.md', ''),
-          filePath: `/markdown/${file}`,
-          title: metadata.title || 'Untitled',
-          date: metadata.date || new Date().toISOString(),
-          category: metadata.category || 'Uncategorized',
-          tags,
-          content: content.replace(/^---\n[\s\S]*?\n---\n/, '')
-        };
-      })
-    );
-
+export async function GET(request: NextRequest) {
+  try {
+    const markdownContents = await getAllMarkdownFilesFromGitHub();
     return NextResponse.json(markdownContents);
   } catch (error) {
-    console.error('Error listing markdown files:', error);
+    console.error('Error listing markdown files from GitHub:', error);
     return NextResponse.json(
-      { error: 'Failed to list markdown files' },
+      { error: 'Failed to list markdown files from GitHub' },
       { status: 500 }
     );
   }
