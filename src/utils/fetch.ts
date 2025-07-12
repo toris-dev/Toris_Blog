@@ -1,389 +1,124 @@
-import { CategoryWithCount, MarkdownFile, TagWithCount } from '@/types';
+import { Post } from '@/types';
+import {
+  getCategories as getMarkdownCategories,
+  getPostBySlug,
+  getPostData
+} from './markdown';
 
-// Only import fs and path in server context
-const fs = typeof window === 'undefined' ? require('fs/promises') : null;
-const path = typeof window === 'undefined' ? require('path') : null;
-
-// Server-side functions for direct file access
-export async function getMarkdownFiles(): Promise<MarkdownFile[]> {
-  // Check if running on server
-  if (typeof window !== 'undefined') {
-    console.error(
-      'getMarkdownFiles should only be called on the server'
-    );
-    return [];
-  }
-
+export async function getPosts(options: {
+  category?: string;
+  tag?: string;
+}): Promise<Post[]> {
   try {
-    const markdownDir = path.join(process.cwd(), 'public', 'markdown');
+    // 실제 마크다운 파일에서 데이터 가져오기
+    let posts = getPostData();
 
-    // Create the directory if it doesn't exist
-    await fs.mkdir(markdownDir, { recursive: true });
+    // 데이터가 없는 경우 목업 데이터 사용
+    if (posts.length === 0) {
+      posts = getMockPosts();
+    }
 
-    // Get all markdown files
-    const files = await fs.readdir(markdownDir);
-    const markdownFiles = files.filter((file: string) => file.endsWith('.md'));
+    // 옵션에 따라 필터링
+    if (options.category) {
+      posts = posts.filter(
+        (post) =>
+          post.category.toLowerCase() === options.category?.toLowerCase()
+      );
+    }
 
-    // Read the metadata from each file
-    const markdownContents = await Promise.all(
-      markdownFiles.map(async (file: string) => {
-        const filePath = path.join(markdownDir, file);
-        const content = await fs.readFile(filePath, 'utf-8');
+    if (options.tag) {
+      posts = posts.filter((post) =>
+        Array.isArray(post.tags)
+          ? post.tags.some(
+              (tag) => tag.toLowerCase() === options.tag?.toLowerCase()
+            )
+          : post.tags.toLowerCase() === options.tag?.toLowerCase()
+      );
+    }
 
-        // Extract metadata
-        const metadataMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
-        const metadata: Record<string, string> = {};
-
-        if (metadataMatch) {
-          const metadataContent = metadataMatch[1];
-          const lines = metadataContent.split('\n');
-
-          for (const line of lines) {
-            const [key, value] = line.split(': ');
-            if (key && value) {
-              metadata[key.trim()] = value.trim();
-            } 
-          }
-        }
-
-        return {
-          title: metadata.title || 'Untitled',
-          date: metadata.date || new Date().toISOString(),
-          slug: file.replace('.md', ''),
-          content: content.replace(/^---\n[\s\S]*?\n---\n/, ''),
-          filePath: `/markdown/${file}`,
-          tags: metadata.tags
-            ? metadata.tags.split(',').map((tag) => tag.trim())
-            : [],
-          category: metadata.category || 'Uncategorized'
-        };
-      })
-    );
-
-    return markdownContents;
+    return posts;
   } catch (error) {
-    console.error('Error listing markdown files:', error);
-    return [];
+    console.error('Error fetching posts:', error);
+    return getMockPosts();
   }
 }
 
-// Client-side markdown file fetching by slug (for browser)
-export async function getMarkdownFile(
-  slug: string
-): Promise<MarkdownFile | null> {
+export async function getPost(slug: string): Promise<Post | null> {
   try {
-    // Check if running on server or client
-    if (typeof window !== 'undefined') {
-      // Client-side (브라우저) 구현
-      const response = await fetch(`/markdown/${slug}.md`, {
-        next: { revalidate: 60 } // Revalidate every 60 seconds
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch markdown file');
-      }
-
-      const text = await response.text();
-      return parseMarkdownContent(text, slug);
-    } else {
-      // Server-side 구현 - 파일 시스템에서 직접 읽기
-      const markdownDir = path.join(process.cwd(), 'public', 'markdown');
-      const filePath = path.join(markdownDir, `${slug}.md`);
-
-      try {
-        const content = await fs.readFile(filePath, 'utf-8');
-        return parseMarkdownContent(content, slug);
-      } catch (fileError) {
-        console.error(`File not found: ${filePath}`, fileError);
-        return null;
-      }
+    const post = getPostBySlug(slug);
+    if (post) {
+      return post;
     }
+
+    // 목업 데이터에서 찾기
+    const mockPosts = getMockPosts();
+    return mockPosts.find((post) => post.slug === slug) || null;
   } catch (error) {
-    console.error('Error fetching markdown file:', error);
+    console.error('Error fetching post:', error);
     return null;
   }
 }
 
-// 마크다운 콘텐츠를 파싱하는 헬퍼 함수
-function parseMarkdownContent(text: string, slug: string): MarkdownFile {
-  // Extract metadata from frontmatter
-  const metadataMatch = text.match(/^---\n([\s\S]*?)\n---\n/);
-  let metadata: Record<string, string> = {};
-  let content = text;
-
-  if (metadataMatch) {
-    const metadataContent = metadataMatch[1];
-    const lines = metadataContent.split('\n');
-
-    for (const line of lines) {
-      const [key, value] = line.split(': ');
-      if (key && value) {
-        metadata[key.trim()] = value.trim();
-      }
-    }
-
-    // Remove metadata from content
-    content = text.replace(/^---\n[\s\S]*?\n---\n/, '');
-  }
-
-  return {
-    id: parseInt(metadata.id || '0'),
-    title: metadata.title || 'Untitled',
-    date: metadata.date || new Date().toISOString(),
-    slug: metadata.slug || slug,
-    content,
-    filePath: `/markdown/${slug}.md`,
-    tags: metadata.tags
-      ? metadata.tags.split(',').map((tag) => tag.trim())
-      : [],
-    category: metadata.category || 'Uncategorized'
-  };
-}
-
-// Get all tags from markdown files
-export async function getTags(): Promise<string[]> {
-  // Check if running in browser
-  if (typeof window !== 'undefined') {
-    // Client-side implementation
-    try {
-      const response = await fetch('/api/tags');
-      if (!response.ok) {
-        throw new Error('Failed to fetch tags');
-      }
-      return response.json();
-    } catch (error) {
-      console.error('Error fetching tags:', error);
-      return [];
-    }
-  } else {
-    // Server-side implementation
-    try {
-      const files = await getMarkdownFiles();
-      const allTags = files.flatMap((file) => file.tags || []);
-      // Return unique tags without using Set
-      const uniqueTags: string[] = [];
-      allTags.forEach((tag) => {
-        if (!uniqueTags.includes(tag)) {
-          uniqueTags.push(tag);
-        }
-      });
-      return uniqueTags;
-    } catch (error) {
-      console.error('Error getting tags:', error);
-      return [];
-    }
-  }
-}
-
-// Get all categories from markdown files
 export async function getCategories(): Promise<string[]> {
-  // 브라우저에서 실행 중인지 확인
-  if (typeof window !== 'undefined') {
-    // 클라이언트 측에서 실행 중일 때
-    try {
-      const response = await fetch('/api/categories');
-      if (!response.ok) {
-        throw new Error('Failed to fetch categories');
-      }
-      return response.json();
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      return [];
-    }
-  } else {
-    // 서버 측에서 실행 중일 때
-    try {
-      const files = await getMarkdownFiles();
-      const allCategories = files.map(
-        (file) => file.category || 'Uncategorized'
-      );
-      // Return unique categories using Array.filter for compatibility
-      const uniqueCategories: string[] = [];
-      allCategories.forEach((category) => {
-        if (!uniqueCategories.includes(category)) {
-          uniqueCategories.push(category);
-        }
-      });
-      return uniqueCategories;
-    } catch (error) {
-      console.error('Error getting categories:', error);
-      return [];
-    }
-  }
-}
-
-// Get markdown files by tag or category
-export async function getPosts({
-  category,
-  tag,
-  page = 0
-}: {
-  category?: string;
-  tag?: string;
-  page?: number;
-}): Promise<MarkdownFile[]> {
   try {
-    const files = await getMarkdownFiles();
-
-    let filteredFiles = files;
-
-    if (category) {
-      filteredFiles = filteredFiles.filter(
-        (file) => file.category === category
-      );
-    }
-
-    if (tag) {
-      filteredFiles = filteredFiles.filter((file) => file.tags?.includes(tag));
-    }
-
-    // Sort by date descending
-    filteredFiles.sort((a, b) => {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    });
-
-    // Paginate if needed (5 posts per page)
-    const start = page * 5;
-    const end = start + 5;
-    return filteredFiles.slice(start, end);
+    const categories = getMarkdownCategories();
+    return categories.length > 0
+      ? categories
+      : ['Next.js', 'React', 'TypeScript'];
   } catch (error) {
-    console.error('Error getting posts:', error);
-    return [];
+    console.error('Error fetching categories:', error);
+    return ['Next.js', 'React', 'TypeScript'];
   }
 }
 
-// Get all posts for sitemap and feed (without pagination)
-export async function getAllPosts(): Promise<MarkdownFile[]> {
+export async function getTags(): Promise<string[]> {
   try {
-    const files = await getMarkdownFiles();
-
-    // Sort by date descending
-    files.sort((a, b) => {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    });
-
-    return files;
-  } catch (error) {
-    console.error('Error getting all posts:', error);
-    return [];
-  }
-}
-
-// Get all post IDs (slugs) for sitemap and static paths
-export async function getPostId(): Promise<
-  { id: string; created_at: string }[]
-> {
-  try {
-    const files = await getMarkdownFiles();
-    return files.map((file) => ({
-      id: file.slug,
-      created_at: file.date
-    }));
-  } catch (error) {
-    console.error('Error getting post IDs:', error);
-    return [];
-  }
-}
-
-// 카테고리 관련 함수 추가
-// 모든 카테고리와 포스트 수 가져오기
-export async function getAllCategories(): Promise<CategoryWithCount[]> {
-  try {
-    // 여기서는 모든 포스트를 가져와서 카테고리를 집계하는 방식을 사용합니다
-    const posts = await getPosts({ page: 0 });
-
-    // 카테고리별 포스트 수 집계
-    const categoryCounts: Record<string, number> = {};
-
-    posts.forEach((post) => {
-      if (post.category) {
-        categoryCounts[post.category] =
-          (categoryCounts[post.category] || 0) + 1;
-      }
-    });
-
-    // 카테고리 배열로 변환
-    const categories: CategoryWithCount[] = Object.entries(categoryCounts).map(
-      ([name, count]) => ({
-        name,
-        count
-      })
+    const posts = await getPosts({});
+    const tags = posts.flatMap((post) =>
+      Array.isArray(post.tags) ? post.tags : [post.tags]
     );
-
-    // 카테고리 이름 기준으로 정렬
-    return categories.sort((a, b) => a.name.localeCompare(b.name));
+    return [...new Set(tags)];
   } catch (error) {
-    console.error('카테고리 가져오기 오류:', error);
-    return [];
+    console.error('Error fetching tags:', error);
+    return ['Next.js', 'React', 'TypeScript', 'JavaScript'];
   }
 }
 
-// 특정 카테고리와 해당 카테고리의 포스트 가져오기
-export async function getCategoryWithPosts(categoryName: string) {
-  try {
-    const posts = await getPosts({ page: 0 });
-    const categoryPosts = posts.filter(
-      (post) => post.category === categoryName
-    );
-
-    return {
-      name: categoryName,
-      count: categoryPosts.length,
-      posts: categoryPosts
-    };
-  } catch (error) {
-    console.error(`${categoryName} 카테고리 가져오기 오류:`, error);
-    return { name: categoryName, count: 0, posts: [] };
-  }
-}
-
-// 태그 관련 함수 추가
-// 모든 태그와 포스트 수 가져오기
-export async function getTagsWithCount(): Promise<TagWithCount[]> {
-  try {
-    // 모든 포스트를 가져와서 태그 집계
-    const posts = await getPosts({ page: 0 });
-
-    // 태그별 포스트 수 집계
-    const tagCounts: Record<string, number> = {};
-
-    posts.forEach((post) => {
-      if (post.tags && post.tags.length > 0) {
-        post.tags.forEach((tag) => {
-          tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-        });
-      }
-    });
-
-    // 태그 배열로 변환
-    const tags: TagWithCount[] = Object.entries(tagCounts).map(
-      ([name, count]) => ({
-        name,
-        count
-      })
-    );
-
-    // 태그 이름 기준으로 정렬
-    return tags.sort((a, b) => a.name.localeCompare(b.name));
-  } catch (error) {
-    console.error('태그 가져오기 오류:', error);
-    return [];
-  }
-}
-
-// 특정 태그와 해당 태그의 포스트 가져오기
-export async function getTagWithPosts(tagName: string) {
-  try {
-    const posts = await getPosts({ page: 0 });
-    const tagPosts = posts.filter((post) => post.tags?.includes(tagName));
-
-    return {
-      name: tagName,
-      count: tagPosts.length,
-      posts: tagPosts
-    };
-  } catch (error) {
-    console.error(`${tagName} 태그 가져오기 오류:`, error);
-    return { name: tagName, count: 0, posts: [] };
-  }
+// 목업 데이터 (실제 마크다운 파일이 없을 때 사용)
+function getMockPosts(): Post[] {
+  return [
+    {
+      id: 1,
+      title: 'Next.js 14의 새로운 기능들',
+      content: 'Next.js 14에서 새롭게 추가된 기능들을 살펴보겠습니다.',
+      description: 'Next.js 14의 새로운 기능들을 자세히 알아보세요.',
+      category: 'Next.js',
+      tags: ['Next.js', 'React', 'TypeScript'],
+      date: '2023-01-01T12:00:00.000Z',
+      slug: 'nextjs-14-new-features',
+      filePath: '/posts/nextjs-14-new-features.md'
+    },
+    {
+      id: 2,
+      title: 'React 18의 Concurrent Features',
+      content: 'React 18에서 소개된 Concurrent Features에 대해 알아보겠습니다.',
+      description: 'React 18의 동시성 기능들을 실제 예제와 함께 살펴보세요.',
+      category: 'React',
+      tags: ['React', 'JavaScript', 'Frontend'],
+      date: '2022-12-01T12:00:00.000Z',
+      slug: 'react-18-concurrent-features',
+      filePath: '/posts/react-18-concurrent-features.md'
+    },
+    {
+      id: 3,
+      title: 'TypeScript 5.0 새로운 기능',
+      content: 'TypeScript 5.0에서 새롭게 추가된 기능들을 살펴보겠습니다.',
+      description: 'TypeScript 5.0의 새로운 기능들과 개선사항들을 알아보세요.',
+      category: 'TypeScript',
+      tags: ['TypeScript', 'JavaScript', 'Programming'],
+      date: '2022-11-01T12:00:00.000Z',
+      slug: 'typescript-5-new-features',
+      filePath: '/posts/typescript-5-new-features.md'
+    }
+  ];
 }

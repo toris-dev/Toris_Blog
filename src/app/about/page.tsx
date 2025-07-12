@@ -81,22 +81,22 @@ export default function AboutPage() {
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl space-y-12">
         <div className="space-y-6 text-center">
-          <h1 className="gradient-text text-4xl font-bold sm:text-5xl">
+          <h1 className="bg-gradient-to-r from-primary to-accent bg-clip-text text-4xl font-bold text-transparent sm:text-5xl">
             Toris Dev Blog 소개
           </h1>
-          <p className="mx-auto max-w-2xl text-lg text-content/80 dark:text-content-dark/90">
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             웹 개발과 AI 생산성 도구에 관한 경험과 지식을 공유하는 기술
             블로그입니다
           </p>
         </div>
 
         {/* 블로그 소개 섹션 */}
-        <section className="rounded-2xl bg-white p-8 shadow-sm dark:bg-bkg-dark">
-          <h2 className="mb-6 text-2xl font-bold text-content dark:text-content-dark">
+        <section className="rounded-2xl bg-card p-8 shadow-sm dark:bg-card">
+          <h2 className="mb-6 text-2xl font-bold text-card-foreground">
             <span className="mr-2">📝</span>
             블로그 소개
           </h2>
-          <div className="space-y-4 text-content/80 dark:text-content-dark/90">
+          <div className="space-y-4 text-muted-foreground">
             <p>
               Toris Dev Blog는 웹 개발, 프론트엔드 기술, 생산성 도구에 관한
               경험과 지식을 공유하기 위해 만들어졌습니다. 특히 Next.js, React,
@@ -117,8 +117,8 @@ export default function AboutPage() {
         </section>
 
         {/* 운영자 소개 */}
-        <section className="rounded-2xl bg-white p-8 shadow-sm dark:bg-bkg-dark">
-          <h2 className="mb-6 text-2xl font-bold text-content dark:text-content-dark">
+        <section className="rounded-2xl bg-card p-8 shadow-sm dark:bg-card">
+          <h2 className="mb-6 text-2xl font-bold text-card-foreground">
             <span className="mr-2">👨‍💻</span>
             운영자 소개
           </h2>
@@ -126,7 +126,7 @@ export default function AboutPage() {
             <div className="flex flex-col items-center justify-center md:col-span-1">
               <div className="relative mb-4 size-40 overflow-hidden rounded-full border-4 border-primary/20">
                 {/* 프로필 이미지 자리 - 실제 이미지로 교체하세요 */}
-                <div className="flex size-full items-center justify-center bg-gradient-to-br from-primary/30 to-accent-1/30">
+                <div className="flex size-full items-center justify-center bg-gradient-to-br from-primary/30 to-accent/30">
                   <Image
                     src="https://github.com/toris-dev.png"
                     alt="토리스 프로필 이미지"
@@ -136,10 +136,10 @@ export default function AboutPage() {
                   />
                 </div>
               </div>
-              <h3 className="mb-2 text-xl font-semibold text-content dark:text-content-dark">
+              <h3 className="mb-2 text-xl font-semibold text-card-foreground">
                 Toris
               </h3>
-              <p className="mb-4 text-center text-sm text-content/70 dark:text-content-dark/70">
+              <p className="mb-4 text-center text-sm text-muted-foreground">
                 프론트엔드 개발자 / AI 엔지니어
               </p>
               <div className="flex space-x-3">
@@ -147,7 +147,7 @@ export default function AboutPage() {
                   href="https://github.com/toris-dev"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-content/70 transition-colors hover:text-primary dark:text-content-dark/70 dark:hover:text-primary"
+                  className="text-muted-foreground transition-colors hover:text-primary dark:hover:text-primary"
                   aria-label="GitHub"
                 >
                   <AiFillGithub className="size-5" />
@@ -156,7 +156,7 @@ export default function AboutPage() {
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-content/70 transition-colors hover:text-primary dark:text-content-dark/70 dark:hover:text-primary"
+                  className="text-muted-foreground transition-colors hover:text-primary dark:hover:text-primary"
                   aria-label="Twitter"
                 >
                   <FaTwitter className="size-5" />
@@ -165,7 +165,7 @@ export default function AboutPage() {
                   href="https://discord.gg/uVq7PYEU"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-content/70 transition-colors hover:text-primary dark:text-content-dark/70 dark:hover:text-primary"
+                  className="text-muted-foreground transition-colors hover:text-primary dark:hover:text-primary"
                   aria-label="Discord"
                 >
                   <FaDiscord className="size-5" />
@@ -190,16 +190,16 @@ export default function AboutPage() {
                   <h4 className="mb-2 font-medium text-primary">
                     주요 기술 스택
                   </h4>
-                  <ul className="list-inside list-disc space-y-1 text-sm text-content/80 dark:text-content-dark/80">
+                  <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
                     <li>Next.js / React</li>
                     <li>TypeScript</li>
                     <li>Tailwind CSS</li>
                     <li>Supabase</li>
                   </ul>
                 </div>
-                <div className="rounded-lg bg-accent-1/5 p-4 dark:bg-accent-1/10">
-                  <h4 className="mb-2 font-medium text-accent-1">관심 분야</h4>
-                  <ul className="list-inside list-disc space-y-1 text-sm text-content/80 dark:text-content-dark/80">
+                <div className="rounded-lg bg-accent/5 p-4 dark:bg-accent/10">
+                  <h4 className="mb-2 font-medium text-accent">관심 분야</h4>
+                  <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
                     <li>AI 기반 개발</li>
                     <li>UI/UX 디자인</li>
                     <li>서버리스 아키텍처</li>
@@ -212,17 +212,17 @@ export default function AboutPage() {
         </section>
 
         {/* 연락 섹션 */}
-        <section className="rounded-2xl bg-gradient-to-br from-primary/10 to-accent-1/10 p-8 text-center dark:from-primary/5 dark:to-accent-1/5">
-          <h2 className="mb-4 text-2xl font-bold text-content dark:text-content-dark">
+        <section className="rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 p-8 text-center dark:from-primary/5 dark:to-accent/5">
+          <h2 className="mb-4 text-2xl font-bold text-card-foreground">
             문의하기
           </h2>
-          <p className="mb-6 text-content/80 dark:text-content-dark/90">
+          <p className="mb-6 text-muted-foreground">
             블로그에 관한 피드백이나 협업 제안은 언제든지 환영합니다.
           </p>
           <div className="flex justify-center space-x-4">
             <Link
               href="/contact"
-              className="rounded-md bg-gradient-to-r from-primary to-accent-1 px-6 py-3 text-white transition-transform hover:scale-105"
+              className="rounded-md bg-gradient-to-r from-primary to-accent px-6 py-3 text-white transition-transform hover:scale-105"
             >
               연락처 페이지로 이동
             </Link>

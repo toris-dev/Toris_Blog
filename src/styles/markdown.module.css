@@ -36,7 +36,6 @@
 .viewerContainer {
   padding: 24px;
   border-radius: 8px;
-  background-color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -103,7 +102,6 @@
 }
 
 .viewerContainer pre {
-  background-color: #f6f8fa;
   border-radius: 6px;
   padding: 16px;
   overflow: auto;

@@ -124,7 +124,7 @@ export default function ContactForm() {
           <div>
             <label
               htmlFor="name"
-              className="mb-1 block text-sm font-medium text-content dark:text-content-dark"
+              className="mb-1 block text-sm font-medium text-foreground dark:text-muted-foreground"
             >
               이름
             </label>
@@ -135,14 +135,14 @@ export default function ContactForm() {
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-content shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-gray-700 dark:bg-bkg-dark dark:text-content-dark"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-gray-700 dark:bg-background dark:text-muted-foreground"
             />
           </div>
 
           <div>
             <label
               htmlFor="email"
-              className="mb-1 block text-sm font-medium text-content dark:text-content-dark"
+              className="mb-1 block text-sm font-medium text-foreground dark:text-muted-foreground"
             >
               이메일
             </label>
@@ -153,14 +153,14 @@ export default function ContactForm() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-content shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-gray-700 dark:bg-bkg-dark dark:text-content-dark"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-gray-700 dark:bg-background dark:text-muted-foreground"
             />
           </div>
 
           <div>
             <label
               htmlFor="subject"
-              className="mb-1 block text-sm font-medium text-content dark:text-content-dark"
+              className="mb-1 block text-sm font-medium text-foreground dark:text-muted-foreground"
             >
               문의 유형
             </label>
@@ -170,7 +170,7 @@ export default function ContactForm() {
               value={formData.subject}
               onChange={handleChange}
               required
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-content shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-gray-700 dark:bg-bkg-dark dark:text-content-dark"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-gray-700 dark:bg-background dark:text-muted-foreground"
             >
               <option value="">선택하세요</option>
               <option value="프론트엔드 개발">프론트엔드 개발</option>
@@ -184,7 +184,7 @@ export default function ContactForm() {
           <div>
             <label
               htmlFor="message"
-              className="mb-1 block text-sm font-medium text-content dark:text-content-dark"
+              className="mb-1 block text-sm font-medium text-foreground dark:text-muted-foreground"
             >
               메시지
             </label>
@@ -195,7 +195,7 @@ export default function ContactForm() {
               onChange={handleChange}
               required
               rows={5}
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-content shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-gray-700 dark:bg-bkg-dark dark:text-content-dark"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-gray-700 dark:bg-background dark:text-muted-foreground"
             />
           </div>
 

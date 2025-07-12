@@ -1,64 +1,80 @@
-import { OWNER, REPO, getOctokit } from '@/utils/github';
 import { NextRequest, NextResponse } from 'next/server';
-
-// GitHub 이슈 번호 (Toris_Blog 레포지토리의 Contact 이슈)
-const CONTACT_ISSUE_NUMBER = 16;
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, subject, message } = await request.json();
+    const { name, email, message } = await request.json();
 
-    if (!name || !email || !subject || !message) {
+    // 입력 검증
+    if (!name || !email || !message) {
       return NextResponse.json(
-        { error: '필수 필드가 누락되었습니다' },
+        { error: 'Name, email, and message are required' },
         { status: 400 }
       );
     }
 
-    // GitHub API를 사용하여 이슈에 댓글 추가
-    const octokit = getOctokit();
+    // GitHub API에 댓글 생성
+    const githubToken = process.env.GITHUB_TOKEN;
+    const repoOwner = 'toris-dev';
+    const repoName = 'Toris_Blog';
+    const issueNumber = 16;
 
-    // 댓글 내용 구성
-    const commentBody = `
-## 문의 내용
+    if (!githubToken) {
+      console.error('GitHub token not configured');
+      return NextResponse.json(
+        { error: 'Server configuration error' },
+        { status: 500 }
+      );
+    }
 
-**이름**: ${name}
-**이메일**: ${email}
-**문의 유형**: ${subject}
+    // 댓글 내용 포맷팅
+    const commentBody = `## 새로운 문의
 
-### 메시지
+**이름:** ${name}  
+**이메일:** ${email}  
+**메시지:**  
 ${message}
 
 ---
-*이 댓글은 블로그 Contact 폼에서 자동으로 생성되었습니다.*
-`;
+*이 댓글은 블로그 연락 폼을 통해 자동으로 생성되었습니다.*`;
 
-    // 실제 GitHub 이슈에 댓글 추가
-    const response = await octokit.rest.issues.createComment({
-      owner: OWNER,
-      repo: REPO,
-      issue_number: CONTACT_ISSUE_NUMBER,
-      body: commentBody
-    });
+    // GitHub API 호출
+    const response = await fetch(
+      `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${issueNumber}/comments`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${githubToken}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json',
+          'User-Agent': 'Toris-Blog-Contact-Form'
+        },
+        body: JSON.stringify({
+          body: commentBody
+        })
+      }
+    );
 
-    if (response.status !== 201) {
-      throw new Error('GitHub API 오류: 댓글을 생성할 수 없습니다');
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('GitHub API error:', response.status, errorData);
+      return NextResponse.json(
+        { error: 'Failed to send message' },
+        { status: 500 }
+      );
     }
 
-    // 성공 응답
+    const result = await response.json();
+    console.log('Comment created:', result.html_url);
+
     return NextResponse.json({
       success: true,
-      commentUrl: response.data.html_url
+      message: 'Your message has been sent successfully!',
+      commentUrl: result.html_url
     });
-  } catch (error: any) {
-    console.error('GitHub 이슈 댓글 생성 오류:', error);
-
-    // 오류 응답
+  } catch (error) {
+    console.error('Error sending contact form:', error);
     return NextResponse.json(
-      {
-        error: '메시지 전송에 실패했습니다',
-        details: error.message
-      },
+      { error: 'An unexpected error occurred' },
       { status: 500 }
     );
   }

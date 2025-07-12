@@ -1,11 +1,9 @@
-'use client';
-
-import { Markdown } from '@/components/blog/Markdown';
-import CommentInput from '@/components/comments/CommentInput';
+import { MarkdownViewer } from '@/components/blog/Markdown';
 import { FaCalendarAlt, FaFolder, FaTags } from '@/components/icons';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { FC } from 'react';
+import { Utterances } from './Utterances';
 
 // 마크다운 파일에서 가져올 때 사용할 인터페이스에 맞게 props를 수정합니다
 const PostPage: FC<{
@@ -30,7 +28,7 @@ const PostPage: FC<{
   );
 
   return (
-    <article className="container mx-auto mt-12 max-w-4xl px-4 pb-32">
+    <article className="mx-auto mt-12 max-w-4xl px-4 pb-32">
       <header className="mb-12 text-center">
         <h1 className="mb-4 text-4xl font-bold dark:text-white">{title}</h1>
         <div className="flex flex-wrap items-center justify-center gap-4">
@@ -40,7 +38,7 @@ const PostPage: FC<{
           </span>
           <Link
             href={`/categories/${category}`}
-            className="dark:hover:text-primary-light flex items-center text-sm text-gray-600 hover:text-primary dark:text-gray-400"
+            className="flex items-center text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary"
           >
             <FaFolder className="mr-2" />
             {category}
@@ -59,16 +57,11 @@ const PostPage: FC<{
         </div>
       </header>
 
-      <div className="prose-md prose max-w-full dark:prose-invert">
-        <Markdown>{content}</Markdown>
+      <div className="prose max-w-full dark:prose-invert">
+        <MarkdownViewer>{content}</MarkdownViewer>
       </div>
 
-      <hr className="my-8" />
-
-      {/* GitHub 댓글 시스템 */}
-      <div className="mt-8">
-        <CommentInput postId={postId} />
-      </div>
+      <Utterances repo="toris-dev/Toris_Blog" />
     </article>
   );
 };

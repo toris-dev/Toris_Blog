@@ -49,6 +49,7 @@ import { FaEye } from '@react-icons/all-files/fa/FaEye';
 import { FaFolder } from '@react-icons/all-files/fa/FaFolder';
 import { FaFolderOpen } from '@react-icons/all-files/fa/FaFolderOpen';
 import { FaGithub } from '@react-icons/all-files/fa/FaGithub';
+import { FaHome } from '@react-icons/all-files/fa/FaHome';
 import { FaImage } from '@react-icons/all-files/fa/FaImage';
 import { FaLaptopCode } from '@react-icons/all-files/fa/FaLaptopCode';
 import { FaListAlt } from '@react-icons/all-files/fa/FaListAlt';
@@ -113,9 +114,9 @@ export {
   BsFileText as BsFileEarmarkPost,
   BsGrid,
   BsLightning as BsLightningCharge,
-  BsMoon as BsMoonStarsFill,
+  BsMoon as MoonIcon,
   BsPencilSquare,
-  BsSun as BsSunFill,
+  BsSun as SunIcon,
 
   // fa 아이콘
   FaArrowLeft,
@@ -134,6 +135,7 @@ export {
   FaFolder,
   FaFolderOpen,
   FaGithub,
+  FaHome,
   FaImage,
   FaLaptopCode,
   FaListAlt,
@@ -198,10 +200,7 @@ export const SiVercel = FaServer;
 export const TbApi = FaNodeJs;
 
 // RiUserFollowLine 아이콘을 다른 아이콘으로 대체
-export const RiUserFollowLine = HiBadgeCheck;
+export const RiUserFollowLine = FaUserCircle;
 
 // si 아이콘 대체 (필요한 경우)
-export const SiNextdotjs = SiNextDotJs;
-export const SiSolidity = FaEthereum;
-// Next.js 아이콘 추가 별칭
 export const SiNextjs = SiNextDotJs;

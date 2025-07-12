@@ -3,6 +3,7 @@
 import { FaCloudUploadAlt, FaImage, FaTimesCircle } from '@/components/icons';
 import { cn } from '@/utils/style';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { ChangeEvent, useRef, useState } from 'react';
 
 interface ImageUploaderProps {
@@ -123,15 +124,18 @@ export default function ImageUploader({
             <button
               type="button"
               onClick={clearImage}
-              className="absolute right-1 top-1 rounded-full bg-gray-800/70 p-1 text-white hover:bg-gray-800"
+              className="absolute right-1 top-1 z-10 rounded-full bg-gray-800/70 p-1 text-white hover:bg-gray-800"
             >
               <FaTimesCircle size={16} />
             </button>
-            <img
-              src={previewUrl}
-              alt="Preview"
-              className="mx-auto max-h-[300px] rounded-md object-contain"
-            />
+            <div className="relative mx-auto h-[300px] w-full">
+              <Image
+                src={previewUrl}
+                alt="Preview"
+                className="rounded-md object-contain"
+                fill
+              />
+            </div>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center text-center">

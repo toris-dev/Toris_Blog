@@ -23,6 +23,7 @@ export interface Post {
   date: string;
   slug: string;
   filePath: string;
+  description?: string;
 }
 
 // GitHub comment types

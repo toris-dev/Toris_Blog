@@ -1,26 +1,25 @@
-'use client';
+import * as React from 'react';
 
 import { cn } from '@/utils/style';
-import { ComponentPropsWithRef, forwardRef } from 'react';
 
-type InputPorps = ComponentPropsWithRef<'input'>;
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-// 특정 document 에서 useRef를 많이 쓰는데 컴포넌트 별로 전달하는 것을 도움.
-const Input = forwardRef<HTMLInputElement, InputPorps>(
-  ({ className, ...rest }, ref) => {
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
     return (
       <input
+        type={type}
         className={cn(
-          'rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400',
+          'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
           className
         )}
         ref={ref}
-        {...rest}
+        {...props}
       />
     );
   }
 );
-
-export default Input;
-
 Input.displayName = 'Input';
+
+export { Input };

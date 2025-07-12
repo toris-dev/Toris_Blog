@@ -1,12 +1,13 @@
 'use client';
 
-import styles from '@/styles/filp.module.css';
 import { Post } from '@/types';
 import { cn } from '@/utils/style';
+import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
 import { MarkdownViewer } from './Markdown';
+
 export type PostCardProps = Post & {
   className?: string;
 };
@@ -14,60 +15,59 @@ export type PostCardProps = Post & {
 const PostCard: FC<PostCardProps> = ({
   id,
   title,
-  content,
+  date,
   preview_image_url,
   className,
   category,
-  tags
+  tags,
+  content
 }) => {
-  if (typeof tags === 'string') tags = JSON.parse(tags);
-
   const tagArray = Array.isArray(tags) ? tags : [];
 
   return (
-    <Link
-      href={`/posts/${id}`}
+    <div
       className={cn(
-        'overflow-hidden rounded-xl border-2 border-indigo-300 bg-white',
+        'group block overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl dark:border-border',
         className
       )}
     >
-      <div className={`${styles.flipCard} h-72 text-black shadow-2xl`}>
-        <div className={`${styles.front} `}>
-          <div className="relative aspect-[1.8/1] ">
-            <Image
-              src={preview_image_url ?? '/book-open.svg'}
-              fill
-              sizes="360px"
-              alt={title}
-              className="object-cover"
-              priority
-            />
-          </div>
-          <div className="ml-2 flex w-full flex-1 flex-col items-start justify-between">
-            <h1 className="mb-3 mt-2 text-lg font-medium">{title}</h1>
-            <div className="flex gap-3">
-              <p className="rounded-md bg-slate-800 px-2 py-1 text-sm text-white md:flex-1">
-                {category}
-              </p>
-              <p className="rounded-md bg-slate-200 px-2 py-1 text-sm text-slate-900">
-                {tagArray.map((tag: string) => tag).join(', ')}
-              </p>
-            </div>
-          </div>
+      {/* Main Card Content */}
+      <div>
+        <div className="relative overflow-hidden">
+          <Image
+            src={preview_image_url ?? '/book-open.svg'}
+            width={400}
+            height={225}
+            alt={title}
+            className="w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
-        <div
-          className={`${styles.back} flex size-full items-center justify-center`}
-        >
-          <div
-            className="line-clamp-6 text-ellipsis bg-white p-3 text-sm text-zinc-950"
-            style={{ maxHeight: '300px', overflowY: 'auto', minHeight: '100%' }}
-          >
-            <MarkdownViewer value={content} />
+        <div className="p-4">
+          <p className="mb-2 text-sm font-medium text-primary">{category}</p>
+          <h3 className="mb-2 truncate text-lg font-bold text-card-foreground">
+            {title}
+          </h3>
+          <div className="mb-3 flex items-center text-xs text-muted-foreground">
+            <time dateTime={date}>
+              {dayjs(date).format('YYYY년 MM월 DD일')}
+            </time>
           </div>
+          {tagArray.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {tagArray.map((tag: string) => (
+                <span
+                  key={tag}
+                  className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
-    </Link>
   );
 };
 
