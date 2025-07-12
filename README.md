@@ -15,13 +15,7 @@ flowchart LR
   Home --- SideBar
   Home --- List
 
-  Delete[글 삭제 화면]
-  Admin[어드민 화면]
-  Chatbot[챗봇 화면]
-  ChatbotResult(챗봇 답변)
   Detail[글 상세 화면]
-
-  Authorize{인증 여부}
 
   TagList[태그 목록 화면]
   Tag[태그별 글 화면]
@@ -30,10 +24,6 @@ flowchart LR
   Header -.-> Chatbot --- ChatbotResult -.-> Detail
   SideBar -.-> TagList -.-> Tag -.-> Detail
   SideBar -.-> Category -.-> Detail
-  Footer --> Authorize -.->|YES|Delete -.-> Detail
-  Authorize -.->|No|Admin
-  Footer -.-> Admin -.-> Delete
-
   List -.-> Detail
 ```
 
@@ -143,20 +133,52 @@ graph LR
 
 ---
 
-### 실행방법
+### 최근 변경 사항 (2025년 7월 12일)
 
-- .env 파일 생성 후
+- **기능 제거 및 구조 개선**:
+  - 기존 포트폴리오, 관리자, 방명록, 인증 관련 기능 및 파일들을 제거하여 프로젝트를 간소화했습니다.
+  - 마크다운 콘텐츠 구조를 재정비하여 `public/markdown` 디렉토리 아래에 `Archive`, `Career`, `Design`, `Learning`, `Personal`, `Projects`와 같은 새로운 카테고리별 디렉토리를 도입했습니다.
+- **E2E 테스트 강화**:
+  - Cypress를 사용하여 주요 페이지 및 기능에 대한 E2E 테스트 코드를 업데이트 및 추가했습니다.
+  - `cypress/e2e/portfolio.cy.ts` 파일을 제거했습니다.
+  - `cypress/e2e/about.cy.ts` 및 `cypress/e2e/contact.cy.ts` 파일을 새로 추가하여 About 페이지와 Contact 폼의 동작을 테스트합니다.
+  - `cypress/e2e/home.cy.ts`, `cypress/e2e/navigation.cy.ts`, `cypress/e2e/blog.cy.ts`, `cypress/e2e/search.cy.ts` 파일들을 현재 애플리케이션 구조와 기능에 맞춰 업데이트했습니다.
+
+---
+
+### 실행 방법
+
+- `.env` 파일 생성 후 아래 변수들을 설정합니다:
   `NEXT_PUBLIC_SUPABASE_URL=`
   `NEXT_PUBLIC_SUPABASE_ANON_KEY=`
   `NEXT_PUBLIC_OPENAI_API=`
   `NEXT_PUBLIC_ORGANIZATION_API=`
 
-위의 4개의 .env 를 만들어서 키 값을 넣어주시면 됩니다.
+- 프로젝트 의존성 설치:
+  ```shell
+  pnpm install
+  ```
 
-```shell
-yarn install
+- 개발 서버 실행:
+  ```shell
+  pnpm dev
+  ```
 
-yarn dev
-```
+- **Cypress E2E 테스트 실행**:
+  애플리케이션이 `http://localhost:3000`에서 실행 중인 상태에서 다음 명령어를 사용합니다.
+
+  - **Cypress 테스트 러너 UI 열기 (테스트 개발 및 디버깅용):**
+    ```shell
+    pnpm cypress:open
+    ```
+  - **모든 E2E 테스트 헤드리스 모드로 실행 (CI/CD 환경에 적합):**
+    ```shell
+    pnpm cypress:run
+    ```
+  - **특정 E2E 테스트 파일 실행 (예: `home.cy.ts`):**
+    ```shell
+    pnpm cypress:run --spec 'cypress/e2e/home.cy.ts'
+    ```
+    (다른 테스트 파일들도 `--spec` 옵션 뒤에 경로를 지정하여 실행할 수 있습니다.)
 
 ![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=yourusername.yourusername)
