@@ -70,6 +70,7 @@ import { FaTimesCircle } from '@react-icons/all-files/fa/FaTimesCircle';
 import { FaTools } from '@react-icons/all-files/fa/FaTools';
 import { FaTrash } from '@react-icons/all-files/fa/FaTrash';
 import { FaTwitter } from '@react-icons/all-files/fa/FaTwitter';
+import { FaUser } from '@react-icons/all-files/fa/FaUser';
 import { FaUserCircle } from '@react-icons/all-files/fa/FaUserCircle';
 
 //  FaCloudUploadAlt, FaImage, FaTimesCircle
@@ -114,10 +115,7 @@ export {
   BsFileText as BsFileEarmarkPost,
   BsGrid,
   BsLightning as BsLightningCharge,
-  BsMoon as MoonIcon,
   BsPencilSquare,
-  BsSun as SunIcon,
-
   // fa 아이콘
   FaArrowLeft,
   FaArrowRight,
@@ -156,6 +154,7 @@ export {
   FaTools,
   FaTrash,
   FaTwitter,
+  FaUser,
   FaUserCircle,
 
   // hi 아이콘들
@@ -167,12 +166,13 @@ export {
   IoClose,
   IoIosArrowDown,
   IoRefresh,
-
+  BsMoon as MoonIcon,
   // md 아이콘들
   // MdCategory,
   // MdTitle,
   // si 아이콘들
-  SiNextDotJs
+  SiNextDotJs,
+  BsSun as SunIcon
 };
 
 // 추가 별칭들 - 아이콘이 없는 경우 대체

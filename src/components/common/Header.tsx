@@ -1,6 +1,13 @@
 'use client';
 
-import { FaBlog, FaHome, FaPaperPlane, FaSearch, SiNextjs } from '@/components/icons';
+import {
+  FaBlog,
+  FaHome,
+  FaPaperPlane,
+  FaSearch,
+  FaUser,
+  SiNextjs
+} from '@/components/icons';
 import { cn } from '@/utils/style';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -71,7 +78,7 @@ const Header: FC = () => {
           {[
             { href: '/', icon: FaHome, label: '홈' },
             { href: '/posts', icon: FaBlog, label: '블로그' },
-            { href: '/about', icon: FaSearch, label: '소개' },
+            { href: '/about', icon: FaUser, label: '소개' },
             { href: '/contact', icon: FaPaperPlane, label: '문의' }
           ].map(({ href, icon: Icon, label }) => (
             <Link
