@@ -68,7 +68,7 @@
     "@types/react-syntax-highlighter": "^15.5.13",
     "@types/rss": "^0.0.32",
     "autoprefixer": "^10.0.1",
-    "cypress": "^13.7.1",
+    "cypress": "^13.17.0",
     "eslint": "^8",
     "eslint-config-next": "^14.2.5",
     "eslint-config-prettier": "^9.1.0",
