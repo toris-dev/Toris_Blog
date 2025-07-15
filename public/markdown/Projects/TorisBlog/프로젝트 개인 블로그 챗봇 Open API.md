@@ -83,7 +83,7 @@ export default async function handler(
       {
         role: 'system',
         content:
-          '너는 toris-dev만을 위한 챗봇이야. 내가 물어보는 개발 질문에 성실하게 대답해줘.'
+          '이 챗봇은 해당 블로그의 개발 질문에 성실하게 대답하는 전용 챗봇입니다.'
       },
       ...messages
     ],

@@ -1,19 +1,15 @@
 ---
-tistoryBlogName: toris-dev
-tistoryTitle: Java Collection Framework 모음
-tistoryTags: Java,자료구조
-tistoryVisibility: '3'
-tistoryCategory: '1399377'
-tistoryPostId: '4'
-tistoryPostUrl: https://toris-dev.tistory.com/4
+title: 'Java Collection Framework 모음'
+date: 2025-07-14T10:00:00.000Z
+slug: java-collection-framework
+category: 'Algorithm'
 tags:
-  - Blog
+  - Algorithm
   - Java
-  - 알고리즘
 ---
 
 > [!faq] java Collection Framework 란?
-> Java 에서 데이터를 저장하는 자료구조들을 한 곳에 모아 편리하게 사용하기 위해 제공하는 List, Set, Map 으로 구분할 수 있다.
+> Java에서 데이터를 저장하는 자료구조들을 한 곳에 모아 편리하게 사용하기 위해 제공하는 List, Set, Map으로 구분할 수 있다.
 
 ![[Pasted image 20231023220222.png]]
 
