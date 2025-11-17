@@ -1,39 +1,44 @@
+import { getDefaultOGImageUrl } from '@/utils/og-image';
 import { Metadata } from 'next';
-import { ReactNode } from 'react';
+
+const baseUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
 
 export const metadata: Metadata = {
-  title: '연락하기 - 토리스에게 메시지 보내기',
+  title: '문의하기 - Toris Dev Blog',
   description:
-    '토리스에게 직접 연락하세요. 프로젝트 협업, 기술 문의, 또는 일반적인 질문이 있으시면 언제든지 메시지를 보내주세요.',
-  keywords: [
-    '연락하기',
-    '컨택트',
-    '메시지',
-    '문의',
-    '협업',
-    '프로젝트',
-    '토리스',
-    '웹 개발자',
-    '개발 문의'
-  ],
+    '블로그에 관한 피드백이나 협업 제안은 언제든지 환영합니다. 문의사항을 남겨주세요.',
   openGraph: {
-    title: '연락하기 - 토리스에게 메시지 보내기',
+    title: '문의하기 - Toris Dev Blog',
     description:
-      '토리스에게 직접 연락하세요. 프로젝트 협업, 기술 문의, 또는 일반적인 질문이 있으시면 언제든지 메시지를 보내주세요.',
+      '블로그에 관한 피드백이나 협업 제안은 언제든지 환영합니다. 문의사항을 남겨주세요.',
     type: 'website',
-    url: '/contact'
+    url: `${baseUrl}/contact`,
+    images: [
+      {
+        url: getDefaultOGImageUrl('문의하기', 'Toris Dev Blog'),
+        width: 1200,
+        height: 630,
+        alt: 'Toris Dev Blog 문의하기'
+      }
+    ]
   },
   twitter: {
-    card: 'summary',
-    title: '연락하기 - 토리스에게 메시지 보내기',
+    card: 'summary_large_image',
+    title: '문의하기 - Toris Dev Blog',
     description:
-      '토리스에게 직접 연락하세요. 프로젝트 협업, 기술 문의, 또는 일반적인 질문이 있으시면 언제든지 메시지를 보내주세요.'
+      '블로그에 관한 피드백이나 협업 제안은 언제든지 환영합니다. 문의사항을 남겨주세요.',
+    images: [getDefaultOGImageUrl('문의하기', 'Toris Dev Blog')]
   },
   alternates: {
-    canonical: '/contact'
+    canonical: `${baseUrl}/contact`
   }
 };
 
-export default function ContactLayout({ children }: { children: ReactNode }) {
+export default function ContactLayout({
+  children
+}: {
+  children: React.ReactNode;
+}) {
   return <>{children}</>;
 }

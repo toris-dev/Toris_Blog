@@ -1,12 +1,10 @@
 'use client';
 
+import { submitContactForm } from '@/app/actions/contact';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Message } from '@/components/ui/Message';
-import { useState } from 'react';
-
-// 메타데이터는 Server Component에서만 export 가능하므로 별도 파일로 분리하거나
-// generateMetadata 함수를 사용해야 합니다.
+import { useState, useTransition } from 'react';
 
 export default function ContactPage() {
   const [name, setName] = useState('');
@@ -16,44 +14,27 @@ export default function ContactPage() {
     'idle' | 'loading' | 'success' | 'error'
   >('idle');
   const [responseMessage, setResponseMessage] = useState('');
+  const [isPending, startTransition] = useTransition();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
     setResponseMessage('');
 
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          message
-        })
-      });
+    startTransition(async () => {
+      const result = await submitContactForm({ name, email, message });
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (result.success) {
         setStatus('success');
-        setResponseMessage(
-          data.message || 'Your message has been sent successfully!'
-        );
+        setResponseMessage(result.message);
         setName('');
         setEmail('');
         setMessage('');
       } else {
         setStatus('error');
-        setResponseMessage(data.error || 'Failed to send message');
+        setResponseMessage(result.message || '메시지 전송에 실패했습니다.');
       }
-    } catch (error) {
-      setStatus('error');
-      setResponseMessage('An unexpected error occurred.');
-      console.error('Contact form error:', error);
-    }
+    });
   };
 
   return (
@@ -114,10 +95,10 @@ export default function ContactPage() {
         </div>
         <Button
           type="submit"
-          disabled={status === 'loading'}
+          disabled={isPending || status === 'loading'}
           className="w-full"
         >
-          {status === 'loading' ? 'Sending...' : 'Send Message'}
+          {isPending || status === 'loading' ? '전송 중...' : '메시지 보내기'}
         </Button>
 
         {responseMessage && (
