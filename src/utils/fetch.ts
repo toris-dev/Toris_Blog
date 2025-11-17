@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache';
 import { Post } from '@/types';
 import {
   getCategories as getMarkdownCategories,
@@ -5,13 +6,23 @@ import {
   getPostData
 } from './markdown';
 
+// 마크다운 데이터를 캐싱하여 성능 개선
+const getCachedPostData = unstable_cache(
+  async () => getPostData(),
+  ['all-posts'],
+  {
+    revalidate: 21600, // 6시간
+    tags: ['posts']
+  }
+);
+
 export async function getPosts(options: {
   category?: string;
   tag?: string;
 }): Promise<Post[]> {
   try {
-    // 실제 마크다운 파일에서 데이터 가져오기
-    let posts = getPostData();
+    // 캐싱된 마크다운 파일에서 데이터 가져오기
+    let posts = await getCachedPostData();
 
     // 데이터가 없는 경우 목업 데이터 사용
     if (posts.length === 0) {
@@ -43,9 +54,19 @@ export async function getPosts(options: {
   }
 }
 
+// 개별 포스트도 캐싱
+const getCachedPostBySlug = unstable_cache(
+  async (slug: string) => getPostBySlug(slug),
+  ['post-by-slug'],
+  {
+    revalidate: 21600, // 6시간
+    tags: ['posts']
+  }
+);
+
 export async function getPost(slug: string): Promise<Post | null> {
   try {
-    const post = getPostBySlug(slug);
+    const post = await getCachedPostBySlug(slug);
     if (post) {
       return post;
     }
@@ -59,9 +80,19 @@ export async function getPost(slug: string): Promise<Post | null> {
   }
 }
 
+// 카테고리도 캐싱
+const getCachedCategories = unstable_cache(
+  async () => getMarkdownCategories(),
+  ['all-categories'],
+  {
+    revalidate: 21600, // 6시간
+    tags: ['categories']
+  }
+);
+
 export async function getCategories(): Promise<string[]> {
   try {
-    const categories = getMarkdownCategories();
+    const categories = await getCachedCategories();
     return categories.length > 0
       ? categories
       : ['Next.js', 'React', 'TypeScript'];
