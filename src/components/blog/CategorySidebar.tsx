@@ -157,14 +157,14 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
             <Link
               href="/about"
               className="flex size-8 items-center justify-center rounded-full bg-background/80 text-foreground/80 transition-all hover:scale-110 hover:bg-primary/10 hover:text-primary"
-              title="About Me"
+              aria-label="About Me"
             >
               <FaUserCircle className="size-4" />
             </Link>
             <a
               href="mailto:your-email@example.com"
               className="flex size-8 items-center justify-center rounded-full bg-background/80 text-foreground/80 transition-all hover:scale-110 hover:bg-primary/10 hover:text-primary"
-              title="Email"
+              aria-label="Email"
             >
               <AiOutlineMail className="size-4" />
             </a>
@@ -173,7 +173,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
               target="_blank"
               rel="noopener noreferrer"
               className="flex size-8 items-center justify-center rounded-full bg-background/80 text-foreground/80 transition-all hover:scale-110 hover:bg-primary/10 hover:text-primary"
-              title="GitHub"
+              aria-label="GitHub"
             >
               <AiFillGithub className="size-4" />
             </a>

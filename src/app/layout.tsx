@@ -167,11 +167,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#3b82f6" />
         <meta name="color-scheme" content="light dark" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" href="/images/favicon.svg" sizes="any" type="image/svg+xml" />
+        <link rel="alternate icon" href="/images/favicon.svg" type="image/svg+xml" />
         <link rel="manifest" href="/manifest.json" />
 
         <StructuredData type="website" />

@@ -35,7 +35,7 @@ const PostCard: FC<PostCardProps> = ({
       <div>
         <div className="relative overflow-hidden">
           <Image
-            src={preview_image_url ?? '/book-open.svg'}
+            src={preview_image_url ?? '/images/book-open.svg'}
             width={400}
             height={225}
             alt={title}
@@ -68,6 +68,7 @@ const PostCard: FC<PostCardProps> = ({
           )}
         </div>
       </div>
+    </div>
   );
 };
 

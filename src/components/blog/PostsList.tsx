@@ -93,7 +93,7 @@ export default function PostsList() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full rounded-lg border border-border bg-background px-4 py-2 pl-10 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
-          <AiOutlineSearch className="absolute left-3 top-1/2 size-5 -translate-y-1/2 text-foreground/60" />
+          <AiOutlineSearch className="absolute left-3 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
         </div>
 
         <select
@@ -112,7 +112,7 @@ export default function PostsList() {
 
       {/* Results info */}
       <div className="mb-6 flex items-center justify-between">
-        <p className="text-sm text-foreground/60">
+        <p className="text-sm text-muted-foreground">
           {filteredPosts.length}개의 포스트
         </p>
         {selectedCategory && (
@@ -145,7 +145,7 @@ export default function PostsList() {
               {post.description || post.content?.substring(0, 100) + '...'}
             </p>
             <div className="flex items-center justify-between">
-              <div className="text-sm text-foreground/60">
+              <div className="text-sm text-muted-foreground">
                 {new Date(post.date).toLocaleDateString('ko-KR')}
               </div>
               {post.tags && (

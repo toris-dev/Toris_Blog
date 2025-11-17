@@ -19,7 +19,7 @@ const Footer: FC = () => {
                 Toris Blog
               </span>
             </div>
-            <p className="mt-2 text-sm text-foreground/60">
+            <p className="mt-2 text-sm text-muted-foreground">
               Next.js, React, TypeScript로 만드는 모던 웹 개발 블로그
             </p>
           </div>
@@ -32,13 +32,13 @@ const Footer: FC = () => {
             <div className="space-y-2">
               <Link
                 href="/about"
-                className="block text-sm text-foreground/60 hover:text-primary"
+                className="block text-sm text-muted-foreground hover:text-primary"
               >
                 소개
               </Link>
               <Link
                 href="/posts"
-                className="block text-sm text-foreground/60 hover:text-primary"
+                className="block text-sm text-muted-foreground hover:text-primary"
               >
                 블로그
               </Link>
@@ -53,7 +53,7 @@ const Footer: FC = () => {
                 href="https://github.com/toris-dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground/60 hover:text-primary"
+                className="text-muted-foreground hover:text-primary"
                 aria-label="GitHub"
               >
                 <AiFillGithub className="size-5" />
@@ -64,7 +64,7 @@ const Footer: FC = () => {
 
         {/* Bottom */}
         <div className="mt-8 flex flex-col items-center justify-between border-t border-border pt-6 sm:flex-row">
-          <p className="text-sm text-foreground/60">
+          <p className="text-sm text-muted-foreground">
             &copy; {year} Toris-dev. All rights reserved.
           </p>
           <div className="mt-4 flex items-center sm:mt-0">

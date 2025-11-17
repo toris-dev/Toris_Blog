@@ -51,7 +51,7 @@ const Header: FC = () => {
                 href={href}
                 className={cn(
                   'text-sm font-medium transition-colors hover:text-primary',
-                  isActive ? 'text-primary' : 'text-foreground/60'
+                  isActive ? 'text-primary' : 'text-muted-foreground'
                 )}
               >
                 {label}
@@ -63,7 +63,8 @@ const Header: FC = () => {
           <div className="flex items-center gap-2">
             <Link
               href="/posts"
-              className="hidden rounded-lg p-2 text-foreground/60 transition-colors hover:bg-accent hover:text-foreground sm:block"
+              className="hidden rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:block"
+              aria-label="블로그 포스트 검색"
             >
               <FaSearch className="size-4" />
             </Link>
@@ -88,7 +89,7 @@ const Header: FC = () => {
                 'flex flex-col items-center justify-center rounded-lg p-2 text-xs transition-colors',
                 pathname === href
                   ? 'bg-primary/10 text-primary'
-                  : 'text-foreground/60 hover:bg-accent hover:text-foreground'
+                  : 'text-muted-foreground hover:bg-accent hover:text-foreground'
               )}
             >
               <Icon className="mb-1 size-5" />

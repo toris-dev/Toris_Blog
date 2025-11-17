@@ -1,14 +1,42 @@
 import { AiFillGithub, FaDiscord, FaTwitter } from '@/components/icons';
+import { getDefaultOGImageUrl, toAbsoluteUrl } from '@/utils/og-image';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+
+const baseUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
+// About 페이지의 첫 번째 이미지 (GitHub 프로필 이미지)
+const aboutPageImage = 'https://github.com/toris-dev.png';
 
 export const metadata: Metadata = {
   title: '소개 - Toris Dev Blog',
   description:
     '블로그와 개발자 소개 페이지입니다. 블로그 운영 목적과 개발자 프로필을 확인하세요.',
+  openGraph: {
+    title: '소개 - Toris Dev Blog',
+    description:
+      '블로그와 개발자 소개 페이지입니다. 블로그 운영 목적과 개발자 프로필을 확인하세요.',
+    type: 'website',
+    url: `${baseUrl}/about`,
+    images: [
+      {
+        url: toAbsoluteUrl(aboutPageImage),
+        width: 1200,
+        height: 630,
+        alt: 'Toris Dev Blog 소개'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '소개 - Toris Dev Blog',
+    description:
+      '블로그와 개발자 소개 페이지입니다. 블로그 운영 목적과 개발자 프로필을 확인하세요.',
+    images: [toAbsoluteUrl(aboutPageImage)]
+  },
   alternates: {
-    canonical: 'https://toris-dev.vercel.app/about'
+    canonical: `${baseUrl}/about`
   }
 };
 

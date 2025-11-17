@@ -1,13 +1,18 @@
 import PostPage from '@/components/blog/PostPage';
 import { getPostBySlug, getPostData } from '@/utils/markdown';
+import {
+  extractFirstImageFromMarkdown,
+  getDefaultOGImageUrl,
+  toAbsoluteUrl
+} from '@/utils/og-image';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-// ISG를 위한 revalidate 설정 (6시간)
+// ISR을 위한 revalidate 설정 (6시간)
 export const revalidate = 21600;
 
-// 동적 렌더링 설정 추가
-export const dynamic = 'force-dynamic';
+// SSG/ISR을 사용하므로 force-dynamic 제거
+// generateStaticParams와 함께 사용하여 빌드 시 정적 페이지 생성
 
 export default async function Post({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -75,18 +80,52 @@ export async function generateMetadata({
 
     if (!post) return { title: '포스트를 찾을 수 없습니다' };
 
+    const baseUrl =
+      process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
+    const postUrl = `${baseUrl}/posts/${id}`;
+    const description =
+      post.description || post.content?.substring(0, 150).replace(/\n/g, ' ');
+
+    // 이미지 추출: preview_image_url > 마크다운 첫 이미지 > 기본 이미지
+    let ogImageUrl: string;
+    if (post.preview_image_url) {
+      ogImageUrl = toAbsoluteUrl(post.preview_image_url);
+    } else {
+      const firstImage = post.content
+        ? extractFirstImageFromMarkdown(post.content)
+        : null;
+      if (firstImage) {
+        ogImageUrl = toAbsoluteUrl(firstImage);
+      } else {
+        ogImageUrl = getDefaultOGImageUrl(post.title, description);
+      }
+    }
+
     return {
       title: post.title,
-      description: post.description || post.content?.split('.')[0],
+      description,
       openGraph: {
         title: post.title,
-        description: post.description || post.content?.split('.')[0],
+        description,
         type: 'article',
+        url: postUrl,
         publishedTime: post.date,
+        authors: ['토리스'],
         tags: Array.isArray(post.tags) ? post.tags : [post.tags],
-        images: post.preview_image_url
-          ? [{ url: post.preview_image_url }]
-          : undefined
+        images: [
+          {
+            url: ogImageUrl,
+            width: 1200,
+            height: 630,
+            alt: post.title
+          }
+        ]
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: post.title,
+        description,
+        images: [ogImageUrl]
       }
     };
   } catch (error) {
