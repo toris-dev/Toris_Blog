@@ -73,9 +73,9 @@ const nextConfig: NextConfig = {
         hostname: 'komarev.com',
         pathname: '/**'
       }
-    ],
-    // placeholder 이미지 오류 방지를 위해 이미지 최적화 비활성화
-    unoptimized: true
+    ]
+    // 이미지 최적화 활성화 (Next.js 15에서는 기본적으로 최적화됨)
+    // unoptimized: true 제거하여 최적화 활성화
   }
 };
 
