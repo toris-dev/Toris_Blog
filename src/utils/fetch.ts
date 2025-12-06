@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { unstable_cache } from 'next/cache';
 import { Post } from '@/types';
 import {
@@ -6,9 +7,16 @@ import {
   getPostData
 } from './markdown';
 
-// 마크다운 데이터를 캐싱하여 성능 개선
+// Next.js 16: React cache와 Next.js cache를 조합하여 최적화
+// React cache: 요청 단위 캐싱 (같은 요청 내에서 중복 호출 방지)
+// Next.js unstable_cache: 빌드/런타임 캐싱 (ISR)
+
+// React cache로 요청 단위 캐싱
+const getCachedPostDataRequest = cache(async () => getPostData());
+
+// Next.js cache로 ISR 캐싱 (6시간마다 재검증)
 const getCachedPostData = unstable_cache(
-  async () => getPostData(),
+  async () => getCachedPostDataRequest(),
   ['all-posts'],
   {
     revalidate: 21600, // 6시간
@@ -54,13 +62,17 @@ export async function getPosts(options: {
   }
 }
 
-// 개별 포스트도 캐싱
+// 개별 포스트도 이중 캐싱
+const getCachedPostBySlugRequest = cache(async (slug: string) =>
+  getPostBySlug(slug)
+);
+
 const getCachedPostBySlug = unstable_cache(
-  async (slug: string) => getPostBySlug(slug),
+  async (slug: string) => getCachedPostBySlugRequest(slug),
   ['post-by-slug'],
   {
     revalidate: 21600, // 6시간
-    tags: ['posts']
+    tags: ['posts', 'post']
   }
 );
 
@@ -80,13 +92,15 @@ export async function getPost(slug: string): Promise<Post | null> {
   }
 }
 
-// 카테고리도 캐싱
+// 카테고리도 이중 캐싱
+const getCachedCategoriesRequest = cache(async () => getMarkdownCategories());
+
 const getCachedCategories = unstable_cache(
-  async () => getMarkdownCategories(),
+  async () => getCachedCategoriesRequest(),
   ['all-categories'],
   {
     revalidate: 21600, // 6시간
-    tags: ['categories']
+    tags: ['categories', 'posts'] // posts 태그와 연결하여 포스트 변경 시 카테고리도 재검증
   }
 );
 

@@ -20,7 +20,6 @@ export default async function Post({ params }: { params: { id: string } }) {
   try {
     // URL 디코딩 처리
     const decodedId = decodeURIComponent(id);
-    console.log(`원본 ID: ${id}, 디코딩된 ID: ${decodedId}`);
 
     // 두 가지 방법으로 포스트 찾기 시도
     let post = getPostBySlug(decodedId);
@@ -29,7 +28,6 @@ export default async function Post({ params }: { params: { id: string } }) {
     }
 
     if (!post) {
-      console.log(`포스트를 찾을 수 없습니다: ${id} (디코딩: ${decodedId})`);
       return notFound();
     }
 
@@ -46,23 +44,41 @@ export default async function Post({ params }: { params: { id: string } }) {
 
     return <PostPage {...pageProps} />;
   } catch (error) {
-    console.error('Error loading post:', error);
+    // 빌드 타임 에러는 조용히 처리 (notFound는 정상적인 동작)
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error loading post:', error);
+    }
     return notFound();
   }
 }
 
-// 빌드 시 정적 페이지 생성을 위한 경로 파라미터 생성
+// Next.js 16: ISG를 위한 정적 경로 생성
+// 빌드 시 모든 포스트의 정적 페이지를 생성하고,
+// revalidate 설정에 따라 ISR로 업데이트
 export async function generateStaticParams() {
   try {
     const posts = getPostData();
-    return posts.map((post) => ({
-      id: post.slug
-    }));
+    // 실제로 존재하는 포스트만 필터링하여 반환
+    const validParams = posts
+      .filter((post) => {
+        // 포스트가 유효한지 확인
+        return post && post.slug && post.title;
+      })
+      .map((post) => ({
+        id: encodeURIComponent(post.slug)
+      }));
+    return validParams;
   } catch (error) {
-    console.error('Error generating static params:', error);
+    // 빌드 타임 에러는 조용히 처리
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error generating static params:', error);
+    }
     return [];
   }
 }
+
+// Next.js 16: 동적 세그먼트가 없는 경우를 위한 fallback 설정
+export const dynamicParams = true; // 빌드 시 생성되지 않은 경로는 동적으로 생성
 
 type PostProps = { params: { id: string } };
 export async function generateMetadata({

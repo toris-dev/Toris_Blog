@@ -51,12 +51,15 @@ export const metadata: Metadata = {
   }
 };
 
+// Next.js 16: ISR 설정 (6시간마다 재생성)
+export const revalidate = 21600;
+
 export default async function PostsPage({
   searchParams
 }: {
-  searchParams: { category?: string };
+  searchParams: Promise<{ category?: string }>;
 }) {
-  const category = searchParams.category;
+  const { category } = await searchParams;
   const posts = category ? getPostsByCategory(category) : getPostData();
 
   return (
