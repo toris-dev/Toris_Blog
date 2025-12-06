@@ -48,6 +48,7 @@ import { FaEthereum } from '@react-icons/all-files/fa/FaEthereum';
 import { FaEye } from '@react-icons/all-files/fa/FaEye';
 import { FaFolder } from '@react-icons/all-files/fa/FaFolder';
 import { FaFolderOpen } from '@react-icons/all-files/fa/FaFolderOpen';
+import { FaGit } from '@react-icons/all-files/fa/FaGit';
 import { FaGithub } from '@react-icons/all-files/fa/FaGithub';
 import { FaHome } from '@react-icons/all-files/fa/FaHome';
 import { FaImage } from '@react-icons/all-files/fa/FaImage';
@@ -91,6 +92,9 @@ import { IoRefresh } from '@react-icons/all-files/io5/IoRefresh';
 
 // si 아이콘들
 import { SiNextDotJs } from '@react-icons/all-files/si/SiNextDotJs';
+import { SiReact } from '@react-icons/all-files/si/SiReact';
+import { SiSpring } from '@react-icons/all-files/si/SiSpring';
+import { SiTypescript } from '@react-icons/all-files/si/SiTypescript';
 
 // 아이콘 컴포넌트 내보내기
 export {
@@ -132,6 +136,7 @@ export {
   FaEye,
   FaFolder,
   FaFolderOpen,
+  FaGit,
   FaGithub,
   FaHome,
   FaImage,
@@ -172,11 +177,15 @@ export {
   // MdTitle,
   // si 아이콘들
   SiNextDotJs,
+  SiReact,
+  SiSpring,
+  SiTypescript,
   BsSun as SunIcon
 };
 
 // 추가 별칭들 - 아이콘이 없는 경우 대체
 export const AiOutlineGithub = AiFillGithub;
+// SiTypescript는 이미 import되어 있으므로 별칭 제거
 export const AiOutlineTwitter = FaTwitter;
 export const BiCategory = FaFolder;
 
@@ -187,13 +196,13 @@ export const MdWeb = FaReact;
 export const MdCategory = FaFolder;
 export const MdTitle = BsPencilSquare;
 
-// SiCypress, SiExpress, SiGraphql, SiMongodb, SiTailwindcss, SiTypescript, SiVercel 아이콘들을 다른 아이콘으로 대체
+// SiCypress, SiExpress, SiGraphql, SiMongodb, SiTailwindcss, SiVercel 아이콘들을 다른 아이콘으로 대체
+// SiTypescript는 실제 아이콘을 import했으므로 별칭 제거
 export const SiCypress = FaTools;
 export const SiExpress = FaNodeJs;
 export const SiGraphql = FaCodeBranch;
 export const SiMongodb = FaDatabase;
 export const SiTailwindcss = FaLaptopCode;
-export const SiTypescript = FaCode;
 export const SiVercel = FaServer;
 
 // TbApi 아이콘을 다른 아이콘으로 대체
