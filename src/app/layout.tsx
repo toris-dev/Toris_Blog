@@ -29,7 +29,7 @@ export const revalidate = 21600;
 // CategorySidebar 로딩 컴포넌트
 function CategorySidebarSkeleton() {
   return (
-    <div className="w-full rounded-xl border border-border bg-card/50 shadow-lg backdrop-blur-lg">
+    <div className="neon-border w-full rounded-xl border border-primary/30 bg-card/50 shadow-lg backdrop-blur-lg">
       <div className="p-6">
         <div className="flex animate-pulse flex-col items-center space-y-4">
           <div className="size-20 rounded-full bg-background/50"></div>
@@ -169,8 +169,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <meta name="theme-color" content="#3b82f6" />
         <meta name="color-scheme" content="light dark" />
-        <link rel="icon" href="/images/favicon.svg" sizes="any" type="image/svg+xml" />
-        <link rel="alternate icon" href="/images/favicon.svg" type="image/svg+xml" />
+        <link
+          rel="icon"
+          href="/images/favicon.svg"
+          sizes="any"
+          type="image/svg+xml"
+        />
+        <link
+          rel="alternate icon"
+          href="/images/favicon.svg"
+          type="image/svg+xml"
+        />
         <link rel="manifest" href="/manifest.json" />
 
         <StructuredData type="website" />
@@ -189,7 +198,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body
         className={cn(
-          'min-h-screen bg-slate-50 font-sans antialiased dark:bg-slate-900',
+          'min-h-screen bg-[#0a0a0f] font-sans antialiased',
           inter.variable,
           spaceGrotesk.variable
         )}
@@ -197,11 +206,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <SEOOptimizer />
         <GoogleTagManager gtmId="G-0KV4YD773C" />
         <Providers>
-          {/* 배경 그라디언트 효과 - 다크모드에서만 표시 */}
-          <div className="fixed -z-10 hidden h-screen w-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 to-slate-900 dark:block"></div>
-
-          {/* 라이트모드 배경 */}
-          <div className="fixed -z-10 block h-screen w-full bg-gradient-to-b from-white to-slate-50 dark:hidden"></div>
+          {/* 사이버펑크 배경 그라디언트 */}
+          <div className="fixed -z-10 h-screen w-full bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0a0a0f]">
+            {/* 네온 그리드 패턴 */}
+            <div
+              className="absolute inset-0 bg-[linear-gradient(rgba(0,240,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,240,255,0.03)_1px,transparent_1px)]"
+              style={{ backgroundSize: '50px 50px' }}
+            ></div>
+            {/* 글로우 효과 */}
+            <div className="absolute left-1/4 top-0 size-96 rounded-full bg-cyan-500/10 blur-3xl"></div>
+            <div className="absolute bottom-0 right-1/4 size-96 rounded-full bg-purple-500/10 blur-3xl"></div>
+          </div>
 
           <div className="flex min-h-screen flex-col">
             <Header />
