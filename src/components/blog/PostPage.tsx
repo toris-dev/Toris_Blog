@@ -1,6 +1,9 @@
+'use client';
+
 import { MarkdownViewer } from '@/components/blog/Markdown';
 import { FaCalendarAlt, FaFolder, FaTags } from '@/components/icons';
 import dayjs from 'dayjs';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { FC } from 'react';
 import { Utterances } from './Utterances';
@@ -27,41 +30,93 @@ const PostPage: FC<{
     'YY년 MM월 DD일 HH:mm'
   );
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: 'easeOut'
+      }
+    }
+  };
+
   return (
     <article className="mx-auto mt-12 max-w-4xl px-4 pb-32">
-      <header className="mb-12 text-center">
-        <h1 className="mb-4 text-4xl font-bold dark:text-white">{title}</h1>
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <span className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-            <FaCalendarAlt className="mr-2" />
-            {formattedDate}
-          </span>
-          <Link
-            href={`/categories/${category}`}
-            className="flex items-center text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary"
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.header className="mb-12 text-center" variants={itemVariants}>
+          <motion.h1
+            className="neon-glow mb-4 text-4xl font-bold text-foreground"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
           >
-            <FaFolder className="mr-2" />
-            {category}
-          </Link>
-          <span className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-            <FaTags className="mr-2" />
-            {Array.isArray(tags)
-              ? tags.join(', ')
-              : typeof tags === 'string'
-                ? (tags as string)
-                    .split(',')
-                    .map((tag: string) => tag.trim())
-                    .join(', ')
-                : ''}
-          </span>
-        </div>
-      </header>
+            {title}
+          </motion.h1>
+          <motion.div
+            className="flex flex-wrap items-center justify-center gap-4"
+            variants={itemVariants}
+          >
+            <motion.span
+              className="flex items-center text-sm text-muted-foreground"
+              whileHover={{ scale: 1.05 }}
+            >
+              <FaCalendarAlt className="mr-2" />
+              {formattedDate}
+            </motion.span>
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <Link
+                href={`/categories/${category}`}
+                className="flex items-center text-sm text-muted-foreground transition-colors hover:text-primary"
+              >
+                <FaFolder className="mr-2" />
+                {category}
+              </Link>
+            </motion.div>
+            <motion.span
+              className="flex items-center text-sm text-muted-foreground"
+              whileHover={{ scale: 1.05 }}
+            >
+              <FaTags className="mr-2" />
+              {Array.isArray(tags)
+                ? tags.join(', ')
+                : typeof tags === 'string'
+                  ? (tags as string)
+                      .split(',')
+                      .map((tag: string) => tag.trim())
+                      .join(', ')
+                  : ''}
+            </motion.span>
+          </motion.div>
+        </motion.header>
 
-      <div className="prose max-w-full dark:prose-invert">
-        <MarkdownViewer>{content}</MarkdownViewer>
-      </div>
+        <motion.div
+          className="prose max-w-full dark:prose-invert"
+          variants={itemVariants}
+        >
+          <MarkdownViewer>{content}</MarkdownViewer>
+        </motion.div>
 
-      <Utterances repo="toris-dev/Toris_Blog" />
+        <motion.div variants={itemVariants}>
+          <Utterances repo="toris-dev/Toris_Blog" />
+        </motion.div>
+      </motion.div>
     </article>
   );
 };

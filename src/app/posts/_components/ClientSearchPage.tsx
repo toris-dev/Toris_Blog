@@ -57,20 +57,20 @@ interface ClientSearchPageProps {
 // 스켈레톤 카드 컴포넌트
 const SkeletonCard = () => {
   return (
-    <div className="overflow-hidden rounded-xl bg-card/30 shadow-sm">
-      <div className="relative h-48 w-full animate-pulse bg-background/50"></div>
+    <div className="overflow-hidden rounded-xl border border-primary/30 shadow-sm">
+      <div className="relative h-48 w-full animate-pulse bg-primary/10"></div>
       <div className="p-5">
-        <div className="mb-2 h-6 w-3/4 animate-pulse rounded-md bg-background/50"></div>
+        <div className="mb-2 h-6 w-3/4 animate-pulse rounded-md bg-primary/10"></div>
         <div className="mb-4 space-y-2">
-          <div className="h-4 w-full animate-pulse rounded-md bg-background/50"></div>
-          <div className="h-4 w-full animate-pulse rounded-md bg-background/50"></div>
-          <div className="h-4 w-2/3 animate-pulse rounded-md bg-background/50"></div>
+          <div className="h-4 w-full animate-pulse rounded-md bg-primary/10"></div>
+          <div className="h-4 w-full animate-pulse rounded-md bg-primary/10"></div>
+          <div className="h-4 w-2/3 animate-pulse rounded-md bg-primary/10"></div>
         </div>
         <div className="flex items-center justify-between">
-          <div className="h-3 w-1/4 animate-pulse rounded-md bg-background/50"></div>
+          <div className="h-3 w-1/4 animate-pulse rounded-md bg-primary/10"></div>
           <div className="flex space-x-1">
-            <div className="h-4 w-10 animate-pulse rounded-full bg-background/50"></div>
-            <div className="h-4 w-10 animate-pulse rounded-full bg-background/50"></div>
+            <div className="h-4 w-10 animate-pulse rounded-full bg-primary/10"></div>
+            <div className="h-4 w-10 animate-pulse rounded-full bg-primary/10"></div>
           </div>
         </div>
       </div>
@@ -87,7 +87,7 @@ const SearchSkeleton = () => {
       className="space-y-6"
     >
       <div className="mb-4 flex items-center justify-between">
-        <div className="h-7 w-1/4 animate-pulse rounded-md bg-background/50"></div>
+        <div className="h-7 w-1/4 animate-pulse rounded-md bg-primary/10"></div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -208,8 +208,9 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
 
   // 컴포넌트 언마운트 시 타이머 정리
   useEffect(() => {
+    const debouncedFilter = debouncedFilterRef.current;
     return () => {
-      debouncedFilterRef.current.cancel();
+      debouncedFilter.cancel();
     };
   }, []);
 
@@ -322,7 +323,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="group overflow-hidden rounded-xl bg-card/30 shadow-sm transition-all hover:bg-card/50 hover:shadow-lg hover:shadow-primary/10 dark:border dark:border-white/5"
+                className="group overflow-hidden rounded-xl border border-primary/30 shadow-sm transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
               >
                 <Link href={`/posts/${post.slug}`}>
                   <div className="relative h-48 w-full overflow-hidden bg-gradient-to-r from-primary/20 to-accent/20">
@@ -335,12 +336,12 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                       />
                     ) : (
                       <div className="flex size-full items-center justify-center">
-                        <FaBlog className="text-6xl text-white/20" />
+                        <FaBlog className="text-6xl text-muted-foreground/20" />
                       </div>
                     )}
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                       <span
-                        className={`rounded-full bg-gradient-to-r ${getCategoryColor(post.category)} border px-3 py-1 text-xs font-medium text-white shadow-lg backdrop-blur-sm`}
+                        className={`rounded-full bg-gradient-to-r ${getCategoryColor(post.category)} border px-3 py-1 text-xs font-medium text-foreground shadow-lg backdrop-blur-sm`}
                       >
                         {post.category}
                       </span>
@@ -413,7 +414,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background px-4 py-24 sm:px-6 lg:px-8">
+    <div className="min-h-screen px-4 py-24 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
         {/* Main Content */}
         <div className="flex-1">
@@ -435,7 +436,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
           </motion.div>
 
           {/* 검색 인터페이스 */}
-          <div className="mb-8 rounded-2xl bg-card/30 p-6 backdrop-blur-lg">
+          <div className="neon-border mb-8 rounded-2xl border border-primary/30 p-6 backdrop-blur-lg">
             <div className="relative">
               <div className="relative mb-6 overflow-hidden rounded-lg border border-white/10">
                 <input
@@ -443,7 +444,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="검색어를 입력하세요..."
-                  className="w-full bg-background/50 px-12 py-4 text-foreground outline-none backdrop-blur-md transition-all placeholder:text-muted-foreground/50 focus:bg-background/80 dark:placeholder:text-muted-foreground/40"
+                  className="w-full border border-primary/30 bg-transparent px-12 py-4 text-foreground outline-none backdrop-blur-md transition-all placeholder:text-muted-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 {searchTerm && (
@@ -513,7 +514,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
 
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className="rounded-lg bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-background dark:hover:bg-card/50"
+                  className="rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:bg-primary/10"
                 >
                   {showFilters ? '필터 숨기기' : '필터 보기'}
                 </button>
@@ -527,7 +528,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="overflow-hidden rounded-lg bg-background/50 p-4 shadow-lg dark:bg-card/30"
+                    className="neon-border overflow-hidden rounded-lg border border-primary/30 p-4 shadow-lg"
                   >
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <div>
@@ -542,8 +543,8 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                               className={cn(
                                 'rounded-full px-3 py-1 text-sm transition-all',
                                 activeFilters.categories.includes(category)
-                                  ? 'bg-primary/20 text-primary'
-                                  : 'bg-background text-muted-foreground hover:bg-background/80 dark:bg-card/50 dark:hover:bg-card/70'
+                                  ? 'border-primary/50 bg-primary/20 text-primary'
+                                  : 'border border-primary/30 text-muted-foreground hover:border-primary hover:bg-primary/10'
                               )}
                             >
                               {category}
@@ -564,8 +565,8 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                               className={cn(
                                 'rounded-full px-3 py-1 text-sm transition-all',
                                 activeFilters.tags.includes(tag)
-                                  ? 'bg-accent/20 text-accent'
-                                  : 'bg-background text-muted-foreground hover:bg-background/80 dark:bg-card/50 dark:hover:bg-card/70'
+                                  ? 'border-secondary/50 bg-secondary/20 text-secondary'
+                                  : 'border border-primary/30 text-muted-foreground hover:border-secondary hover:bg-secondary/10'
                               )}
                             >
                               {tag}

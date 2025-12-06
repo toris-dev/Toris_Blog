@@ -39,18 +39,23 @@ export default function ContactPage() {
 
   return (
     <div className="container mx-auto max-w-2xl py-12">
-      <h1 className="mb-8 text-center text-4xl font-bold">Contact Me</h1>
-      <p className="mb-8 text-center text-lg text-gray-600 dark:text-gray-400">
-        Have a question or want to work together? Send me a message!
+      <h1 className="neon-glow mb-8 text-center text-4xl font-bold">
+        문의하기
+      </h1>
+      <p className="mb-8 text-center text-lg text-foreground">
+        질문이 있으시거나 함께 작업하고 싶으시다면 메시지를 보내주세요!
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="neon-border space-y-6 rounded-2xl border border-primary/30 bg-card/50 p-8 backdrop-blur-sm"
+      >
         <div>
           <label
             htmlFor="name"
-            className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="mb-2 block text-sm font-medium text-foreground"
           >
-            Name
+            이름
           </label>
           <Input
             type="text"
@@ -64,9 +69,9 @@ export default function ContactPage() {
         <div>
           <label
             htmlFor="email"
-            className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="mb-2 block text-sm font-medium text-foreground"
           >
-            Email
+            이메일
           </label>
           <Input
             type="email"
@@ -80,9 +85,9 @@ export default function ContactPage() {
         <div>
           <label
             htmlFor="message"
-            className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="mb-2 block text-sm font-medium text-foreground"
           >
-            Message
+            메시지
           </label>
           <textarea
             id="message"
@@ -90,7 +95,7 @@ export default function ContactPage() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             required
-            className="block w-full rounded-md border border-gray-300 p-3 shadow-sm focus:border-primary focus:ring-primary dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+            className="block w-full rounded-md border border-primary/30 bg-background/50 p-3 text-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           ></textarea>
         </div>
         <Button

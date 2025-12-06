@@ -9,6 +9,7 @@ import {
 } from '@/components/icons';
 import { Post } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
@@ -108,7 +109,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
 
   if (loading) {
     return (
-      <div className="w-full rounded-xl border border-border bg-card/50 shadow-lg backdrop-blur-lg">
+      <div className="neon-border w-full rounded-xl border border-primary/30 bg-card/50 shadow-lg backdrop-blur-lg">
         <div className="p-6">
           <div className="flex animate-pulse flex-col items-center space-y-4">
             <div className="size-20 rounded-full bg-background/50"></div>
@@ -129,19 +130,26 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
   }
 
   return (
-    <div className="w-full rounded-xl border border-border bg-card/50 shadow-lg backdrop-blur-lg">
+    <div className="neon-border w-full rounded-xl border border-primary/30 bg-card/50 shadow-lg backdrop-blur-lg">
       {/* Profile Section */}
-      <div className="border-b border-border p-6">
+      <div className="border-b border-primary/30 p-6">
         <div className="flex flex-col items-center text-center">
           {/* Avatar */}
-          <div className="relative mb-4 size-20 overflow-hidden rounded-full border-2 border-primary/20 bg-gradient-to-br from-primary/20 to-accent/20">
-            <div className="flex size-full items-center justify-center">
-              <FaUserCircle className="text-2xl text-primary/60" />
-            </div>
+          <div className="neon-border neon-glow-animate relative mb-4 size-20 overflow-hidden rounded-full border-2 border-primary/50 bg-gradient-to-br from-primary/30 to-secondary/30">
+            <Image
+              src="/images/logo.png"
+              alt="토리스 로고"
+              width={80}
+              height={80}
+              className="size-full object-cover"
+              priority
+            />
           </div>
 
           {/* Name and Title */}
-          <h3 className="mb-1 text-xl font-bold text-foreground">토리스</h3>
+          <h3 className="neon-glow mb-1 text-xl font-bold text-foreground">
+            토리스
+          </h3>
           <p className="mb-2 text-sm text-muted-foreground">
             Full Stack Developer
           </p>
@@ -162,7 +170,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
               <FaUserCircle className="size-4" />
             </Link>
             <a
-              href="mailto:your-email@example.com"
+              href="mailto:ironjustlikethat@gmail.com"
               className="flex size-8 items-center justify-center rounded-full bg-background/80 text-foreground/80 transition-all hover:scale-110 hover:bg-primary/10 hover:text-primary"
               aria-label="Email"
             >
@@ -183,7 +191,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
 
       {/* Navigation Section */}
       <div className="p-6">
-        <h3 className="mb-4 flex items-center text-lg font-bold text-foreground">
+        <h3 className="neon-glow mb-4 flex items-center text-lg font-bold text-foreground">
           <span className="mr-2">📚</span>
           Categories
         </h3>
@@ -238,7 +246,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
                       {categoryPosts.length}
                     </span>
                     {isExpanded ? (
-                      <div className="rotate-180 transform">
+                      <div className="rotate-180">
                         <IoIosArrowDown className="size-3" />
                       </div>
                     ) : (
@@ -294,7 +302,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
 
         {/* Quick Stats */}
         <div className="mt-6 rounded-lg bg-background/30 p-3">
-          <h4 className="mb-2 text-xs font-semibold text-foreground/80 uppercase tracking-wide">
+          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground/80">
             Blog Stats
           </h4>
           <div className="grid grid-cols-2 gap-3 text-xs">

@@ -13,13 +13,13 @@ export function Utterances({ repo }: UtterancesProps) {
 
   useEffect(() => {
     const currentTheme = theme === 'dark' ? 'github-dark' : 'github-light';
+    const commentsElement = commentsRef.current;
 
     // Utterances 스크립트가 이미 로드되었는지 확인
-    if (commentsRef.current && commentsRef.current.querySelector('.utterances')) {
+    if (commentsElement && commentsElement.querySelector('.utterances')) {
       // 이미 로드된 경우, 테마만 변경
-      const iframe = commentsRef.current.querySelector<
-        HTMLIFrameElement
-      >('.utterances-frame');
+      const iframe =
+        commentsElement.querySelector<HTMLIFrameElement>('.utterances-frame');
       if (iframe) {
         iframe.contentWindow?.postMessage(
           { type: 'set-theme', theme: currentTheme },
@@ -39,14 +39,14 @@ export function Utterances({ repo }: UtterancesProps) {
     scriptEl.setAttribute('theme', currentTheme);
     scriptEl.setAttribute('crossorigin', 'anonymous');
 
-    if (commentsRef.current) {
-      commentsRef.current.appendChild(scriptEl);
+    if (commentsElement) {
+      commentsElement.appendChild(scriptEl);
     }
 
     return () => {
       // 컴포넌트 언마운트 시 스크립트 제거 (선택 사항)
-      if (commentsRef.current) {
-        commentsRef.current.innerHTML = '';
+      if (commentsElement) {
+        commentsElement.innerHTML = '';
       }
     };
   }, [repo, theme]);

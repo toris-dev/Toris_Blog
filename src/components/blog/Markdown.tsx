@@ -10,7 +10,6 @@ import remarkGfm from 'remark-gfm';
 
 // Import highlight.js theme
 
-
 interface MarkdownProps {
   children: string;
   className?: string;

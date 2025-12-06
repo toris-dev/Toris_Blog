@@ -3,6 +3,7 @@
 import { Post } from '@/types';
 import { cn } from '@/utils/style';
 import dayjs from 'dayjs';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
@@ -25,28 +26,49 @@ const PostCard: FC<PostCardProps> = ({
   const tagArray = Array.isArray(tags) ? tags : [];
 
   return (
-    <div
+    <motion.div
       className={cn(
-        'group block overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl dark:border-border',
+        'neon-border hover:neon-glow-animate group block overflow-hidden rounded-lg border border-primary/30 bg-card/50 text-card-foreground shadow-sm backdrop-blur-sm',
         className
       )}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      whileHover={{
+        y: -8,
+        rotateX: 5,
+        rotateY: 5,
+        transition: { duration: 0.3 }
+      }}
+      style={{ perspective: 1000 }}
     >
       {/* Main Card Content */}
       <div>
         <div className="relative overflow-hidden">
-          <Image
-            src={preview_image_url ?? '/images/book-open.svg'}
-            width={400}
-            height={225}
-            alt={title}
-            className="w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-            priority
-          />
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+          >
+            <Image
+              src={preview_image_url ?? '/images/book-open.svg'}
+              width={400}
+              height={225}
+              alt={title}
+              className="w-full object-cover"
+              priority
+            />
+          </motion.div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
         <div className="p-4">
-          <p className="mb-2 text-sm font-medium text-primary">{category}</p>
-          <h3 className="mb-2 truncate text-lg font-bold text-card-foreground">
+          <motion.p
+            className="mb-2 text-sm font-medium text-primary"
+            whileHover={{ scale: 1.05 }}
+          >
+            {category}
+          </motion.p>
+          <h3 className="mb-2 truncate text-lg font-bold text-card-foreground transition-all group-hover:text-primary group-hover:drop-shadow-[0_0_8px_hsl(var(--primary))]">
             {title}
           </h3>
           <div className="mb-3 flex items-center text-xs text-muted-foreground">
@@ -57,18 +79,19 @@ const PostCard: FC<PostCardProps> = ({
           {tagArray.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {tagArray.map((tag: string) => (
-                <span
+                <motion.span
                   key={tag}
                   className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground"
+                  whileHover={{ scale: 1.1 }}
                 >
                   {tag}
-                </span>
+                </motion.span>
               ))}
             </div>
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

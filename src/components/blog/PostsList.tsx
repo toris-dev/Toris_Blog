@@ -3,6 +3,7 @@
 import { AiOutlineSearch } from '@/components/icons';
 import { Post } from '@/types';
 import { getPosts } from '@/utils/fetch';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -84,22 +85,33 @@ export default function PostsList() {
       </h1>
 
       {/* Search and Filter */}
-      <div className="mb-10 flex flex-col gap-4 sm:flex-row">
-        <div className="relative flex-1">
+      <motion.div
+        className="mb-10 flex flex-col gap-4 sm:flex-row"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.div
+          className="relative flex-1"
+          whileFocus={{ scale: 1.02 }}
+          transition={{ duration: 0.2 }}
+        >
           <input
             type="text"
             placeholder="포스트 검색..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-border bg-background px-4 py-2 pl-10 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            className="w-full rounded-lg border border-border bg-background px-4 py-2 pl-10 text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
           <AiOutlineSearch className="absolute left-3 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
-        </div>
+        </motion.div>
 
-        <select
+        <motion.select
           value={selectedCategory || ''}
           onChange={(e) => setSelectedCategory(e.target.value || null)}
-          className="rounded-lg border border-border bg-background px-4 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          className="rounded-lg border border-border bg-background px-4 py-2 text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          whileFocus={{ scale: 1.02 }}
+          transition={{ duration: 0.2 }}
         >
           <option value="">모든 카테고리</option>
           {categories.map((category) => (
@@ -107,8 +119,8 @@ export default function PostsList() {
               {category}
             </option>
           ))}
-        </select>
-      </div>
+        </motion.select>
+      </motion.div>
 
       {/* Results info */}
       <div className="mb-6 flex items-center justify-between">
@@ -126,53 +138,96 @@ export default function PostsList() {
       </div>
 
       {/* Posts Grid */}
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {filteredPosts.map((post) => (
-          <Link
-            key={post.slug}
-            href={`/posts/${post.slug}`}
-            className="group rounded-lg border border-border bg-card p-6 transition-colors hover:bg-accent"
-          >
-            <div className="mb-4 flex items-center">
-              <span className="rounded-full bg-primary/10 px-3 py-1 text-sm text-primary">
-                {post.category || 'Blog'}
-              </span>
-            </div>
-            <h3 className="mb-2 text-xl font-semibold group-hover:text-primary">
-              {post.title}
-            </h3>
-            <p className="mb-4 line-clamp-3 text-foreground/70">
-              {post.description || post.content?.substring(0, 100) + '...'}
-            </p>
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-muted-foreground">
-                {new Date(post.date).toLocaleDateString('ko-KR')}
-              </div>
-              {post.tags && (
-                <div className="flex flex-wrap gap-1">
-                  {(Array.isArray(post.tags) ? post.tags : [post.tags])
-                    .slice(0, 2)
-                    .map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded bg-accent px-2 py-1 text-xs text-foreground/70"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+      <motion.div
+        className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          visible: {
+            transition: {
+              staggerChildren: 0.1
+            }
+          }
+        }}
+      >
+        <AnimatePresence mode="popLayout">
+          {filteredPosts.map((post, index) => (
+            <motion.div
+              key={post.slug}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
+              transition={{
+                duration: 0.4,
+                delay: index * 0.05,
+                ease: 'easeOut'
+              }}
+              whileHover={{
+                y: -8,
+                rotateX: 5,
+                rotateY: 5,
+                transition: { duration: 0.3 }
+              }}
+              style={{ perspective: 1000 }}
+            >
+              <Link
+                href={`/posts/${post.slug}`}
+                className="neon-border hover:neon-glow-animate group block rounded-lg border border-primary/30 bg-card/50 p-6 backdrop-blur-sm transition-all hover:bg-card/80"
+              >
+                <div className="mb-4 flex items-center">
+                  <motion.span
+                    className="rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    {post.category || 'Blog'}
+                  </motion.span>
                 </div>
-              )}
-            </div>
-          </Link>
-        ))}
-      </div>
+                <h3 className="mb-2 text-xl font-semibold transition-all group-hover:text-primary group-hover:drop-shadow-[0_0_8px_hsl(var(--primary))]">
+                  {post.title}
+                </h3>
+                <p className="mb-4 line-clamp-3 text-foreground/70">
+                  {post.description || post.content?.substring(0, 100) + '...'}
+                </p>
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-muted-foreground">
+                    {new Date(post.date).toLocaleDateString('ko-KR')}
+                  </div>
+                  {post.tags && (
+                    <div className="flex flex-wrap gap-1">
+                      {(Array.isArray(post.tags) ? post.tags : [post.tags])
+                        .slice(0, 2)
+                        .map((tag) => (
+                          <motion.span
+                            key={tag}
+                            className="rounded bg-accent px-2 py-1 text-xs text-foreground/70"
+                            whileHover={{ scale: 1.1 }}
+                          >
+                            {tag}
+                          </motion.span>
+                        ))}
+                    </div>
+                  )}
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.div>
 
       {/* No results */}
-      {filteredPosts.length === 0 && (
-        <div className="py-16 text-center">
-          <p className="text-lg text-foreground/70">검색 결과가 없습니다.</p>
-        </div>
-      )}
+      <AnimatePresence>
+        {filteredPosts.length === 0 && (
+          <motion.div
+            className="py-16 text-center"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.3 }}
+          >
+            <p className="text-lg text-foreground/70">검색 결과가 없습니다.</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
