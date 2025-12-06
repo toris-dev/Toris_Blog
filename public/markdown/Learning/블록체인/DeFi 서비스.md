@@ -16,13 +16,13 @@ tags: ['DeFi', 'Blockchain', 'Next.js', 'Solidity', 'Smart Contracts', 'Web3']
 
 ### 전통 금융 vs. DeFi
 
-| 항목          | 전통 금융 (CeFi)         | 탈중앙화 금융 (DeFi)       |
-| ------------- | ------------------------ | -------------------------- |
-| **중개자**    | 은행, 정부, 카드사       | 스마트 컨트랙트 (코드)     |
-| **접근성**    | KYC/AML, 지역/신용 제한  | 누구나 참여 가능 (무허가성) |
-| **투명성**    | 제한적, 내부 정보        | 모든 거래가 공개 (온체인)  |
-| **운영 시간** | 영업시간 제한            | 24/7, 365일 중단 없음      |
-| **상호운용성**| 폐쇄적인 시스템          | 레고 블록처럼 조합 가능    |
+| 항목           | 전통 금융 (CeFi)        | 탈중앙화 금융 (DeFi)        |
+| -------------- | ----------------------- | --------------------------- |
+| **중개자**     | 은행, 정부, 카드사      | 스마트 컨트랙트 (코드)      |
+| **접근성**     | KYC/AML, 지역/신용 제한 | 누구나 참여 가능 (무허가성) |
+| **투명성**     | 제한적, 내부 정보       | 모든 거래가 공개 (온체인)   |
+| **운영 시간**  | 영업시간 제한           | 24/7, 365일 중단 없음       |
+| **상호운용성** | 폐쇄적인 시스템         | 레고 블록처럼 조합 가능     |
 
 ## 🔧 핵심 DeFi 서비스와 Solidity 코드 예제
 
@@ -160,13 +160,13 @@ export default function DeFiDashboard() {
   return (
     <div className="max-w-4xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">My DeFi Dashboard</h1>
-      
+
       {/* 스테이킹 섹션 */}
       <div className="bg-gray-800 rounded-lg p-6 text-white">
         <h2 className="text-xl font-semibold mb-4">Staking</h2>
         <p>Staked Balance: {stakedBalance ? ethers.utils.formatEther(stakedBalance) : "0"} STK</p>
         <p>Rewards: {earnedRewards ? ethers.utils.formatEther(earnedRewards) : "0"} RWD</p>
-        
+
         <input
           type="number"
           value={stakingAmount}
@@ -174,7 +174,7 @@ export default function DeFiDashboard() {
           className="w-full p-2 rounded text-black mt-4"
           placeholder="Amount to stake"
         />
-        
+
         {/* Web3Button을 사용하여 트랜잭션 처리 */}
         <Web3Button
           contractAddress="YOUR_STAKING_CONTRACT_ADDRESS"
@@ -195,10 +195,10 @@ export default function DeFiDashboard() {
 
 DeFi는 혁신적이지만, 스마트 컨트랙트 버그, 오라클 문제, 유동성 위험 등 다양한 위험이 따릅니다. 개발 시 다음 사항을 반드시 고려해야 합니다.
 
--   **재진입 공격 (Reentrancy) 방지**: OpenZeppelin의 `ReentrancyGuard` 사용 또는 Checks-Effects-Interactions 패턴 적용.
--   **정수 오버플로우/언더플로우**: Solidity 0.8.x 이상 버전 사용.
--   **접근 제어**: `Ownable` 등 명확한 권한 관리 패턴 사용.
--   **코드 감사**: 외부 전문 업체를 통한 스마트 컨트랙트 감사.
--   **테스트**: 테스트 커버리지를 최대한 높여 엣지 케이스 검증.
+- **재진입 공격 (Reentrancy) 방지**: OpenZeppelin의 `ReentrancyGuard` 사용 또는 Checks-Effects-Interactions 패턴 적용.
+- **정수 오버플로우/언더플로우**: Solidity 0.8.x 이상 버전 사용.
+- **접근 제어**: `Ownable` 등 명확한 권한 관리 패턴 사용.
+- **코드 감사**: 외부 전문 업체를 통한 스마트 컨트랙트 감사.
+- **테스트**: 테스트 커버리지를 최대한 높여 엣지 케이스 검증.
 
 DeFi는 빠르게 발전하는 분야이며, 높은 수익의 기회와 기술적 도전 과제를 동시에 제공합니다. 이 가이드를 통해 Next.js 개발자들이 DeFi 생태계에 더 쉽게 참여하고, 안전하고 혁신적인 서비스를 만드는 데 도움이 되기를 바랍니다.

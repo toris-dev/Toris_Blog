@@ -35,8 +35,8 @@ tags: ['React', 'Modal', 'Portal', 'DOM', 'Frontend']
 
 포탈을 사용하려면 `ReactDOM.createPortal(child, container)` 함수를 호출합니다.
 
--   `child`: 렌더링할 React 자식 요소 (엘리먼트, 문자열, 프래그먼트 등)
--   `container`: 자식을 렌더링할 실제 DOM 노드
+- `child`: 렌더링할 React 자식 요소 (엘리먼트, 문자열, 프래그먼트 등)
+- `container`: 자식을 렌더링할 실제 DOM 노드
 
 #### 1. 포탈을 위한 DOM 컨테이너 준비
 
@@ -46,7 +46,8 @@ tags: ['React', 'Modal', 'Portal', 'DOM', 'Frontend']
 <!-- public/index.html -->
 <body>
   <div id="root"></div>
-  <div id="modal-root"></div> <!-- 모달이 렌더링될 컨테이너 -->
+  <div id="modal-root"></div>
+  <!-- 모달이 렌더링될 컨테이너 -->
 </body>
 ```
 
@@ -73,7 +74,9 @@ function Modal({ children, onClose }) {
   return ReactDOM.createPortal(
     <div style={overlayStyle}>
       <div style={modalStyle}>
-        <button onClick={onClose} style={closeButtonStyle}>X</button>
+        <button onClick={onClose} style={closeButtonStyle}>
+          X
+        </button>
         {children}
       </div>
     </div>,
@@ -85,13 +88,22 @@ export default Modal;
 
 // 스타일 정의
 const overlayStyle = {
-  position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-  backgroundColor: 'rgba(0, 0, 0, 0.7)', zIndex: 1000
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  zIndex: 1000
 };
 const modalStyle = {
-  position: 'fixed', top: '50%', left: '50%',
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
   transform: 'translate(-50%, -50%)',
-  backgroundColor: '#fff', padding: '50px', zIndex: 1000
+  backgroundColor: '#fff',
+  padding: '50px',
+  zIndex: 1000
 };
 const closeButtonStyle = { position: 'absolute', top: '10px', right: '10px' };
 ```

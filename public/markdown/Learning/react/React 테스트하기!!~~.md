@@ -12,8 +12,8 @@ tags: ['React', 'Testing', 'Jest', 'React Testing Library', 'Frontend']
 
 ### 추천 도구: Jest와 React Testing Library (RTL)
 
--   **Jest**: Facebook에서 만든 JavaScript 테스트 러너(Test Runner)입니다. 테스트를 실행하고, 단언(assertion)하며, 모의(mocking) 객체를 만드는 등의 기능을 제공합니다. `create-react-app`에 기본적으로 내장되어 있습니다.
--   **React Testing Library (RTL)**: 사용자의 관점에서 컴포넌트를 테스트하도록 돕는 도구 모음입니다. 컴포넌트의 내부 구현(props, state 등)을 직접 테스트하기보다는, 실제 사용자가 화면에서 보고 상호작용하는 방식을 테스트하도록 유도합니다. 이는 테스트가 구현의 세부 사항에 덜 의존하게 만들어, 리팩토링 시에도 테스트 코드가 깨질 가능성을 줄여줍니다.
+- **Jest**: Facebook에서 만든 JavaScript 테스트 러너(Test Runner)입니다. 테스트를 실행하고, 단언(assertion)하며, 모의(mocking) 객체를 만드는 등의 기능을 제공합니다. `create-react-app`에 기본적으로 내장되어 있습니다.
+- **React Testing Library (RTL)**: 사용자의 관점에서 컴포넌트를 테스트하도록 돕는 도구 모음입니다. 컴포넌트의 내부 구현(props, state 등)을 직접 테스트하기보다는, 실제 사용자가 화면에서 보고 상호작용하는 방식을 테스트하도록 유도합니다. 이는 테스트가 구현의 세부 사항에 덜 의존하게 만들어, 리팩토링 시에도 테스트 코드가 깨질 가능성을 줄여줍니다.
 
 이 두 도구는 함께 사용될 때 강력한 시너지를 발휘하여, 견고하고 유지보수하기 좋은 테스트 코드를 작성할 수 있게 돕습니다.
 

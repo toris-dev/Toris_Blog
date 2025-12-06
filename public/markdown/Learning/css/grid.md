@@ -55,20 +55,23 @@ Grid의 열(세로 방향) 크기와 개수를 정의합니다.
 .container {
   /* 고정 크기 */
   grid-template-columns: 200px 200px 200px;
-  
+
   /* 반응형 단위 (fr = fraction) */
   grid-template-columns: 1fr 2fr 1fr; /* 1:2:1 비율 */
-  
+
   /* repeat() 함수 사용 */
   grid-template-columns: repeat(3, 1fr); /* 3개의 동일한 열 */
-  grid-template-columns: repeat(4, minmax(100px, 1fr)); /* 최소 100px, 최대 1fr */
-  
+  grid-template-columns: repeat(
+    4,
+    minmax(100px, 1fr)
+  ); /* 최소 100px, 최대 1fr */
+
   /* minmax() 함수 */
   grid-template-columns: 100px minmax(100px, 3fr) 1fr;
   /* 첫 번째: 100px 고정
      두 번째: 최소 100px, 최대 3fr
      세 번째: 1fr */
-  
+
   /* auto-fill / auto-fit */
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   /* 컨테이너 크기에 맞춰 자동으로 열 개수 조정 */
@@ -76,6 +79,7 @@ Grid의 열(세로 방향) 크기와 개수를 정의합니다.
 ```
 
 **주요 값:**
+
 - `fr` (fraction): 사용 가능한 공간의 비율
 - `auto`: 콘텐츠 크기에 맞춰 자동 조정
 - `minmax(min, max)`: 최소값과 최대값 설정
@@ -89,13 +93,13 @@ Grid의 행(가로 방향) 크기와 개수를 정의합니다.
 .container {
   /* 고정 크기 */
   grid-template-rows: 100px 200px 100px;
-  
+
   /* repeat() 함수 */
   grid-template-rows: repeat(2, 100px); /* 2개를 100px로 지정, 나머지는 auto */
-  
+
   /* 반응형 */
   grid-template-rows: 1fr 2fr 1fr;
-  
+
   /* minmax() */
   grid-template-rows: minmax(100px, auto) 1fr;
 }
@@ -108,18 +112,27 @@ Grid 영역에 이름을 지정하여 직관적인 레이아웃을 구성할 수
 ```css
 .container {
   grid-template-areas:
-    "header header header"
-    "main main aside"
-    "footer footer footer";
+    'header header header'
+    'main main aside'
+    'footer footer footer';
 }
 
-.header { grid-area: header; }
-.main { grid-area: main; }
-.aside { grid-area: aside; }
-.footer { grid-area: footer; }
+.header {
+  grid-area: header;
+}
+.main {
+  grid-area: main;
+}
+.aside {
+  grid-area: aside;
+}
+.footer {
+  grid-area: footer;
+}
 ```
 
 **특징:**
+
 - 같은 이름을 사용하면 해당 영역이 병합됩니다
 - `.` (점)을 사용하면 빈 셀을 만들 수 있습니다
 - 각 행은 따옴표로 묶어야 합니다
@@ -131,9 +144,9 @@ Grid 영역에 이름을 지정하여 직관적인 레이아웃을 구성할 수
 ```css
 .container {
   grid-template:
-    "header header" 60px
-    "main aside" 1fr
-    "footer footer" 40px
+    'header header' 60px
+    'main aside' 1fr
+    'footer footer' 40px
     / 2fr 1fr; /* 열 크기 */
 }
 ```
@@ -147,7 +160,7 @@ Grid 아이템 사이의 간격을 설정합니다. (구버전: `grid-gap`)
   gap: 20px; /* 행과 열 모두 20px */
   row-gap: 20px; /* 행 간격만 20px */
   column-gap: 30px; /* 열 간격만 30px */
-  
+
   /* 또는 */
   gap: 20px 30px; /* row-gap column-gap */
 }
@@ -174,7 +187,7 @@ Grid 아이템이 자동으로 배치되는 방향을 제어합니다.
 .container {
   grid-template-columns: repeat(3, 1fr);
   grid-auto-columns: 100px; /* 4번째 열부터는 100px */
-  
+
   grid-template-rows: repeat(2, 100px);
   grid-auto-rows: 150px; /* 3번째 행부터는 150px */
 }
@@ -283,7 +296,7 @@ Grid 아이템이 차지할 행의 범위를 지정합니다.
 .item {
   /* 영역 이름 사용 */
   grid-area: header;
-  
+
   /* 또는 행/열 위치 지정 */
   grid-area: 1 / 1 / 3 / 3;
   /* row-start / column-start / row-end / column-end */
@@ -359,18 +372,26 @@ Grid 아이템이 차지할 행의 범위를 지정합니다.
 .container {
   display: grid;
   grid-template-areas:
-    "header header header"
-    "sidebar main main"
-    "footer footer footer";
+    'header header header'
+    'sidebar main main'
+    'footer footer footer';
   grid-template-columns: 200px 1fr 1fr;
   grid-template-rows: 80px 1fr 60px;
   gap: 20px;
 }
 
-.header { grid-area: header; }
-.sidebar { grid-area: sidebar; }
-.main { grid-area: main; }
-.footer { grid-area: footer; }
+.header {
+  grid-area: header;
+}
+.sidebar {
+  grid-area: sidebar;
+}
+.main {
+  grid-area: main;
+}
+.footer {
+  grid-area: footer;
+}
 ```
 
 ### 예제 4: 카드 그리드 레이아웃
@@ -392,9 +413,9 @@ Grid 아이템이 차지할 행의 범위를 지정합니다.
   grid-template-columns: 250px 1fr 300px;
   grid-template-rows: auto 1fr auto;
   grid-template-areas:
-    "header header header"
-    "nav main aside"
-    "footer footer footer";
+    'header header header'
+    'nav main aside'
+    'footer footer footer';
   min-height: 100vh;
   gap: 1rem;
 }
@@ -430,10 +451,14 @@ grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 
 ```css
 /* ❌ 나쁜 예 */
-.item { margin: 10px; }
+.item {
+  margin: 10px;
+}
 
 /* ✅ 좋은 예 */
-.container { gap: 20px; }
+.container {
+  gap: 20px;
+}
 ```
 
 ### 4. `grid-template-areas`로 가독성 향상
@@ -460,14 +485,15 @@ Grid 아이템 내부에 또 다른 Grid를 사용하여 복잡한 레이아웃�
 
 ## Grid vs Flexbox
 
-| 특징 | Grid | Flexbox |
-|------|------|---------|
-| **차원** | 2차원 (행 + 열) | 1차원 (행 또는 열) |
-| **용도** | 전체 페이지 레이아웃 | 컴포넌트 내부 레이아웃 |
-| **정렬** | 행과 열 동시 제어 | 한 방향만 제어 |
-| **적용 대상** | Container와 Item | Container와 Item |
+| 특징          | Grid                 | Flexbox                |
+| ------------- | -------------------- | ---------------------- |
+| **차원**      | 2차원 (행 + 열)      | 1차원 (행 또는 열)     |
+| **용도**      | 전체 페이지 레이아웃 | 컴포넌트 내부 레이아웃 |
+| **정렬**      | 행과 열 동시 제어    | 한 방향만 제어         |
+| **적용 대상** | Container와 Item     | Container와 Item       |
 
 **권장 사용:**
+
 - **Grid**: 전체 페이지 레이아웃, 카드 그리드, 복잡한 2차원 레이아웃
 - **Flexbox**: 네비게이션 바, 버튼 그룹, 폼 요소, 컴포넌트 내부 정렬
 
@@ -476,6 +502,7 @@ Grid 아이템 내부에 또 다른 Grid를 사용하여 복잡한 레이아웃�
 ## 브라우저 호환성
 
 CSS Grid는 모든 모던 브라우저에서 지원됩니다:
+
 - Chrome 57+
 - Firefox 52+
 - Safari 10.1+

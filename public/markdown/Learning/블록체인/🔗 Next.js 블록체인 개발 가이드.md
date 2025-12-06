@@ -3,7 +3,16 @@ title: '[Blockchain] Next.js 기반 블록체인 애플리케이션 개발 가�
 date: 2025-07-13T12:00:00.000Z
 slug: nextjs-blockchain-application-development-guide
 category: 'Blockchain'
-tags: ['Next.js', 'Blockchain', 'Web3', 'NFT', 'Smart Contracts', 'Solidity', 'Frontend']
+tags:
+  [
+    'Next.js',
+    'Blockchain',
+    'Web3',
+    'NFT',
+    'Smart Contracts',
+    'Solidity',
+    'Frontend'
+  ]
 ---
 
 # 🔗 Next.js 기반 블록체인 애플리케이션 개발 가이드
@@ -50,15 +59,17 @@ npm install @thirdweb-dev/react @thirdweb-dev/sdk
 ```javascript
 // hardhat.config.js
 require('@nomiclabs/hardhat-ethers');
-require("@nomiclabs/hardhat-waffle"); // Waffle 플러그인 추가 (테스트 용이)
+require('@nomiclabs/hardhat-waffle'); // Waffle 플러그인 추가 (테스트 용이)
 
 module.exports = {
   solidity: '0.8.19', // 사용할 Solidity 컴파일러 버전
   networks: {
-    hardhat: { // 로컬 개발용 Hardhat 네트워크
+    hardhat: {
+      // 로컬 개발용 Hardhat 네트워크
       chainId: 31337 // 일반적으로 사용되는 로컬 체인 ID
     },
-    mumbai: { // Polygon Mumbai 테스트넷 설정
+    mumbai: {
+      // Polygon Mumbai 테스트넷 설정
       url: 'https://rpc-mumbai.maticvigil.com', // Mumbai RPC URL
       accounts: [process.env.PRIVATE_KEY] // .env 파일에서 개인 키 로드
     }
@@ -277,12 +288,12 @@ export default function NFTCard({ nft, onBuy }: NFTCardProps) {
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="relative h-64 w-full"> {/* Next.js Image를 위한 부모 요소 */} 
-        <Image 
-          src={nft.image} 
-          alt={nft.name} 
-          layout="fill" 
-          objectFit="cover" 
+      <div className="relative h-64 w-full"> {/* Next.js Image를 위한 부모 요소 */}
+        <Image
+          src={nft.image}
+          alt={nft.name}
+          layout="fill"
+          objectFit="cover"
           priority // LCP 개선을 위해 우선순위 높음
         />
       </div>
@@ -536,53 +547,63 @@ import { ethers } from 'ethers';
 export function usePoints() {
   const address = useAddress(); // 현재 연결된 지갑 주소
   // 포인트 토큰 컨트랙트 인스턴스
-  const { contract: pointContract } = useContract(process.env.NEXT_PUBLIC_POINT_TOKEN_ADDRESS);
+  const { contract: pointContract } = useContract(
+    process.env.NEXT_PUBLIC_POINT_TOKEN_ADDRESS
+  );
   // 리워드 시스템 컨트랙트 인스턴스
-  const { contract: rewardContract } = useContract(process.env.NEXT_PUBLIC_REWARD_SYSTEM_ADDRESS);
+  const { contract: rewardContract } = useContract(
+    process.env.NEXT_PUBLIC_REWARD_SYSTEM_ADDRESS
+  );
 
   // 사용자의 포인트 잔액 조회
-  const { data: balance, isLoading: isBalanceLoading, refetch: refetchBalance } = useContractRead(
-    pointContract,
-    'balanceOf',
-    [address]
-  );
+  const {
+    data: balance,
+    isLoading: isBalanceLoading,
+    refetch: refetchBalance
+  } = useContractRead(pointContract, 'balanceOf', [address]);
 
   // 일일 보상 청구 함수
   const claimDailyReward = async () => {
-    if (!rewardContract) throw new Error("Reward contract not loaded.");
+    if (!rewardContract) throw new Error('Reward contract not loaded.');
 
     try {
-      const tx = await rewardContract.call("claimDailyReward");
+      const tx = await rewardContract.call('claimDailyReward');
       await tx.wait(); // 트랜잭션이 블록에 포함될 때까지 대기
       await refetchBalance(); // 잔액 새로고침
       return tx;
     } catch (error) {
-      console.error("일일 리워드 수령 실패:", error);
+      console.error('일일 리워드 수령 실패:', error);
       throw error;
     }
   };
 
   // 포인트 사용 함수
   const redeemPoints = async (amount: string, item: string) => {
-    if (!rewardContract) throw new Error("Reward contract not loaded.");
+    if (!rewardContract) throw new Error('Reward contract not loaded.');
 
     try {
       // ERC-20 approve 먼저 호출 (RewardSystem이 사용자 대신 토큰을 전송할 수 있도록)
-      const approveTx = await pointContract.call("approve", [process.env.NEXT_PUBLIC_REWARD_SYSTEM_ADDRESS, ethers.utils.parseEther(amount)]);
+      const approveTx = await pointContract.call('approve', [
+        process.env.NEXT_PUBLIC_REWARD_SYSTEM_ADDRESS,
+        ethers.utils.parseEther(amount)
+      ]);
       await approveTx.wait();
 
-      const redeemTx = await rewardContract.call("redeemPoints", [ethers.utils.parseEther(amount), item]);
+      const redeemTx = await rewardContract.call('redeemPoints', [
+        ethers.utils.parseEther(amount),
+        item
+      ]);
       await redeemTx.wait();
       await refetchBalance();
       return redeemTx;
     } catch (error) {
-      console.error("포인트 사용 실패:", error);
+      console.error('포인트 사용 실패:', error);
       throw error;
     }
   };
 
   return {
-    balance: balance ? ethers.utils.formatEther(balance) : "0", // 읽기 쉬운 형태로 변환
+    balance: balance ? ethers.utils.formatEther(balance) : '0', // 읽기 쉬운 형태로 변환
     isBalanceLoading,
     claimDailyReward,
     redeemPoints,
@@ -814,9 +835,11 @@ async function main() {
   console.log('RewardSystem 컨트랙트 주소:', rewardSystem.address);
 
   // 배포된 컨트랙트 주소를 .env.local에 추가하여 Next.js 앱에서 사용
-  console.log("\n--- Add these to your .env.local ---");
+  console.log('\n--- Add these to your .env.local ---');
   console.log(`NEXT_PUBLIC_NFT_CONTRACT_ADDRESS=${myNFT.address}`);
-  console.log(`NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS=${nftMarketplace.address}`);
+  console.log(
+    `NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS=${nftMarketplace.address}`
+  );
   console.log(`NEXT_PUBLIC_POINT_TOKEN_ADDRESS=${myPointToken.address}`);
   console.log(`NEXT_PUBLIC_REWARD_SYSTEM_ADDRESS=${rewardSystem.address}`);
 }
@@ -867,12 +890,20 @@ export const trackPointsEarned = (
   amount: string,
   activity: string
 ) => {
-  console.log(`[Analytics] 포인트 획득: ${userAddress} - ${amount} MPT for ${activity}`);
+  console.log(
+    `[Analytics] 포인트 획득: ${userAddress} - ${amount} MPT for ${activity}`
+  );
   // sendToAnalyticsService("points_earned", { userAddress, amount, activity });
 };
 
-export const trackMarketplaceSale = (tokenId: string, price: string, buyerAddress: string) => {
-  console.log(`[Analytics] NFT 판매: Token ${tokenId}, Price ${price} ETH, Buyer ${buyerAddress}`);
+export const trackMarketplaceSale = (
+  tokenId: string,
+  price: string,
+  buyerAddress: string
+) => {
+  console.log(
+    `[Analytics] NFT 판매: Token ${tokenId}, Price ${price} ETH, Buyer ${buyerAddress}`
+  );
   // sendToAnalyticsService("marketplace_sale", { tokenId, price, buyerAddress });
 };
 ```
@@ -881,10 +912,10 @@ export const trackMarketplaceSale = (tokenId: string, price: string, buyerAddres
 
 ### 권장 리소스
 
--   **thirdweb Docs**: Next.js와 Web3 개발을 위한 가장 최신화된 자료를 제공합니다.
--   **OpenZeppelin Docs**: 스마트 컨트랙트 개발의 표준과 보안 모범 사례를 배울 수 있습니다.
--   **Hardhat Docs**: 이더리움 개발 환경 설정 및 테스트에 대한 깊이 있는 정보를 제공합니다.
--   **Ethers.js / Web3.js Docs**: 블록체인과 상호작용하는 JavaScript 라이브러리 사용법을 익힙니다.
+- **thirdweb Docs**: Next.js와 Web3 개발을 위한 가장 최신화된 자료를 제공합니다.
+- **OpenZeppelin Docs**: 스마트 컨트랙트 개발의 표준과 보안 모범 사례를 배울 수 있습니다.
+- **Hardhat Docs**: 이더리움 개발 환경 설정 및 테스트에 대한 깊이 있는 정보를 제공합니다.
+- **Ethers.js / Web3.js Docs**: 블록체인과 상호작용하는 JavaScript 라이브러리 사용법을 익힙니다.
 
 ### 실무 팁
 
@@ -896,15 +927,15 @@ export const trackMarketplaceSale = (tokenId: string, price: string, buyerAddres
 
 #### 성능 최적화 (Next.js & Web3)
 
--   **Turbopack Dev (Stable)**: Next.js 15에서 안정화된 Turbopack은 로컬 개발 서버의 시작 속도와 코드 업데이트 속도를 크게 향상시켜 개발 경험을 개선합니다.
--   **캐싱 제어**: Next.js 15에서는 `fetch` 요청, `GET` Route Handlers, 클라이언트 탐색이 기본적으로 캐시되지 않아 개발자가 캐싱 동작을 더 명시적으로 제어할 수 있습니다. 이를 통해 불필요한 데이터 재요청을 줄일 수 있습니다.
--   **React 19 지원**: React 19의 새로운 기능(예: React Compiler)을 활용하여 렌더링 성능을 최적화할 수 있습니다.
--   **데이터 캐싱**: `swr` 또는 `react-query`와 같은 라이브러리를 사용하여 블록체인 데이터를 캐싱하고 UI 응답성을 높입니다.
--   **서버 사이드 렌더링 (SSR) / 정적 사이트 생성 (SSG)**: Next.js의 SSR/SSG 기능을 활용하여 초기 로딩 속도를 개선하고 SEO를 최적화합니다. 특히 자주 변경되지 않는 블록체인 데이터(예: NFT 메타데이터)는 SSG로 미리 생성할 수 있습니다.
--   **API Routes 활용**: 민감한 트랜잭션(예: 관리자 권한이 필요한 민팅)은 Next.js API Routes를 통해 백엔드에서 처리하여 개인 키 노출 위험을 줄입니다.
--   **이미지 최적화**: Next.js `Image` 컴포넌트를 사용하여 NFT 이미지 등을 자동으로 최적화하고 지연 로딩합니다.
--   **개선된 TypeScript 지원**: Next.js 15는 더 빠른 타입 검사와 향상된 에디터 통합을 제공하여 개발 생산성을 높입니다.
--   **새로운 디버깅 도구**: Next.js 15의 업데이트된 디버깅 도구는 더 상세한 에러 메시지와 스택 트레이스를 제공하여 문제 해결을 돕습니다.
+- **Turbopack Dev (Stable)**: Next.js 15에서 안정화된 Turbopack은 로컬 개발 서버의 시작 속도와 코드 업데이트 속도를 크게 향상시켜 개발 경험을 개선합니다.
+- **캐싱 제어**: Next.js 15에서는 `fetch` 요청, `GET` Route Handlers, 클라이언트 탐색이 기본적으로 캐시되지 않아 개발자가 캐싱 동작을 더 명시적으로 제어할 수 있습니다. 이를 통해 불필요한 데이터 재요청을 줄일 수 있습니다.
+- **React 19 지원**: React 19의 새로운 기능(예: React Compiler)을 활용하여 렌더링 성능을 최적화할 수 있습니다.
+- **데이터 캐싱**: `swr` 또는 `react-query`와 같은 라이브러리를 사용하여 블록체인 데이터를 캐싱하고 UI 응답성을 높입니다.
+- **서버 사이드 렌더링 (SSR) / 정적 사이트 생성 (SSG)**: Next.js의 SSR/SSG 기능을 활용하여 초기 로딩 속도를 개선하고 SEO를 최적화합니다. 특히 자주 변경되지 않는 블록체인 데이터(예: NFT 메타데이터)는 SSG로 미리 생성할 수 있습니다.
+- **API Routes 활용**: 민감한 트랜잭션(예: 관리자 권한이 필요한 민팅)은 Next.js API Routes를 통해 백엔드에서 처리하여 개인 키 노출 위험을 줄입니다.
+- **이미지 최적화**: Next.js `Image` 컴포넌트를 사용하여 NFT 이미지 등을 자동으로 최적화하고 지연 로딩합니다.
+- **개선된 TypeScript 지원**: Next.js 15는 더 빠른 타입 검사와 향상된 에디터 통합을 제공하여 개발 생산성을 높입니다.
+- **새로운 디버깅 도구**: Next.js 15의 업데이트된 디버깅 도구는 더 상세한 에러 메시지와 스택 트레이스를 제공하여 문제 해결을 돕습니다.
 
 ## 🎯 다음 단계
 

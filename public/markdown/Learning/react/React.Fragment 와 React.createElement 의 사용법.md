@@ -70,11 +70,11 @@ function MyComponent() {
 
 ### `<>` vs `React.Fragment`
 
-| 특징             | `<>` (단축 문법) | `<React.Fragment>` (명시적 문법) | 
-| ---------------- | ---------------- | --------------------------------- |
-| **DOM 추가**     | 없음             | 없음                              |
-| **`key` 속성**   | **불가능**       | **가능**                          |
-| **기타 속성**    | 불가능           | 불가능                            |
+| 특징           | `<>` (단축 문법) | `<React.Fragment>` (명시적 문법) |
+| -------------- | ---------------- | -------------------------------- |
+| **DOM 추가**   | 없음             | 없음                             |
+| **`key` 속성** | **불가능**       | **가능**                         |
+| **기타 속성**  | 불가능           | 불가능                           |
 
 배열을 렌더링할 때와 같이 `key` prop을 전달해야 하는 경우에는 반드시 명시적인 `<React.Fragment>` 문법을 사용해야 합니다.
 
@@ -82,7 +82,7 @@ function MyComponent() {
 function Glossary(props) {
   return (
     <dl>
-      {props.items.map(item => (
+      {props.items.map((item) => (
         // `key` prop이 필요하므로, 단축 문법을 사용할 수 없습니다.
         <React.Fragment key={item.id}>
           <dt>{item.term}</dt>
