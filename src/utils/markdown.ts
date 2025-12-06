@@ -125,9 +125,6 @@ function parseMarkdownFile(filePath: string): Post | null {
     // 파일 경로 기반 해시 ID 생성
     const id = createHashId(filePath);
 
-    // 디버깅 로그
-    console.log(`파일: ${fileName} -> 슬러그: ${slug}`);
-
     return {
       id,
       title: data.title || fileName,
@@ -170,12 +167,6 @@ export function getPostData(): Post[] {
       return true;
     });
 
-    // 디버깅 로그
-    console.log(`총 ${uniquePosts.length}개의 포스트를 찾았습니다.`);
-    uniquePosts.forEach((post) => {
-      console.log(`- ${post.title} (${post.slug})`);
-    });
-
     // 날짜순 정렬
     return uniquePosts.sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -187,16 +178,8 @@ export function getPostData(): Post[] {
 }
 
 export function getPostBySlug(slug: string): Post | null {
-  console.log(`슬러그 검색: ${slug}`);
   const posts = getPostData();
   const post = posts.find((post) => post.slug === slug);
-
-  if (!post) {
-    console.log(`슬러그 '${slug}'에 해당하는 포스트를 찾을 수 없습니다.`);
-    console.log('사용 가능한 슬러그들:');
-    posts.forEach((p) => console.log(`- ${p.slug}`));
-  }
-
   return post || null;
 }
 

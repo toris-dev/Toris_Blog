@@ -64,7 +64,6 @@ ${message}
     }
 
     const result = await response.json();
-    console.log('Comment created:', result.html_url);
 
     return NextResponse.json({
       success: true,

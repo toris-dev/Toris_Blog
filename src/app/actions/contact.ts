@@ -84,7 +84,6 @@ ${formData.message}
     }
 
     const result = await response.json();
-    console.log('Comment created:', result.html_url);
 
     // 성공 시 관련 경로 재검증 (필요한 경우)
     revalidatePath('/contact');
@@ -103,4 +102,3 @@ ${formData.message}
     };
   }
 }
-

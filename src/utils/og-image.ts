@@ -26,10 +26,7 @@ export function extractFirstImageFromMarkdown(content: string): string | null {
  * @param title - 이미지에 표시할 제목
  * @param subtitle - 이미지에 표시할 부제목 (선택적)
  */
-export function getDefaultOGImageUrl(
-  title: string,
-  subtitle?: string
-): string {
+export function getDefaultOGImageUrl(title: string, subtitle?: string): string {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
   const params = new URLSearchParams({
@@ -59,4 +56,3 @@ export function toAbsoluteUrl(path: string): string {
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   return `${baseUrl}${normalizedPath}`;
 }
-
