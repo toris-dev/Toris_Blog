@@ -3,16 +3,17 @@ import withRemoveImports from 'next-remove-imports';
 
 const removeImports = withRemoveImports();
 
-// Next.js 15에 맞는 설정
+// Next.js 16에 맞는 설정
 const nextConfig: NextConfig = {
   // 빌드 오류 무시 설정
   typescript: {
     ignoreBuildErrors: true
   },
   // ESLint 빌드 시 무시 설정
-  eslint: {
-    ignoreDuringBuilds: true
-  },
+  // eslint: {
+  //   ignoreDuringBuilds: true,
+  //   dirs: ['src']
+  // },
   // Next.js 15에서는 turbopack이 안정화되어 최상위 설정으로 이동
   turbopack: {
     // 파일 확장자별 로더 설정
@@ -31,9 +32,9 @@ const nextConfig: NextConfig = {
     // 캐시 시간 설정
     staleTimes: {
       dynamic: 30
-    },
-    // React 컴파일러 활성화
-    reactCompiler: true
+    }
+    // React 컴파일러는 Next.js 16에서 별도 설정 불필요 (babel-plugin-react-compiler 사용)
+    // reactCompiler: true
   },
   // 이미지 최적화 및 외부 도메인 설정
   images: {
