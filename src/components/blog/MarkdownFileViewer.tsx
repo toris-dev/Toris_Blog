@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import GitHubComments from '../comments/GitHubComments';
+// import GitHubComments from '../comments/GitHubComments'; // TODO: GitHubComments 컴포넌트 구현 필요
 import { MarkdownViewer } from './Markdown';
 
 interface MarkdownFileViewerProps {
@@ -101,6 +101,7 @@ const MarkdownFileViewer: React.FC<MarkdownFileViewerProps> = ({ slug }) => {
 
       <MarkdownViewer>{content}</MarkdownViewer>
 
+      {/* TODO: GitHubComments 컴포넌트 구현 후 활성화
       {metadata && (
         <>
           <hr />
@@ -108,6 +109,7 @@ const MarkdownFileViewer: React.FC<MarkdownFileViewerProps> = ({ slug }) => {
           <GitHubComments slug={metadata.slug} title={metadata.title} />
         </>
       )}
+      */}
     </div>
   );
 };

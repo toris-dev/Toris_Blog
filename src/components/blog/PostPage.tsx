@@ -48,7 +48,7 @@ const PostPage: FC<{
       y: 0,
       transition: {
         duration: 0.6,
-        ease: 'easeOut'
+        ease: [0.42, 0, 0.58, 1] as const // easeOut cubic-bezier
       }
     }
   };

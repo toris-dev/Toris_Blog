@@ -1,7 +1,7 @@
 'use client';
 
 import { AiOutlineSend } from '@/components/icons';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { motion } from 'framer-motion';
 import { FormEvent, useState } from 'react';
 
