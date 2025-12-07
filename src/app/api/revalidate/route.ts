@@ -29,8 +29,7 @@ export async function POST(request: NextRequest) {
     // 각 태그에 대해 재검증
     // Next.js 16: revalidateTag는 tag와 type을 받습니다
     for (const tag of tags) {
-      // @ts-expect-error - Next.js 16 타입 정의와 실제 API가 다를 수 있음
-      revalidateTag(tag);
+      revalidateTag(tag, { expire: 6 * 60 * 60 * 1000 });
     }
 
     return NextResponse.json({
