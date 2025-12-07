@@ -12,11 +12,12 @@ import { cn } from '@/utils/style';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FC } from 'react';
-import { ThemeToggle } from './ThemeToggle';
+import { FC, useState } from 'react';
+import SearchModal from './SearchModal';
 
 const Header: FC = () => {
   const pathname = usePathname();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const navItems = [
     { href: '/', label: '홈', isActive: pathname === '/' },
@@ -91,15 +92,14 @@ const Header: FC = () => {
           {/* Right Actions */}
           <div className="flex items-center gap-2">
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <Link
-                href="/posts"
+              <button
+                onClick={() => setIsSearchOpen(true)}
                 className="hidden rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:block"
                 aria-label="블로그 포스트 검색"
               >
                 <FaSearch className="size-4" />
-              </Link>
+              </button>
             </motion.div>
-            <ThemeToggle />
           </div>
         </div>
       </header>
@@ -139,6 +139,12 @@ const Header: FC = () => {
           ))}
         </div>
       </motion.div>
+
+      {/* Search Modal */}
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
     </>
   );
 };
