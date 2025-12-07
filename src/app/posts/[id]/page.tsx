@@ -18,16 +18,36 @@ export default async function Post({ params }: { params: { id: string } }) {
   const { id } = await params;
 
   try {
-    // URL 디코딩 처리
-    const decodedId = decodeURIComponent(id);
+    // URL 디코딩 처리 (안전하게)
+    let decodedId: string;
+    try {
+      decodedId = decodeURIComponent(id);
+    } catch {
+      decodedId = id;
+    }
 
-    // 두 가지 방법으로 포스트 찾기 시도
+    // 여러 방법으로 포스트 찾기 시도
     let post = getPostBySlug(decodedId);
+    
+    // 인코딩된 버전으로도 시도
     if (!post) {
       post = getPostBySlug(id);
     }
+    
+    // 원본 ID로도 시도 (이미 인코딩되지 않은 경우)
+    if (!post) {
+      const allPosts = getPostData();
+      post = allPosts.find((p) => {
+        // 슬러그 직접 비교
+        if (p.slug === decodedId || p.slug === id) return true;
+        // 인코딩된 슬러그와 비교
+        const encodedSlug = encodeURIComponent(p.slug);
+        return encodedSlug === id || encodedSlug === decodedId;
+      }) || null;
+    }
 
     if (!post) {
+      console.error(`Post not found for id: ${id}, decodedId: ${decodedId}`);
       return notFound();
     }
 
@@ -44,10 +64,9 @@ export default async function Post({ params }: { params: { id: string } }) {
 
     return <PostPage {...pageProps} />;
   } catch (error) {
-    // 빌드 타임 에러는 조용히 처리 (notFound는 정상적인 동작)
-    if (process.env.NODE_ENV === 'development') {
+    // 프로덕션에서도 에러 로깅 (디버깅용)
     console.error('Error loading post:', error);
-    }
+    console.error('Post ID:', id);
     return notFound();
   }
 }
@@ -58,20 +77,38 @@ export default async function Post({ params }: { params: { id: string } }) {
 export async function generateStaticParams() {
   try {
     const posts = getPostData();
+    
+    if (posts.length === 0) {
+      console.warn('No posts found for static generation');
+      return [];
+    }
+    
     // 실제로 존재하는 포스트만 필터링하여 반환
     const validParams = posts
       .filter((post) => {
         // 포스트가 유효한지 확인
-        return post && post.slug && post.title;
+        if (!post || !post.slug || !post.title) {
+          console.warn(`Invalid post found:`, post);
+          return false;
+        }
+        return true;
       })
-      .map((post) => ({
-        id: encodeURIComponent(post.slug)
-    }));
+      .map((post) => {
+        // 일관되게 인코딩된 slug 사용
+        const id = encodeURIComponent(post.slug);
+        return { id };
+      });
+    
+    console.log(`Generated ${validParams.length} static params for posts`);
+    if (validParams.length > 0) {
+      console.log('Sample params:', validParams.slice(0, 3));
+    }
     return validParams;
   } catch (error) {
-    // 빌드 타임 에러는 조용히 처리
-    if (process.env.NODE_ENV === 'development') {
+    // 빌드 타임 에러 로깅
     console.error('Error generating static params:', error);
+    if (error instanceof Error) {
+      console.error('Error details:', error.message, error.stack);
     }
     return [];
   }

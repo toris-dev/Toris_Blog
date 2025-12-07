@@ -268,7 +268,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
                         {categoryPosts.slice(0, 5).map((post) => (
                           <Link
                             key={post.id}
-                            href={`/posts/${post.slug}`}
+                            href={`/posts/${encodeURIComponent(post.slug)}`}
                             className="block rounded px-3 py-2 text-xs text-muted-foreground transition-all hover:bg-background/60 hover:text-foreground"
                           >
                             <div className="line-clamp-2 font-medium">

@@ -147,14 +147,26 @@ function parseMarkdownFile(filePath: string): Post | null {
 export function getPostData(): Post[] {
   try {
     if (!fs.existsSync(postsDirectory)) {
-      console.warn(`Posts directory not found: ${postsDirectory}`);
+      console.error(`Posts directory not found: ${postsDirectory}`);
+      console.error(`Current working directory: ${process.cwd()}`);
       return [];
     }
 
     const markdownFiles = getAllMarkdownFiles(postsDirectory);
+    
+    if (markdownFiles.length === 0) {
+      console.warn(`No markdown files found in ${postsDirectory}`);
+      return [];
+    }
+
     const posts = markdownFiles
       .map(parseMarkdownFile)
       .filter((post) => post !== null) as Post[];
+
+    if (posts.length === 0) {
+      console.warn(`No valid posts parsed from ${markdownFiles.length} markdown files`);
+      return [];
+    }
 
     // ID 중복 체크 및 제거
     const seenIds = new Set<number>();
@@ -168,11 +180,17 @@ export function getPostData(): Post[] {
     });
 
     // 날짜순 정렬
-    return uniquePosts.sort(
+    const sortedPosts = uniquePosts.sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
+    
+    console.log(`Loaded ${sortedPosts.length} posts from markdown files`);
+    return sortedPosts;
   } catch (error) {
     console.error('Error reading markdown files:', error);
+    if (error instanceof Error) {
+      console.error('Error details:', error.message, error.stack);
+    }
     return [];
   }
 }

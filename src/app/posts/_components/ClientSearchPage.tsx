@@ -325,7 +325,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                 exit={{ opacity: 0, y: -20 }}
                 className="group overflow-hidden rounded-xl border border-primary/30 shadow-sm transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
               >
-                <Link href={`/posts/${post.slug}`}>
+                <Link href={`/posts/${encodeURIComponent(post.slug)}`}>
                   <div className="relative h-48 w-full overflow-hidden bg-gradient-to-r from-primary/20 to-accent/20">
                     {post.preview_image_url ? (
                       <Image

@@ -171,7 +171,7 @@ export default function PostsList() {
               style={{ perspective: 1000 }}
             >
               <Link
-                href={`/posts/${post.slug}`}
+                href={`/posts/${encodeURIComponent(post.slug)}`}
                 className="neon-border hover:neon-glow-animate group block rounded-lg border border-primary/30 bg-card/50 p-6 backdrop-blur-sm transition-all hover:bg-card/80"
               >
                 <div className="mb-4 flex items-center">

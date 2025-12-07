@@ -83,7 +83,10 @@ export default function PostsSection({ featuredPosts }: PostsSectionProps) {
               }}
               style={{ perspective: 1000 }}
             >
-              <Link href={`/posts/${post.slug}`} className="block">
+              <Link 
+                href={`/posts/${encodeURIComponent(post.slug)}`} 
+                className="block"
+              >
                 <div className="mb-4 flex items-center">
                   <motion.span
                     className="rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
