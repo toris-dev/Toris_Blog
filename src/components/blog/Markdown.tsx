@@ -8,7 +8,8 @@ import rehypeHighlight from 'rehype-highlight';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
 
-// Import highlight.js theme
+// Import highlight.js theme for code syntax highlighting
+import 'highlight.js/styles/github-dark.css';
 
 interface MarkdownProps {
   children: string;
@@ -33,29 +34,60 @@ export const MarkdownViewer: React.FC<MarkdownProps> = ({
               plainText: ['txt', 'text', 'plain'],
               // Add custom language aliases
               aliases: {
-                sol: 'javascript', // Use JavaScript highlighting for Solidity
+                // Solidity and blockchain
+                sol: 'javascript',
                 solidity: 'javascript',
+                // JavaScript/TypeScript
                 js: 'javascript',
                 jsx: 'javascript',
+                mjs: 'javascript',
+                cjs: 'javascript',
                 ts: 'typescript',
                 tsx: 'typescript',
+                // Scripting languages
                 py: 'python',
                 rb: 'ruby',
+                sh: 'bash',
+                bash: 'bash',
+                zsh: 'bash',
+                fish: 'bash',
+                ps1: 'powershell',
+                pwsh: 'powershell',
+                // System languages
                 rs: 'rust',
+                rust: 'rust',
                 kt: 'kotlin',
+                kotlin: 'kotlin',
                 swift: 'swift',
                 go: 'go',
+                golang: 'go',
                 dart: 'dart',
                 scala: 'scala',
-                sh: 'bash',
-                zsh: 'bash',
-                ps1: 'powershell',
+                java: 'java',
+                // Config files
                 yml: 'yaml',
+                yaml: 'yaml',
+                toml: 'toml',
+                json: 'json',
+                // DevOps
                 dockerfile: 'docker',
+                docker: 'docker',
+                // Documentation
                 md: 'markdown',
+                markdown: 'markdown',
                 tex: 'latex',
+                latex: 'latex',
+                // Others
                 proto: 'protobuf',
-                gql: 'graphql'
+                protobuf: 'protobuf',
+                gql: 'graphql',
+                graphql: 'graphql',
+                sql: 'sql',
+                css: 'css',
+                scss: 'scss',
+                sass: 'sass',
+                html: 'xml',
+                xml: 'xml'
               }
             }
           ]
