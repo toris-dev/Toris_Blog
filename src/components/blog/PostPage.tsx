@@ -113,9 +113,9 @@ const PostPage: FC<{
           <MarkdownViewer>{content}</MarkdownViewer>
         </motion.div>
 
-        <motion.div variants={itemVariants}>
+        <div className="mt-12">
           <Utterances repo="toris-dev/Toris_Blog" />
-        </motion.div>
+        </div>
       </motion.div>
     </article>
   );

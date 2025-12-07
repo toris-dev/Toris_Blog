@@ -46,7 +46,7 @@ export default async function Post({ params }: { params: { id: string } }) {
   } catch (error) {
     // 빌드 타임 에러는 조용히 처리 (notFound는 정상적인 동작)
     if (process.env.NODE_ENV === 'development') {
-      console.error('Error loading post:', error);
+    console.error('Error loading post:', error);
     }
     return notFound();
   }
@@ -66,12 +66,12 @@ export async function generateStaticParams() {
       })
       .map((post) => ({
         id: encodeURIComponent(post.slug)
-      }));
+    }));
     return validParams;
   } catch (error) {
     // 빌드 타임 에러는 조용히 처리
     if (process.env.NODE_ENV === 'development') {
-      console.error('Error generating static params:', error);
+    console.error('Error generating static params:', error);
     }
     return [];
   }
