@@ -8,7 +8,7 @@ const Footer: FC = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="neon-border border-t border-primary/30 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
+    <footer className="neon-border w-full border-t border-primary/30 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Brand */}
