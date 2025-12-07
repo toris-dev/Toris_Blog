@@ -1,7 +1,7 @@
-import CategorySidebar from '@/components/blog/CategorySidebar';
 import Footer from '@/components/common/Footer';
 import Header from '@/components/common/Header';
 import Providers from '@/components/common/Providers';
+import Sidebar from '@/components/common/Sidebar';
 import SEOOptimizer from '@/components/seo/SEOOptimizer';
 import StructuredData from '@/components/seo/StructuredData';
 import '@/styles/globals.css';
@@ -10,7 +10,7 @@ import { cn } from '@/utils/style';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { Metadata } from 'next';
 import { Inter, Space_Grotesk } from 'next/font/google';
-import { ReactNode, Suspense } from 'react';
+import { ReactNode } from 'react';
 
 // 웹 폰트 설정
 const inter = Inter({
@@ -26,37 +26,6 @@ const spaceGrotesk = Space_Grotesk({
 // 6시간마다 재생성
 export const revalidate = 21600;
 
-// CategorySidebar 로딩 컴포넌트
-function CategorySidebarSkeleton() {
-  return (
-    <div className="neon-border w-full rounded-xl border border-primary/30 bg-card/50 shadow-lg backdrop-blur-lg">
-      <div className="p-6">
-        <div className="flex animate-pulse flex-col items-center space-y-4">
-          <div className="size-20 rounded-full bg-background/50"></div>
-          <div className="h-4 w-24 rounded bg-background/50"></div>
-          <div className="h-3 w-32 rounded bg-background/50"></div>
-          <div className="space-y-2">
-            {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className="h-8 w-full rounded bg-background/50"
-              ></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// 클라이언트 컴포넌트 래퍼 - useSearchParams 사용
-function CategorySidebarWrapper({ posts }: { posts: any[] }) {
-  return (
-    <Suspense fallback={<CategorySidebarSkeleton />}>
-      <CategorySidebar posts={posts} />
-    </Suspense>
-  );
-}
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -167,8 +136,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
-        <meta name="theme-color" content="#3b82f6" />
-        <meta name="color-scheme" content="light dark" />
+        <meta name="theme-color" content="#0a0a0f" />
+        <meta name="color-scheme" content="dark" />
         <link
           rel="icon"
           href="/images/favicon.svg"
@@ -223,11 +192,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
             <div className="relative flex flex-1">
               {/* Sidebar */}
-              <aside className="hidden lg:block lg:w-80 lg:shrink-0">
-                <div className="sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto px-4">
-                  <CategorySidebarWrapper posts={posts} />
-                </div>
-              </aside>
+              <Sidebar posts={posts} />
 
               {/* Main Content */}
               <div className="flex flex-1 flex-col overflow-x-hidden">
@@ -236,9 +201,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                     {children}
                   </div>
                 </main>
-                <Footer />
               </div>
             </div>
+            <Footer />
           </div>
         </Providers>
       </body>

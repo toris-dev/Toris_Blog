@@ -4,31 +4,7 @@
 
 @layer base {
   :root {
-    /* 사이버펑크 라이트 모드 (밝은 배경에 어두운 텍스트) */
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 195 100% 50%; /* 네온 블루 #00f0ff */
-    --primary-foreground: 0 0% 10%;
-    --secondary: 270 91% 65%; /* 네온 퍼플 #a855f7 */
-    --secondary-foreground: 0 0% 10%;
-    --muted: 220 20% 95%;
-    --muted-foreground: 215.4 16.3% 40%;
-    --accent: 270 91% 65%; /* 네온 퍼플 */
-    --accent-foreground: 0 0% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 195 100% 50% / 0.3; /* 네온 블루 반투명 */
-    --input: 195 100% 50% / 0.2;
-    --ring: 195 100% 50%; /* 네온 블루 */
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    /* 사이버펑크 다크 모드 (어두운 배경에 네온 색상) */
+    /* 사이버펑크 테마 (어두운 배경에 네온 색상) - 기본 테마 */
     --background: 240 30% 5%; /* #0a0a0f */
     --foreground: 195 100% 85%; /* 밝은 네온 블루 */
     --card: 240 30% 8%; /* #1a1a2e */
@@ -48,6 +24,7 @@
     --border: 195 100% 50% / 0.3; /* 네온 블루 반투명 */
     --input: 195 100% 50% / 0.2;
     --ring: 195 100% 50%; /* 네온 블루 */
+    --radius: 0.5rem;
   }
 }
 
@@ -185,30 +162,117 @@
     overflow: hidden;
   }
 
-  /* 커스텀 스크롤바 스타일 */
+  /* 전체 페이지 커스텀 스크롤바 스타일 */
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  html::-webkit-scrollbar-track,
+  body::-webkit-scrollbar-track {
+    background: hsl(240 30% 5%);
+    border-left: 1px solid hsl(var(--primary) / 0.1);
+  }
+
+  html::-webkit-scrollbar-thumb,
+  body::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--primary) / 0.4),
+      hsl(var(--secondary) / 0.4)
+    );
+    border-radius: 6px;
+    border: 2px solid hsl(240 30% 5%);
+    transition: all 0.3s ease;
+    box-shadow: 
+      0 0 5px hsl(var(--primary) / 0.3),
+      inset 0 0 5px hsl(var(--primary) / 0.2);
+  }
+
+  html::-webkit-scrollbar-thumb:hover,
+  body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--primary) / 0.6),
+      hsl(var(--secondary) / 0.6)
+    );
+    box-shadow: 
+      0 0 10px hsl(var(--primary) / 0.5),
+      inset 0 0 10px hsl(var(--primary) / 0.3);
+  }
+
+  /* Firefox 스크롤바 스타일 */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--primary) / 0.4) hsl(240 30% 5%);
+  }
+
+  /* 커스텀 스크롤바 스타일 (컴포넌트용) */
   .custom-scrollbar::-webkit-scrollbar {
     width: 8px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+    background: hsl(240 30% 8% / 0.5);
+    border-radius: 4px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background: linear-gradient(
       to bottom,
-      hsl(var(--primary) / 0.3),
-      hsl(var(--accent) / 0.3)
+      hsl(var(--primary) / 0.4),
+      hsl(var(--secondary) / 0.4)
     );
-    border-radius: 10px;
-    transition: background 0.3s;
+    border-radius: 4px;
+    border: 1px solid hsl(240 30% 8%);
+    transition: all 0.3s ease;
+    box-shadow: 
+      0 0 5px hsl(var(--primary) / 0.3),
+      inset 0 0 3px hsl(var(--primary) / 0.2);
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(
       to bottom,
-      hsl(var(--primary) / 0.5),
-      hsl(var(--accent) / 0.5)
+      hsl(var(--primary) / 0.6),
+      hsl(var(--secondary) / 0.6)
     );
+    box-shadow: 
+      0 0 8px hsl(var(--primary) / 0.5),
+      inset 0 0 5px hsl(var(--primary) / 0.3);
+  }
+
+  /* 사이드바 전용 스크롤바 */
+  .sidebar-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .sidebar-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 8px 0;
+  }
+
+  .sidebar-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--primary) / 0.5),
+      hsl(var(--secondary) / 0.5)
+    );
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    box-shadow: 
+      0 0 4px hsl(var(--primary) / 0.4),
+      inset 0 0 2px hsl(var(--primary) / 0.3);
+  }
+
+  .sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--primary) / 0.7),
+      hsl(var(--secondary) / 0.7)
+    );
+    box-shadow: 
+      0 0 8px hsl(var(--primary) / 0.6),
+      inset 0 0 4px hsl(var(--primary) / 0.4);
   }
 }
