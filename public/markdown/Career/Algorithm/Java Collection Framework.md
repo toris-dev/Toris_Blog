@@ -67,7 +67,7 @@ public class Example {
 
 만약 `ArrayList<> list = new ArrayList<>();` 와 같이 ArrayList 라는 인스턴스로 선언하면,
 나중에 데이터의 용도가 바뀌어 삽입/삭제가 유리한 LinkedList 자료구조로 변경해야 할 때 ArrayList로 선언된 모든 부분을 LinkedList로 변경해 주어야 한다.
-또, ArrayList에서는 지원하지만 LinkedList에서는 지원하지 않는 메소드를 사용했다면 그 메소드를 더 이상 사용할 수 없게 된다ㅑ.
+또, ArrayList에서는 지원하지만 LinkedList에서는 지원하지 않는 메소드를 사용했다면 그 메소드를 더 이상 사용할 수 없게 됩니다.
 `list.remove(1);` : 이 코드를 두 번 실행하였으나 컴파일 도중 아무런 문제가 없었다. ArrayList는 중간에 위치한 객체를 삭제하여도, 그 인덱스를 자동으로 업데이트 해주기 때문에, 인덱스 1 이 처음 삭제된 후, 뒤의 객체들이 앞으로 한 칸씩 이동하며 그 자리를 자동으로 메꾸는 형태가 된다.
 
 `list.get(i)` : 이렇게 얻어온 데이터를 바로 출력하는 것이 아니라, String 형의 변수에 다시 담는다고 생각해보자. 위에서도 언급했듯이, list.add(); 로 저장되는 모든 데이터는 **Object 타입**의 객체이다. 따라서, String 형 변수에 get해온 값을 담고 싶다면 String alphabet = (String)list.get(i) 와 같은 형변환을 반드시 해주어야 한다. 자신이 넣어준 데이터 타입으로 형 변환해주는 것은 필수이다.
@@ -240,12 +240,96 @@ Set 인터페이스를 구현한 주요 클래스는 3개가 있다.
 
 ### HashMap
 
-HashMap은 Map 인터페이스 구현을 위해 해시테이블을 사용한 클래스이다. 또한 중복을 허용하지 않고 순서를 보장하지 않는다. 중요한 점은, HashTable과 다르게 HashMap은 키와 값으로 null 값이 허용된다는 것이다.
+HashMap은 Map 인터페이스 구현을 위해 해시테이블을 사용한 클래스입니다. 또한 중복을 허용하지 않고 순서를 보장하지 않습니다. 중요한 점은, HashTable과 다르게 HashMap은 키와 값으로 null 값이 허용된다는 것입니다.
 
-HashMap의 생성자를 전형화.
+#### HashMap 생성
 
 ```java
-Map<K,V> map = new HashMap<K,V>();
+Map<String, Integer> map = new HashMap<String, Integer>();
+// 또는 다이아몬드 연산자 사용
+Map<String, Integer> map = new HashMap<>();
+```
+
+#### HashMap 주요 메서드
+
+```java
+Map<String, Integer> map = new HashMap<>();
+
+// 요소 추가
+map.put("Alice", 25);
+map.put("Bob", 30);
+map.put("Charlie", 20);
+
+// 요소 가져오기
+Integer age = map.get("Alice");  // 25
+Integer age2 = map.get("David");  // null (키가 없으면 null 반환)
+
+// 키 존재 여부 확인
+boolean hasKey = map.containsKey("Alice");  // true
+
+// 값 존재 여부 확인
+boolean hasValue = map.containsValue(25);    // true
+
+// 요소 삭제
+Integer removed = map.remove("Bob");       // 30 반환
+
+// 크기 확인
+int size = map.size();                      // 2
+
+// 모든 키 가져오기
+Set<String> keys = map.keySet();            // [Alice, Charlie]
+
+// 모든 값 가져오기
+Collection<Integer> values = map.values();  // [25, 20]
+
+// 모든 엔트리 가져오기
+Set<Map.Entry<String, Integer>> entries = map.entrySet();
+
+// 순회
+for (Map.Entry<String, Integer> entry : map.entrySet()) {
+    System.out.println(entry.getKey() + ": " + entry.getValue());
+}
+```
+
+#### HashMap vs HashTable
+
+| 특징          | HashMap                         | HashTable            |
+| ------------- | ------------------------------- | -------------------- |
+| **동기화**    | 비동기화 (Thread-safe하지 않음) | 동기화 (Thread-safe) |
+| **null 허용** | 키와 값 모두 null 허용          | null 허용 안 함      |
+| **성능**      | 빠름                            | 상대적으로 느림      |
+| **사용 시기** | 단일 스레드 환경                | 멀티 스레드 환경     |
+
+#### LinkedHashMap
+
+HashMap과 유사하지만 **삽입 순서를 보장**합니다.
+
+```java
+Map<String, Integer> linkedMap = new LinkedHashMap<>();
+linkedMap.put("Alice", 25);
+linkedMap.put("Bob", 30);
+linkedMap.put("Charlie", 20);
+
+// 삽입 순서대로 출력됨
+for (String key : linkedMap.keySet()) {
+    System.out.println(key);  // Alice, Bob, Charlie 순서대로
+}
+```
+
+#### TreeMap
+
+**키를 자동으로 정렬**하는 Map입니다. Red-Black Tree 구조를 사용합니다.
+
+```java
+Map<String, Integer> treeMap = new TreeMap<>();
+treeMap.put("Charlie", 20);
+treeMap.put("Alice", 25);
+treeMap.put("Bob", 30);
+
+// 키가 자동으로 정렬됨
+for (String key : treeMap.keySet()) {
+    System.out.println(key);  // Alice, Bob, Charlie (알파벳 순)
+}
 ```
 
 출처 : https://joooootopia.tistory.com/13

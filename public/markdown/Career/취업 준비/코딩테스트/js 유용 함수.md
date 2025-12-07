@@ -44,7 +44,7 @@ console.log(newMap.get(1)); // a key 값으로 가져오기
 console.log(newMap.size);
 
 // map 요소 삭제
-newMap(1); // key값으로 삭제
+newMap.delete(1); // key값으로 삭제
 ```
 
 2. Set 중복을 허용하지 않는 value 만 가진 자료구조
