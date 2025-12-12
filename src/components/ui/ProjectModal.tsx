@@ -30,6 +30,7 @@ interface ProjectModalProps {
     github?: string;
     demo?: string;
     link?: string | null;
+    isDeveloping?: boolean;
   };
   type: 'company' | 'personal';
 }
@@ -87,7 +88,23 @@ export default function ProjectModal({
             className="relative z-10 max-h-[90vh] w-full max-w-4xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="neon-border relative flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-primary/50 bg-card/95 shadow-2xl backdrop-blur-md">
+            <div className="relative">
+              {/* 개발중 배지 - 모달 상단 */}
+              {project.isDeveloping && (
+                <div className="absolute -top-4 left-1/2 z-10 -translate-x-1/2">
+                  <span className="inline-flex animate-pulse items-center gap-1.5 rounded-full border-2 border-yellow-500 bg-yellow-500/90 px-4 py-1.5 text-sm font-bold text-yellow-950 shadow-[0_0_15px_rgba(234,179,8,0.6)] backdrop-blur-sm">
+                    🔨 개발중
+                  </span>
+                </div>
+              )}
+              <div
+                className={`neon-border relative flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border bg-card/95 shadow-2xl backdrop-blur-md ${
+                  project.isDeveloping
+                    ? 'border-yellow-500/80 shadow-[0_0_30px_rgba(234,179,8,0.4)]'
+                    : 'border-primary/50'
+                }`}
+              >
+
               {/* 헤더 */}
               <div className="shrink-0 border-b border-primary/30 bg-muted/30 px-6 py-5">
                 <div className="flex items-start justify-between gap-4">
@@ -109,10 +126,12 @@ export default function ProjectModal({
                       )}
                     </div>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1.5">
-                        <FaCalendarAlt className="size-3.5" />
-                        <span>{project.period}</span>
-                      </div>
+                      {project.period && (
+                        <div className="flex items-center gap-1.5">
+                          <FaCalendarAlt className="size-3.5" />
+                          <span>{project.period}</span>
+                        </div>
+                      )}
                       {project.team && (
                         <div className="flex items-center gap-1.5">
                           <FaUser className="size-3.5" />
@@ -302,11 +321,23 @@ export default function ProjectModal({
                       className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2.5 font-medium text-foreground transition-colors hover:bg-muted"
                     >
                       <FaArrowRight className="size-4" />
-                      데모 보기
+                      사이트 보기
+                    </a>
+                  )}
+                  {project.link && (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2.5 font-medium text-foreground transition-colors hover:bg-muted"
+                    >
+                      <FaArrowRight className="size-4" />
+                      사이트 보기
                     </a>
                   )}
                 </div>
               )}
+              </div>
             </div>
           </motion.div>
         </motion.div>

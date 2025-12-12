@@ -167,7 +167,7 @@ export default function AboutPage() {
         '콘텐츠 자동화 및 플랫폼 활성화 기여: 이벤트와 콘텐츠 발행을 자동화하고, 사용자 참여를 유도하는 프로그램 설계로 서비스 실사용률 증가에 기여',
         '프론트-백엔드 전반 경험: 기획, 디자인, 프론트엔드 개발은 물론 Spring 기반 백엔드 API 개발 및 연동까지 직접 경험한 풀스택 업무 수행'
       ],
-      link: null
+      link: 'https://itda.edunet.net/intro.do'
     },
     {
       name: '알지오매스',
@@ -191,7 +191,59 @@ export default function AboutPage() {
         '디자이너와의 협업을 통한 UI/UX 구현 역량 강화',
         '재사용 가능한 컴포넌트 설계 능력 향상'
       ],
-      link: null
+      link: 'https://cdn.algeomath.kr/algeo/upload/algeomath-classroom/app.20251015/index.html?data=kids.SB_5_1_%ED%8F%89%ED%96%89%EC%82%AC%EB%B3%80%ED%98%95%EC%9D%98_%EB%84%93%EC%9D%B4'
+    },
+    {
+      name: '셈웨어 회사 페이지 리뉴얼',
+      period: '2024.08 - 2025.08',
+      team: '프론트엔드 개발 사원',
+      description:
+        '셈웨어 회사 공식 웹사이트의 메인페이지, 헤더, 푸터 등 UI 컴포넌트를 최신 디자인 트렌드와 반응형 기준에 맞춰 리뉴얼',
+      role: [
+        'React, styled-components 기반 메인페이지, 헤더, 푸터 등 UI 컴포넌트 개발',
+        '내장 라이브러리 API 기반 서비스 라이브러리 마이그레이션 수행',
+        '디자이너와 협업하여 UI/UX 개선, 디자인 시안 검수 및 디테일 최적화',
+        '다양한 화면 사이즈 대응, 반응형 웹과 접근성 고려'
+      ],
+      techStack: ['React', 'styled-components', 'JavaScript (ES6)', 'CSS'],
+      achievements: [
+        '최신 디자인 트렌드와 반응형 기준에 맞춘 웹페이지 개발 완료',
+        'API 기반 라이브러리 전환으로 유지보수성과 확장성 강화',
+        '사용자 경험 중심 UI/UX 개선으로 서비스 완성도 향상'
+      ],
+      learnings: [
+        'React와 styled-components를 활용한 컴포넌트 기반 UI 개발 경험',
+        '디자이너와의 협업을 통한 UI/UX 개선 및 디자인 시안 검수 역량 강화',
+        '반응형 웹 개발 및 접근성 고려한 웹 개발 경험',
+        'API 기반 라이브러리 마이그레이션을 통한 유지보수성 및 확장성 향상 경험'
+      ],
+      link: 'https://www.cemware.com/'
+    },
+    {
+      name: 'SteamUp 학습도구 공학용 라이브러리 API 마이그레이션',
+      period: '2024.08 - 2025.08',
+      team: '프론트엔드 개발 사원',
+      description:
+        '기존 SteamUp 내장 라이브러리를 API 기반 서비스 라이브러리로 마이그레이션하고, 프론트엔드와 연동하여 UI 컴포넌트 개발',
+      role: [
+        '기존 SteamUp 내장 라이브러리를 API 기반 서비스 라이브러리로 마이그레이션',
+        '마이그레이션된 API를 프론트엔드(React)와 연동하여 UI 컴포넌트 개발',
+        '디자이너와 협업하여 UI/UX 개선, 디자인 시안 검수 및 디테일 최적화',
+        '반응형 웹 및 접근성 고려, 다양한 화면 환경 대응'
+      ],
+      techStack: ['React', 'TypeScript', 'JavaScript (ES6)', 'CSS'],
+      achievements: [
+        'API 전환을 통한 유지보수성과 확장성 강화',
+        '프론트엔드와 성공적으로 연동하여 서비스 안정성 확보',
+        '사용자 경험 중심 UI/UX 개선으로 웹페이지 완성도 향상'
+      ],
+      learnings: [
+        '내장 라이브러리에서 API 기반 서비스로의 마이그레이션 경험',
+        'API와 프론트엔드 연동을 통한 서비스 통합 개발 경험',
+        '디자이너와의 협업을 통한 UI/UX 개선 및 디테일 최적화 역량 강화',
+        '반응형 웹 개발 및 접근성 고려한 다양한 화면 환경 대응 경험'
+      ],
+      link: 'https://www.steamup.academy/ko'
     }
   ];
 
@@ -199,7 +251,7 @@ export default function AboutPage() {
   const personalProjects = [
     {
       name: 'Toris Blog',
-      period: '2024.03 - 현재',
+      period: '2024.03',
       description:
         'Next.js 기반 정적 블로그 구조 설계 및 콘텐츠 작성 기능 구현. 다크모드, 코드 하이라이팅, 카테고리/태그 필터 등 주요 기능 개발',
       techStack: [
@@ -226,84 +278,178 @@ export default function AboutPage() {
         '블로그 기능 개선을 반복하며 Next.js 생태계에 대한 실무 감각 습득'
       ],
       github: 'https://github.com/toris-dev/Toris_Blog',
-      demo: 'https://toris-blog.vercel.app'
+      link: 'https://toris-blog.vercel.app',
+      isDeveloping: false
     },
     {
-      name: '엘리스 2차 프로젝트',
-      period: '2024.04 - 2024.06',
+      name: 'ym_guide',
+      period: '2025.12',
       description:
-        '팀장 및 백엔드 리더를 맡아 실질적인 서비스 구현과 운영 경험을 쌓은 프로젝트',
+        '청년들을 위한 금융, 정책, 복지 혜택 큐레이션 플랫폼. 청년정책 OPEN API를 통한 정책 검색, 맞춤형 혜택 추천, 금융 교육 기능을 제공하는 서비스',
+      techStack: [
+        'Next.js',
+        'TypeScript',
+        'Tailwind CSS',
+        'Supabase',
+        'PostgreSQL'
+      ],
+      features: [
+        '카테고리별 정책 필터링 및 검색',
+        '간단한 질문 기반 맞춤형 혜택 추천',
+        '청년정책 OPEN API 연동 및 실시간 업데이트',
+        '북마크 기능 및 마이페이지 관리',
+        '금융 교육 콘텐츠 제공'
+      ],
+      learnings: [
+        '정부 OPEN API 연동 및 데이터 처리 경험',
+        '맞춤형 추천 시스템 설계 및 구현',
+        'Supabase를 활용한 백엔드 개발 경험',
+        '청년 대상 서비스 UX/UI 설계 경험'
+      ],
+      github: 'https://github.com/toris-dev/ym_guide',
+      link: 'https://ym-guide.vercel.app',
+      isDeveloping: false
+    },
+    {
+      name: 'love-trip',
+      period: '2025.08',
+      description:
+        '연인과의 여행을 위해 교통편, 숙소, 데이트 장소, 경비를 한 번에 추천해주는 커플 맞춤 여행 서비스. Tour API 기반 실시간 관광 정보 제공 및 네이버 지도 통합',
+      techStack: [
+        'Next.js',
+        'TypeScript',
+        'Supabase',
+        'Tour API',
+        'Naver Maps API',
+        'pnpm'
+      ],
+      features: [
+        '출발지/목적지/예산 기반 최적 여행 코스 자동 생성',
+        'Tour API 기반 실시간 관광 정보 제공',
+        '네이버 지도 통합으로 직관적인 코스 확인',
+        '데이트 장소 큐레이션 (카페, 레스토랑, 야경 명소)',
+        '예산 관리 및 1/N 정산 기능',
+        '커플 캘린더 및 일정 관리',
+        '모노레포 구조 (web, crawler, shared 패키지)'
+      ],
+      learnings: [
+        '모노레포 구조 설계 및 관리 경험',
+        '외부 API (Tour API, Naver Maps) 연동 경험',
+        '크롤러 패키지를 통한 데이터 수집 시스템 구축',
+        '커플 타겟 서비스 UX/UI 설계 경험',
+        'Supabase를 활용한 실시간 데이터 동기화'
+      ],
+      github: 'https://github.com/toris-dev/love-trip',
+      link: 'https://love2trip.vercel.app/',
+      isDeveloping: true
+    },
+    {
+      name: 'lifestyle_blog',
+      period: '2025.12',
+      description:
+        'Next.js 16으로 구축된 현대적인 한국어 라이프스타일 블로그 플랫폼. 마크다운 기반 콘텐츠 관리, 쿠팡 파트너스 통합, SEO 최적화, 조회수 및 좋아요 통계 기능 제공',
+      techStack: [
+        'Next.js',
+        'TypeScript',
+        'Tailwind CSS',
+        'Markdown',
+        'Google Analytics'
+      ],
+      features: [
+        '마크다운 기반 콘텐츠 관리 및 프론트매터 지원',
+        '쿠팡 파트너스 상품 카드 자동 삽입',
+        '조회수 및 좋아요 통계 (Markdown 파일에 자동 저장)',
+        '실시간 미리보기 에디터',
+        'SEO 최적화 (Open Graph, JSON-LD, 사이트맵)',
+        '반응형 디자인 및 한글 타이포그래피',
+        '추천 글 페이지 및 검색 기능'
+      ],
+      learnings: [
+        '마크다운 기반 CMS 시스템 구축 경험',
+        '파트너스 프로그램 통합 경험',
+        '파일 기반 통계 저장 시스템 구현',
+        'SEO 최적화 및 구조화 데이터 적용',
+        '한글 콘텐츠 플랫폼 개발 경험'
+      ],
+      github: 'https://github.com/toris-dev/lifestyle_blog',
+      link: 'https://torisblog.vercel.app',
+      isDeveloping: false
+    },
+    {
+      name: 'PEPEBear',
+      period: '2025.11',
+      description:
+        'Solana 블록체인 기반 커뮤니티 중심 밈 암호화폐 프로젝트. 게이미피케이션 요소(포인트, 레벨, 업적), 실시간 토큰 홀더 추적, 단계별 성장 시스템을 제공하는 Web3 서비스',
+      techStack: [
+        'Next.js',
+        'TypeScript',
+        'React',
+        'Solana',
+        'Web3',
+        'Anchor Framework'
+      ],
+      features: [
+        'Solana 지갑 연동 (Phantom, Solflare 등)',
+        '게이미피케이션 요소 (포인트, 레벨, 업적 시스템)',
+        '실시간 토큰 홀더 추적 및 랭킹 변화 애니메이션',
+        '라이브 토큰 통계 (참여자, 거래량, 보상)',
+        '타임라인 기반 단계별 성장 시각화',
+        '반응형 디자인 및 SEO 최적화'
+      ],
+      learnings: [
+        'Solana 블록체인 및 Web3 개발 경험',
+        '지갑 연동 및 스마트 컨트랙트 상호작용',
+        '실시간 온체인 데이터 추적 및 시각화',
+        '게이미피케이션 시스템 설계 및 구현',
+        'Web3 서비스 UX/UI 설계 경험'
+      ],
+      github: 'https://github.com/toris-dev/PEPEBear',
+      link: 'https://pepe-bear.vercel.app',
+      isDeveloping: false
+    },
+    {
+      name: 'bubbleBible-FE',
+      period: '2025.08',
+      description:
+        '매일 한 구절로 신앙 루틴을 만드는 모바일 우선 성경 플랫폼. 개인 묵상과 교회·소그룹 중심의 공동체 기능을 결합한 성경 서비스의 프론트엔드',
       techStack: [
         'React',
         'TypeScript',
-        'Node.js',
-        'Supabase',
-        'Firebase',
-        'GraphQL'
+        'Next.js',
+        'Tailwind CSS',
+        'PWA',
+        'Push Notifications'
       ],
       features: [
-        'Firebase에서 Supabase로 데이터베이스 전환',
-        '백엔드 API 설계 및 구현',
-        '프론트엔드-백엔드 연동'
+        '성경 본문 뷰어 (하이라이트, 북마크, 폰트 조절)',
+        '포인트·레벨 시스템 (읽기·댓글·좋아요 활동별 보상)',
+        '교회 그룹 커뮤니티 (묵상 나눔, 기도제목 공유)',
+        'PWA 지원 및 푸시 알림 기능',
+        '모바일 우선 UX (다크모드, 접근성, 반응형)',
+        '암송 챌린지 및 오늘의 말씀 추천',
+        '랭킹 시스템 및 그룹 활동 통계'
       ],
       learnings: [
-        '프로젝트 리더십 경험',
-        'NoSQL에서 SQL로의 마이그레이션 경험',
-        '풀스택 개발 경험'
+        '모바일 우선 웹앱 개발 경험',
+        'PWA 구현 및 푸시 알림 시스템 구축',
+        '커뮤니티 기능이 있는 콘텐츠 플랫폼 개발',
+        '게이미피케이션을 통한 사용자 참여 유도',
+        '종교 서비스 특화 UX/UI 설계 경험'
       ],
-      github: 'https://github.com/toris-dev/eliceII',
-      demo: null
-    },
-    {
-      name: '엘리스 1차 프로젝트 (Infinity)',
-      period: '2024.03',
-      description: '엘리스 SW엔지니어 트랙 1차 프로젝트',
-      techStack: ['JavaScript', 'React'],
-      features: ['MVP 프로젝트 개발'],
-      learnings: [
-        '기획, 설계, 개발, 배포까지 전 과정 경험',
-        '팀 협업 및 프로젝트 관리 경험'
-      ],
-      github: 'https://github.com/toris-dev/Infinity',
-      demo: null
-    },
-    {
-      name: 'React Native 채팅 앱',
-      period: '2023.09',
-      description:
-        '군 장병 프로젝트에서 백엔드 개발자로 시작해 프론트엔드까지 담당한 프로젝트',
-      techStack: ['React Native', 'Apollo GraphQL', 'Expo SDK', 'JavaScript'],
-      features: ['실시간 채팅 기능', 'GraphQL을 활용한 데이터 통신'],
-      learnings: [
-        'React Native와 Expo를 활용한 모바일 앱 개발',
-        'Apollo GraphQL 클라이언트 활용',
-        '단기간 내 빠른 기술 습득 및 실무 적용 경험'
-      ],
-      github: 'https://github.com/toris-dev/kakao_sw02_frontend',
-      demo: null
+      github: 'https://github.com/toris-dev/bubbleBible-FE',
+      link: 'https://bubble-bible-fe.vercel.app',
+      isDeveloping: true
     },
     {
       name: 'CryptoTrade.gg',
       period: '2025.02 - 2025.04',
-      description: '트레이드 전적을 보는 사이트',
+      description: '암호화폐 트레이드 전적 조회 서비스',
       techStack: ['TypeScript', 'Next.js'],
-      features: ['암호화폐 트레이드 전적 조회'],
+      features: ['암호화폐 트레이드 전적 조회', '데이터 시각화'],
       learnings: ['암호화폐 데이터 시각화 경험'],
       github: 'https://github.com/toris-dev/CryptoTrade.gg',
-      demo: null
-    },
-    {
-      name: 'Next.js 채팅 앱',
-      period: '2024.04',
-      description: 'Next.js를 활용한 채팅 애플리케이션',
-      techStack: ['Next.js', 'TypeScript'],
-      features: ['실시간 채팅', 'Next.js 서버 컴포넌트 활용'],
-      learnings: [
-        'Next.js 서버 컴포넌트와 클라이언트 컴포넌트 활용',
-        '실시간 통신 구현'
-      ],
-      github: 'https://github.com/toris-dev/chatApp',
-      demo: null
+      link: 'https://tradinggg.vercel.app',
+      isDeveloping: false
     }
   ];
 
@@ -367,7 +513,7 @@ export default function AboutPage() {
                 </div>
               </div>
               <h3 className="neon-glow mb-2 text-xl font-semibold text-card-foreground">
-                유주환 (Toris)
+                Toris
               </h3>
               <p className="mb-4 text-center text-sm text-muted-foreground">
                 프론트엔드 개발자
@@ -386,7 +532,7 @@ export default function AboutPage() {
                   <AiFillGithub className="size-5" />
                 </a>
                 <a
-                  href="#"
+                  href="https://x.com/TorisDev"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground transition-colors hover:text-primary dark:hover:text-primary"
@@ -395,7 +541,7 @@ export default function AboutPage() {
                   <FaTwitter className="size-5" />
                 </a>
                 <a
-                  href="https://discord.gg/uVq7PYEU"
+                  href="https://discord.com/users/516088509891870760"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground transition-colors hover:text-primary dark:hover:text-primary"
@@ -620,16 +766,31 @@ export default function AboutPage() {
             {personalProjects.map((project, index) => (
               <div
                 key={index}
-                className="neon-border hover:neon-glow-animate group relative flex flex-col overflow-hidden rounded-2xl border border-primary/30 bg-card/50 p-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
+                className={`neon-border hover:neon-glow-animate group relative flex flex-col overflow-visible rounded-2xl border bg-card/50 p-6 shadow-sm backdrop-blur-sm transition-all duration-300 ${
+                  project.isDeveloping
+                    ? 'border-yellow-500/80 shadow-[0_0_20px_rgba(234,179,8,0.3)] hover:border-yellow-500 hover:shadow-[0_0_25px_rgba(234,179,8,0.4)]'
+                    : 'border-primary/30 hover:border-primary/50 hover:shadow-lg'
+                }`}
               >
+                {/* 개발중 배지 - 카드 상단 */}
+                {project.isDeveloping && (
+                  <div className="absolute -top-4 left-1/2 z-10 -translate-x-1/2">
+                    <span className="inline-flex animate-pulse items-center gap-1.5 rounded-full border-2 border-yellow-500 bg-yellow-500/90 px-4 py-1.5 text-sm font-bold text-yellow-950 shadow-[0_0_15px_rgba(234,179,8,0.6)] backdrop-blur-sm">
+                      🔨 개발중
+                    </span>
+                  </div>
+                )}
+
                 {/* 헤더 */}
                 <div className="mb-4">
                   <h3 className="mb-2 text-xl font-bold text-card-foreground transition-all group-hover:text-primary group-hover:drop-shadow-[0_0_8px_hsl(var(--primary))]">
                     {project.name}
                   </h3>
-                  <span className="text-xs text-muted-foreground">
-                    {project.period}
-                  </span>
+                  {project.period && (
+                    <span className="text-xs text-muted-foreground">
+                      {project.period}
+                    </span>
+                  )}
                 </div>
 
                 {/* 설명 */}
