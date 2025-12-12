@@ -4,6 +4,7 @@ import CategorySidebar from '@/components/blog/CategorySidebar';
 import { useSidebar } from './SidebarToggle';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AiOutlineMenu, FaTimes } from '@/components/icons';
+import { Suspense } from 'react';
 
 interface SidebarProps {
   posts: any[];
@@ -68,7 +69,13 @@ export default function Sidebar({ posts }: SidebarProps) {
                   <FaTimes className="size-4" />
                 </motion.button>
               </div>
-              <CategorySidebar posts={posts} />
+              <Suspense
+                fallback={
+                  <div className="text-muted-foreground">로딩 중...</div>
+                }
+              >
+                <CategorySidebar posts={posts} />
+              </Suspense>
             </div>
           </motion.aside>
         )}
