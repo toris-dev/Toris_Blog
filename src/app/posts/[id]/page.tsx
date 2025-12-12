@@ -28,22 +28,23 @@ export default async function Post({ params }: { params: { id: string } }) {
 
     // 여러 방법으로 포스트 찾기 시도
     let post = getPostBySlug(decodedId);
-    
+
     // 인코딩된 버전으로도 시도
     if (!post) {
       post = getPostBySlug(id);
     }
-    
+
     // 원본 ID로도 시도 (이미 인코딩되지 않은 경우)
     if (!post) {
       const allPosts = getPostData();
-      post = allPosts.find((p) => {
-        // 슬러그 직접 비교
-        if (p.slug === decodedId || p.slug === id) return true;
-        // 인코딩된 슬러그와 비교
-        const encodedSlug = encodeURIComponent(p.slug);
-        return encodedSlug === id || encodedSlug === decodedId;
-      }) || null;
+      post =
+        allPosts.find((p) => {
+          // 슬러그 직접 비교
+          if (p.slug === decodedId || p.slug === id) return true;
+          // 인코딩된 슬러그와 비교
+          const encodedSlug = encodeURIComponent(p.slug);
+          return encodedSlug === id || encodedSlug === decodedId;
+        }) || null;
     }
 
     if (!post) {
@@ -77,12 +78,12 @@ export default async function Post({ params }: { params: { id: string } }) {
 export async function generateStaticParams() {
   try {
     const posts = getPostData();
-    
+
     if (posts.length === 0) {
       console.warn('No posts found for static generation');
       return [];
     }
-    
+
     // 실제로 존재하는 포스트만 필터링하여 반환
     const validParams = posts
       .filter((post) => {
@@ -98,10 +99,10 @@ export async function generateStaticParams() {
         const id = encodeURIComponent(post.slug);
         return { id };
       });
-    
+
     console.log(`Generated ${validParams.length} static params for posts`);
     if (validParams.length > 0) {
-      console.log('Sample params:', validParams.slice(0, 3));
+      console.log('All params:', validParams);
     }
     return validParams;
   } catch (error) {

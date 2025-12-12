@@ -153,7 +153,7 @@ export function getPostData(): Post[] {
     }
 
     const markdownFiles = getAllMarkdownFiles(postsDirectory);
-    
+
     if (markdownFiles.length === 0) {
       console.warn(`No markdown files found in ${postsDirectory}`);
       return [];
@@ -164,7 +164,9 @@ export function getPostData(): Post[] {
       .filter((post) => post !== null) as Post[];
 
     if (posts.length === 0) {
-      console.warn(`No valid posts parsed from ${markdownFiles.length} markdown files`);
+      console.warn(
+        `No valid posts parsed from ${markdownFiles.length} markdown files`
+      );
       return [];
     }
 
@@ -183,8 +185,11 @@ export function getPostData(): Post[] {
     const sortedPosts = uniquePosts.sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
-    
-    console.log(`Loaded ${sortedPosts.length} posts from markdown files`);
+
+    // 개발 환경에서만 로그 출력 (빌드 시 과도한 로그 방지)
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`Loaded ${sortedPosts.length} posts from markdown files`);
+    }
     return sortedPosts;
   } catch (error) {
     console.error('Error reading markdown files:', error);
