@@ -73,6 +73,7 @@ import { FaTrash } from '@react-icons/all-files/fa/FaTrash';
 import { FaTwitter } from '@react-icons/all-files/fa/FaTwitter';
 import { FaUser } from '@react-icons/all-files/fa/FaUser';
 import { FaUserCircle } from '@react-icons/all-files/fa/FaUserCircle';
+import { FaWifi } from '@react-icons/all-files/fa/FaWifi';
 
 //  FaCloudUploadAlt, FaImage, FaTimesCircle
 
@@ -161,6 +162,7 @@ export {
   FaTwitter,
   FaUser,
   FaUserCircle,
+  FaWifi,
 
   // hi 아이콘들
   HiBadgeCheck,

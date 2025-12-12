@@ -1,6 +1,7 @@
 import Footer from '@/components/common/Footer';
 import Header from '@/components/common/Header';
 import Providers from '@/components/common/Providers';
+import ServiceWorkerRegistration from '@/components/common/ServiceWorkerRegistration';
 import Sidebar from '@/components/common/Sidebar';
 import SEOOptimizer from '@/components/seo/SEOOptimizer';
 import StructuredData from '@/components/seo/StructuredData';
@@ -25,7 +26,6 @@ const spaceGrotesk = Space_Grotesk({
 
 // 6시간마다 재생성
 export const revalidate = 21600;
-
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -174,6 +174,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       >
         <SEOOptimizer />
         <GoogleTagManager gtmId="G-0KV4YD773C" />
+        <ServiceWorkerRegistration />
         <Providers>
           {/* 사이버펑크 배경 그라디언트 */}
           <div className="fixed -z-10 h-screen w-full bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0a0a0f]">
