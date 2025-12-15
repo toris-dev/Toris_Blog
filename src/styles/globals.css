@@ -4,7 +4,54 @@
 
 @layer base {
   :root {
-    /* 사이버펑크 테마 (어두운 배경에 네온 색상) - 기본 테마 */
+    /* 라이트 모드 (2D 아트 스타일) - 기본 테마 */
+    --background: 0 0% 100%; /* #FFFFFF */
+    --foreground: 222 47% 11%; /* #111827 */
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 239 84% 67%; /* #6366F1 인디고 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 330 81% 60%; /* #EC4899 핑크 */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 14% 96%; /* #F3F4F6 */
+    --muted-foreground: 215 16% 47%; /* #6B7280 */
+    --accent: 142 76% 36%; /* #10B981 에메랄드 그린 */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%; /* #EF4444 */
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%; /* #E5E7EB */
+    --input: 220 14% 96%; /* #F9FAFB */
+    --ring: 239 84% 67%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* 다크 모드 (2D 아트 스타일) */
+    --background: 222 47% 11%; /* #0F172A 슬레이트 다크 */
+    --foreground: 210 40% 98%; /* #F1F5F9 */
+    --card: 217 33% 17%; /* #1E293B */
+    --card-foreground: 210 40% 98%;
+    --popover: 217 33% 17%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 239 84% 67%; /* #818CF8 라벤더 */
+    --primary-foreground: 222 47% 11%;
+    --secondary: 330 81% 60%; /* #F472B6 핑크 */
+    --secondary-foreground: 222 47% 11%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 28% 69%; /* #94A3B8 */
+    --accent: 142 76% 50%; /* #34D399 민트 */
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 72% 51%; /* #F87171 */
+    --destructive-foreground: 222 47% 11%;
+    --border: 217 33% 17%; /* #334155 */
+    --input: 217 33% 17%;
+    --ring: 239 84% 67%;
+  }
+
+  .cyberpunk {
+    /* 사이버펑크 테마 (보존용) */
     --background: 240 30% 5%; /* #0a0a0f */
     --foreground: 195 100% 85%; /* 밝은 네온 블루 */
     --card: 240 30% 8%; /* #1a1a2e */
@@ -16,15 +63,14 @@
     --secondary: 270 91% 65%; /* 네온 퍼플 #a855f7 */
     --secondary-foreground: 240 30% 5%;
     --muted: 240 20% 15%;
-    --muted-foreground: 195 100% 65%; /* 조금 더 밝게 */
-    --accent: 270 91% 65%; /* 네온 퍼플 */
+    --muted-foreground: 195 100% 65%;
+    --accent: 270 91% 65%;
     --accent-foreground: 240 30% 5%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 195 100% 50% / 0.3; /* 네온 블루 반투명 */
+    --border: 195 100% 50% / 0.3;
     --input: 195 100% 50% / 0.2;
-    --ring: 195 100% 50%; /* 네온 블루 */
-    --radius: 0.5rem;
+    --ring: 195 100% 50%;
   }
 }
 
@@ -38,93 +84,95 @@
   }
 
   body {
-    @apply text-foreground;
+    @apply bg-background text-foreground;
     font-feature-settings:
       'rlig' 1,
       'calt' 1;
-    /* 사이버펑크 배경 그라데이션 */
-    background: linear-gradient(
-      135deg,
-      hsl(240 30% 5%) 0%,
-      hsl(240 30% 8%) 50%,
-      hsl(240 30% 5%) 100%
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  /* 2D 아트 배경 패턴 */
+  body {
+    background-image: radial-gradient(
+      circle,
+      rgba(0, 0, 0, 0.05) 1px,
+      transparent 1px
     );
-    background-attachment: fixed;
+    background-size: 20px 20px;
+  }
+
+  .dark body {
+    background-image: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px
+    );
   }
 
   ::selection {
-    @apply bg-cyan-500/30 text-foreground;
+    background-color: hsl(var(--primary) / 0.2);
+    color: hsl(var(--foreground));
   }
 
-  /* 네온 글로우 효과 */
+  /* 2D 아트 스타일 - 부드러운 그림자 시스템 */
+  .shadow-soft {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-medium {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .shadow-large {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  }
+
+  .dark .shadow-soft {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .dark .shadow-medium {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .dark .shadow-large {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+
+  /* 네온 효과 (호환성을 위해 유지하되 2D 아트 스타일로 변경) */
   .neon-glow {
-    text-shadow:
-      0 0 5px hsl(var(--primary)),
-      0 0 10px hsl(var(--primary)),
-      0 0 15px hsl(var(--primary)),
-      0 0 20px hsl(var(--primary));
+    /* 네온 효과 제거, 일반 텍스트로 */
+    text-shadow: none;
+    font-weight: 600;
   }
 
   .neon-glow-purple {
-    text-shadow:
-      0 0 5px hsl(var(--secondary)),
-      0 0 10px hsl(var(--secondary)),
-      0 0 15px hsl(var(--secondary)),
-      0 0 20px hsl(var(--secondary));
+    text-shadow: none;
+    font-weight: 600;
   }
 
   .neon-border {
-    box-shadow:
-      0 0 5px hsl(var(--primary) / 0.5),
-      0 0 10px hsl(var(--primary) / 0.3),
-      0 0 15px hsl(var(--primary) / 0.2),
-      inset 0 0 5px hsl(var(--primary) / 0.1);
+    /* 네온 효과 제거, 부드러운 그림자로 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid hsl(var(--border));
   }
 
   .neon-border-purple {
-    box-shadow:
-      0 0 5px hsl(var(--secondary) / 0.5),
-      0 0 10px hsl(var(--secondary) / 0.3),
-      0 0 15px hsl(var(--secondary) / 0.2),
-      inset 0 0 5px hsl(var(--secondary) / 0.1);
-  }
-
-  /* 펄스 애니메이션 */
-  @keyframes neon-pulse {
-    0%,
-    100% {
-      opacity: 1;
-      filter: brightness(1);
-    }
-    50% {
-      opacity: 0.8;
-      filter: brightness(1.2);
-    }
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid hsl(var(--border));
   }
 
   .neon-pulse {
-    animation: neon-pulse 2s ease-in-out infinite;
-  }
-
-  /* 글로우 애니메이션 */
-  @keyframes neon-glow-animate {
-    0%,
-    100% {
-      box-shadow:
-        0 0 5px hsl(var(--primary) / 0.5),
-        0 0 10px hsl(var(--primary) / 0.3),
-        0 0 15px hsl(var(--primary) / 0.2);
-    }
-    50% {
-      box-shadow:
-        0 0 10px hsl(var(--primary) / 0.8),
-        0 0 20px hsl(var(--primary) / 0.6),
-        0 0 30px hsl(var(--primary) / 0.4);
-    }
+    /* 펄스 애니메이션 제거 */
+    animation: none;
   }
 
   .neon-glow-animate {
-    animation: neon-glow-animate 2s ease-in-out infinite;
+    /* 글로우 애니메이션 제거 */
+    animation: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   /* 그라데이션 애니메이션 */
@@ -162,49 +210,35 @@
     overflow: hidden;
   }
 
-  /* 전체 페이지 커스텀 스크롤바 스타일 */
+  /* 전체 페이지 커스텀 스크롤바 스타일 (2D 아트) */
   html::-webkit-scrollbar,
   body::-webkit-scrollbar {
-    width: 12px;
+    width: 10px;
   }
 
   html::-webkit-scrollbar-track,
   body::-webkit-scrollbar-track {
-    background: hsl(240 30% 5%);
-    border-left: 1px solid hsl(var(--primary) / 0.1);
+    background: hsl(var(--muted));
+    border-left: 1px solid hsl(var(--border));
   }
 
   html::-webkit-scrollbar-thumb,
   body::-webkit-scrollbar-thumb {
-    background: linear-gradient(
-      to bottom,
-      hsl(var(--primary) / 0.4),
-      hsl(var(--secondary) / 0.4)
-    );
-    border-radius: 6px;
-    border: 2px solid hsl(240 30% 5%);
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 5px;
+    border: 1px solid hsl(var(--border));
     transition: all 0.3s ease;
-    box-shadow: 
-      0 0 5px hsl(var(--primary) / 0.3),
-      inset 0 0 5px hsl(var(--primary) / 0.2);
   }
 
   html::-webkit-scrollbar-thumb:hover,
   body::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(
-      to bottom,
-      hsl(var(--primary) / 0.6),
-      hsl(var(--secondary) / 0.6)
-    );
-    box-shadow: 
-      0 0 10px hsl(var(--primary) / 0.5),
-      inset 0 0 10px hsl(var(--primary) / 0.3);
+    background: hsl(var(--muted-foreground) / 0.5);
   }
 
   /* Firefox 스크롤바 스타일 */
   html {
     scrollbar-width: thin;
-    scrollbar-color: hsl(var(--primary) / 0.4) hsl(240 30% 5%);
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) hsl(var(--muted));
   }
 
   /* 커스텀 스크롤바 스타일 (컴포넌트용) */
@@ -213,33 +247,19 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: hsl(240 30% 8% / 0.5);
+    background: hsl(var(--muted));
     border-radius: 4px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: linear-gradient(
-      to bottom,
-      hsl(var(--primary) / 0.4),
-      hsl(var(--secondary) / 0.4)
-    );
+    background: hsl(var(--muted-foreground) / 0.3);
     border-radius: 4px;
-    border: 1px solid hsl(240 30% 8%);
+    border: 1px solid hsl(var(--border));
     transition: all 0.3s ease;
-    box-shadow: 
-      0 0 5px hsl(var(--primary) / 0.3),
-      inset 0 0 3px hsl(var(--primary) / 0.2);
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(
-      to bottom,
-      hsl(var(--primary) / 0.6),
-      hsl(var(--secondary) / 0.6)
-    );
-    box-shadow: 
-      0 0 8px hsl(var(--primary) / 0.5),
-      inset 0 0 5px hsl(var(--primary) / 0.3);
+    background: hsl(var(--muted-foreground) / 0.5);
   }
 
   /* 사이드바 전용 스크롤바 */
@@ -253,26 +273,12 @@
   }
 
   .sidebar-scrollbar::-webkit-scrollbar-thumb {
-    background: linear-gradient(
-      to bottom,
-      hsl(var(--primary) / 0.5),
-      hsl(var(--secondary) / 0.5)
-    );
+    background: hsl(var(--muted-foreground) / 0.3);
     border-radius: 3px;
     transition: all 0.3s ease;
-    box-shadow: 
-      0 0 4px hsl(var(--primary) / 0.4),
-      inset 0 0 2px hsl(var(--primary) / 0.3);
   }
 
   .sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(
-      to bottom,
-      hsl(var(--primary) / 0.7),
-      hsl(var(--secondary) / 0.7)
-    );
-    box-shadow: 
-      0 0 8px hsl(var(--primary) / 0.6),
-      inset 0 0 4px hsl(var(--primary) / 0.4);
+    background: hsl(var(--muted-foreground) / 0.5);
   }
 }
