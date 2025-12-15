@@ -46,7 +46,7 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
-  color: hsl(195 100% 85%); /* 사이버펑크 네온 블루 텍스트 */
+  color: hsl(var(--foreground)); /* 테마에 맞는 텍스트 색상 */
   font-size: 15px;
   background-color: transparent;
 }
@@ -65,55 +65,54 @@
 
 .viewerContainer h1 {
   font-size: 2em;
-  border-bottom: 1px solid hsl(195 100% 50% / 0.3); /* 네온 블루 테두리 */
+  border-bottom: 1px solid hsl(var(--border));
   padding-bottom: 0.3em;
-  color: hsl(195 100% 85%);
+  color: hsl(var(--foreground));
 }
 
 .viewerContainer h2 {
   font-size: 1.5em;
-  border-bottom: 1px solid hsl(195 100% 50% / 0.3); /* 네온 블루 테두리 */
+  border-bottom: 1px solid hsl(var(--border));
   padding-bottom: 0.3em;
-  color: hsl(195 100% 85%);
+  color: hsl(var(--foreground));
 }
 
 .viewerContainer h3 {
   font-size: 1.25em;
-  color: hsl(195 100% 85%);
+  color: hsl(var(--foreground));
 }
 
 .viewerContainer h4,
 .viewerContainer h5,
 .viewerContainer h6 {
-  color: hsl(195 100% 85%);
+  color: hsl(var(--foreground));
 }
 
 .viewerContainer p {
   margin-top: 0;
   margin-bottom: 16px;
-  color: hsl(195 100% 75%); /* 조금 더 밝은 네온 블루 */
+  color: hsl(var(--foreground));
 }
 
 .viewerContainer a {
-  color: hsl(195 100% 60%); /* 네온 블루 링크 */
+  color: hsl(var(--primary));
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .viewerContainer a:hover {
-  color: hsl(195 100% 70%);
+  color: hsl(var(--primary) / 0.8);
   text-decoration: underline;
-  text-shadow: 0 0 8px hsl(195 100% 50% / 0.5);
 }
 
 .viewerContainer code {
-  background-color: hsl(195 100% 50% / 0.1); /* 네온 블루 배경 */
-  color: hsl(195 100% 70%);
+  background-color: hsl(var(--muted));
+  color: hsl(var(--foreground));
   padding: 0.2em 0.4em;
   border-radius: 3px;
   font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
   font-size: 85%;
-  border: 1px solid hsl(195 100% 50% / 0.2);
+  border: 1px solid hsl(var(--border));
 }
 
 .viewerContainer pre {
@@ -121,11 +120,19 @@
   padding: 16px;
   overflow: auto;
   margin-bottom: 16px;
-  background-color: #0d1117;
-  border: 1px solid rgba(195, 100%, 50%, 0.2);
+  background-color: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
   position: relative;
 }
 
+.viewerContainer pre:not(:global(.shiki)) {
+  border-radius: 0.75rem;
+  padding: 0px;
+  overflow: auto;
+  background-color: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  position: relative;
+}
 .viewerContainer pre code {
   background-color: transparent;
   padding: 0;
@@ -134,7 +141,8 @@
   word-break: normal;
   white-space: pre;
   color: inherit;
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code',
+    'Droid Sans Mono', 'Source Code Pro', monospace;
 }
 
 /* Highlight.js 스타일 개선 */
@@ -150,8 +158,42 @@
   overflow-x: auto;
   padding: 0;
   background: transparent;
-  color: #c9d1d9;
+  /* highlight.js 테마의 색상을 유지 */
 }
+
+/* 밝은 테마에서 bash/shell 코드 블록만 어두운 색상으로 처리 */
+/* 다른 언어는 highlight.js의 기본 색상 사용 */
+:not(.dark) .viewerContainer pre code.language-bash,
+:not(.dark) .viewerContainer pre code.language-sh,
+:not(.dark) .viewerContainer pre code.language-shell,
+:not(.dark) .viewerContainer pre code.language-zsh,
+:not(.dark) .viewerContainer pre code.language-fish,
+:not(.dark) .viewerContainer pre code[class*='language-bash'],
+:not(.dark) .viewerContainer pre code[class*='language-sh'],
+:not(.dark) .viewerContainer pre code[class*='language-shell'],
+:not(.dark) .viewerContainer pre .hljs.language-bash,
+:not(.dark) .viewerContainer pre .hljs.language-sh,
+:not(.dark) .viewerContainer pre .hljs.language-shell {
+  color: #24292e;
+}
+
+/* 밝은 테마에서 bash/shell 코드 블록 내부의 모든 요소에 대한 처리 */
+:not(.dark) .viewerContainer pre code.language-bash *,
+:not(.dark) .viewerContainer pre code.language-sh *,
+:not(.dark) .viewerContainer pre code.language-shell *,
+:not(.dark) .viewerContainer pre code.language-zsh *,
+:not(.dark) .viewerContainer pre code.language-fish *,
+:not(.dark) .viewerContainer pre code[class*='language-bash'] *,
+:not(.dark) .viewerContainer pre code[class*='language-sh'] *,
+:not(.dark) .viewerContainer pre code[class*='language-shell'] *,
+:not(.dark) .viewerContainer pre .hljs.language-bash *,
+:not(.dark) .viewerContainer pre .hljs.language-sh *,
+:not(.dark) .viewerContainer pre .hljs.language-shell * {
+  color: #24292e;
+}
+
+/* 다크 모드에서는 highlight.js 테마 색상이 자동으로 적용되도록 보장 */
+/* 다크 모드에서는 모든 색상 규칙을 제거하여 highlight.js 기본 색상 사용 */
 
 /* 코드 블록 스크롤바 스타일 */
 .viewerContainer pre::-webkit-scrollbar {
@@ -160,41 +202,27 @@
 }
 
 .viewerContainer pre::-webkit-scrollbar-track {
-  background: hsl(240 30% 8% / 0.5);
+  background: hsl(var(--muted));
   border-radius: 4px;
 }
 
 .viewerContainer pre::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    to right,
-    hsl(195 100% 50% / 0.5),
-    hsl(270 91% 65% / 0.5)
-  );
+  background: hsl(var(--muted-foreground) / 0.3);
   border-radius: 4px;
-  border: 1px solid hsl(240 30% 8%);
+  border: 1px solid hsl(var(--border));
   transition: all 0.3s ease;
-  box-shadow: 
-    0 0 4px hsl(195 100% 50% / 0.4),
-    inset 0 0 2px hsl(195 100% 50% / 0.3);
 }
 
 .viewerContainer pre::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    to right,
-    hsl(195 100% 50% / 0.7),
-    hsl(270 91% 65% / 0.7)
-  );
-  box-shadow: 
-    0 0 8px hsl(195 100% 50% / 0.6),
-    inset 0 0 4px hsl(195 100% 50% / 0.4);
+  background: hsl(var(--muted-foreground) / 0.5);
 }
 
 .viewerContainer blockquote {
-  border-left: 4px solid hsl(195 100% 50% / 0.5); /* 네온 블루 테두리 */
+  border-left: 4px solid hsl(var(--primary));
   padding: 0 1em;
   margin: 0 0 16px 0;
-  color: hsl(195 100% 70%);
-  background-color: hsl(195 100% 50% / 0.05);
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--muted));
   border-radius: 4px;
 }
 
@@ -202,12 +230,12 @@
 .viewerContainer ol {
   padding-left: 2em;
   margin-bottom: 16px;
-  color: hsl(195 100% 75%);
+  color: hsl(var(--foreground));
 }
 
 .viewerContainer ul li,
 .viewerContainer ol li {
-  color: hsl(195 100% 75%);
+  color: hsl(var(--foreground));
   margin-bottom: 4px;
 }
 
@@ -218,17 +246,11 @@
 }
 
 .viewerContainer hr {
-  height: 0.25em;
+  height: 1px;
   padding: 0;
   margin: 24px 0;
-  background: linear-gradient(
-    to right,
-    transparent,
-    hsl(195 100% 50% / 0.5),
-    transparent
-  );
+  background: hsl(var(--border));
   border: 0;
-  box-shadow: 0 0 10px hsl(195 100% 50% / 0.3);
 }
 
 .viewerContainer table {
@@ -236,35 +258,235 @@
   width: 100%;
   margin-bottom: 16px;
   overflow: auto;
-  border: 1px solid hsl(195 100% 50% / 0.3);
+  border: 1px solid hsl(var(--border));
   border-radius: 6px;
-  background-color: hsl(240 30% 8% / 0.5);
+  background-color: hsl(var(--card));
 }
 
 .viewerContainer table th,
 .viewerContainer table td {
   padding: 6px 13px;
-  border: 1px solid hsl(195 100% 50% / 0.2);
-  color: hsl(195 100% 85%); /* 네온 블루 텍스트 */
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
 }
 
 .viewerContainer table th {
-  background-color: hsl(195 100% 50% / 0.1);
-  color: hsl(195 100% 70%);
+  background-color: hsl(var(--muted));
+  color: hsl(var(--foreground));
   font-weight: 600;
   text-align: left;
 }
 
 .viewerContainer table tr {
-  background-color: hsl(240 30% 8% / 0.3);
-  border-top: 1px solid hsl(195 100% 50% / 0.2);
+  background-color: hsl(var(--card));
+  border-top: 1px solid hsl(var(--border));
   transition: background-color 0.2s;
 }
 
 .viewerContainer table tr:hover {
-  background-color: hsl(195 100% 50% / 0.1);
+  background-color: hsl(var(--muted));
 }
 
 .viewerContainer table tr:nth-child(2n) {
-  background-color: hsl(240 30% 10% / 0.3);
+  background-color: hsl(var(--muted) / 0.5);
+}
+
+/* 굵은 글씨 스타일 */
+.viewerContainer strong {
+  color: hsl(var(--foreground));
+  font-weight: 600;
+}
+
+/* Mermaid 다이어그램 컨테이너 */
+.mermaidContainer {
+  margin: 24px 0;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  overflow-x: auto;
+  text-align: center;
+}
+
+.mermaidContainer svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mermaid 에러 메시지 */
+.mermaidError {
+  color: hsl(0 84% 60%);
+  padding: 16px;
+  background-color: hsl(0 84% 60% / 0.1);
+  border: 1px solid hsl(0 84% 60% / 0.3);
+  border-radius: 4px;
+  margin: 16px 0;
+}
+
+/* TableOfContents 스크롤바 스타일 */
+.tocScrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+}
+
+.tocScrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tocScrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+.tocScrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.tocScrollbar::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Code Block with Traffic Lights */
+.viewerContainer pre.codeBlockWrapper,
+.viewerContainer div.codeBlockWrapper {
+  margin: 24px 0;
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.codeBlockHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: hsl(var(--muted) / 0.8);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.trafficLights {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.trafficLight {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.1);
+}
+
+.trafficLightRed {
+  background-color: #ff5f57;
+}
+
+.trafficLightYellow {
+  background-color: #ffbd2e;
+}
+
+.trafficLightGreen {
+  background-color: #28ca42;
+}
+
+.codeBlockInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.codeBlockLanguage {
+  font-size: 12px;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  text-transform: uppercase;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+}
+
+.copyButton {
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.copyButton:hover {
+  background-color: hsl(var(--muted));
+  border-color: hsl(var(--primary));
+}
+
+.codeBlockContent {
+  overflow-x: auto;
+  padding: 16px;
+  flex: 1;
+}
+
+.codeBlockContent :global(.shiki) {
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  background: transparent !important;
+  border: none;
+  border-radius: 0;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code',
+    'Droid Sans Mono', 'Source Code Pro', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.codeBlockContent :global(.shiki code) {
+  display: block;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+/* CodeBlock 내부의 code 태그 스타일 */
+.viewerContainer pre.codeBlockWrapper > code {
+  padding: 16px;
+  display: block;
+  overflow-x: auto;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code',
+    'Droid Sans Mono', 'Source Code Pro', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  background: transparent;
+  color: inherit;
+}
+
+.codeBlockPre {
+  margin: 0;
+  padding: 16px;
+  overflow-x: auto;
+  background-color: hsl(var(--muted));
+  border: none;
+  border-radius: 0;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code',
+    'Droid Sans Mono', 'Source Code Pro', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.codeBlockPre code {
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
 }

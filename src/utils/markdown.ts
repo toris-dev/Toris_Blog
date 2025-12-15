@@ -186,10 +186,6 @@ export function getPostData(): Post[] {
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
-    // 개발 환경에서만 로그 출력 (빌드 시 과도한 로그 방지)
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`Loaded ${sortedPosts.length} posts from markdown files`);
-    }
     return sortedPosts;
   } catch (error) {
     console.error('Error reading markdown files:', error);
@@ -215,4 +211,35 @@ export function getCategories(): string[] {
 export function getPostsByCategory(category: string): Post[] {
   const posts = getPostData();
   return posts.filter((post) => post.category === category);
+}
+
+export function getTags(): string[] {
+  const posts = getPostData();
+  const allTags = new Set<string>();
+
+  posts.forEach((post) => {
+    if (Array.isArray(post.tags)) {
+      post.tags.forEach((tag) => allTags.add(tag));
+    } else if (typeof post.tags === 'string') {
+      // 쉼표로 구분된 태그 문자열 처리
+      post.tags.split(',').forEach((tag) => {
+        const trimmedTag = tag.trim();
+        if (trimmedTag) allTags.add(trimmedTag);
+      });
+    }
+  });
+
+  return Array.from(allTags).sort();
+}
+
+export function getPostsByTag(tag: string): Post[] {
+  const posts = getPostData();
+  return posts.filter((post) => {
+    if (Array.isArray(post.tags)) {
+      return post.tags.some((t) => t === tag);
+    } else if (typeof post.tags === 'string') {
+      return post.tags.split(',').some((t) => t.trim() === tag);
+    }
+    return false;
+  });
 }
