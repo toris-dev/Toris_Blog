@@ -457,7 +457,7 @@ export default function AboutPage() {
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl space-y-12">
         <div className="space-y-6 text-center">
-          <h1 className="bg-gradient-to-r from-primary to-accent bg-clip-text text-4xl font-bold text-transparent sm:text-5xl">
+          <h1 className="text-4xl font-bold text-foreground sm:text-5xl">
             Toris Dev Blog 소개
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
@@ -467,7 +467,7 @@ export default function AboutPage() {
         </div>
 
         {/* 블로그 소개 섹션 */}
-        <section className="neon-border rounded-2xl border border-primary/30 bg-card/50 p-8 shadow-sm backdrop-blur-sm">
+        <section className="shadow-soft rounded-2xl border border-primary/30 bg-card/50 p-8 backdrop-blur-sm">
           <h2 className="mb-6 text-2xl font-bold text-card-foreground">
             <span className="mr-2">📝</span>
             블로그 소개
@@ -493,16 +493,16 @@ export default function AboutPage() {
         </section>
 
         {/* 운영자 소개 */}
-        <section className="neon-border rounded-2xl border border-primary/30 bg-card/50 p-8 shadow-sm backdrop-blur-sm">
-          <h2 className="neon-glow mb-6 text-2xl font-bold text-card-foreground">
+        <section className="shadow-soft rounded-2xl border border-primary/30 bg-card/50 p-8 backdrop-blur-sm">
+          <h2 className="mb-6 text-2xl font-bold text-card-foreground">
             <span className="mr-2">👨‍💻</span>
             운영자 소개
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             <div className="flex flex-col items-center justify-center md:col-span-1">
-              <div className="neon-border neon-glow-animate relative mb-4 size-40 overflow-hidden rounded-full border-4 border-primary/50">
+              <div className="shadow-soft hover:shadow-medium relative mb-4 size-40 overflow-hidden rounded-full border-4 border-primary/50 transition-shadow">
                 {/* 프로필 이미지 자리 - 실제 이미지로 교체하세요 */}
-                <div className="flex size-full items-center justify-center bg-gradient-to-br from-primary/30 to-secondary/30">
+                <div className="flex size-full items-center justify-center bg-primary/10">
                   <Image
                     src="https://github.com/toris-dev.png"
                     alt="토리스 프로필 이미지"
@@ -512,7 +512,7 @@ export default function AboutPage() {
                   />
                 </div>
               </div>
-              <h3 className="neon-glow mb-2 text-xl font-semibold text-card-foreground">
+              <h3 className="mb-2 text-xl font-semibold text-card-foreground">
                 Toris
               </h3>
               <p className="mb-4 text-center text-sm text-muted-foreground">
@@ -568,8 +568,8 @@ export default function AboutPage() {
                 서비스 개선에 관심이 많은 개발자입니다.
               </p>
               <div className="mt-6 grid grid-cols-2 gap-4">
-                <div className="neon-border rounded-lg border border-primary/30 bg-primary/10 p-4">
-                  <h4 className="neon-glow mb-2 font-medium text-primary">
+                <div className="shadow-soft rounded-lg border border-primary/30 bg-primary/10 p-4">
+                  <h4 className="mb-2 font-medium text-primary">
                     주요 기술 스택
                   </h4>
                   <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
@@ -579,10 +579,8 @@ export default function AboutPage() {
                     <li>Node.js</li>
                   </ul>
                 </div>
-                <div className="neon-border-purple rounded-lg border border-secondary/30 bg-secondary/10 p-4">
-                  <h4 className="neon-glow-purple mb-2 font-medium text-secondary">
-                    관심 분야
-                  </h4>
+                <div className="shadow-soft rounded-lg border border-secondary/30 bg-secondary/10 p-4">
+                  <h4 className="mb-2 font-medium text-secondary">관심 분야</h4>
                   <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
                     <li>사용자 경험 개선</li>
                     <li>풀스택 개발</li>
@@ -596,8 +594,8 @@ export default function AboutPage() {
         </section>
 
         {/* 기술 스택 섹션 */}
-        <section className="neon-border rounded-2xl border border-primary/30 bg-card/50 p-8 shadow-sm backdrop-blur-sm">
-          <h2 className="neon-glow mb-6 text-2xl font-bold text-card-foreground">
+        <section className="shadow-soft rounded-2xl border border-primary/30 bg-card/50 p-8 backdrop-blur-sm">
+          <h2 className="mb-6 text-2xl font-bold text-card-foreground">
             <span className="mr-2">🛠️</span>
             기술 스택
           </h2>
@@ -605,7 +603,7 @@ export default function AboutPage() {
             {skills.map((skill, index) => (
               <div
                 key={index}
-                className="neon-border rounded-lg border border-primary/30 bg-muted/30 p-4 backdrop-blur-sm"
+                className="shadow-soft rounded-lg border border-primary/30 bg-muted/30 p-4 backdrop-blur-sm"
               >
                 <h3 className="mb-3 font-semibold text-card-foreground">
                   {skill.category}
@@ -632,8 +630,8 @@ export default function AboutPage() {
         </section>
 
         {/* 경력 섹션 */}
-        <section className="neon-border rounded-2xl border border-primary/30 bg-card/50 p-8 shadow-sm backdrop-blur-sm">
-          <h2 className="neon-glow mb-6 text-2xl font-bold text-card-foreground">
+        <section className="shadow-soft rounded-2xl border border-primary/30 bg-card/50 p-8 backdrop-blur-sm">
+          <h2 className="mb-6 text-2xl font-bold text-card-foreground">
             <span className="mr-2">💼</span>
             경력
           </h2>
@@ -659,8 +657,8 @@ export default function AboutPage() {
         </section>
 
         {/* 회사 프로젝트 섹션 */}
-        <section className="neon-border rounded-2xl border border-primary/30 bg-card/50 p-8 shadow-sm backdrop-blur-sm">
-          <h2 className="neon-glow mb-6 text-2xl font-bold text-card-foreground">
+        <section className="shadow-soft rounded-2xl border border-primary/30 bg-card/50 p-8 backdrop-blur-sm">
+          <h2 className="mb-6 text-2xl font-bold text-card-foreground">
             <span className="mr-2">🏢</span>
             회사 프로젝트
           </h2>
@@ -668,7 +666,7 @@ export default function AboutPage() {
             {companyProjects.map((project, index) => (
               <div
                 key={index}
-                className="neon-border hover:neon-glow-animate group relative flex flex-col overflow-hidden rounded-2xl border border-primary/30 bg-card/50 p-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
+                className="shadow-soft hover:shadow-medium group relative flex flex-col overflow-hidden rounded-2xl border border-primary/30 bg-card/50 p-6 backdrop-blur-sm transition-all duration-300 hover:border-primary/50"
               >
                 {/* 헤더 */}
                 <div className="mb-4">
@@ -746,7 +744,7 @@ export default function AboutPage() {
                     onClick={() =>
                       setSelectedProject({ project, type: 'company' })
                     }
-                    className="neon-glow-animate w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:scale-[1.02] hover:bg-primary/90"
+                    className="shadow-soft hover:shadow-medium w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:scale-[1.02] hover:bg-primary/90"
                   >
                     자세히 보기
                   </button>
@@ -757,8 +755,8 @@ export default function AboutPage() {
         </section>
 
         {/* 개인 프로젝트 섹션 */}
-        <section className="neon-border rounded-2xl border border-primary/30 bg-card/50 p-8 shadow-sm backdrop-blur-sm">
-          <h2 className="neon-glow mb-6 text-2xl font-bold text-card-foreground">
+        <section className="shadow-soft rounded-2xl border border-primary/30 bg-card/50 p-8 backdrop-blur-sm">
+          <h2 className="mb-6 text-2xl font-bold text-card-foreground">
             <span className="mr-2">🚀</span>
             개인 프로젝트
           </h2>
@@ -766,7 +764,7 @@ export default function AboutPage() {
             {personalProjects.map((project, index) => (
               <div
                 key={index}
-                className={`neon-border hover:neon-glow-animate group relative flex flex-col overflow-visible rounded-2xl border bg-card/50 p-6 shadow-sm backdrop-blur-sm transition-all duration-300 ${
+                className={`shadow-soft group relative flex flex-col overflow-visible rounded-2xl border bg-card/50 p-6 backdrop-blur-sm transition-all duration-300 ${
                   project.isDeveloping
                     ? 'border-yellow-500/80 shadow-[0_0_20px_rgba(234,179,8,0.3)] hover:border-yellow-500 hover:shadow-[0_0_25px_rgba(234,179,8,0.4)]'
                     : 'border-primary/30 hover:border-primary/50 hover:shadow-lg'
@@ -856,7 +854,7 @@ export default function AboutPage() {
                     onClick={() =>
                       setSelectedProject({ project, type: 'personal' })
                     }
-                    className="neon-glow-animate w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:scale-[1.02] hover:bg-primary/90"
+                    className="shadow-soft hover:shadow-medium w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:scale-[1.02] hover:bg-primary/90"
                   >
                     자세히 보기
                   </button>
@@ -867,8 +865,8 @@ export default function AboutPage() {
         </section>
 
         {/* 연락 섹션 */}
-        <section className="neon-border rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/20 via-secondary/20 to-primary/20 p-8 text-center">
-          <h2 className="neon-glow mb-4 text-2xl font-bold text-card-foreground">
+        <section className="shadow-soft rounded-2xl border border-primary/30 bg-primary/10 p-8 text-center">
+          <h2 className="mb-4 text-2xl font-bold text-card-foreground">
             문의하기
           </h2>
           <p className="mb-6 text-muted-foreground">
@@ -877,7 +875,7 @@ export default function AboutPage() {
           <div className="flex justify-center space-x-4">
             <Link
               href="/contact"
-              className="rounded-md bg-gradient-to-r from-primary to-accent px-6 py-3 text-white transition-transform hover:scale-105"
+              className="rounded-md bg-primary px-6 py-3 text-primary-foreground transition-transform hover:scale-105 hover:bg-primary/90"
             >
               연락처 페이지로 이동
             </Link>

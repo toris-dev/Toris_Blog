@@ -136,8 +136,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
-        <meta name="theme-color" content="#0a0a0f" />
-        <meta name="color-scheme" content="dark" />
+        <meta
+          name="theme-color"
+          content="#ffffff"
+          media="(prefers-color-scheme: light)"
+        />
+        <meta
+          name="theme-color"
+          content="#0f172a"
+          media="(prefers-color-scheme: dark)"
+        />
         <link
           rel="icon"
           href="/images/favicon.svg"
@@ -167,7 +175,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body
         className={cn(
-          'min-h-screen bg-[#0a0a0f] font-sans antialiased',
+          'min-h-screen font-sans antialiased',
           inter.variable,
           spaceGrotesk.variable
         )}
@@ -176,17 +184,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <GoogleTagManager gtmId="G-0KV4YD773C" />
         <ServiceWorkerRegistration />
         <Providers>
-          {/* 사이버펑크 배경 그라디언트 */}
-          <div className="fixed -z-10 h-screen w-full bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0a0a0f]">
-            {/* 네온 그리드 패턴 */}
-            <div
-              className="absolute inset-0 bg-[linear-gradient(rgba(0,240,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,240,255,0.03)_1px,transparent_1px)]"
-              style={{ backgroundSize: '50px 50px' }}
-            ></div>
-            {/* 글로우 효과 */}
-            <div className="absolute left-1/4 top-0 size-96 rounded-full bg-cyan-500/10 blur-3xl"></div>
-            <div className="absolute bottom-0 right-1/4 size-96 rounded-full bg-purple-500/10 blur-3xl"></div>
-          </div>
+          {/* 2D 아트 배경 - 패턴은 globals.css에서 처리 */}
 
           <div className="flex min-h-screen flex-col">
             <Header />
@@ -196,9 +194,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <Sidebar posts={posts} />
 
               {/* Main Content */}
-              <div className="flex flex-1 flex-col overflow-x-hidden">
+              <div className="flex flex-1 flex-col">
                 <main className="container mx-auto flex-1 px-4 py-8 pt-24 sm:px-6 lg:px-8">
-                  <div className="mx-auto w-full max-w-4xl animate-blur-in">
+                  <div className="mx-auto w-full animate-blur-in">
                     {children}
                   </div>
                 </main>

@@ -100,10 +100,6 @@ export async function generateStaticParams() {
         return { id };
       });
 
-    console.log(`Generated ${validParams.length} static params for posts`);
-    if (validParams.length > 0) {
-      console.log('All params:', validParams);
-    }
     return validParams;
   } catch (error) {
     // 빌드 타임 에러 로깅

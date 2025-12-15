@@ -326,7 +326,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                 className="group overflow-hidden rounded-xl border border-primary/30 shadow-sm transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
               >
                 <Link href={`/posts/${encodeURIComponent(post.slug)}`}>
-                  <div className="relative h-48 w-full overflow-hidden bg-gradient-to-r from-primary/20 to-accent/20">
+                  <div className="relative h-48 w-full overflow-hidden bg-primary/10">
                     {post.preview_image_url ? (
                       <Image
                         src={post.preview_image_url}
@@ -339,9 +339,9 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                         <FaBlog className="text-6xl text-muted-foreground/20" />
                       </div>
                     )}
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                    <div className="absolute inset-x-0 bottom-0 bg-black/50 p-4">
                       <span
-                        className={`rounded-full bg-gradient-to-r ${getCategoryColor(post.category)} border px-3 py-1 text-xs font-medium text-foreground shadow-lg backdrop-blur-sm`}
+                        className={`rounded-full ${getCategoryColor(post.category)} shadow-soft border px-3 py-1 text-xs font-medium text-foreground backdrop-blur-sm`}
                       >
                         {post.category}
                       </span>
@@ -427,7 +427,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
             <h1 className="text-4xl font-bold tracking-tight text-primary">
               <span className="relative">
                 블로그 검색
-                <span className="absolute -bottom-1 left-0 h-1 w-full bg-gradient-to-r from-primary to-accent"></span>
+                <span className="absolute -bottom-1 left-0 h-1 w-full bg-primary"></span>
               </span>
             </h1>
             <p className="mt-4 text-muted-foreground">
@@ -436,7 +436,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
           </motion.div>
 
           {/* 검색 인터페이스 */}
-          <div className="neon-border mb-8 rounded-2xl border border-primary/30 p-6 backdrop-blur-lg">
+          <div className="shadow-medium mb-8 rounded-2xl border border-border bg-card p-6">
             <div className="relative">
               <div className="relative mb-6 overflow-hidden rounded-lg border border-white/10">
                 <input
@@ -528,7 +528,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="neon-border overflow-hidden rounded-lg border border-primary/30 p-4 shadow-lg"
+                    className="shadow-soft overflow-hidden rounded-lg border border-border bg-card p-4"
                   >
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <div>

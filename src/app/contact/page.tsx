@@ -39,7 +39,7 @@ export default function ContactPage() {
 
   return (
     <div className="container mx-auto max-w-2xl py-12">
-      <h1 className="neon-glow mb-8 text-center text-4xl font-bold">
+      <h1 className="mb-8 text-center text-4xl font-bold text-foreground">
         문의하기
       </h1>
       <p className="mb-8 text-center text-lg text-foreground">
@@ -48,7 +48,7 @@ export default function ContactPage() {
 
       <form
         onSubmit={handleSubmit}
-        className="neon-border space-y-6 rounded-2xl border border-primary/30 bg-card/50 p-8 backdrop-blur-sm"
+        className="shadow-medium space-y-6 rounded-2xl border border-border bg-card p-8"
       >
         <div>
           <label
@@ -95,7 +95,7 @@ export default function ContactPage() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             required
-            className="block w-full rounded-md border border-primary/30 bg-background/50 p-3 text-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="shadow-soft block w-full rounded-md border border-border bg-background p-3 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           ></textarea>
         </div>
         <Button
