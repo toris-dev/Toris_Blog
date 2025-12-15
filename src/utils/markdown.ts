@@ -198,7 +198,33 @@ export function getPostData(): Post[] {
 
 export function getPostBySlug(slug: string): Post | null {
   const posts = getPostData();
-  const post = posts.find((post) => post.slug === slug);
+
+  // 정확한 매칭 시도
+  let post = posts.find((post) => post.slug === slug);
+
+  // 인코딩/디코딩된 버전으로도 시도
+  if (!post) {
+    try {
+      const decodedSlug = decodeURIComponent(slug);
+      post = posts.find((post) => post.slug === decodedSlug);
+    } catch {
+      // 디코딩 실패 시 무시
+    }
+  }
+
+  // 인코딩된 버전으로도 시도
+  if (!post) {
+    try {
+      const encodedSlug = encodeURIComponent(slug);
+      post = posts.find((post) => {
+        const encodedPostSlug = encodeURIComponent(post.slug);
+        return encodedPostSlug === encodedSlug || encodedPostSlug === slug;
+      });
+    } catch {
+      // 인코딩 실패 시 무시
+    }
+  }
+
   return post || null;
 }
 
