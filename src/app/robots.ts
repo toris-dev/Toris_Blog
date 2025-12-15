@@ -8,24 +8,57 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: ['/', '/posts', '/posts/*', '/about', '/contact', '/api/posts'],
+        allow: [
+          '/',
+          '/posts',
+          '/posts/*',
+          '/categories',
+          '/categories/*',
+          '/tags',
+          '/tags/*',
+          '/about',
+          '/contact'
+        ],
         disallow: [
           '/api/*',
           '/admin/*',
           '/_next/*',
           '/favicon.ico',
-          '/*.json$'
+          '/*.json$',
+          '/offline'
         ],
         crawlDelay: 1
       },
       {
         userAgent: 'Googlebot',
-        allow: '/',
+        allow: [
+          '/',
+          '/posts',
+          '/posts/*',
+          '/categories',
+          '/categories/*',
+          '/tags',
+          '/tags/*',
+          '/about',
+          '/contact'
+        ],
+        disallow: ['/api/*', '/admin/*', '/_next/*', '/offline'],
         crawlDelay: 0
       },
       {
         userAgent: 'Bingbot',
-        allow: '/',
+        allow: [
+          '/',
+          '/posts',
+          '/posts/*',
+          '/categories',
+          '/categories/*',
+          '/tags',
+          '/tags/*',
+          '/about',
+          '/contact'
+        ],
+        disallow: ['/api/*', '/admin/*', '/_next/*', '/offline'],
         crawlDelay: 1
       }
     ],
