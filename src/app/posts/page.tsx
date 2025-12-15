@@ -2,6 +2,7 @@ import StructuredData from '@/components/seo/StructuredData';
 import { getPostData, getPostsByCategory } from '@/utils/markdown';
 import { getDefaultOGImageUrl } from '@/utils/og-image';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 import ClientSearchPage from './_components/ClientSearchPage';
 
 const baseUrl =
@@ -65,7 +66,9 @@ export default async function PostsPage({
   return (
     <>
       <StructuredData type="blog" />
-      <ClientSearchPage initialPosts={posts} />
+      <Suspense fallback={<div>로딩 중...</div>}>
+        <ClientSearchPage initialPosts={posts} />
+      </Suspense>
     </>
   );
 }
