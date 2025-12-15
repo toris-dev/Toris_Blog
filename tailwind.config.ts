@@ -50,6 +50,11 @@ const config: Config = {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
+        },
+        traffic: {
+          red: '#ff5f57',
+          yellow: '#ffbd2e',
+          green: '#28ca42'
         }
       },
       borderRadius: {
