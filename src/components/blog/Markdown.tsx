@@ -14,6 +14,7 @@ import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
 import mermaid from 'mermaid';
 import { useTheme } from 'next-themes';
+import Image from 'next/image';
 import { Heading } from './TableOfContents';
 import { CodeBlock } from './CodeBlock';
 
@@ -346,10 +347,57 @@ export const MarkdownViewer: React.FC<MarkdownProps> = ({
     }
   };
 
+  // 이미지 컴포넌트 - SEO 최적화
+  const imageComponents: Partial<Components> = {
+    img({ node, src, alt, title, ...props }: any) {
+      // src가 상대 경로인 경우 절대 경로로 변환
+      const baseUrl =
+        process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
+      const imageSrc = src?.startsWith('http')
+        ? src
+        : src?.startsWith('/')
+          ? `${baseUrl}${src}`
+          : src;
+
+      // alt 텍스트 개선: 없으면 제목에서 추출하거나 기본값 사용
+      const optimizedAlt = alt || title || '블로그 포스트 이미지';
+
+      // width와 height 추출 시도 (props에서)
+      const width = props.width ? Number(props.width) : 800;
+      const height = props.height ? Number(props.height) : 600;
+
+      // 외부 이미지인 경우 unoptimized 사용
+      const isExternal =
+        imageSrc?.startsWith('http') && !imageSrc?.includes(baseUrl);
+
+      return (
+        <figure className="my-6 flex flex-col items-center">
+          <Image
+            src={imageSrc || ''}
+            alt={optimizedAlt}
+            width={width}
+            height={height}
+            className="max-h-[600px] w-auto rounded-lg object-contain"
+            loading="lazy"
+            title={title || optimizedAlt}
+            unoptimized={isExternal}
+            {...props}
+          />
+          {title && (
+            <figcaption className="mt-2 text-sm text-muted-foreground">
+              {title}
+            </figcaption>
+          )}
+        </figure>
+      );
+    }
+  };
+
   // components 병합
   const components: Partial<Components> = {
     ...headingComponents,
-    ...codeComponents
+    ...codeComponents,
+    ...imageComponents
   };
 
   // children이 변경될 때 헤딩 추출
