@@ -3,7 +3,13 @@
 import Script from 'next/script';
 
 interface StructuredDataProps {
-  type?: 'website' | 'blog' | 'article' | 'person' | 'organization';
+  type?:
+    | 'website'
+    | 'blog'
+    | 'article'
+    | 'person'
+    | 'organization'
+    | 'breadcrumb';
   data?: any;
 }
 
@@ -94,29 +100,63 @@ const StructuredData = ({ type = 'website', data }: StructuredDataProps) => {
         };
 
       case 'article':
+        const tags = Array.isArray(data?.tags)
+          ? data.tags
+          : typeof data?.tags === 'string'
+            ? data.tags.split(',').map((t: string) => t.trim())
+            : [];
+
         return {
           '@context': 'https://schema.org',
           '@type': 'BlogPosting',
           headline: data?.title || '',
           description: data?.description || '',
-          image: data?.image || `${baseUrl}/images/og-image.png`,
-          datePublished: data?.publishedAt || '',
-          dateModified: data?.modifiedAt || data?.publishedAt || '',
+          image: data?.image
+            ? Array.isArray(data.image)
+              ? data.image[0]
+              : data.image
+            : `${baseUrl}/images/og-image.png`,
+          datePublished: data?.publishedAt || data?.datePublished || '',
+          dateModified: data?.modifiedAt || data?.datePublished || '',
           author: {
             '@type': 'Person',
             name: '토리스',
-            url: 'https://github.com/toris-dev'
+            url: 'https://github.com/toris-dev',
+            sameAs: ['https://github.com/toris-dev']
           },
           publisher: {
             '@type': 'Person',
             name: '토리스',
             url: 'https://github.com/toris-dev'
           },
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': data?.url || baseUrl
+          },
           url: data?.url || baseUrl,
           inLanguage: 'ko-KR',
-          keywords: data?.keywords || [],
+          keywords: tags.length > 0 ? tags.join(', ') : data?.keywords || [],
           articleSection: data?.category || 'Technology',
+          wordCount: data?.wordCount || undefined,
           ...data
+        };
+
+      case 'breadcrumb':
+        const items = data?.items || [];
+
+        return {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: items.map(
+            (item: { name: string; url: string }, index: number) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              name: item.name,
+              item: item.url.startsWith('http')
+                ? item.url
+                : `${baseUrl}${item.url}`
+            })
+          )
         };
 
       default:
