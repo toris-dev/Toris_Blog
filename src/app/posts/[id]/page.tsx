@@ -1,4 +1,5 @@
 import PostPage from '@/components/blog/PostPage';
+import StructuredData from '@/components/seo/StructuredData';
 import { getPostBySlug, getPostData } from '@/utils/markdown';
 import {
   extractFirstImageFromMarkdown,
@@ -63,7 +64,52 @@ export default async function Post({ params }: { params: { id: string } }) {
       postId: id
     };
 
-    return <PostPage {...pageProps} />;
+    const baseUrl =
+      process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
+    const postUrl = `${baseUrl}/posts/${id}`;
+
+    // 구조화된 데이터용 데이터 준비
+    const structuredData = {
+      title: post.title,
+      description:
+        post.description ||
+        post.content?.substring(0, 150).replace(/\n/g, ' ') ||
+        '',
+      image: post.preview_image_url
+        ? toAbsoluteUrl(post.preview_image_url)
+        : extractFirstImageFromMarkdown(post.content || '') ||
+          getDefaultOGImageUrl(post.title, ''),
+      publishedAt: post.date,
+      url: postUrl,
+      tags: Array.isArray(post.tags) ? post.tags : [post.tags],
+      category: post.category,
+      wordCount: post.content
+        ? post.content.replace(/\s+/g, ' ').trim().split(' ').length
+        : undefined
+    };
+
+    // Breadcrumb 데이터
+    const breadcrumbItems = [
+      { name: '홈', url: '/' },
+      { name: '포스트', url: '/posts' },
+      ...(post.category
+        ? [
+            {
+              name: post.category,
+              url: `/categories/${encodeURIComponent(post.category)}`
+            }
+          ]
+        : []),
+      { name: post.title, url: `/posts/${id}` }
+    ];
+
+    return (
+      <>
+        <StructuredData type="article" data={structuredData} />
+        <StructuredData type="breadcrumb" data={{ items: breadcrumbItems }} />
+        <PostPage {...pageProps} />
+      </>
+    );
   } catch (error) {
     // 프로덕션에서도 에러 로깅 (디버깅용)
     console.error('Error loading post:', error);
@@ -151,17 +197,55 @@ export async function generateMetadata({
       }
     }
 
+    // 태그를 배열로 변환
+    const tags = Array.isArray(post.tags)
+      ? post.tags
+      : typeof post.tags === 'string'
+        ? post.tags.split(',').map((t) => t.trim())
+        : [];
+
+    // 키워드 생성: 태그 + 카테고리 + 기본 키워드
+    const keywords = [
+      ...tags,
+      post.category,
+      '웹 개발',
+      '기술 블로그',
+      'React',
+      'Next.js',
+      'TypeScript',
+      '토리스'
+    ].filter(Boolean);
+
+    // 더 나은 description 생성 (150-160자 권장)
+    const betterDescription =
+      post.description ||
+      (post.content
+        ? post.content
+            .replace(/[#*`\[\]()]/g, '')
+            .replace(/\n/g, ' ')
+            .trim()
+            .substring(0, 160)
+            .trim() + '...'
+        : '토리스의 웹 개발 기술 블로그 포스트입니다.');
+
     return {
       title: post.title,
-      description,
+      description: betterDescription,
+      keywords,
+      authors: [{ name: '토리스', url: 'https://github.com/toris-dev' }],
+      creator: '토리스',
+      publisher: '토리스',
+      category: post.category || 'Technology',
       openGraph: {
         title: post.title,
-        description,
+        description: betterDescription,
         type: 'article',
         url: postUrl,
         publishedTime: post.date,
+        modifiedTime: post.date, // 수정 시간이 있으면 추가
         authors: ['토리스'],
-        tags: Array.isArray(post.tags) ? post.tags : [post.tags],
+        tags,
+        section: post.category || 'Technology',
         images: [
           {
             url: ogImageUrl,
@@ -169,13 +253,30 @@ export async function generateMetadata({
             height: 630,
             alt: post.title
           }
-        ]
+        ],
+        siteName: '토리스 블로그',
+        locale: 'ko_KR'
       },
       twitter: {
         card: 'summary_large_image',
         title: post.title,
-        description,
-        images: [ogImageUrl]
+        description: betterDescription,
+        images: [ogImageUrl],
+        creator: '@toris_dev'
+      },
+      alternates: {
+        canonical: postUrl
+      },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+          'max-video-preview': -1
+        }
       }
     };
   } catch (error) {
