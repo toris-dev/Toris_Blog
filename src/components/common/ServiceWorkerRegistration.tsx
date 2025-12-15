@@ -13,10 +13,7 @@ export default function ServiceWorkerRegistration() {
       navigator.serviceWorker
         .register('/sw.js')
         .then((registration) => {
-          console.log(
-            'Service Worker 등록 성공:',
-            registration.scope
-          );
+          console.log('Service Worker 등록 성공:', registration.scope);
 
           // 업데이트 확인
           registration.addEventListener('updatefound', () => {
@@ -40,16 +37,18 @@ export default function ServiceWorkerRegistration() {
         });
 
       // Service Worker 업데이트 확인 (1시간마다)
-      setInterval(() => {
-        navigator.serviceWorker.getRegistrations().then((registrations) => {
-          registrations.forEach((registration) => {
-            registration.update();
+      setInterval(
+        () => {
+          navigator.serviceWorker.getRegistrations().then((registrations) => {
+            registrations.forEach((registration) => {
+              registration.update();
+            });
           });
-        });
-      }, 60 * 60 * 1000); // 1시간
+        },
+        60 * 60 * 1000
+      ); // 1시간
     }
   }, []);
 
   return null;
 }
-

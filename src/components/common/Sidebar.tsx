@@ -28,12 +28,8 @@ export default function Sidebar({ posts }: SidebarProps) {
               onClick={toggle}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="neon-border relative z-10 rounded-lg border border-primary/30 bg-card/50 p-3 text-primary transition-colors hover:bg-card/80 hover:text-primary"
+              className="shadow-soft hover:shadow-medium relative z-10 rounded-lg border border-border bg-card p-3 text-primary transition-colors hover:bg-muted"
               aria-label="사이드바 열기"
-              style={{
-                overflow: 'visible',
-                boxShadow: '0 0 10px hsl(var(--primary) / 0.3)'
-              }}
             >
               <AiOutlineMenu className="size-5" />
             </motion.button>
@@ -59,12 +55,8 @@ export default function Sidebar({ posts }: SidebarProps) {
                   onClick={toggle}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  className="neon-border relative z-10 rounded-lg border border-primary/30 bg-card/50 p-2 text-muted-foreground transition-colors hover:bg-card/80 hover:text-primary"
+                  className="shadow-soft relative z-10 rounded-lg border border-border bg-card p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
                   aria-label="사이드바 닫기"
-                  style={{
-                    overflow: 'visible',
-                    boxShadow: '0 0 10px hsl(var(--primary) / 0.3)'
-                  }}
                 >
                   <FaTimes className="size-4" />
                 </motion.button>

@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC, useState } from 'react';
 import SearchModal from './SearchModal';
+import ThemeToggle from './ThemeToggle';
 
 const Header: FC = () => {
   const pathname = usePathname();
@@ -33,21 +34,21 @@ const Header: FC = () => {
   return (
     <>
       {/* Desktop Header */}
-      <header className="neon-border sticky top-0 z-50 border-b border-primary/30 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
+      <header className="shadow-soft sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           {/* Logo */}
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link href="/" className="flex items-center gap-2 font-bold">
               <motion.div
-                className="neon-glow-animate flex size-8 items-center justify-center rounded-full bg-primary/20"
+                className="shadow-soft flex size-8 items-center justify-center rounded-full bg-primary/10"
                 whileHover={{
                   rotate: 360,
                   transition: { duration: 0.6, ease: 'easeInOut' }
                 }}
               >
-                <SiNextjs className="neon-glow size-5 text-primary" />
+                <SiNextjs className="size-5 text-primary" />
               </motion.div>
-              <span className="neon-glow animate-[gradient_3s_ease_infinite] bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_auto] bg-clip-text text-xl text-transparent">
+              <span className="text-xl font-bold text-foreground">
                 Toris Blog
               </span>
             </Link>
@@ -65,16 +66,16 @@ const Header: FC = () => {
                 <Link
                   href={href}
                   className={cn(
-                    'relative text-sm font-medium transition-all hover:text-primary',
+                    'relative text-sm font-medium transition-colors hover:text-primary',
                     isActive
-                      ? 'neon-glow text-primary'
-                      : 'text-muted-foreground hover:drop-shadow-[0_0_8px_hsl(var(--primary))]'
+                      ? 'font-semibold text-primary'
+                      : 'text-muted-foreground'
                   )}
                 >
                   {label}
                   {isActive && (
                     <motion.div
-                      className="neon-glow-animate absolute inset-x-0 -bottom-1 h-0.5 bg-primary"
+                      className="absolute inset-x-0 -bottom-1 h-0.5 rounded-full bg-primary"
                       layoutId="activeIndicator"
                       initial={false}
                       transition={{
@@ -100,13 +101,14 @@ const Header: FC = () => {
                 <FaSearch className="size-4" />
               </button>
             </motion.div>
+            <ThemeToggle />
           </div>
         </div>
       </header>
 
       {/* Mobile Bottom Navigation */}
       <motion.div
-        className="neon-border fixed inset-x-0 bottom-0 z-50 border-t border-primary/30 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 md:hidden"
+        className="shadow-soft fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 md:hidden"
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.3 }}

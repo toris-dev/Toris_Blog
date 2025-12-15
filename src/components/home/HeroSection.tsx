@@ -60,12 +60,10 @@ export default function HeroSection() {
         </motion.div>
 
         <motion.h1
-          className="mb-6 text-4xl font-bold tracking-tight md:text-6xl"
+          className="mb-6 text-4xl font-bold tracking-tight text-foreground md:text-6xl"
           variants={scaleVariants}
         >
-          <span className="neon-glow animate-[gradient_3s_ease_infinite] bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_auto] bg-clip-text text-transparent">
-            토리스 블로그
-          </span>
+          토리스 블로그
         </motion.h1>
 
         <motion.p
@@ -84,7 +82,7 @@ export default function HeroSection() {
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
               href="/posts"
-              className="neon-glow-animate inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-primary-foreground transition-all hover:bg-primary/90"
+              className="shadow-soft hover:shadow-medium inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-all hover:bg-primary/90"
               aria-label="블로그 포스트 모아보기"
             >
               블로그 보기
@@ -94,7 +92,7 @@ export default function HeroSection() {
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
               href="/about"
-              className="neon-border inline-flex items-center justify-center rounded-lg border border-primary/50 px-6 py-3 transition-all hover:border-primary hover:bg-primary/10"
+              className="shadow-soft hover:shadow-medium inline-flex items-center justify-center rounded-lg border border-border bg-card px-6 py-3 font-medium transition-all hover:border-primary hover:bg-primary/10"
               aria-label="토리스 소개 페이지"
             >
               소개

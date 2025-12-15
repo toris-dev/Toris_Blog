@@ -47,14 +47,14 @@ export default function PostsSection({ featuredPosts }: PostsSectionProps) {
         >
           <h2
             id="latest-posts-heading"
-            className="neon-glow text-3xl font-bold"
+            className="text-3xl font-bold text-foreground"
           >
             최신 포스트
           </h2>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
               href="/posts"
-              className="inline-flex items-center text-primary transition-all hover:text-primary/80 hover:drop-shadow-[0_0_8px_hsl(var(--primary))]"
+              className="inline-flex items-center text-primary transition-colors hover:text-primary/80"
               aria-label="모든 블로그 포스트 보기"
             >
               모든 포스트 보기
@@ -73,7 +73,7 @@ export default function PostsSection({ featuredPosts }: PostsSectionProps) {
           {featuredPosts.map((post: Post, index: number) => (
             <motion.article
               key={post.slug}
-              className="neon-border hover:neon-glow-animate group rounded-lg border border-primary/30 bg-card/50 p-6 backdrop-blur-sm transition-all hover:bg-card/80"
+              className="shadow-soft hover:shadow-medium group rounded-lg border border-border bg-card p-6 transition-all hover:bg-muted"
               variants={cardVariants}
               whileHover={{
                 y: -8,
@@ -83,8 +83,8 @@ export default function PostsSection({ featuredPosts }: PostsSectionProps) {
               }}
               style={{ perspective: 1000 }}
             >
-              <Link 
-                href={`/posts/${encodeURIComponent(post.slug)}`} 
+              <Link
+                href={`/posts/${encodeURIComponent(post.slug)}`}
                 className="block"
               >
                 <div className="mb-4 flex items-center">
@@ -95,7 +95,7 @@ export default function PostsSection({ featuredPosts }: PostsSectionProps) {
                     {post.category || 'Blog'}
                   </motion.span>
                 </div>
-                <h3 className="mb-2 text-xl font-semibold transition-all group-hover:text-primary group-hover:drop-shadow-[0_0_8px_hsl(var(--primary))]">
+                <h3 className="mb-2 text-xl font-semibold transition-colors group-hover:text-primary">
                   {post.title}
                 </h3>
                 <p className="line-clamp-2 text-foreground/70">

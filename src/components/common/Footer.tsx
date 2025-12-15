@@ -8,14 +8,14 @@ const Footer: FC = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="neon-border w-full border-t border-primary/30 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
+    <footer className="shadow-soft w-full border-t border-border bg-background">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Brand */}
           <div className="text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start">
-              <SiNextjs className="neon-glow mr-2 size-5 text-primary" />
-              <span className="neon-glow animate-[gradient_3s_ease_infinite] bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_auto] bg-clip-text text-lg font-bold text-transparent">
+              <SiNextjs className="mr-2 size-5 text-primary" />
+              <span className="text-lg font-bold text-foreground">
                 Toris Blog
               </span>
             </div>
@@ -63,13 +63,13 @@ const Footer: FC = () => {
         </div>
 
         {/* Bottom */}
-        <div className="mt-8 flex flex-col items-center justify-between border-t border-primary/30 pt-6 sm:flex-row">
+        <div className="mt-8 flex flex-col items-center justify-between border-t border-border pt-6 sm:flex-row">
           <p className="text-sm text-muted-foreground">
             &copy; {year} Toris-dev. All rights reserved.
           </p>
           <div className="mt-4 flex items-center sm:mt-0">
-            <div className="neon-border flex items-center rounded-full border border-primary/30 bg-primary/20 px-3 py-1 text-xs text-primary">
-              <FaCode className="neon-glow mr-1 size-3" />
+            <div className="shadow-soft flex items-center rounded-full border border-border bg-primary/10 px-3 py-1 text-xs text-primary">
+              <FaCode className="mr-1 size-3" />
               <span>Next.js</span>
             </div>
           </div>

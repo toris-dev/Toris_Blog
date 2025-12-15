@@ -66,7 +66,7 @@ export default function TechStackSection() {
       <div className="mx-auto max-w-6xl">
         <motion.h2
           id="tech-stack-heading"
-          className="neon-glow mb-12 text-center text-3xl font-bold"
+          className="mb-12 text-center text-3xl font-bold text-foreground"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -96,7 +96,7 @@ export default function TechStackSection() {
             >
               <motion.div
                 className={cn(
-                  'neon-border neon-glow-animate mb-4 flex size-20 items-center justify-center rounded-xl shadow-lg',
+                  'shadow-medium mb-4 flex size-20 items-center justify-center rounded-xl',
                   tech.color
                 )}
                 role="img"
@@ -108,11 +108,13 @@ export default function TechStackSection() {
                 }}
               >
                 <tech.icon
-                  className={cn('neon-glow size-12', tech.logoColor)}
+                  className={cn('size-12', tech.logoColor)}
                   aria-hidden="true"
                 />
               </motion.div>
-              <h3 className="neon-glow text-lg font-semibold">{tech.name}</h3>
+              <h3 className="text-lg font-semibold text-foreground">
+                {tech.name}
+              </h3>
             </motion.div>
           ))}
         </motion.div>

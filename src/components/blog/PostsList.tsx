@@ -78,10 +78,7 @@ export default function PostsList() {
   return (
     <div className="container py-16">
       <h1 className="mb-8 text-4xl font-bold">
-        <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-          Blog
-        </span>{' '}
-        Posts
+        <span className="text-primary">Blog</span> Posts
       </h1>
 
       {/* Search and Filter */}
@@ -170,53 +167,53 @@ export default function PostsList() {
               }}
               style={{ perspective: 1000 }}
             >
-          <Link
+              <Link
                 href={`/posts/${encodeURIComponent(post.slug)}`}
-                className="neon-border hover:neon-glow-animate group block rounded-lg border border-primary/30 bg-card/50 p-6 backdrop-blur-sm transition-all hover:bg-card/80"
-          >
-            <div className="mb-4 flex items-center">
+                className="shadow-soft hover:shadow-medium group block rounded-lg border border-border bg-card p-6 transition-all hover:bg-muted"
+              >
+                <div className="mb-4 flex items-center">
                   <motion.span
                     className="rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
                     whileHover={{ scale: 1.1 }}
                   >
-                {post.category || 'Blog'}
+                    {post.category || 'Blog'}
                   </motion.span>
-            </div>
-                <h3 className="mb-2 text-xl font-semibold transition-all group-hover:text-primary group-hover:drop-shadow-[0_0_8px_hsl(var(--primary))]">
-              {post.title}
-            </h3>
-            <p className="mb-4 line-clamp-3 text-foreground/70">
-              {post.description || post.content?.substring(0, 100) + '...'}
-            </p>
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-muted-foreground">
-                {new Date(post.date).toLocaleDateString('ko-KR')}
-              </div>
-              {post.tags && (
-                <div className="flex flex-wrap gap-1">
-                  {(Array.isArray(post.tags) ? post.tags : [post.tags])
-                    .slice(0, 2)
-                    .map((tag) => (
-                          <motion.span
-                        key={tag}
-                        className="rounded bg-accent px-2 py-1 text-xs text-foreground/70"
-                            whileHover={{ scale: 1.1 }}
-                      >
-                        {tag}
-                          </motion.span>
-                    ))}
                 </div>
-              )}
-            </div>
-          </Link>
+                <h3 className="mb-2 text-xl font-semibold transition-all group-hover:text-primary group-hover:drop-shadow-[0_0_8px_hsl(var(--primary))]">
+                  {post.title}
+                </h3>
+                <p className="mb-4 line-clamp-3 text-foreground/70">
+                  {post.description || post.content?.substring(0, 100) + '...'}
+                </p>
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-muted-foreground">
+                    {new Date(post.date).toLocaleDateString('ko-KR')}
+                  </div>
+                  {post.tags && (
+                    <div className="flex flex-wrap gap-1">
+                      {(Array.isArray(post.tags) ? post.tags : [post.tags])
+                        .slice(0, 2)
+                        .map((tag) => (
+                          <motion.span
+                            key={tag}
+                            className="rounded bg-accent px-2 py-1 text-xs text-foreground/70"
+                            whileHover={{ scale: 1.1 }}
+                          >
+                            {tag}
+                          </motion.span>
+                        ))}
+                    </div>
+                  )}
+                </div>
+              </Link>
             </motion.div>
-        ))}
+          ))}
         </AnimatePresence>
       </motion.div>
 
       {/* No results */}
       <AnimatePresence>
-      {filteredPosts.length === 0 && (
+        {filteredPosts.length === 0 && (
           <motion.div
             className="py-16 text-center"
             initial={{ opacity: 0, scale: 0.9 }}
@@ -224,9 +221,9 @@ export default function PostsList() {
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.3 }}
           >
-          <p className="text-lg text-foreground/70">검색 결과가 없습니다.</p>
+            <p className="text-lg text-foreground/70">검색 결과가 없습니다.</p>
           </motion.div>
-      )}
+        )}
       </AnimatePresence>
     </div>
   );

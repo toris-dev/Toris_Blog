@@ -141,5 +141,5 @@ export function Utterances({ repo }: UtterancesProps) {
     };
   }, []);
 
-  return <div ref={commentsRef} className="mt-12" />;
+  return <div ref={commentsRef} className="mt-12" suppressHydrationWarning />;
 }

@@ -28,7 +28,7 @@ const PostCard: FC<PostCardProps> = ({
   return (
     <motion.div
       className={cn(
-        'neon-border hover:neon-glow-animate group block overflow-hidden rounded-lg border border-primary/30 bg-card/50 text-card-foreground shadow-sm backdrop-blur-sm',
+        'shadow-soft hover:shadow-medium group block overflow-hidden rounded-lg border border-border bg-card text-card-foreground transition-shadow',
         className
       )}
       initial={{ opacity: 0, y: 20 }}
@@ -59,7 +59,7 @@ const PostCard: FC<PostCardProps> = ({
               priority
             />
           </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="absolute inset-0 bg-black/40" />
         </div>
         <div className="p-4">
           <motion.p
@@ -68,7 +68,7 @@ const PostCard: FC<PostCardProps> = ({
           >
             {category}
           </motion.p>
-          <h3 className="mb-2 truncate text-lg font-bold text-card-foreground transition-all group-hover:text-primary group-hover:drop-shadow-[0_0_8px_hsl(var(--primary))]">
+          <h3 className="mb-2 truncate text-lg font-bold text-card-foreground transition-colors group-hover:text-primary">
             {title}
           </h3>
           <div className="mb-3 flex items-center text-xs text-muted-foreground">

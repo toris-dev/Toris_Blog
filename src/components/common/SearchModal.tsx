@@ -110,11 +110,11 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-4 top-20 z-50 mx-auto max-h-[calc(100vh-8rem)] max-w-4xl overflow-hidden rounded-xl border border-primary/30 bg-card/95 backdrop-blur-lg"
+            className="shadow-large fixed inset-x-4 top-20 z-50 mx-auto max-h-[calc(100vh-8rem)] max-w-4xl overflow-hidden rounded-xl border border-border bg-card"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="neon-border flex items-center border-b border-primary/30 bg-card/50 p-4">
+            <div className="flex items-center border-b border-border bg-muted/30 p-4">
               <div className="relative flex-1">
                 <input
                   ref={inputRef}
@@ -122,7 +122,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   placeholder="포스트 검색..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full rounded-lg border border-primary/30 bg-background/50 px-4 py-2 pl-10 pr-10 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  className="w-full rounded-lg border border-border bg-background px-10 px-4 py-2 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
                 <FaBlog className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                 {searchTerm && (
@@ -174,7 +174,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         <Link
                           href={`/posts/${encodeURIComponent(post.slug)}`}
                           onClick={onClose}
-                          className="neon-border hover:neon-glow-animate group block overflow-hidden rounded-lg border border-primary/30 bg-card/50 p-4 transition-all hover:bg-card/80"
+                          className="shadow-soft hover:shadow-medium group block overflow-hidden rounded-lg border border-border bg-card p-4 transition-all hover:bg-muted"
                         >
                           <div className="mb-3 flex items-center gap-2">
                             <span className="rounded-full bg-primary/20 px-2 py-1 text-xs font-medium text-primary">
@@ -189,7 +189,9 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                           </h3>
                           <p className="line-clamp-2 text-sm text-muted-foreground">
                             {post.description ||
-                              post.content?.replace(/[#*`_]/g, '').substring(0, 100)}
+                              post.content
+                                ?.replace(/[#*`_]/g, '')
+                                .substring(0, 100)}
                             ...
                           </p>
                           {post.tags && (
@@ -222,4 +224,3 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     </AnimatePresence>
   );
 }
-

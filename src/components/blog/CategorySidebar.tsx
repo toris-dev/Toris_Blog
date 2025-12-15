@@ -109,7 +109,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
 
   if (loading) {
     return (
-      <div className="neon-border w-full rounded-xl border border-primary/30 bg-card/50 shadow-lg backdrop-blur-lg">
+      <div className="shadow-medium w-full rounded-xl border border-border bg-card">
         <div className="p-6">
           <div className="flex animate-pulse flex-col items-center space-y-4">
             <div className="size-20 rounded-full bg-background/50"></div>
@@ -130,12 +130,12 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
   }
 
   return (
-    <div className="neon-border w-full rounded-xl border border-primary/30 bg-card/50 shadow-lg backdrop-blur-lg">
+    <div className="shadow-medium w-full rounded-xl border border-border bg-card">
       {/* Profile Section */}
-      <div className="border-b border-primary/30 p-6">
+      <div className="border-b border-border p-6">
         <div className="flex flex-col items-center text-center">
           {/* Avatar */}
-          <div className="neon-border neon-glow-animate relative mb-4 size-20 overflow-hidden rounded-full border-2 border-primary/50 bg-gradient-to-br from-primary/30 to-secondary/30">
+          <div className="shadow-soft relative mb-4 size-20 overflow-hidden rounded-full border-2 border-border bg-primary/10">
             <Image
               src="/images/logo.png"
               alt="토리스 로고"
@@ -147,9 +147,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
           </div>
 
           {/* Name and Title */}
-          <h3 className="neon-glow mb-1 text-xl font-bold text-foreground">
-            토리스
-          </h3>
+          <h3 className="mb-1 text-xl font-bold text-foreground">토리스</h3>
           <p className="mb-2 text-sm text-muted-foreground">
             Full Stack Developer
           </p>
@@ -191,7 +189,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
 
       {/* Navigation Section */}
       <div className="p-6">
-        <h3 className="neon-glow mb-4 flex items-center text-lg font-bold text-foreground">
+        <h3 className="mb-4 flex items-center text-lg font-bold text-foreground">
           <span className="mr-2">📚</span>
           Categories
         </h3>
