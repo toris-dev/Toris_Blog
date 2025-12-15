@@ -50,8 +50,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       postRoutes = posts
         .filter((post) => post.slug)
         .map((post) => ({
-          url: `${baseUrl}/posts/${post.slug}`,
-          lastModified: new Date(post.date || new Date()),
+          url: `${baseUrl}/posts/${encodeURIComponent(post.slug)}`,
+          lastModified: post.date ? new Date(post.date) : new Date(),
           changeFrequency: 'weekly' as const,
           priority: 0.8
         }));
@@ -66,10 +66,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       );
 
       categoryRoutes = categories.map((category) => ({
-        url: `${baseUrl}/posts?category=${encodeURIComponent(category)}`,
+        url: `${baseUrl}/categories/${encodeURIComponent(category)}`,
         lastModified: new Date(),
         changeFrequency: 'weekly' as const,
-        priority: 0.6
+        priority: 0.7
       }));
 
       // 태그 추출 및 라우트 생성
@@ -84,11 +84,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
       const uniqueTags = Array.from(new Set(allTags));
 
-      tagRoutes = uniqueTags.slice(0, 20).map((tag) => ({
-        url: `${baseUrl}/posts?tag=${encodeURIComponent(tag)}`,
+      tagRoutes = uniqueTags.map((tag) => ({
+        url: `${baseUrl}/tags/${encodeURIComponent(tag)}`,
         lastModified: new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: 0.4
+        changeFrequency: 'weekly' as const,
+        priority: 0.6
       }));
     }
   } catch (error) {
