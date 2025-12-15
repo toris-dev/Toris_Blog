@@ -9,8 +9,9 @@ import {
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-// ISR을 위한 revalidate 설정 (6시간)
-export const revalidate = 21600;
+// ISR을 위한 revalidate 설정
+// 개발 환경에서는 더 짧게 설정하여 캐싱 문제 방지
+export const revalidate = process.env.NODE_ENV === 'development' ? 60 : 21600; // 개발: 1분, 프로덕션: 6시간
 
 // SSG/ISR을 사용하므로 force-dynamic 제거
 // generateStaticParams와 함께 사용하여 빌드 시 정적 페이지 생성
@@ -169,12 +170,33 @@ export async function generateMetadata({
   try {
     // URL 디코딩 처리
     const decodedId = decodeURIComponent(id);
+
+    // 여러 방법으로 포스트 찾기 시도
     let post = getPostBySlug(decodedId);
+
+    // 인코딩된 버전으로도 시도
     if (!post) {
       post = getPostBySlug(id);
     }
 
-    if (!post) return { title: '포스트를 찾을 수 없습니다' };
+    // 원본 ID로도 시도 (이미 인코딩되지 않은 경우)
+    if (!post) {
+      const allPosts = getPostData();
+      post =
+        allPosts.find((p) => {
+          // 슬러그 직접 비교
+          if (p.slug === decodedId || p.slug === id) return true;
+          // 인코딩된 슬러그와 비교
+          const encodedSlug = encodeURIComponent(p.slug);
+          return encodedSlug === id || encodedSlug === decodedId;
+        }) || null;
+    }
+
+    // 포스트를 찾지 못하면 notFound()를 호출하여 404 반환
+    // 이렇게 하면 메타데이터가 캐시되지 않고, 매번 새로 확인함
+    if (!post) {
+      notFound();
+    }
 
     const baseUrl =
       process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
@@ -281,6 +303,7 @@ export async function generateMetadata({
     };
   } catch (error) {
     console.error('Error generating metadata:', error);
-    return { title: '포스트를 찾을 수 없습니다' };
+    // 에러 발생 시에도 notFound()를 호출하여 캐싱 방지
+    notFound();
   }
 }
