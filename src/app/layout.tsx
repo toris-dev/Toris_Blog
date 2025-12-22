@@ -12,6 +12,7 @@ import { getPostData } from '@/utils/markdown';
 import { cn } from '@/utils/style';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Metadata } from 'next';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import Script from 'next/script';
@@ -194,6 +195,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <SEOOptimizer />
         <GoogleTagManager gtmId="G-0KV4YD773C" />
         <Analytics />
+        <SpeedInsights />
         <ServiceWorkerRegistration />
         <Providers>
           {/* 2D 아트 배경 - 패턴은 globals.css에서 처리 */}
