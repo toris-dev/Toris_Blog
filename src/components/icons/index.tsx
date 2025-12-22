@@ -70,6 +70,9 @@ import { FaTimes } from '@react-icons/all-files/fa/FaTimes';
 import { FaTimesCircle } from '@react-icons/all-files/fa/FaTimesCircle';
 import { FaTools } from '@react-icons/all-files/fa/FaTools';
 import { FaTrash } from '@react-icons/all-files/fa/FaTrash';
+import { FaFacebook } from '@react-icons/all-files/fa/FaFacebook';
+import { FaLink } from '@react-icons/all-files/fa/FaLink';
+import { FaShare } from '@react-icons/all-files/fa/FaShare';
 import { FaTwitter } from '@react-icons/all-files/fa/FaTwitter';
 import { FaUser } from '@react-icons/all-files/fa/FaUser';
 import { FaUserCircle } from '@react-icons/all-files/fa/FaUserCircle';
@@ -163,6 +166,9 @@ export {
   FaUser,
   FaUserCircle,
   FaWifi,
+  FaFacebook,
+  FaLink,
+  FaShare,
 
   // hi 아이콘들
   HiBadgeCheck,

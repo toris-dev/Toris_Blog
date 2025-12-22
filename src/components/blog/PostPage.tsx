@@ -6,6 +6,8 @@ import dayjs from 'dayjs';
 import Link from 'next/link';
 import { FC, useState, useEffect } from 'react';
 import { Utterances } from './Utterances';
+import { ShareButtons } from './ShareButtons';
+import { AdSense } from '@/components/ads/AdSense';
 import {
   PostHeadingsProvider,
   usePostHeadings
@@ -112,11 +114,43 @@ const PostPageContent: FC<{
                 </div>
               </header>
 
+              {mounted && (
+                <ShareButtons
+                  title={title}
+                  description={
+                    typeof content === 'string'
+                      ? content.substring(0, 150).replace(/\n/g, ' ').trim()
+                      : undefined
+                  }
+                  image={image}
+                  url={
+                    typeof window !== 'undefined'
+                      ? window.location.href
+                      : `${process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app'}/posts/${postId}`
+                  }
+                />
+              )}
+
               <div className="prose max-w-full dark:prose-invert">
                 <MarkdownViewer onHeadingsChange={setHeadings}>
                   {content}
                 </MarkdownViewer>
               </div>
+
+              {/* 인라인 광고 */}
+              {mounted &&
+                process.env.NEXT_PUBLIC_ADSENSE_IN_ARTICLE_UNIT_ID && (
+                  <div className="my-8">
+                    <AdSense
+                      adSlot={
+                        process.env.NEXT_PUBLIC_ADSENSE_IN_ARTICLE_UNIT_ID
+                      }
+                      adFormat="auto"
+                      fullWidthResponsive={true}
+                      className="w-full"
+                    />
+                  </div>
+                )}
 
               {mounted && (
                 <div className="mt-8 sm:mt-10 md:mt-12">
