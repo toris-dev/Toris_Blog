@@ -5,12 +5,16 @@ import ServiceWorkerRegistration from '@/components/common/ServiceWorkerRegistra
 import Sidebar from '@/components/common/Sidebar';
 import SEOOptimizer from '@/components/seo/SEOOptimizer';
 import StructuredData from '@/components/seo/StructuredData';
+import CookieConsent from '@/components/common/CookieConsent';
+import { AdSense } from '@/components/ads/AdSense';
 import '@/styles/globals.css';
 import { getPostData } from '@/utils/markdown';
 import { cn } from '@/utils/style';
 import { GoogleTagManager } from '@next/third-parties/google';
+import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
 import { Inter, Space_Grotesk } from 'next/font/google';
+import Script from 'next/script';
 import { ReactNode } from 'react';
 
 // 웹 폰트 설정
@@ -23,9 +27,6 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-space-grotesk'
 });
-
-// 6시간마다 재생성
-export const revalidate = 21600;
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -163,6 +164,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <StructuredData type="person" />
         <StructuredData type="organization" />
 
+        {/* Google AdSense - 쿠키 동의 후에만 로드 */}
+        {process.env.NEXT_PUBLIC_ADSENSE_ID && (
+          <Script
+            id="adsense-init"
+            strategy="afterInteractive"
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
+            crossOrigin="anonymous"
+          />
+        )}
+
         {/* <Script id="ms-clarity" strategy="afterInteractive">
           {`
             (function(c,l,a,r,i,t,y){
@@ -182,6 +193,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       >
         <SEOOptimizer />
         <GoogleTagManager gtmId="G-0KV4YD773C" />
+        <Analytics />
         <ServiceWorkerRegistration />
         <Providers>
           {/* 2D 아트 배경 - 패턴은 globals.css에서 처리 */}
@@ -202,8 +214,28 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 </main>
               </div>
             </div>
+
+            {/* 모바일 리본 광고 */}
+            {process.env.NEXT_PUBLIC_ADSENSE_MOBILE_RIBBON_UNIT_ID && (
+              <div className="lg:hidden">
+                <div className="sticky bottom-0 z-50 w-full border-t border-border bg-background">
+                  <AdSense
+                    adSlot={
+                      process.env.NEXT_PUBLIC_ADSENSE_MOBILE_RIBBON_UNIT_ID
+                    }
+                    adFormat="horizontal"
+                    fullWidthResponsive={true}
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            )}
+
             <Footer />
           </div>
+
+          {/* 쿠키 동의 배너 */}
+          <CookieConsent />
         </Providers>
       </body>
     </html>
