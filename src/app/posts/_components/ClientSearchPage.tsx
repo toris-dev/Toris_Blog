@@ -339,7 +339,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                         <FaBlog className="text-6xl text-muted-foreground/20" />
                       </div>
                     )}
-                    <div className="absolute inset-x-0 bottom-0 bg-black/50 p-4">
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/90 via-background/70 to-transparent p-4">
                       <span
                         className={`rounded-full ${getCategoryColor(post.category)} shadow-soft border px-3 py-1 text-xs font-medium text-foreground backdrop-blur-sm`}
                       >
@@ -438,23 +438,28 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
           {/* 검색 인터페이스 */}
           <div className="shadow-medium mb-8 rounded-2xl border border-border bg-card p-6">
             <div className="relative">
-              <div className="relative mb-6 overflow-hidden rounded-lg border border-white/10">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="검색어를 입력하세요..."
-                  className="w-full border border-primary/30 bg-transparent px-12 py-4 text-foreground outline-none backdrop-blur-md transition-all placeholder:text-muted-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                />
-                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                {searchTerm && (
-                  <button
-                    onClick={() => setSearchTerm('')}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary"
-                  >
-                    <IoClose size={20} />
-                  </button>
-                )}
+              <div className="group relative mb-6">
+                <div className="relative flex items-center">
+                  <div className="absolute left-4 z-10 flex items-center justify-center">
+                    <FaSearch className="text-lg text-muted-foreground transition-colors group-focus-within:text-primary" />
+                  </div>
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="검색어를 입력하세요..."
+                    className="w-full rounded-xl border-2 border-border bg-background/80 px-12 py-4 text-foreground shadow-sm outline-none backdrop-blur-sm transition-all duration-200 placeholder:text-muted-foreground/60 hover:border-primary/50 hover:bg-background hover:shadow-md focus:border-primary focus:bg-background focus:shadow-lg focus:ring-2 focus:ring-primary/20"
+                  />
+                  {searchTerm && (
+                    <button
+                      onClick={() => setSearchTerm('')}
+                      className="absolute right-4 z-10 flex items-center justify-center rounded-full p-1.5 text-muted-foreground transition-all hover:bg-muted hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      aria-label="검색어 지우기"
+                    >
+                      <IoClose size={18} />
+                    </button>
+                  )}
+                </div>
               </div>
 
               {/* 필터 토글 버튼 */}
