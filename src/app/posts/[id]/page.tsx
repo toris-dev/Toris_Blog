@@ -10,8 +10,8 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 // ISR을 위한 revalidate 설정
-// 개발 환경에서는 더 짧게 설정하여 캐싱 문제 방지
-export const revalidate = process.env.NODE_ENV === 'development' ? 60 : 21600; // 개발: 1분, 프로덕션: 6시간
+// Next.js 16에서는 숫자 리터럴만 허용
+export const revalidate = 21600; // 6시간마다 재생성
 
 // SSG/ISR을 사용하므로 force-dynamic 제거
 // generateStaticParams와 함께 사용하여 빌드 시 정적 페이지 생성

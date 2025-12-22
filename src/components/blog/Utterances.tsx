@@ -84,15 +84,27 @@ export function Utterances({ repo }: UtterancesProps) {
       scriptEl.src = 'https://utteranc.es/client.js';
       scriptEl.async = true;
       scriptEl.setAttribute('repo', repo);
-      scriptEl.setAttribute('issue-term', 'pathname');
+      // URL을 사용하여 한글 인코딩 문제 해결 (더 안정적)
+      const currentUrl = window.location.href;
+      scriptEl.setAttribute('issue-term', 'url');
+      scriptEl.setAttribute('issue-url', currentUrl);
       scriptEl.setAttribute('label', 'comment');
       scriptEl.setAttribute('theme', currentTheme);
       scriptEl.setAttribute('crossorigin', 'anonymous');
 
       // 스크립트 로드 에러 처리
       scriptEl.onerror = () => {
+        console.error('Failed to load Utterances script');
         if (process.env.NODE_ENV === 'development') {
-          console.error('Failed to load Utterances script');
+          console.error('Utterances repo:', repo);
+          console.error('Current URL:', currentUrl);
+        }
+      };
+
+      // 스크립트 로드 성공 확인
+      scriptEl.onload = () => {
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Utterances script loaded successfully');
         }
       };
 
