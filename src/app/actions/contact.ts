@@ -52,7 +52,7 @@ export async function submitContactForm(
 ${formData.message}
 
 ---
-*이 댓글은 블로그 연락 폼을 통해 자동으로 생성되었습니다.*`;
+*이 댓글은 블로그 /contact 페이지를 통해 사용자가 직접 생성한 문의 내용입니다.*`;
 
     // GitHub API 호출 (캐싱 없음 - POST 요청이므로)
     const response = await fetch(

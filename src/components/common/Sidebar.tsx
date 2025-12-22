@@ -1,6 +1,7 @@
 'use client';
 
 import CategorySidebar from '@/components/blog/CategorySidebar';
+import { AdSense } from '@/components/ads/AdSense';
 import { useSidebar } from './SidebarToggle';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AiOutlineMenu, FaTimes } from '@/components/icons';
@@ -68,6 +69,18 @@ export default function Sidebar({ posts }: SidebarProps) {
               >
                 <CategorySidebar posts={posts} />
               </Suspense>
+
+              {/* 사이드바 광고 */}
+              {process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_UNIT_ID && (
+                <div className="mt-6">
+                  <AdSense
+                    adSlot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_UNIT_ID}
+                    adFormat="vertical"
+                    fullWidthResponsive={true}
+                    className="w-full"
+                  />
+                </div>
+              )}
             </div>
           </motion.aside>
         )}
