@@ -123,7 +123,7 @@ export default function AboutPage() {
   // 경력 정보
   const experiences = [
     {
-      period: '2024.08 - 2025.08',
+      period: '2024.08 - 2024.08',
       company: '셈웨어',
       role: '프론트엔드 개발자',
       description:
@@ -195,7 +195,7 @@ export default function AboutPage() {
     },
     {
       name: '셈웨어 회사 페이지 리뉴얼',
-      period: '2024.08 - 2025.08',
+      period: '2024.08 - 2024.08',
       team: '프론트엔드 개발 사원',
       description:
         '셈웨어 회사 공식 웹사이트의 메인페이지, 헤더, 푸터 등 UI 컴포넌트를 최신 디자인 트렌드와 반응형 기준에 맞춰 리뉴얼',
@@ -221,7 +221,7 @@ export default function AboutPage() {
     },
     {
       name: 'SteamUp 학습도구 공학용 라이브러리 API 마이그레이션',
-      period: '2024.08 - 2025.08',
+      period: '2024.08 - 2024.08',
       team: '프론트엔드 개발 사원',
       description:
         '기존 SteamUp 내장 라이브러리를 API 기반 서비스 라이브러리로 마이그레이션하고, 프론트엔드와 연동하여 UI 컴포넌트 개발',
@@ -342,38 +342,6 @@ export default function AboutPage() {
       github: 'https://github.com/toris-dev/love-trip',
       link: 'https://love2trip.vercel.app/',
       isDeveloping: true
-    },
-    {
-      name: 'lifestyle_blog',
-      period: '2025.12',
-      description:
-        'Next.js 16으로 구축된 현대적인 한국어 라이프스타일 블로그 플랫폼. 마크다운 기반 콘텐츠 관리, 쿠팡 파트너스 통합, SEO 최적화, 조회수 및 좋아요 통계 기능 제공',
-      techStack: [
-        'Next.js',
-        'TypeScript',
-        'Tailwind CSS',
-        'Markdown',
-        'Google Analytics'
-      ],
-      features: [
-        '마크다운 기반 콘텐츠 관리 및 프론트매터 지원',
-        '쿠팡 파트너스 상품 카드 자동 삽입',
-        '조회수 및 좋아요 통계 (Markdown 파일에 자동 저장)',
-        '실시간 미리보기 에디터',
-        'SEO 최적화 (Open Graph, JSON-LD, 사이트맵)',
-        '반응형 디자인 및 한글 타이포그래피',
-        '추천 글 페이지 및 검색 기능'
-      ],
-      learnings: [
-        '마크다운 기반 CMS 시스템 구축 경험',
-        '파트너스 프로그램 통합 경험',
-        '파일 기반 통계 저장 시스템 구현',
-        'SEO 최적화 및 구조화 데이터 적용',
-        '한글 콘텐츠 플랫폼 개발 경험'
-      ],
-      github: 'https://github.com/toris-dev/lifestyle_blog',
-      link: 'https://torisblog.vercel.app',
-      isDeveloping: false
     },
     {
       name: 'PEPEBear',
