@@ -47,8 +47,8 @@ export default function CookieConsent() {
   }
 
   return (
-    <div className="animate-slide-up fixed bottom-0 left-0 right-0 z-50">
-      <div className="container mx-auto px-4 py-4">
+    <div className="fixed inset-x-0 bottom-0 z-50 animate-slide-up">
+      <div className="container mx-auto p-4">
         <div className="mx-auto max-w-4xl rounded-lg border border-border bg-card p-6 shadow-lg backdrop-blur-sm">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-4">

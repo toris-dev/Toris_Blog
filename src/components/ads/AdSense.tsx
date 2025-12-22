@@ -95,11 +95,7 @@ export function AdSense({
   }
 
   return (
-    <div
-      ref={adRef}
-      className={`adsense-container ${className}`}
-      style={{ minHeight: '100px' }}
-    >
+    <div ref={adRef} className={`min-h-[100px] ${className}`}>
       {/* 광고는 동적으로 삽입됩니다 */}
     </div>
   );
