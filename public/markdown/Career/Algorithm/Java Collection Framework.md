@@ -3,9 +3,7 @@ title: 'Java Collection Framework 모음'
 date: 2025-07-14T10:00:00.000Z
 slug: java-collection-framework
 category: 'Algorithm'
-tags:
-  - Algorithm
-  - Java
+tags: [Algorithm, Java]
 ---
 
 > [!faq] java Collection Framework 란?

@@ -3,7 +3,7 @@ title: [Career] BFS, DFS, 백트래킹 정리
 date: 2025-07-09T16:55:19.894Z
 slug: bfs-dfs-백트래킹-정리
 category: Career
-tags: Career, CodingTest
+tags: [Career, CodingTest]
 ---
 
 ## DFS (Depth-first search, DFS)

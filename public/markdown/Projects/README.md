@@ -3,7 +3,7 @@ title: [Dev] 풀스택 개발자 기술 허브
 date: 2025-07-09T16:55:19.927Z
 slug: readme
 category: Dev
-tags: FullStack, Hub, Development
+tags: [FullStack, Hub, Development]
 ---
 
 # 🚀 풀스택 개발자 기술 허브

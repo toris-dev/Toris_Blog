@@ -3,7 +3,7 @@ title: [Learning] CSS Grid 완전 정리
 date: 2025-07-09T16:55:19.906Z
 slug: grid
 category: Learning
-tags: Learning, CSS, Grid, Layout
+tags: [Learning, CSS, Grid, Layout]
 ---
 
 # CSS Grid 완전 정리
