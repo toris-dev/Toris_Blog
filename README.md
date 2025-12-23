@@ -1,6 +1,6 @@
 # Toris 블로그
 
-Next.js 15와 React 19를 기반으로 한 모던한 기술 블로그입니다. 마크다운 파일 기반의 정적 블로그로, 카테고리별 포스트 관리, 검색 기능, 다크모드 등을 지원합니다.
+Next.js 16과 React 19를 기반으로 한 모던한 기술 블로그입니다. 마크다운 파일 기반의 정적 블로그로, 카테고리별 포스트 관리, 검색 기능, 다크모드, 댓글 시스템 등을 지원합니다.
 
 ## 📋 목차
 
@@ -42,13 +42,18 @@ flowchart LR
 ### 핵심 기능
 
 - ✅ **마크다운 기반 블로그**: `public/markdown` 디렉토리의 마크다운 파일을 자동으로 읽어 포스트로 변환
-- ✅ **카테고리별 분류**: Archive, Career, Design, Learning, Personal, Projects 등 카테고리별 포스트 관리
+- ✅ **카테고리별 분류**: Archive, Career, Learning, Personal, Projects 등 카테고리별 포스트 관리
 - ✅ **검색 기능**: 제목, 설명, 태그 기반 포스트 검색
 - ✅ **다크모드**: 사용자 선호도에 따른 라이트/다크 모드 전환
 - ✅ **반응형 디자인**: 모바일, 태블릿, 데스크톱 모든 기기 지원
-- ✅ **SEO 최적화**: 메타 태그, 구조화된 데이터, sitemap, robots.txt 지원
+- ✅ **SEO 최적화**: 메타 태그, 구조화된 데이터, sitemap, robots.txt, OG 이미지 자동 생성
 - ✅ **RSS Feed**: `/feed.xml` 엔드포인트로 RSS 피드 제공
+- ✅ **댓글 시스템**: Utterances를 활용한 GitHub 기반 댓글 시스템
+- ✅ **공유 기능**: 카카오톡, 트위터, 링크 복사 등 소셜 공유 기능
+- ✅ **쿠키 관리**: 사용자 동의 기반 쿠키 관리 및 Google AdSense 통합
+- ✅ **성능 모니터링**: Vercel Analytics 및 Speed Insights 통합
 - ✅ **접근성 개선**: ARIA 속성, 색상 대비, 링크 접근성 최적화
+- ✅ **PWA 지원**: Service Worker를 통한 오프라인 지원
 
 ---
 
@@ -56,8 +61,8 @@ flowchart LR
 
 ### Core
 
-- **Next.js 15.3.5** - React 프레임워크 (App Router)
-- **React 19.1.0** - UI 라이브러리
+- **Next.js 16.0.7** - React 프레임워크 (App Router)
+- **React 19.2.1** - UI 라이브러리
 - **TypeScript 5.3** - 타입 안정성
 
 ### Styling & UI
@@ -87,21 +92,29 @@ flowchart LR
 
 ### Analytics & SEO
 
+- **Vercel Analytics** - 웹 분석 도구
+- **Vercel Speed Insights** - 성능 모니터링
 - **Google Tag Manager** - 분석 도구
+- **Google AdSense** - 광고 수익화 (쿠키 동의 기반)
 - **Structured Data** - SEO 구조화된 데이터
 
 ### 기타
 
 - **dayjs** - 날짜 처리
 - **octokit** - GitHub API 클라이언트 (선택적)
+- **react-hot-toast** - 토스트 알림
+- **react-intersection-observer** - 스크롤 애니메이션
+- **shiki** - 코드 하이라이팅
+- **mermaid** - 다이어그램 렌더링
 
 <div style="display:flex; flex-direction:row; gap:0.5rem; flex-wrap:wrap; margin-top:1rem">
-    <img src="https://img.shields.io/badge/Next.js-15.3.5-000?logo=nextdotjs&logoColor=fff&style=for-the-badge" />
-    <img src="https://img.shields.io/badge/React-19.1.0-61DAFB?style=for-the-badge&logo=react&logoColor=white" />
+    <img src="https://img.shields.io/badge/Next.js-16.0.7-000?logo=nextdotjs&logoColor=fff&style=for-the-badge" />
+    <img src="https://img.shields.io/badge/React-19.2.1-61DAFB?style=for-the-badge&logo=react&logoColor=white" />
     <img src="https://img.shields.io/badge/TypeScript-5.3-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
     <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
     <img src="https://img.shields.io/badge/reactMarkdown-232F3E?style=for-the-badge&logo=markdown&logoColor=white" />
     <img src="https://img.shields.io/badge/Cypress-200000?style=for-the-badge&logo=cypress&logoColor=#69D3A7" />
+    <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" />
 </div>
 
 ---
@@ -124,20 +137,27 @@ Toris_Blog/
 │   │   ├── contact/      # 문의 페이지
 │   │   ├── posts/        # 블로그 포스트 페이지
 │   │   │   ├── [id]/     # 포스트 상세 페이지
+│   │   │   ├── _components/ # 포스트 관련 컴포넌트
 │   │   │   └── page.tsx  # 포스트 목록 페이지
+│   │   ├── categories/   # 카테고리별 포스트 페이지
+│   │   ├── tags/         # 태그별 포스트 페이지
 │   │   ├── api/          # API 라우트
 │   │   ├── feed.xml/     # RSS Feed
 │   │   ├── layout.tsx    # 루트 레이아웃
 │   │   └── page.tsx      # 홈 페이지
 │   ├── components/       # React 컴포넌트
+│   │   ├── ads/          # 광고 컴포넌트 (AdSense)
 │   │   ├── blog/         # 블로그 관련 컴포넌트
-│   │   ├── common/       # 공통 컴포넌트 (Header, Footer 등)
+│   │   ├── common/       # 공통 컴포넌트 (Header, Footer, CookieConsent 등)
 │   │   ├── forms/        # 폼 컴포넌트
 │   │   ├── seo/          # SEO 관련 컴포넌트
 │   │   └── ui/           # UI 컴포넌트
+│   ├── contexts/         # React Context
 │   ├── styles/           # 전역 스타일
 │   ├── types/            # TypeScript 타입 정의
 │   └── utils/            # 유틸리티 함수
+├── .cursor/              # Cursor IDE 설정
+│   └── rules/            # 마크다운 작성 스타일 가이드
 ├── cypress/              # E2E 테스트
 │   └── e2e/              # 테스트 파일들
 └── README.md
@@ -157,6 +177,12 @@ GITHUB_TOKEN=your_github_token
 
 # 선택적: 사이트 URL
 NEXT_PUBLIC_SITE_URL=https://your-domain.com
+
+# 선택적: Google AdSense Publisher ID
+NEXT_PUBLIC_ADSENSE_PUBLISHER_ID=ca-pub-xxxxxxxxxxxxx
+
+# 선택적: Google Tag Manager ID
+NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
 ```
 
 ### 2. 의존성 설치
@@ -268,17 +294,36 @@ pnpm cypress:run:search
   - 작성 시 닉네임만 작성
   - 삭제, 수정 불가
 - [ ] 실시간 채팅 구현
+- [ ] 다국어 지원 (i18n)
 
 ### 완료된 개선 사항
 
 - [x] 적절한 캐싱 작업
 - [x] 접근성 개선 (ARIA 속성, 색상 대비, 링크 접근성)
-- [x] SEO 최적화 (메타 태그, 구조화된 데이터)
+- [x] SEO 최적화 (메타 태그, 구조화된 데이터, OG 이미지 자동 생성)
 - [x] E2E 테스트 강화
+- [x] 댓글 시스템 (Utterances) 통합
+- [x] 소셜 공유 기능 (카카오톡, 트위터, 링크 복사)
+- [x] 쿠키 관리 및 Google AdSense 통합
+- [x] Vercel Analytics 및 Speed Insights 통합
+- [x] PWA 지원 (Service Worker)
+- [x] 마크다운 작성 스타일 가이드 통일 (.cursor/rules)
 
 ---
 
 ## 📅 최근 변경 사항
+
+### 2025년 12월
+
+- **Next.js 16 업그레이드**: 최신 버전으로 업그레이드
+- **댓글 시스템**: Utterances를 활용한 GitHub 기반 댓글 시스템 통합
+- **소셜 공유**: 카카오톡, 트위터, 링크 복사 기능 추가
+- **쿠키 관리**: 사용자 동의 기반 쿠키 관리 시스템 구현
+- **Google AdSense**: 쿠키 동의 기반 광고 통합
+- **성능 모니터링**: Vercel Analytics 및 Speed Insights 통합
+- **PWA 지원**: Service Worker를 통한 오프라인 지원
+- **마크다운 스타일 통일**: `.cursor/rules/toris-markdown-style.md` 가이드 작성 및 모든 마크다운 파일 스타일 통일
+- **면접 질문 정리**: JavaScript와 알고리즘 기초 개념 정리 포스팅 추가
 
 ### 2025년 1월
 
@@ -311,7 +356,23 @@ pnpm cypress:run:search
 **토리스 (Toris)**
 
 - GitHub: [@toris-dev](https://github.com/toris-dev)
-- 블로그: [Toris Blog](https://toris-dev.vercel.app)
+- 블로그: [Toris Blog](https://toris-blog.vercel.app)
+
+## 📚 마크다운 작성 가이드
+
+프로젝트의 모든 마크다운 파일은 `.cursor/rules/toris-markdown-style.md` 가이드를 따릅니다.
+
+- **1년차 개발자 관점** 유지
+- **개인적 경험과 감정 표현** 포함
+- **초보자도 이해할 수 있도록** 설명
+- **실무에서 바로 활용 가능한** 내용
+- **솔직하고 친근한 톤** 사용
+
+카테고리별 작성 가이드:
+
+- **Projects**: 프로젝트 리뷰 형식 (처음 접했을 때 → 어려웠던 점 → 해결 방법 → 배운 점)
+- **Learning**: 개념 설명 중심, 코드 예제와 실무 팁
+- **Career**: 실무 중심, 알고리즘/코딩테스트 관련
 
 ---
 
