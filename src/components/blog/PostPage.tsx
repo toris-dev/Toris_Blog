@@ -1,10 +1,18 @@
 'use client';
 
 import { MarkdownViewer } from '@/components/blog/Markdown';
-import { FaCalendarAlt, FaFolder, FaTags } from '@/components/icons';
+import {
+  FaCalendarAlt,
+  FaFolder,
+  FaTags,
+  FaTimes,
+  AiOutlineMenu
+} from '@/components/icons';
+import { cn } from '@/utils/style';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { FC, useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Utterances } from './Utterances';
 import { ShareButtons } from './ShareButtons';
 import { AdSense } from '@/components/ads/AdSense';
@@ -34,6 +42,7 @@ const PostPageContent: FC<{
 }) => {
   const { setHeadings, headings } = usePostHeadings();
   const [mounted, setMounted] = useState(false);
+  const [isTocOpen, setIsTocOpen] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -46,10 +55,16 @@ const PostPageContent: FC<{
 
   return (
     <div className="w-full">
-      <div className="mx-auto flex w-full max-w-full flex-col gap-4 lg:max-w-7xl lg:flex-row lg:items-stretch lg:gap-6 xl:gap-8">
+      <div
+        className="mx-auto flex w-full max-w-7xl flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-6 xl:gap-8"
+        suppressHydrationWarning
+      >
         {/* 메인 콘텐츠 */}
-        <article className="min-w-0 flex-1 px-4 pb-16 sm:px-6 sm:pb-24 lg:px-8 xl:pb-32">
-          <div className="mx-auto w-full max-w-full sm:max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl">
+        <article className="min-w-0 flex-1 pb-16 sm:pb-24 xl:pb-32">
+          <div
+            className="mx-auto w-full max-w-full sm:max-w-2xl md:max-w-3xl lg:max-w-5xl xl:max-w-6xl"
+            suppressHydrationWarning
+          >
             <div>
               <header className="mb-8 text-center sm:mb-10 md:mb-12">
                 <h1 className="mb-4 text-2xl font-bold text-foreground sm:text-3xl md:text-4xl">
@@ -131,7 +146,13 @@ const PostPageContent: FC<{
                 />
               )}
 
-              <div className="prose max-w-full dark:prose-invert">
+              <div
+                className={cn(
+                  'prose max-w-full dark:prose-invert',
+                  mounted &&
+                    'prose-lg [&_.mermaidContainer]:!max-w-full [&_.mermaidContainer]:overflow-x-auto [&_.mermaidContainer_svg]:!max-w-full'
+                )}
+              >
                 <MarkdownViewer onHeadingsChange={setHeadings}>
                   {content}
                 </MarkdownViewer>
@@ -161,11 +182,53 @@ const PostPageContent: FC<{
           </div>
         </article>
 
-        {/* 목차 사이드바 (데스크톱에서만 표시) */}
+        {/* 목차 사이드바 (xl 이상에서만 표시 - 왼쪽 사이드바가 있을 때도 표시) */}
         {mounted && headings.length > 0 && (
-          <aside className="hidden shrink-0 lg:block lg:w-56 xl:w-64 2xl:w-72">
+          <aside className="hidden shrink-0 xl:block xl:w-56 2xl:w-64">
             <div className="sticky top-24 h-full max-h-[calc(100vh-8rem)] space-y-6 overflow-y-auto">
-              <TableOfContents headings={headings} />
+              <AnimatePresence mode="wait">
+                {isTocOpen ? (
+                  <motion.div
+                    key="toc"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="mb-2 flex items-center justify-between">
+                      <h3 className="text-sm font-semibold text-foreground">
+                        목차
+                      </h3>
+                      <button
+                        onClick={() => setIsTocOpen(false)}
+                        className="rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                        aria-label="목차 닫기"
+                      >
+                        <FaTimes className="size-4" />
+                      </button>
+                    </div>
+                    <TableOfContents headings={headings} />
+                  </motion.div>
+                ) : (
+                  <motion.button
+                    key="toc-toggle"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ duration: 0.2 }}
+                    onClick={() => setIsTocOpen(true)}
+                    className="shadow-soft hover:shadow-medium w-full rounded-lg border border-border bg-card p-3 text-left text-sm font-medium text-foreground transition-all hover:bg-muted"
+                    aria-label="목차 열기"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-2">
+                        <AiOutlineMenu className="size-4" />
+                        목차
+                      </span>
+                    </div>
+                  </motion.button>
+                )}
+              </AnimatePresence>
             </div>
           </aside>
         )}

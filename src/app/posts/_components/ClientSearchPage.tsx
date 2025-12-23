@@ -14,7 +14,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
 
 // Debounce helper function
 function debounce<T extends (...args: any[]) => any>(
@@ -82,9 +82,10 @@ const SkeletonCard = () => {
 const SearchSkeleton = () => {
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={false}
+      animate={false}
       className="space-y-6"
+      suppressHydrationWarning
     >
       <div className="mb-4 flex items-center justify-between">
         <div className="h-7 w-1/4 animate-pulse rounded-md bg-primary/10"></div>
@@ -101,9 +102,27 @@ const SearchSkeleton = () => {
 
 const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [posts] = useState<Post[]>(initialPosts);
+  const [isFiltering, setIsFiltering] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // 클라이언트에서만 마운트되었는지 확인 (SSR hydration 오류 방지)
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // initialPosts는 서버 컴포넌트에서 전달되므로 참조가 안정적
+  // 불필요한 useMemo 제거
+  const posts = initialPosts;
+
+  // posts를 ref로 저장하여 useEffect 의존성 경고 방지
+  // posts는 초기 로드 후 변경되지 않으므로 ref 사용이 안전
+  const postsRef = useRef(posts);
+  useEffect(() => {
+    postsRef.current = posts;
+  }, [posts]);
+
+  // filteredPosts 초기화
   const [filteredPosts, setFilteredPosts] = useState<Post[]>(initialPosts);
-  const [loading, setLoading] = useState(false);
   const [activeFilters, setActiveFilters] = useState<{
     categories: string[];
     tags: string[];
@@ -111,27 +130,22 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
     categories: [],
     tags: []
   });
-  const [availableFilters, setAvailableFilters] = useState<{
-    categories: string[];
-    tags: string[];
-  }>({
-    categories: [],
-    tags: []
-  });
 
-  const [showFilters, setShowFilters] = useState(false);
-  const searchParams = useSearchParams();
-  const currentCategoryFromUrl = searchParams.get('category');
+  // activeFilters의 중복 제거 (안전장치)
+  const uniqueActiveFilters = useMemo(
+    () => ({
+      categories: Array.from(new Set(activeFilters.categories)),
+      tags: Array.from(new Set(activeFilters.tags))
+    }),
+    [activeFilters]
+  );
 
-  // 초기 필터 설정
-  useEffect(() => {
-    // 사용 가능한 카테고리와 태그 추출
-    const categories = Array.from(
-      new Set(initialPosts.map((post) => post.category))
-    );
+  // 사용 가능한 필터를 메모이제이션
+  const availableFilters = useMemo(() => {
+    const categories = Array.from(new Set(posts.map((post) => post.category)));
     const tags = Array.from(
       new Set(
-        initialPosts.flatMap((post) =>
+        posts.flatMap((post) =>
           typeof post.tags === 'string'
             ? post.tags.split(',').map((tag) => tag.trim())
             : post.tags
@@ -139,27 +153,42 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
       )
     );
 
-    setAvailableFilters({
+    return {
       categories: categories as string[],
       tags: tags as string[]
-    });
+    };
+  }, [posts]);
 
-    // URL에서 카테고리 필터 적용
-    if (currentCategoryFromUrl) {
+  const [showFilters, setShowFilters] = useState(false);
+  const searchParams = useSearchParams();
+  const currentCategoryFromUrl = searchParams.get('category');
+
+  // URL에서 카테고리 필터 적용 (초기 로드 시에만, 한 번만 실행)
+  const hasInitializedCategoryFilter = useRef(false);
+  useEffect(() => {
+    if (currentCategoryFromUrl && !hasInitializedCategoryFilter.current) {
+      hasInitializedCategoryFilter.current = true;
       setActiveFilters((prev) => ({
         ...prev,
         categories: [currentCategoryFromUrl]
       }));
     }
-  }, [initialPosts, currentCategoryFromUrl]);
+  }, [currentCategoryFromUrl]);
 
   // 검색 및 필터링 로직
   const debouncedFilterRef = useRef(
     debounce(
-      (term: string, filters: { categories: string[]; tags: string[] }) => {
-        if (!posts.length) return;
+      (
+        term: string,
+        filters: { categories: string[]; tags: string[] },
+        postsData: Post[]
+      ) => {
+        if (!postsData.length) {
+          setIsFiltering(false);
+          return;
+        }
 
-        let results = [...posts];
+        let results = [...postsData];
 
         // 검색어로 필터링
         if (term) {
@@ -197,14 +226,23 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
         }
 
         setFilteredPosts(results);
+        setIsFiltering(false);
       },
       300
     )
   );
 
+  // 검색어나 필터가 변경될 때만 debounced 필터링 실행
+  // posts는 초기 로드 후 변경되지 않으므로 ref를 통해 접근
+  // uniqueActiveFilters를 사용하여 중복 제거된 필터 적용
   useEffect(() => {
-    debouncedFilterRef.current(searchTerm, activeFilters);
-  }, [searchTerm, activeFilters, debouncedFilterRef]);
+    setIsFiltering(true);
+    debouncedFilterRef.current(
+      searchTerm,
+      uniqueActiveFilters,
+      postsRef.current
+    );
+  }, [searchTerm, uniqueActiveFilters]);
 
   // 컴포넌트 언마운트 시 타이머 정리
   useEffect(() => {
@@ -214,8 +252,8 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
     };
   }, []);
 
-  // 필터 토글 함수
-  const toggleCategoryFilter = (category: string) => {
+  // 필터 토글 함수 - useCallback으로 메모이제이션
+  const toggleCategoryFilter = useCallback((category: string) => {
     setActiveFilters((prev) => {
       const isActive = prev.categories.includes(category);
 
@@ -226,9 +264,9 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
           : [...prev.categories, category]
       };
     });
-  };
+  }, []);
 
-  const toggleTagFilter = (tag: string) => {
+  const toggleTagFilter = useCallback((tag: string) => {
     setActiveFilters((prev) => {
       const isActive = prev.tags.includes(tag);
 
@@ -239,15 +277,15 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
           : [...prev.tags, tag]
       };
     });
-  };
+  }, []);
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setActiveFilters({ categories: [], tags: [] });
     setSearchTerm('');
-  };
+  }, []);
 
-  // 카테고리별 색상 매핑
-  const getCategoryColor = (category: string) => {
+  // 카테고리별 색상 매핑 - useCallback으로 메모이제이션
+  const getCategoryColor = useCallback((category: string) => {
     const colors = {
       Technology: 'from-blue-500/20 to-cyan-500/20 border-blue-500/30',
       Programming: 'from-green-500/20 to-emerald-500/20 border-green-500/30',
@@ -260,158 +298,210 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
       colors[category as keyof typeof colors] ||
       'from-primary/20 to-accent/20 border-primary/30'
     );
-  };
+  }, []);
 
-  // 검색 결과 컴포넌트
-  const SearchResults: React.FC<SearchResultProps> = ({
-    posts,
-    searchTerm,
-    getCategoryColor
-  }) => {
-    const highlightText = (text: string, highlight: string) => {
-      if (!highlight.trim()) return text;
+  // highlightText 함수를 useCallback으로 메모이제이션
+  // 각 포스트마다 별도로 호출되므로 index만으로도 충분
+  const highlightText = useCallback((text: string, highlight: string) => {
+    if (!highlight.trim()) return text;
 
-      const regex = new RegExp(`(${highlight})`, 'gi');
-      return text.split(regex).map((part, index) =>
-        regex.test(part) ? (
-          <span key={index} className="bg-primary/20 text-primary">
-            {part}
-          </span>
-        ) : (
-          part
-        )
-      );
-    };
-
-    if (!posts.length) {
-      return (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex flex-col items-center justify-center py-16 text-center"
-        >
-          <FaSearch className="mb-4 text-6xl text-muted-foreground/30" />
-          <h3 className="mb-2 text-xl font-medium text-foreground">
-            검색 결과가 없습니다
-          </h3>
-          <p className="text-muted-foreground">
-            다른 검색어를 시도하거나 필터를 조정해보세요.
-          </p>
-        </motion.div>
-      );
-    }
-
-    return (
-      <div className="space-y-6">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-medium text-foreground">
-            {posts.length}개의 검색 결과
-            {searchTerm && ` - "${searchTerm}"`}
-          </h2>
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ staggerChildren: 0.05 }}
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          <AnimatePresence>
-            {posts.map((post, index) => (
-              <motion.div
-                key={`${post.id}-${index}-${post.slug}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="group overflow-hidden rounded-xl border border-primary/30 shadow-sm transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
-              >
-                <Link href={`/posts/${encodeURIComponent(post.slug)}`}>
-                  <div className="relative h-48 w-full overflow-hidden bg-primary/10">
-                    {post.preview_image_url ? (
-                      <Image
-                        src={post.preview_image_url}
-                        alt={post.title}
-                        fill
-                        className="object-cover transition-all group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="flex size-full items-center justify-center">
-                        <FaBlog className="text-6xl text-muted-foreground/20" />
-                      </div>
-                    )}
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/90 via-background/70 to-transparent p-4">
-                      <span
-                        className={`rounded-full ${getCategoryColor(post.category)} shadow-soft border px-3 py-1 text-xs font-medium text-foreground backdrop-blur-sm`}
-                      >
-                        {post.category}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-5">
-                    <h3 className="mb-2 line-clamp-2 text-lg font-bold text-foreground group-hover:text-primary">
-                      {searchTerm
-                        ? highlightText(post.title, searchTerm)
-                        : post.title}
-                    </h3>
-
-                    <p className="mb-4 line-clamp-3 text-sm text-muted-foreground">
-                      {searchTerm
-                        ? highlightText(
-                            post.content
-                              .replace(/[#*`_]/g, '')
-                              .substring(0, 150),
-                            searchTerm
-                          )
-                        : post.content.replace(/[#*`_]/g, '').substring(0, 150)}
-                      ...
-                    </p>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(post.date).toLocaleDateString('ko-KR', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric'
-                        })}
-                      </span>
-
-                      <div className="flex space-x-1">
-                        {(typeof post.tags === 'string'
-                          ? post.tags
-                              .split(',')
-                              .map((tag) => tag.trim())
-                              .slice(0, 2)
-                          : post.tags.slice(0, 2)
-                        ).map((tag, index) => (
-                          <span
-                            key={index}
-                            className="rounded-full bg-background px-2 py-0.5 text-xs text-muted-foreground"
-                          >
-                            #{tag}
-                          </span>
-                        ))}
-                        {(typeof post.tags === 'string'
-                          ? post.tags.split(',').length
-                          : post.tags.length) > 2 && (
-                          <span className="rounded-full bg-background px-2 py-0.5 text-xs text-muted-foreground">
-                            +
-                            {typeof post.tags === 'string'
-                              ? post.tags.split(',').length - 2
-                              : post.tags.length - 2}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-      </div>
+    const regex = new RegExp(`(${highlight})`, 'gi');
+    return text.split(regex).map((part, index) =>
+      regex.test(part) ? (
+        <span key={`highlight-${index}`} className="bg-primary/20 text-primary">
+          {part}
+        </span>
+      ) : (
+        part
+      )
     );
-  };
+  }, []);
+
+  // 검색 결과 컴포넌트 - React.memo로 메모이제이션하여 불필요한 재렌더링 방지
+  const SearchResults: React.FC<
+    SearchResultProps & { isFiltering?: boolean; isMounted?: boolean }
+  > = memo(
+    ({
+      posts,
+      searchTerm,
+      getCategoryColor,
+      isFiltering = false,
+      isMounted = false
+    }) => {
+      // 필터링 중일 때는 애니메이션 없이 렌더링
+      if (!posts.length) {
+        return (
+          <motion.div
+            initial={false}
+            animate={isMounted ? { opacity: 1 } : false}
+            className="flex flex-col items-center justify-center py-16 text-center"
+            suppressHydrationWarning
+          >
+            <FaSearch className="mb-4 text-6xl text-muted-foreground/30" />
+            <h3 className="mb-2 text-xl font-medium text-foreground">
+              검색 결과가 없습니다
+            </h3>
+            <p className="text-muted-foreground">
+              다른 검색어를 시도하거나 필터를 조정해보세요.
+            </p>
+          </motion.div>
+        );
+      }
+
+      return (
+        <div className="space-y-6">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-xl font-medium text-foreground">
+              {posts.length}개의 검색 결과
+              {searchTerm && ` - "${searchTerm}"`}
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <AnimatePresence initial={false}>
+              {posts.map((post) => {
+                // post.id는 파일 경로 기반 해시이므로 항상 고유함
+                // index를 사용하지 않아 배열 순서 변경 시에도 안정적인 키 유지
+                const uniqueKey = `post-${post.id}`;
+
+                return (
+                  <motion.div
+                    key={uniqueKey}
+                    initial={false}
+                    animate={
+                      isMounted && !isFiltering ? { opacity: 1, y: 0 } : false
+                    }
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.15, ease: 'easeOut' }}
+                    className="group overflow-hidden rounded-xl border border-primary/30 shadow-sm transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
+                    suppressHydrationWarning
+                  >
+                    <Link href={`/posts/${encodeURIComponent(post.slug)}`}>
+                      <div className="relative h-48 w-full overflow-hidden bg-primary/10">
+                        {post.preview_image_url ? (
+                          <Image
+                            src={post.preview_image_url}
+                            alt={post.title}
+                            fill
+                            className="object-cover transition-all group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="flex size-full items-center justify-center">
+                            <FaBlog className="text-6xl text-muted-foreground/20" />
+                          </div>
+                        )}
+                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/90 via-background/70 to-transparent p-4">
+                          <span
+                            className={`rounded-full ${getCategoryColor(post.category)} shadow-soft border px-3 py-1 text-xs font-medium text-foreground backdrop-blur-sm`}
+                          >
+                            {post.category}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="p-5">
+                        <h3 className="mb-2 line-clamp-2 text-lg font-bold text-foreground group-hover:text-primary">
+                          {searchTerm
+                            ? highlightText(post.title, searchTerm)
+                            : post.title}
+                        </h3>
+
+                        <p className="mb-4 line-clamp-3 text-sm text-muted-foreground">
+                          {searchTerm
+                            ? highlightText(
+                                post.content
+                                  .replace(/[#*`_]/g, '')
+                                  .substring(0, 150),
+                                searchTerm
+                              )
+                            : post.content
+                                .replace(/[#*`_]/g, '')
+                                .substring(0, 150)}
+                          ...
+                        </p>
+
+                        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                          <span className="whitespace-nowrap text-xs text-muted-foreground">
+                            {new Date(post.date).toLocaleDateString('ko-KR', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric'
+                            })}
+                          </span>
+
+                          <div className="flex flex-wrap items-center gap-1">
+                            {(typeof post.tags === 'string'
+                              ? post.tags
+                                  .split(',')
+                                  .map((tag) => tag.trim())
+                                  .slice(0, 2)
+                              : post.tags.slice(0, 2)
+                            ).map((tag) => (
+                              <span
+                                key={`${post.id}-${tag}`}
+                                className="whitespace-nowrap rounded-full bg-background px-2 py-0.5 text-xs text-muted-foreground"
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                            {(typeof post.tags === 'string'
+                              ? post.tags.split(',').length
+                              : post.tags.length) > 2 && (
+                              <span className="whitespace-nowrap rounded-full bg-background px-2 py-0.5 text-xs text-muted-foreground">
+                                +
+                                {typeof post.tags === 'string'
+                                  ? post.tags.split(',').length - 2
+                                  : post.tags.length - 2}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    },
+    (prevProps, nextProps) => {
+      // posts 배열이 실제로 변경되었는지 확인 (길이와 id 비교)
+      if (prevProps.posts.length !== nextProps.posts.length) {
+        return false; // 리렌더링 필요
+      }
+
+      // 각 post의 id를 비교하여 실제 변경이 있는지 확인
+      const prevIds = prevProps.posts.map((p) => p.id).join(',');
+      const nextIds = nextProps.posts.map((p) => p.id).join(',');
+      if (prevIds !== nextIds) {
+        return false; // 리렌더링 필요
+      }
+
+      // searchTerm이 변경되었는지 확인
+      if (prevProps.searchTerm !== nextProps.searchTerm) {
+        return false; // 리렌더링 필요
+      }
+
+      // isFiltering이 변경되었는지 확인
+      if (prevProps.isFiltering !== nextProps.isFiltering) {
+        return false; // 리렌더링 필요
+      }
+
+      // isMounted가 변경되었는지 확인
+      if (prevProps.isMounted !== nextProps.isMounted) {
+        return false; // 리렌더링 필요
+      }
+
+      // getCategoryColor는 useCallback으로 메모이제이션되어 있으므로 참조 비교만 하면 됨
+      // 모든 props가 동일하면 리렌더링 불필요
+      return true;
+    }
+  );
+
+  // SearchResults에 displayName 설정 (디버깅용)
+  SearchResults.displayName = 'SearchResults';
 
   return (
     <div className="min-h-screen px-4 py-24 sm:px-6 lg:px-8">
@@ -419,10 +509,11 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
         {/* Main Content */}
         <div className="flex-1">
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={false}
+            animate={isMounted ? { opacity: 1, y: 0 } : false}
             transition={{ duration: 0.5 }}
             className="mb-12 text-center"
+            suppressHydrationWarning
           >
             <h1 className="text-4xl font-bold tracking-tight text-primary">
               <span className="relative">
@@ -465,13 +556,18 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
               {/* 필터 토글 버튼 */}
               <div className="mb-4 flex items-center justify-between">
                 <div className="flex flex-wrap gap-2">
-                  {activeFilters.categories.map((category) => (
+                  {uniqueActiveFilters.categories.map((category, index) => (
                     <motion.span
-                      key={`cat-${category}`}
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
+                      key={`cat-${category}-${index}`}
+                      initial={{ scale: 1, opacity: 1 }}
+                      animate={
+                        isMounted
+                          ? { scale: 1, opacity: 1 }
+                          : { scale: 1, opacity: 1 }
+                      }
                       exit={{ scale: 0.8, opacity: 0 }}
                       className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
+                      suppressHydrationWarning
                     >
                       <FaFolder className="mr-1" />
                       {category}
@@ -484,13 +580,18 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                     </motion.span>
                   ))}
 
-                  {activeFilters.tags.map((tag) => (
+                  {uniqueActiveFilters.tags.map((tag, index) => (
                     <motion.span
-                      key={`tag-${tag}`}
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
+                      key={`tag-${tag}-${index}`}
+                      initial={{ scale: 1, opacity: 1 }}
+                      animate={
+                        isMounted
+                          ? { scale: 1, opacity: 1 }
+                          : { scale: 1, opacity: 1 }
+                      }
                       exit={{ scale: 0.8, opacity: 0 }}
                       className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-sm text-accent"
+                      suppressHydrationWarning
                     >
                       <FaTags className="mr-1" />
                       {tag}
@@ -503,14 +604,19 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                     </motion.span>
                   ))}
 
-                  {(activeFilters.categories.length > 0 ||
-                    activeFilters.tags.length > 0) && (
+                  {(uniqueActiveFilters.categories.length > 0 ||
+                    uniqueActiveFilters.tags.length > 0) && (
                     <motion.button
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
+                      initial={{ scale: 1, opacity: 1 }}
+                      animate={
+                        isMounted
+                          ? { scale: 1, opacity: 1 }
+                          : { scale: 1, opacity: 1 }
+                      }
                       exit={{ scale: 0.8, opacity: 0 }}
                       onClick={clearFilters}
                       className="inline-flex items-center rounded-full bg-foreground/10 px-3 py-1 text-sm text-foreground hover:bg-foreground/20"
+                      suppressHydrationWarning
                     >
                       모든 필터 지우기
                     </motion.button>
@@ -530,10 +636,15 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                 {showFilters && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
+                    animate={
+                      showFilters
+                        ? { height: 'auto', opacity: 1 }
+                        : { height: 0, opacity: 0 }
+                    }
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3 }}
                     className="shadow-soft overflow-hidden rounded-lg border border-border bg-card p-4"
+                    suppressHydrationWarning
                   >
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <div>
@@ -541,20 +652,24 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                           카테고리
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                          {availableFilters.categories.map((category) => (
-                            <button
-                              key={category}
-                              onClick={() => toggleCategoryFilter(category)}
-                              className={cn(
-                                'rounded-full px-3 py-1 text-sm transition-all',
-                                activeFilters.categories.includes(category)
-                                  ? 'border-primary/50 bg-primary/20 text-primary'
-                                  : 'border border-primary/30 text-muted-foreground hover:border-primary hover:bg-primary/10'
-                              )}
-                            >
-                              {category}
-                            </button>
-                          ))}
+                          {availableFilters.categories.map(
+                            (category, index) => (
+                              <button
+                                key={`category-filter-${category}-${index}`}
+                                onClick={() => toggleCategoryFilter(category)}
+                                className={cn(
+                                  'rounded-full px-3 py-1 text-sm transition-all',
+                                  uniqueActiveFilters.categories.includes(
+                                    category
+                                  )
+                                    ? 'border-primary/50 bg-primary/20 text-primary'
+                                    : 'border border-primary/30 text-muted-foreground hover:border-primary hover:bg-primary/10'
+                                )}
+                              >
+                                {category}
+                              </button>
+                            )
+                          )}
                         </div>
                       </div>
 
@@ -563,13 +678,13 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                           태그
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                          {availableFilters.tags.map((tag) => (
+                          {availableFilters.tags.map((tag, index) => (
                             <button
-                              key={tag}
+                              key={`tag-filter-${tag}-${index}`}
                               onClick={() => toggleTagFilter(tag)}
                               className={cn(
                                 'rounded-full px-3 py-1 text-sm transition-all',
-                                activeFilters.tags.includes(tag)
+                                uniqueActiveFilters.tags.includes(tag)
                                   ? 'border-secondary/50 bg-secondary/20 text-secondary'
                                   : 'border border-primary/30 text-muted-foreground hover:border-secondary hover:bg-secondary/10'
                               )}
@@ -588,15 +703,13 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
 
           {/* 검색 결과 */}
           <div className="mb-8">
-            {loading ? (
-              <SearchSkeleton />
-            ) : (
-              <SearchResults
-                posts={filteredPosts}
-                searchTerm={searchTerm}
-                getCategoryColor={getCategoryColor}
-              />
-            )}
+            <SearchResults
+              posts={filteredPosts}
+              searchTerm={searchTerm}
+              getCategoryColor={getCategoryColor}
+              isFiltering={isFiltering}
+              isMounted={isMounted}
+            />
           </div>
         </div>
       </div>

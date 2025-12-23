@@ -209,8 +209,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
               {/* Main Content */}
               <div className="flex flex-1 flex-col">
-                <main className="container mx-auto flex-1 px-4 py-8 pt-24 sm:px-6 lg:px-8">
-                  <div className="mx-auto w-full animate-blur-in">
+                <main className="w-full flex-1 px-4 py-8 pt-24 sm:px-6 lg:px-8">
+                  <div className="mx-auto w-full max-w-7xl animate-blur-in">
                     {children}
                   </div>
                 </main>
