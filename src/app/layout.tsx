@@ -200,17 +200,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Providers>
           {/* 2D 아트 배경 - 패턴은 globals.css에서 처리 */}
 
-          <div className="flex min-h-screen flex-col">
+          <div className="flex min-h-screen flex-col overflow-x-hidden max-w-full">
             <Header />
 
-            <div className="relative flex flex-1">
+            <div className="relative flex flex-1 max-w-full overflow-x-hidden">
               {/* Sidebar */}
               <Sidebar posts={posts} />
 
               {/* Main Content */}
-              <div className="flex flex-1 flex-col">
-                <main className="w-full flex-1 px-4 py-8 pt-24 sm:px-6 lg:px-8">
-                  <div className="mx-auto w-full max-w-7xl animate-blur-in">
+              <div className="flex flex-1 flex-col max-w-full overflow-x-hidden min-w-0">
+                <main className="w-full max-w-full flex-1 px-4 py-8 pt-24 sm:px-6 lg:px-8 overflow-x-hidden">
+                  <div className="mx-auto w-full max-w-7xl animate-blur-in overflow-x-hidden">
                     {children}
                   </div>
                 </main>

@@ -81,6 +81,9 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
   }
 
   body {
@@ -91,6 +94,10 @@
     transition:
       background-color 0.3s ease,
       color 0.3s ease;
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+    position: relative;
   }
 
   /* 2D 아트 배경 패턴 */
@@ -280,5 +287,111 @@
 
   .sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  /* Prose 클래스 반응형 오버라이드 - 모바일 최적화 */
+  .prose {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Prose 내부의 모든 요소가 반응형이 되도록 */
+  .prose * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 가로 스크롤 방지 - 모든 컨테이너 */
+  * {
+    max-width: 100%;
+  }
+
+  /* 루트 컨테이너들 */
+  #__next,
+  [data-nextjs-scroll-focus-boundary] {
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+  }
+
+  /* Mermaid 컨테이너 반응형 강제 */
+  .prose .mermaidContainer,
+  .prose [class*='mermaidContainer'] {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .prose .mermaidContainer svg,
+  .prose [class*='mermaidContainer'] svg {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* CodeBlock 반응형 강제 */
+  .prose [data-code-block='true'],
+  .prose div[data-code-block='true'] {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .prose [data-code-block='true'] > div,
+  .prose div[data-code-block='true'] > div {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: auto !important;
+  }
+
+  /* Pre 태그 반응형 강제 */
+  .prose pre {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Code 태그 반응형 */
+  .prose code {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .prose pre code {
+    word-break: normal;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  /* 모바일에서 추가 최적화 */
+  @media (max-width: 640px) {
+    .prose {
+      padding: 0 !important;
+    }
+
+    .prose .mermaidContainer,
+    .prose [class*='mermaidContainer'] {
+      margin: 8px 0 !important;
+      padding: 4px !important;
+    }
+
+    .prose [data-code-block='true'],
+    .prose div[data-code-block='true'] {
+      margin: 8px 0 !important;
+    }
+
+    .prose pre {
+      padding: 8px !important;
+      font-size: 12px !important;
+    }
   }
 }

@@ -60,36 +60,51 @@ export function CodeBlock({ code, language, className }: CodeBlockProps) {
     <div
       data-code-block="true"
       className={cn(
-        'flex flex-col overflow-hidden rounded-lg border border-border bg-muted shadow-sm',
+        'flex w-full min-w-0 max-w-full flex-col overflow-hidden rounded-lg border border-border bg-muted shadow-sm',
         className
       )}
     >
-      <div className="flex items-center justify-between border-b border-border bg-muted/80 px-3 py-2">
-        <div className="flex items-center gap-1.5">
-          <div className="size-3 rounded-full bg-traffic-red shadow-[0_0_0_0.5px_rgba(0,0,0,0.1)]" />
-          <div className="size-3 rounded-full bg-traffic-yellow shadow-[0_0_0_0.5px_rgba(0,0,0,0.1)]" />
-          <div className="size-3 rounded-full bg-traffic-green shadow-[0_0_0_0.5px_rgba(0,0,0,0.1)]" />
+      <div className="flex items-center justify-between border-b border-border bg-muted/80 px-2 py-1.5 sm:px-3 sm:py-2">
+        <div className="flex items-center gap-1 sm:gap-1.5">
+          <div className="size-2.5 rounded-full bg-traffic-red shadow-[0_0_0_0.5px_rgba(0,0,0,0.1)] sm:size-3" />
+          <div className="size-2.5 rounded-full bg-traffic-yellow shadow-[0_0_0_0.5px_rgba(0,0,0,0.1)] sm:size-3" />
+          <div className="size-2.5 rounded-full bg-traffic-green shadow-[0_0_0_0.5px_rgba(0,0,0,0.1)] sm:size-3" />
         </div>
-        <div className="ml-auto flex items-center gap-3">
-          <span className="font-mono text-xs font-medium uppercase text-muted-foreground">
+        <div className="ml-auto flex items-center gap-2 sm:gap-3">
+          <span className="font-mono text-[10px] font-medium uppercase text-muted-foreground sm:text-xs">
             {language || 'text'}
           </span>
           <button
             onClick={mounted ? handleCopy : undefined}
-            className="rounded border border-border bg-background px-2 py-1 text-xs text-foreground transition-colors hover:border-primary hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded border border-border bg-background px-1.5 py-0.5 text-[10px] text-foreground transition-colors hover:border-primary hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50 sm:px-2 sm:py-1 sm:text-xs"
             aria-label="코드 복사"
             title="코드 복사"
             disabled={!mounted}
           >
-            {mounted && copied ? '✓ 복사됨' : '복사'}
+            {mounted && copied ? '✓' : '복사'}
           </button>
         </div>
       </div>
-      <div className="overflow-x-auto p-4">
+      <div
+        className="min-w-0 overflow-x-auto overflow-y-hidden p-2 sm:p-3 md:p-4"
+        style={{
+          WebkitOverflowScrolling: 'touch',
+          maxWidth: '100%',
+          width: '100%',
+          boxSizing: 'border-box'
+        }}
+      >
         {html ? (
-          <div dangerouslySetInnerHTML={{ __html: html }} />
+          <div
+            className="min-w-0"
+            style={{ maxWidth: '100%', width: '100%' }}
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
         ) : (
-          <pre className="shiki">
+          <pre
+            className="shiki min-w-0"
+            style={{ maxWidth: '100%', width: '100%' }}
+          >
             <code className={className}>{code}</code>
           </pre>
         )}
