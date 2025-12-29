@@ -54,6 +54,10 @@ flowchart LR
 - ✅ **성능 모니터링**: Vercel Analytics 및 Speed Insights 통합
 - ✅ **접근성 개선**: ARIA 속성, 색상 대비, 링크 접근성 최적화
 - ✅ **PWA 지원**: Service Worker를 통한 오프라인 지원
+- ✅ **할일 관리 시스템**: toris-dev의 할일을 공개적으로 관리하고 공유하는 기능
+  - 리스트, 칸반 보드, 캘린더 뷰 지원
+  - 이더리움 지갑 기반 인가 시스템 (읽기는 공개, 쓰기/수정/삭제는 인가된 사용자만)
+  - MongoDB Atlas를 통한 영구 데이터 저장
 
 ---
 
@@ -77,6 +81,8 @@ flowchart LR
 
 - **@tanstack/react-query** - 서버 상태 관리
 - **React Hooks** - 클라이언트 상태 관리
+- **MongoDB Atlas** - 클라우드 데이터베이스 (할일 관리 데이터 저장)
+- **Mongoose** - MongoDB 객체 모델링 라이브러리
 
 ### Markdown
 
@@ -97,6 +103,10 @@ flowchart LR
 - **Google Tag Manager** - 분석 도구
 - **Google AdSense** - 광고 수익화 (쿠키 동의 기반)
 - **Structured Data** - SEO 구조화된 데이터
+
+### Blockchain & Web3
+
+- **ethers.js** - 이더리움 지갑 연결 및 서명 기능
 
 ### 기타
 
@@ -141,7 +151,9 @@ Toris_Blog/
 │   │   │   └── page.tsx  # 포스트 목록 페이지
 │   │   ├── categories/   # 카테고리별 포스트 페이지
 │   │   ├── tags/         # 태그별 포스트 페이지
+│   │   ├── todos/        # 할일 관리 페이지
 │   │   ├── api/          # API 라우트
+│   │   │   └── todos/    # 할일 관리 API
 │   │   ├── feed.xml/     # RSS Feed
 │   │   ├── layout.tsx    # 루트 레이아웃
 │   │   └── page.tsx      # 홈 페이지
@@ -151,8 +163,12 @@ Toris_Blog/
 │   │   ├── common/       # 공통 컴포넌트 (Header, Footer, CookieConsent 등)
 │   │   ├── forms/        # 폼 컴포넌트
 │   │   ├── seo/          # SEO 관련 컴포넌트
+│   │   ├── todos/        # 할일 관리 컴포넌트
 │   │   └── ui/           # UI 컴포넌트
-│   ├── contexts/         # React Context
+│   ├── contexts/         # React Context (TodoContext, WalletContext 등)
+│   ├── hooks/            # 커스텀 훅
+│   ├── lib/              # 라이브러리 설정 (mongodb 연결 등)
+│   ├── models/           # 데이터베이스 모델 (Mongoose 스키마)
 │   ├── styles/           # 전역 스타일
 │   ├── types/            # TypeScript 타입 정의
 │   └── utils/            # 유틸리티 함수
@@ -183,6 +199,13 @@ NEXT_PUBLIC_ADSENSE_PUBLISHER_ID=ca-pub-xxxxxxxxxxxxx
 
 # 선택적: Google Tag Manager ID
 NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
+
+# 할일 관리 인가된 지갑 주소 (쉼표로 구분)
+# 예: NEXT_PUBLIC_AUTHORIZED_ADDRESSES=0x1234...,0x5678...
+NEXT_PUBLIC_AUTHORIZED_ADDRESSES=your_wallet_address
+
+# 필수: MongoDB Atlas 연결 URI
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/dbname
 ```
 
 ### 2. 의존성 설치
@@ -308,10 +331,24 @@ pnpm cypress:run:search
 - [x] Vercel Analytics 및 Speed Insights 통합
 - [x] PWA 지원 (Service Worker)
 - [x] 마크다운 작성 스타일 가이드 통일 (.cursor/rules)
+- [x] 할일 관리 시스템 구현
+  - 리스트, 칸반 보드, 캘린더 뷰 지원
+  - 이더리움 지갑 기반 인가 시스템
+  - MongoDB Atlas 영구 데이터 저장
 
 ---
 
 ## 📅 최근 변경 사항
+
+### 2025년 1월
+
+- **할일 관리 시스템**: toris-dev의 할일을 공개적으로 관리하고 공유하는 기능 추가
+  - 리스트, 칸반 보드, 캘린더 뷰 지원
+  - 이더리움 지갑 기반 인가 시스템 (읽기는 공개, 쓰기/수정/삭제는 인가된 사용자만)
+  - MongoDB Atlas를 통한 영구 데이터 저장
+  - React Context API를 활용한 전역 상태 관리
+  - Framer Motion을 활용한 부드러운 애니메이션
+  - React Portal을 활용한 모달 최적화
 
 ### 2025년 12월
 

@@ -37,7 +37,11 @@ import { FaArrowLeft } from '@react-icons/all-files/fa/FaArrowLeft';
 import { FaArrowRight } from '@react-icons/all-files/fa/FaArrowRight';
 import { FaBlog } from '@react-icons/all-files/fa/FaBlog';
 import { FaCalendarAlt } from '@react-icons/all-files/fa/FaCalendarAlt';
+import { FaCheckCircle } from '@react-icons/all-files/fa/FaCheckCircle';
+import { FaChevronLeft } from '@react-icons/all-files/fa/FaChevronLeft';
 import { FaChevronRight } from '@react-icons/all-files/fa/FaChevronRight';
+import { FaCircle } from '@react-icons/all-files/fa/FaCircle';
+import { FaClock } from '@react-icons/all-files/fa/FaClock';
 import { FaCloudUploadAlt } from '@react-icons/all-files/fa/FaCloudUploadAlt';
 import { FaCode } from '@react-icons/all-files/fa/FaCode';
 import { FaCodeBranch } from '@react-icons/all-files/fa/FaCodeBranch';
@@ -52,12 +56,15 @@ import { FaGit } from '@react-icons/all-files/fa/FaGit';
 import { FaGithub } from '@react-icons/all-files/fa/FaGithub';
 import { FaHome } from '@react-icons/all-files/fa/FaHome';
 import { FaImage } from '@react-icons/all-files/fa/FaImage';
+import { FaInfoCircle } from '@react-icons/all-files/fa/FaInfoCircle';
 import { FaLaptopCode } from '@react-icons/all-files/fa/FaLaptopCode';
 import { FaListAlt } from '@react-icons/all-files/fa/FaListAlt';
+import { FaLock } from '@react-icons/all-files/fa/FaLock';
 import { FaMarkdown } from '@react-icons/all-files/fa/FaMarkdown';
 import { FaNodeJs } from '@react-icons/all-files/fa/FaNodeJs';
 import { FaPaperPlane } from '@react-icons/all-files/fa/FaPaperPlane';
 import { FaPen } from '@react-icons/all-files/fa/FaPen';
+import { FaPlus } from '@react-icons/all-files/fa/FaPlus';
 import { FaReact } from '@react-icons/all-files/fa/FaReact';
 import { FaSave } from '@react-icons/all-files/fa/FaSave';
 import { FaSearch } from '@react-icons/all-files/fa/FaSearch';
@@ -129,7 +136,11 @@ export {
   FaArrowRight,
   FaBlog,
   FaCalendarAlt,
+  FaCheckCircle,
+  FaChevronLeft,
   FaChevronRight,
+  FaCircle,
+  FaClock,
   FaCloudUploadAlt,
   FaCode,
   FaCodeBranch,
@@ -144,12 +155,15 @@ export {
   FaGithub,
   FaHome,
   FaImage,
+  FaInfoCircle,
   FaLaptopCode,
   FaListAlt,
+  FaLock,
   FaMarkdown,
   FaNodeJs,
   FaPaperPlane,
   FaPen,
+  FaPlus,
   FaReact,
   FaSave,
   FaSearch,

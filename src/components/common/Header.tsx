@@ -6,6 +6,7 @@ import {
   FaPaperPlane,
   FaSearch,
   FaUser,
+  FaListAlt,
   SiNextjs
 } from '@/components/icons';
 import { cn } from '@/utils/style';
@@ -20,6 +21,7 @@ import ThemeToggle from './ThemeToggle';
 const mobileNavItems = [
   { href: '/', icon: FaHome, label: '홈' },
   { href: '/posts', icon: FaBlog, label: '블로그' },
+  { href: '/todos', icon: FaListAlt, label: '할일' },
   { href: '/about', icon: FaUser, label: '소개' },
   { href: '/contact', icon: FaPaperPlane, label: '문의' }
 ];
@@ -78,6 +80,7 @@ const Header: FC = () => {
         label: '블로그',
         isActive: pathname.startsWith('/posts')
       },
+      { href: '/todos', label: '할일 관리', isActive: pathname === '/todos' },
       { href: '/about', label: '소개', isActive: pathname === '/about' },
       { href: '/contact', label: '문의', isActive: pathname === '/contact' }
     ],

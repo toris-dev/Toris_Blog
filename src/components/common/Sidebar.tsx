@@ -4,8 +4,11 @@ import CategorySidebar from '@/components/blog/CategorySidebar';
 import { AdSense } from '@/components/ads/AdSense';
 import { useSidebar } from './SidebarToggle';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AiOutlineMenu, FaTimes } from '@/components/icons';
+import { AiOutlineMenu, FaTimes, FaListAlt } from '@/components/icons';
 import { Suspense } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/utils/style';
 
 interface SidebarProps {
   posts: any[];
@@ -13,6 +16,7 @@ interface SidebarProps {
 
 export default function Sidebar({ posts }: SidebarProps) {
   const { isOpen, toggle } = useSidebar();
+  const pathname = usePathname();
 
   return (
     <>
@@ -62,6 +66,25 @@ export default function Sidebar({ posts }: SidebarProps) {
                   <FaTimes className="size-4" />
                 </motion.button>
               </div>
+              {/* 빠른 링크 */}
+              <div className="mb-6">
+                <h3 className="mb-2 text-sm font-semibold text-muted-foreground">
+                  빠른 링크
+                </h3>
+                <Link
+                  href="/todos"
+                  className={cn(
+                    'flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors',
+                    pathname === '/todos'
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  )}
+                >
+                  <FaListAlt className="size-4" />
+                  <span>할일 관리</span>
+                </Link>
+              </div>
+
               <Suspense
                 fallback={
                   <div className="text-muted-foreground">로딩 중...</div>

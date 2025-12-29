@@ -2,6 +2,8 @@
 
 import ToasterContext from '@/components/context/ToasterContext';
 import { SidebarProvider } from '@/components/common/SidebarToggle';
+import { TodoProvider } from '@/contexts/TodoContext';
+import { WalletProvider } from '@/contexts/WalletContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from 'next-themes';
 import { useState } from 'react';
@@ -17,10 +19,14 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
         enableSystem={true}
         themes={['light', 'dark']}
       >
-        <SidebarProvider>
-          <ToasterContext />
-          {children}
-        </SidebarProvider>
+        <WalletProvider>
+          <TodoProvider>
+            <SidebarProvider>
+              <ToasterContext />
+              {children}
+            </SidebarProvider>
+          </TodoProvider>
+        </WalletProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
