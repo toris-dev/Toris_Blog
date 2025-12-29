@@ -119,6 +119,14 @@ export const metadata: Metadata = {
     languages: {
       'ko-KR':
         process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app'
+    },
+    types: {
+      'application/rss+xml': [
+        {
+          url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app'}/feed.xml`,
+          title: 'Toris Blog RSS Feed'
+        }
+      ]
     }
   },
   other: {
@@ -158,6 +166,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           rel="alternate icon"
           href="/images/favicon.svg"
           type="image/svg+xml"
+        />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Toris Blog RSS Feed"
+          href={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app'}/feed.xml`}
         />
         <link rel="manifest" href="/manifest.json" />
 
