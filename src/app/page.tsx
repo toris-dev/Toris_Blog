@@ -10,30 +10,30 @@ import { Metadata } from 'next';
 export const revalidate = 21600;
 
 export const metadata: Metadata = {
-  title: '토리스 블로그 - 웹 개발자의 기술 블로그',
+  title: 'Toris Blog - 웹 개발자의 기술 블로그',
   description:
     '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript로 만드는 모던 웹 개발 이야기',
   openGraph: {
-    title: '토리스 블로그 - 웹 개발자의 기술 블로그',
+    title: 'Toris Blog - 웹 개발자의 기술 블로그',
     description:
       '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript로 만드는 모던 웹 개발 이야기',
     type: 'website',
     url: '/',
     images: [
       {
-        url: getDefaultOGImageUrl('토리스 블로그', '웹 개발자의 기술 블로그'),
+        url: getDefaultOGImageUrl('Toris Blog', '웹 개발자의 기술 블로그'),
         width: 1200,
         height: 630,
-        alt: '토리스 블로그'
+        alt: 'Toris Blog'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: '토리스 블로그 - 웹 개발자의 기술 블로그',
+    title: 'Toris Blog - 웹 개발자의 기술 블로그',
     description:
       '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript로 만드는 모던 웹 개발 이야기',
-    images: [getDefaultOGImageUrl('토리스 블로그', '웹 개발자의 기술 블로그')]
+    images: [getDefaultOGImageUrl('Toris Blog', '웹 개발자의 기술 블로그')]
   }
 };
 

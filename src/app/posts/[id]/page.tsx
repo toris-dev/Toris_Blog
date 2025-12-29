@@ -276,7 +276,7 @@ export async function generateMetadata({
             alt: post.title
           }
         ],
-        siteName: '토리스 블로그',
+        siteName: 'Toris Blog',
         locale: 'ko_KR'
       },
       twitter: {

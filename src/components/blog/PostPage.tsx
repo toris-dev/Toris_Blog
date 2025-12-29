@@ -11,8 +11,13 @@ import {
 import { cn } from '@/utils/style';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { FC, useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { FC, useState, useEffect, useRef, useMemo } from 'react';
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent
+} from 'framer-motion';
 import { Utterances } from './Utterances';
 import { ShareButtons } from './ShareButtons';
 import { AdSense } from '@/components/ads/AdSense';
@@ -45,10 +50,25 @@ const PostPageContent: FC<{
   const [mounted, setMounted] = useState(false);
   const [isTocOpen, setIsTocOpen] = useState(true);
   const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const { scrollY } = useScroll();
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Header와 동일한 스크롤 감지 로직
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    if (latest > lastScrollY.current && latest > 100) {
+      // 스크롤 내림
+      setIsHeaderVisible(false);
+    } else if (latest < lastScrollY.current) {
+      // 스크롤 올림
+      setIsHeaderVisible(true);
+    }
+    lastScrollY.current = latest;
+  });
 
   // 모바일 목차 모달 닫기 (ESC 키)
   useEffect(() => {
@@ -70,27 +90,82 @@ const PostPageContent: FC<{
   }, [isMobileTocOpen]);
 
   // 날짜 포맷팅 (서버와 클라이언트에서 동일한 결과 보장)
-  const formattedDate = date
-    ? dayjs(new Date(date)).format('YY년 MM월 DD일 HH:mm')
-    : '';
+  const formattedDate = useMemo(
+    () => (date ? dayjs(new Date(date)).format('YY년 MM월 DD일 HH:mm') : ''),
+    [date]
+  );
+
+  // 스타일 객체 메모이제이션
+  const containerStyle = useMemo(
+    () => ({
+      maxWidth: '100%',
+      width: '100%',
+      boxSizing: 'border-box' as const
+    }),
+    []
+  );
+
+  const articleInnerStyle = useMemo(
+    () => ({
+      maxWidth: '100%',
+      width: '100%',
+      boxSizing: 'border-box' as const
+    }),
+    []
+  );
+
+  const proseStyle = useMemo(
+    () => ({
+      maxWidth: '100%',
+      width: '100%',
+      minWidth: 0,
+      boxSizing: 'border-box' as const
+    }),
+    []
+  );
+
+  const stickyStyle = useMemo(
+    () => ({
+      position: 'sticky' as const,
+      top: '6rem', // layout의 main pt-24 (6rem)와 동일한 위치
+      maxHeight: 'calc(100vh - 6rem)',
+      zIndex: 10
+    }),
+    []
+  );
+
+  // ShareButtons에 전달할 URL 메모이제이션
+  const shareUrl = useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.location.href;
+    }
+    return `${process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app'}/posts/${postId}`;
+  }, [postId]);
+
+  const shareDescription = useMemo(() => {
+    if (typeof content === 'string') {
+      return content.substring(0, 150).replace(/\n/g, ' ').trim();
+    }
+    return undefined;
+  }, [content]);
 
   return (
     <div className="w-full max-w-full overflow-x-hidden">
       <div
-        className="mx-auto flex w-full max-w-full flex-col gap-3 px-4 sm:gap-4 sm:px-6 md:gap-6 md:px-8 lg:flex-row lg:items-stretch lg:gap-6 lg:px-6 xl:gap-8 xl:px-8"
+        className="mx-auto flex w-full max-w-full flex-col gap-3 px-4 sm:gap-4 sm:px-6 md:gap-6 md:px-8 lg:flex-row lg:items-start lg:gap-6 lg:px-6 xl:gap-8 xl:px-8"
         suppressHydrationWarning
-        style={{ maxWidth: '100%', width: '100%', boxSizing: 'border-box' }}
+        style={containerStyle}
       >
         {/* 메인 콘텐츠 */}
-        <article className="min-w-0 flex-1 pb-12 sm:pb-16 md:pb-20 lg:pb-24 xl:pb-32 max-w-full overflow-x-hidden">
+        <article className="min-w-0 max-w-full flex-1 overflow-x-hidden pb-12 sm:pb-16 md:pb-20 lg:pb-24 xl:pb-32">
           <div
-            className="mx-auto w-full max-w-full sm:max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl overflow-x-hidden"
+            className="mx-auto w-full max-w-full overflow-x-hidden sm:max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl"
             suppressHydrationWarning
-            style={{ maxWidth: '100%', width: '100%', boxSizing: 'border-box' }}
+            style={articleInnerStyle}
           >
             <div>
               <header className="mb-6 text-center sm:mb-8 md:mb-10 lg:mb-12">
-                <h1 className="mb-3 text-2xl font-bold leading-tight text-foreground sm:mb-4 sm:text-3xl md:text-4xl lg:text-5xl">
+                <h1 className="mb-3 text-xl font-bold leading-tight text-foreground sm:mb-4 sm:text-2xl md:text-3xl lg:text-4xl">
                   {title}
                 </h1>
                 <div className="flex flex-wrap items-center justify-center gap-2 text-xs sm:gap-3 sm:text-sm md:gap-4">
@@ -156,40 +231,26 @@ const PostPageContent: FC<{
                 <div className="mb-6 sm:mb-8 md:mb-10">
                   <ShareButtons
                     title={title}
-                    description={
-                      typeof content === 'string'
-                        ? content.substring(0, 150).replace(/\n/g, ' ').trim()
-                        : undefined
-                    }
+                    description={shareDescription}
                     image={image}
-                    url={
-                      typeof window !== 'undefined'
-                        ? window.location.href
-                        : `${process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app'}/posts/${postId}`
-                    }
+                    url={shareUrl}
                   />
                 </div>
               )}
 
               <div
                 className={cn(
-                  'prose prose-sm max-w-full dark:prose-invert sm:prose-base md:prose-lg lg:prose-lg xl:prose-xl',
+                  'prose prose-sm max-w-full dark:prose-invert sm:prose-sm md:prose-base lg:prose-base xl:prose-lg',
                   // Prose의 max-width 제한 완전히 제거
-                  'prose-img:!max-w-full prose-img:!w-full',
-                  'prose-pre:!max-w-full prose-pre:!w-full prose-pre:!overflow-x-auto prose-pre:!min-w-0',
+                  'prose-img:!w-full prose-img:!max-w-full',
+                  'prose-pre:!w-full prose-pre:!min-w-0 prose-pre:!max-w-full prose-pre:!overflow-x-auto',
                   'prose-code:!break-words',
                   // Mermaid 컨테이너 스타일 (CSS 모듈 클래스는 직접 CSS에서 처리)
                   // CodeBlock 스타일
-                  '[&_div[data-code-block="true"]]:!max-w-full [&_div[data-code-block="true"]]:!w-full [&_div[data-code-block="true"]]:!min-w-0',
-                  '[&_div[data-code-block="true"]_div]:!overflow-x-auto [&_div[data-code-block="true"]_div]:!min-w-0'
+                  '[&_div[data-code-block="true"]]:!w-full [&_div[data-code-block="true"]]:!min-w-0 [&_div[data-code-block="true"]]:!max-w-full',
+                  '[&_div[data-code-block="true"]_div]:!min-w-0 [&_div[data-code-block="true"]_div]:!overflow-x-auto'
                 )}
-                style={{
-                  // Prose의 max-width를 완전히 오버라이드
-                  maxWidth: '100%',
-                  width: '100%',
-                  minWidth: 0,
-                  boxSizing: 'border-box'
-                }}
+                style={proseStyle}
               >
                 <MarkdownViewer onHeadingsChange={setHeadings}>
                   {content}
@@ -222,8 +283,11 @@ const PostPageContent: FC<{
 
         {/* 목차 사이드바 (xl 이상에서만 표시) */}
         {mounted && headings.length > 0 && (
-          <aside className="hidden shrink-0 xl:block xl:w-56 2xl:w-64">
-            <div className="sticky top-24 h-full max-h-[calc(100vh-8rem)] space-y-4 overflow-y-auto xl:space-y-6">
+          <aside
+            className="sticky hidden shrink-0 self-start xl:block xl:w-56 2xl:w-64"
+            style={stickyStyle}
+          >
+            <motion.div className="h-auto space-y-4 overflow-y-auto will-change-transform xl:space-y-6">
               <AnimatePresence mode="wait">
                 {isTocOpen ? (
                   <motion.div
@@ -267,7 +331,7 @@ const PostPageContent: FC<{
                   </motion.button>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
           </aside>
         )}
       </div>

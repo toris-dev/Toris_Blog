@@ -1,5 +1,3 @@
-'use client';
-
 import Script from 'next/script';
 
 interface StructuredDataProps {
@@ -10,9 +8,13 @@ interface StructuredDataProps {
     | 'person'
     | 'organization'
     | 'breadcrumb';
-  data?: any;
+  data?: Record<string, unknown>;
 }
 
+/**
+ * Structured Data 컴포넌트 (Server Component)
+ * SEO를 위한 JSON-LD 구조화된 데이터를 생성합니다.
+ */
 const StructuredData = ({ type = 'website', data }: StructuredDataProps) => {
   const getStructuredData = () => {
     const baseUrl =
@@ -23,7 +25,7 @@ const StructuredData = ({ type = 'website', data }: StructuredDataProps) => {
         return {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          name: '토리스 블로그',
+          name: 'Toris Blog',
           url: baseUrl,
           description:
             '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript, Node.js 등 웹 개발 기술과 프로젝트 경험을 공유합니다.',
@@ -44,7 +46,7 @@ const StructuredData = ({ type = 'website', data }: StructuredDataProps) => {
         return {
           '@context': 'https://schema.org',
           '@type': 'Blog',
-          name: '토리스 블로그',
+          name: 'Toris Blog',
           url: `${baseUrl}/posts`,
           description: '웹 개발 기술과 프로젝트 경험을 공유하는 기술 블로그',
           inLanguage: 'ko-KR',
@@ -88,7 +90,7 @@ const StructuredData = ({ type = 'website', data }: StructuredDataProps) => {
         return {
           '@context': 'https://schema.org',
           '@type': 'Organization',
-          name: '토리스 블로그',
+          name: 'Toris Blog',
           url: baseUrl,
           logo: `${baseUrl}/images/logo.png`,
           description: '웹 개발 기술과 프로젝트 경험을 공유하는 기술 블로그',

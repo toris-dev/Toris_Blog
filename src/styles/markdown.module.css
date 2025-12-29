@@ -396,7 +396,7 @@
     padding: 4px !important;
     border-radius: 6px;
   }
-  
+
   .mermaidContainer svg {
     max-width: 100% !important;
     width: 100% !important;
@@ -608,14 +608,14 @@
 }
 
 /* CodeBlock 래퍼 내부의 모든 요소가 반응형이 되도록 */
-.viewerContainer :global(div[data-code-block="true"]) {
+.viewerContainer :global(div[data-code-block='true']) {
   max-width: 100% !important;
   width: 100% !important;
   min-width: 0 !important;
   box-sizing: border-box !important;
 }
 
-.viewerContainer :global(div[data-code-block="true"] > div) {
+.viewerContainer :global(div[data-code-block='true'] > div) {
   max-width: 100% !important;
   width: 100% !important;
   min-width: 0 !important;
@@ -623,14 +623,14 @@
 }
 
 /* Prose 클래스 내부의 CodeBlock도 오버라이드 */
-.prose :global(div[data-code-block="true"]) {
+.prose :global(div[data-code-block='true']) {
   max-width: 100% !important;
   width: 100% !important;
   min-width: 0 !important;
   box-sizing: border-box !important;
 }
 
-.prose :global(div[data-code-block="true"] > div) {
+.prose :global(div[data-code-block='true'] > div) {
   max-width: 100% !important;
   width: 100% !important;
   min-width: 0 !important;

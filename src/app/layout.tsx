@@ -34,14 +34,14 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app'
   ),
   title: {
-    default: '토리스 블로그 - 웹 개발자의 기술 블로그',
-    template: '%s | 토리스 블로그'
+    default: 'Toris Blog - 웹 개발자의 기술 블로그',
+    template: '%s | Toris Blog'
   },
   description:
     '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript, Node.js 등 웹 개발 기술과 프로젝트 경험을 공유합니다.',
   keywords: [
     '토리스',
-    '토리스 블로그',
+    'Toris Blog',
     '웹 개발',
     '프론트엔드',
     '백엔드',
@@ -86,8 +86,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ko_KR',
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app',
-    siteName: '토리스 블로그',
-    title: '토리스 블로그 - 웹 개발자의 기술 블로그',
+    siteName: 'Toris Blog',
+    title: 'Toris Blog - 웹 개발자의 기술 블로그',
     description:
       '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript, Node.js 등 웹 개발 기술과 프로젝트 경험을 공유합니다.',
     images: [
@@ -95,13 +95,13 @@ export const metadata: Metadata = {
         url: '/images/og-image.png',
         width: 1200,
         height: 630,
-        alt: '토리스 블로그 - 웹 개발자의 기술 블로그'
+        alt: 'Toris Blog - 웹 개발자의 기술 블로그'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: '토리스 블로그 - 웹 개발자의 기술 블로그',
+    title: 'Toris Blog - 웹 개발자의 기술 블로그',
     description:
       '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript, Node.js 등 웹 개발 기술과 프로젝트 경험을 공유합니다.',
     creator: '@toris_dev',
@@ -200,16 +200,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Providers>
           {/* 2D 아트 배경 - 패턴은 globals.css에서 처리 */}
 
-          <div className="flex min-h-screen flex-col overflow-x-hidden max-w-full">
+          <div className="flex min-h-screen max-w-full flex-col overflow-x-hidden">
             <Header />
 
-            <div className="relative flex flex-1 max-w-full overflow-x-hidden">
+            <div className="relative flex max-w-full flex-1 overflow-x-hidden">
               {/* Sidebar */}
               <Sidebar posts={posts} />
 
               {/* Main Content */}
-              <div className="flex flex-1 flex-col max-w-full overflow-x-hidden min-w-0">
-                <main className="w-full max-w-full flex-1 px-4 py-8 pt-24 sm:px-6 lg:px-8 overflow-x-hidden">
+              <div className="flex min-w-0 max-w-full flex-1 flex-col overflow-x-hidden">
+                <main className="w-full max-w-full flex-1 overflow-x-hidden px-4 py-8 pt-24 sm:px-6 lg:px-8">
                   <div className="mx-auto w-full max-w-7xl animate-blur-in overflow-x-hidden">
                     {children}
                   </div>

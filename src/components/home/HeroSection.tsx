@@ -4,8 +4,12 @@ import { FaArrowRight } from '@/components/icons';
 import { SiNextDotJs } from '@/components/icons';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 export default function HeroSection() {
+  const [displayText, setDisplayText] = useState('');
+  const fullText = 'Toris Blog';
+  const [isTyping, setIsTyping] = useState(true);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -41,6 +45,24 @@ export default function HeroSection() {
     }
   };
 
+  // 타이핑 애니메이션
+  useEffect(() => {
+    if (!isTyping) return;
+
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (currentIndex < fullText.length) {
+        setDisplayText(fullText.slice(0, currentIndex + 1));
+        currentIndex++;
+      } else {
+        setIsTyping(false);
+        clearInterval(typingInterval);
+      }
+    }, 100); // 각 글자마다 100ms 간격
+
+    return () => clearInterval(typingInterval);
+  }, [isTyping, fullText]);
+
   return (
     <section className="relative px-4 py-20">
       <motion.div
@@ -63,7 +85,19 @@ export default function HeroSection() {
           className="mb-6 text-4xl font-bold tracking-tight text-foreground md:text-6xl"
           variants={scaleVariants}
         >
-          토리스 블로그
+          {displayText}
+          {isTyping && (
+            <motion.span
+              animate={{ opacity: [1, 0] }}
+              transition={{
+                duration: 0.8,
+                repeat: Infinity,
+                repeatType: 'reverse'
+              }}
+            >
+              |
+            </motion.span>
+          )}
         </motion.h1>
 
         <motion.p

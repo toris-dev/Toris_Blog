@@ -33,7 +33,7 @@ export async function GET() {
 
     // RSS 피드 생성
     const feed = new RSS({
-      title: '토리스 블로그',
+      title: 'Toris Blog',
       description: '웹 개발, 프로그래밍, 기술 트렌드에 관한 내용을 다룹니다.',
       site_url: DOMAIN,
       feed_url: `${DOMAIN}/feed.xml`,
@@ -71,7 +71,7 @@ export async function GET() {
 
     // 에러 발생 시 빈 피드 반환
     const errorFeed = new RSS({
-      title: '토리스 블로그',
+      title: 'Toris Blog',
       description: '웹 개발, 프로그래밍, 기술 트렌드에 관한 내용을 다룹니다.',
       site_url: DOMAIN,
       feed_url: `${DOMAIN}/feed.xml`,

@@ -1,6 +1,6 @@
 {
-  "name": "토리스 블로그 - 웹 개발자의 기술 블로그",
-  "short_name": "토리스 블로그",
+  "name": "Toris Blog - 웹 개발자의 기술 블로그",
+  "short_name": "Toris Blog",
   "description": "풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript, Node.js 등 웹 개발 기술과 프로젝트 경험을 공유합니다.",
   "start_url": "/",
   "display": "standalone",

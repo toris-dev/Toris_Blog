@@ -28,8 +28,14 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
   );
   const [posts, setPosts] = useState<Post[]>(propPosts || []);
   const [loading, setLoading] = useState(!propPosts);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  // 클라이언트에서만 렌더링되도록 설정 (hydration mismatch 방지)
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // URL에서 현재 카테고리 파악
   const currentCategory =
@@ -107,6 +113,28 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
     );
   };
 
+  if (!mounted) {
+    return (
+      <div className="shadow-medium w-full rounded-xl border border-border bg-card">
+        <div className="p-6">
+          <div className="flex animate-pulse flex-col items-center space-y-4">
+            <div className="size-20 rounded-full bg-background/50"></div>
+            <div className="h-4 w-24 rounded bg-background/50"></div>
+            <div className="h-3 w-32 rounded bg-background/50"></div>
+            <div className="space-y-2">
+              {[...Array(5)].map((_, i) => (
+                <div
+                  key={i}
+                  className="h-8 w-full rounded bg-background/50"
+                ></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="shadow-medium w-full rounded-xl border border-border bg-card">
@@ -130,12 +158,24 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
   }
 
   return (
-    <div className="shadow-medium w-full rounded-xl border border-border bg-card">
+    <div
+      className="shadow-medium w-full rounded-xl border border-border bg-card"
+      suppressHydrationWarning
+    >
       {/* Profile Section */}
-      <div className="border-b border-border p-6">
-        <div className="flex flex-col items-center text-center">
+      <div
+        className="border-b border-border p-6"
+        suppressHydrationWarning
+      >
+        <div
+          className="flex flex-col items-center text-center"
+          suppressHydrationWarning
+        >
           {/* Avatar */}
-          <div className="shadow-soft relative mb-4 size-20 overflow-hidden rounded-full border-2 border-border bg-primary/10">
+          <div
+            className="shadow-soft relative mb-4 size-20 overflow-hidden rounded-full border-2 border-border bg-primary/10"
+            suppressHydrationWarning
+          >
             <Image
               src="/images/logo.png"
               alt="토리스 로고"
@@ -143,6 +183,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
               height={80}
               className="size-full object-cover"
               priority
+              suppressHydrationWarning
             />
           </div>
 
