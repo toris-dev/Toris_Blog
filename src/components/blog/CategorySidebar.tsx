@@ -5,6 +5,7 @@ import {
   AiOutlineMail,
   FaCalendarAlt,
   FaUserCircle,
+  FaListAlt,
   IoIosArrowDown
 } from '@/components/icons';
 import { Post } from '@/types';
@@ -13,6 +14,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
+import { cn } from '@/utils/style';
 
 interface CategorySidebarProps {
   currentCategory?: string;
@@ -163,10 +165,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
       suppressHydrationWarning
     >
       {/* Profile Section */}
-      <div
-        className="border-b border-border p-6"
-        suppressHydrationWarning
-      >
+      <div className="border-b border-border p-6" suppressHydrationWarning>
         <div
           className="flex flex-col items-center text-center"
           suppressHydrationWarning
@@ -226,6 +225,25 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
             </a>
           </div>
         </div>
+      </div>
+
+      {/* 바로가기 */}
+      <div className="border-b border-border px-6 pb-4">
+        <h3 className="mb-2 text-sm font-semibold text-muted-foreground">
+          바로가기
+        </h3>
+        <Link
+          href="/todos"
+          className={cn(
+            'flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors',
+            pathname === '/todos'
+              ? 'bg-primary/10 text-primary'
+              : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+          )}
+        >
+          <FaListAlt className="size-4" />
+          <span>Toris 할일 관리</span>
+        </Link>
       </div>
 
       {/* Navigation Section */}
