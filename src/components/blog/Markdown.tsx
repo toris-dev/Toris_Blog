@@ -62,7 +62,7 @@ const hashString = (str: string): string => {
   return Math.abs(hash).toString(36);
 };
 
-export const MarkdownViewer: React.FC<MarkdownProps> = ({
+const MarkdownViewerComponent: React.FC<MarkdownProps> = ({
   children,
   className,
   onHeadingsChange
@@ -612,3 +612,24 @@ export const MarkdownViewer: React.FC<MarkdownProps> = ({
     </div>
   );
 };
+
+// React.memo로 메모이제이션하여 props가 변경되지 않으면 리렌더링 방지
+export const MarkdownViewer = React.memo(
+  MarkdownViewerComponent,
+  (prevProps, nextProps) => {
+    // children(마크다운 content)가 변경된 경우에만 리렌더링
+    if (prevProps.children !== nextProps.children) {
+      return false; // 리렌더링 필요
+    }
+    // className이 변경된 경우에만 리렌더링
+    if (prevProps.className !== nextProps.className) {
+      return false; // 리렌더링 필요
+    }
+    // onHeadingsChange 함수 참조가 변경된 경우에만 리렌더링
+    if (prevProps.onHeadingsChange !== nextProps.onHeadingsChange) {
+      return false; // 리렌더링 필요
+    }
+    // 모든 props가 동일하면 리렌더링 불필요
+    return true; // 리렌더링 스킵
+  }
+);

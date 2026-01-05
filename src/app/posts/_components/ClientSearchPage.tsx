@@ -175,7 +175,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
     }
   }, [currentCategoryFromUrl]);
 
-  // 검색 및 필터링 로직
+  // 검색 및 필터링 로직 - debounce로 입력이 끝난 후에만 실행
   const debouncedFilterRef = useRef(
     debounce(
       (
@@ -187,6 +187,9 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
           setIsFiltering(false);
           return;
         }
+
+        // 입력이 끝났을 때만 필터링 시작
+        setIsFiltering(true);
 
         let results = [...postsData];
 
@@ -228,15 +231,17 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
         setFilteredPosts(results);
         setIsFiltering(false);
       },
-      300
+      500 // 입력이 완전히 끝난 후 500ms 후에 검색 실행
     )
   );
 
-  // 검색어나 필터가 변경될 때만 debounced 필터링 실행
+  // 검색어나 필터가 변경될 때 debounced 필터링 예약
+  // 실제 검색은 debounce 함수 내부에서 입력이 끝난 후에만 실행됨
   // posts는 초기 로드 후 변경되지 않으므로 ref를 통해 접근
   // uniqueActiveFilters를 사용하여 중복 제거된 필터 적용
   useEffect(() => {
-    setIsFiltering(true);
+    // 입력 중에는 isFiltering을 설정하지 않음
+    // debounce 함수 내부에서 입력이 끝났을 때만 isFiltering을 true로 설정
     debouncedFilterRef.current(
       searchTerm,
       uniqueActiveFilters,

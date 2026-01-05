@@ -52,12 +52,8 @@ const Header: FC = () => {
     // debounce 적용 (100ms 후 실행)
     debounceTimeoutRef.current = setTimeout(() => {
       if (latest > previousScrollY && latest > 100) {
-        // 스크롤 내림
-        console.log('스크롤 내림');
         setIsVisible(false);
       } else if (latest < previousScrollY) {
-        // 스크롤 올림
-        console.log('스크롤 올림');
         setIsVisible(true);
       }
     }, 100);
@@ -90,11 +86,11 @@ const Header: FC = () => {
   return (
     <>
       {/* Desktop Header */}
-      <motion.header
-        className="shadow-soft fixed inset-x-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60"
-        initial={false}
-        animate={mounted ? { y: isVisible ? 0 : -100 } : { y: 0 }}
-        transition={{ duration: 0.3, ease: 'easeInOut' }}
+      <header
+        className={cn(
+          'shadow-soft fixed inset-x-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60',
+          !isVisible && 'hide'
+        )}
         suppressHydrationWarning
       >
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -166,7 +162,7 @@ const Header: FC = () => {
             <ThemeToggle />
           </div>
         </div>
-      </motion.header>
+      </header>
 
       {/* Mobile Bottom Navigation */}
       <motion.div

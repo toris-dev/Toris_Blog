@@ -21,10 +21,10 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
       >
         <WalletProvider>
           <TodoProvider>
-            <SidebarProvider>
-              <ToasterContext />
-              {children}
-            </SidebarProvider>
+        <SidebarProvider>
+          <ToasterContext />
+          {children}
+        </SidebarProvider>
           </TodoProvider>
         </WalletProvider>
       </ThemeProvider>

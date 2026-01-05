@@ -50,25 +50,41 @@ const PostPageContent: FC<{
   const [mounted, setMounted] = useState(false);
   const [isTocOpen, setIsTocOpen] = useState(true);
   const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const { scrollY } = useScroll();
   const lastScrollY = useRef(0);
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Header와 동일한 스크롤 감지 로직
+  // 스크롤 이벤트 핸들러 최적화: debounce 적용 및 불필요한 상태 업데이트 방지
+  // isHeaderVisible은 사용되지 않으므로 제거하고, 스크롤 이벤트만 최소한으로 처리
   useMotionValueEvent(scrollY, 'change', (latest) => {
-    if (latest > lastScrollY.current && latest > 100) {
-      // 스크롤 내림
-      setIsHeaderVisible(false);
-    } else if (latest < lastScrollY.current) {
-      // 스크롤 올림
-      setIsHeaderVisible(true);
+    // 기존 timeout 제거
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
     }
+
+    // 마지막 스크롤 위치 저장
+    const previousScrollY = lastScrollY.current;
     lastScrollY.current = latest;
+
+    // debounce 적용 (100ms 후 실행) - 불필요한 리렌더링 방지
+    debounceTimeoutRef.current = setTimeout(() => {
+      // 현재는 isHeaderVisible을 사용하지 않으므로 상태 업데이트 제거
+      // 필요시 여기에 스크롤 관련 로직 추가 가능
+    }, 100);
   });
+
+  // 컴포넌트 언마운트 시 timeout 정리
+  useEffect(() => {
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // 모바일 목차 모달 닫기 (ESC 키)
   useEffect(() => {

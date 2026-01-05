@@ -394,4 +394,14 @@
       font-size: 12px !important;
     }
   }
+
+  /* Header hide 클래스 */
+  header.hide {
+    transform: translateY(-100%);
+  }
+
+  /* Header transition */
+  header {
+    transition: transform 0.3s ease-in-out;
+  }
 }
