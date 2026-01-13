@@ -15,6 +15,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
+import { saveSearchHistory, filterByDateRange, sortPosts, SearchFilters } from '@/utils/search';
+import { SearchHistory } from '@/components/search/SearchHistory';
+import { HighlightText } from '@/components/search/HighlightText';
 
 // Debounce helper function
 function debounce<T extends (...args: any[]) => any>(
@@ -126,16 +129,23 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
   const [activeFilters, setActiveFilters] = useState<{
     categories: string[];
     tags: string[];
+    dateRange: SearchFilters['dateRange'];
+    sortBy: SearchFilters['sortBy'];
   }>({
     categories: [],
-    tags: []
+    tags: [],
+    dateRange: 'all',
+    sortBy: 'newest'
   });
+  const [showSearchHistory, setShowSearchHistory] = useState(false);
 
   // activeFilters의 중복 제거 (안전장치)
   const uniqueActiveFilters = useMemo(
     () => ({
       categories: Array.from(new Set(activeFilters.categories)),
-      tags: Array.from(new Set(activeFilters.tags))
+      tags: Array.from(new Set(activeFilters.tags)),
+      dateRange: activeFilters.dateRange,
+      sortBy: activeFilters.sortBy
     }),
     [activeFilters]
   );
@@ -180,7 +190,12 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
     debounce(
       (
         term: string,
-        filters: { categories: string[]; tags: string[] },
+        filters: {
+          categories: string[];
+          tags: string[];
+          dateRange: SearchFilters['dateRange'];
+          sortBy: SearchFilters['sortBy'];
+        },
         postsData: Post[]
       ) => {
         if (!postsData.length) {
@@ -209,6 +224,9 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
           );
         }
 
+        // 날짜 범위로 필터링
+        results = filterByDateRange(results, filters.dateRange);
+
         // 카테고리로 필터링
         if (filters.categories.length) {
           results = results.filter((post) =>
@@ -228,8 +246,21 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
           });
         }
 
+        // 정렬
+        results = sortPosts(results, filters.sortBy);
+
         setFilteredPosts(results);
         setIsFiltering(false);
+
+        // 검색 히스토리 저장
+        if (term.trim()) {
+          saveSearchHistory(term, {
+            dateRange: filters.dateRange,
+            categories: filters.categories,
+            tags: filters.tags,
+            sortBy: filters.sortBy
+          });
+        }
       },
       500 // 입력이 완전히 끝난 후 500ms 후에 검색 실행
     )
@@ -285,8 +316,18 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
   }, []);
 
   const clearFilters = useCallback(() => {
-    setActiveFilters({ categories: [], tags: [] });
+    setActiveFilters({
+      categories: [],
+      tags: [],
+      dateRange: 'all',
+      sortBy: 'newest'
+    });
     setSearchTerm('');
+  }, []);
+
+  const handleSearchHistorySelect = useCallback((query: string) => {
+    setSearchTerm(query);
+    setShowSearchHistory(false);
   }, []);
 
   // 카테고리별 색상 매핑 - useCallback으로 메모이제이션
@@ -333,27 +374,33 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
       isFiltering = false,
       isMounted = false
     }) => {
-      // 필터링 중일 때는 애니메이션 없이 렌더링
-      if (!posts.length) {
-        return (
-          <motion.div
-            initial={false}
-            animate={isMounted ? { opacity: 1 } : false}
-            className="flex flex-col items-center justify-center py-16 text-center"
-            suppressHydrationWarning
-          >
-            <FaSearch className="mb-4 text-6xl text-muted-foreground/30" />
-            <h3 className="mb-2 text-xl font-medium text-foreground">
-              검색 결과가 없습니다
-            </h3>
-            <p className="text-muted-foreground">
-              다른 검색어를 시도하거나 필터를 조정해보세요.
-            </p>
-          </motion.div>
-        );
-      }
-
       return (
+        <div>
+          {/* 검색 결과 개수 표시 */}
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">
+              총 <span className="font-semibold text-foreground">{posts.length}</span>개의
+              결과를 찾았습니다
+            </p>
+          </div>
+
+          {/* 필터링 중일 때는 애니메이션 없이 렌더링 */}
+          {!posts.length ? (
+            <motion.div
+              initial={false}
+              animate={isMounted ? { opacity: 1 } : false}
+              className="flex flex-col items-center justify-center py-16 text-center"
+              suppressHydrationWarning
+            >
+              <FaSearch className="mb-4 text-6xl text-muted-foreground/30" />
+              <h3 className="mb-2 text-xl font-medium text-foreground">
+                검색 결과가 없습니다
+              </h3>
+              <p className="text-muted-foreground">
+                다른 검색어를 시도하거나 필터를 조정해보세요.
+              </p>
+            </motion.div>
+          ) : (
         <div className="space-y-6">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-medium text-foreground">
@@ -406,23 +453,29 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
 
                       <div className="p-5">
                         <h3 className="mb-2 line-clamp-2 text-lg font-bold text-foreground group-hover:text-primary">
-                          {searchTerm
-                            ? highlightText(post.title, searchTerm)
-                            : post.title}
+                          {searchTerm ? (
+                            <HighlightText text={post.title} searchTerm={searchTerm} />
+                          ) : (
+                            post.title
+                          )}
                         </h3>
 
                         <p className="mb-4 line-clamp-3 text-sm text-muted-foreground">
-                          {searchTerm
-                            ? highlightText(
-                                post.content
+                          {searchTerm ? (
+                            <>
+                              <HighlightText
+                                text={post.content
                                   .replace(/[#*`_]/g, '')
-                                  .substring(0, 150),
-                                searchTerm
-                              )
-                            : post.content
-                                .replace(/[#*`_]/g, '')
-                                .substring(0, 150)}
-                          ...
+                                  .substring(0, 150)}
+                                searchTerm={searchTerm}
+                              />
+                              ...
+                            </>
+                          ) : (
+                            <>
+                              {post.content.replace(/[#*`_]/g, '').substring(0, 150)}...
+                            </>
+                          )}
                         </p>
 
                         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -468,6 +521,8 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
               })}
             </AnimatePresence>
           </div>
+            </div>
+          )}
         </div>
       );
     },
@@ -652,6 +707,68 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                     suppressHydrationWarning
                   >
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                      {/* 날짜 필터 */}
+                      <div>
+                        <h3 className="mb-2 font-medium text-foreground">날짜 범위</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {[
+                            { value: 'all', label: '전체' },
+                            { value: 'week', label: '최근 1주일' },
+                            { value: 'month', label: '최근 1개월' },
+                            { value: '3months', label: '최근 3개월' },
+                            { value: '6months', label: '최근 6개월' },
+                            { value: 'year', label: '최근 1년' }
+                          ].map((option) => (
+                            <button
+                              key={option.value}
+                              onClick={() =>
+                                setActiveFilters((prev) => ({
+                                  ...prev,
+                                  dateRange: option.value as SearchFilters['dateRange']
+                                }))
+                              }
+                              className={cn(
+                                'rounded-full px-3 py-1 text-sm transition-all',
+                                uniqueActiveFilters.dateRange === option.value
+                                  ? 'border-primary bg-primary/20 text-primary'
+                                  : 'border border-border text-muted-foreground hover:border-primary hover:bg-primary/10'
+                              )}
+                            >
+                              {option.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* 정렬 옵션 */}
+                      <div>
+                        <h3 className="mb-2 font-medium text-foreground">정렬</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {[
+                            { value: 'newest', label: '최신순' },
+                            { value: 'oldest', label: '오래된순' }
+                          ].map((option) => (
+                            <button
+                              key={option.value}
+                              onClick={() =>
+                                setActiveFilters((prev) => ({
+                                  ...prev,
+                                  sortBy: option.value as SearchFilters['sortBy']
+                                }))
+                              }
+                              className={cn(
+                                'rounded-full px-3 py-1 text-sm transition-all',
+                                uniqueActiveFilters.sortBy === option.value
+                                  ? 'border-primary bg-primary/20 text-primary'
+                                  : 'border border-border text-muted-foreground hover:border-primary hover:bg-primary/10'
+                              )}
+                            >
+                              {option.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
                       <div>
                         <h3 className="mb-2 font-medium text-foreground">
                           카테고리
