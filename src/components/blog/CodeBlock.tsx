@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { codeToHtml } from 'shiki';
 import { cn } from '@/utils/style';
+import { copyToClipboard } from '@/utils/clipboard';
+import toast from 'react-hot-toast';
+import { FaCopy, FaCheck } from '@/components/icons';
 
 interface CodeBlockProps {
   code: string;
@@ -45,12 +48,13 @@ export function CodeBlock({ code, language, className }: CodeBlockProps) {
   }, [code, language, theme, mounted]);
 
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
+    const success = await copyToClipboard(code);
+    if (success) {
       setCopied(true);
+      toast.success('코드가 복사되었습니다.');
       setTimeout(() => setCopied(false), 2000);
-    } catch (error) {
-      console.error('Failed to copy code:', error);
+    } else {
+      toast.error('코드 복사에 실패했습니다.');
     }
   };
 
@@ -76,12 +80,22 @@ export function CodeBlock({ code, language, className }: CodeBlockProps) {
           </span>
           <button
             onClick={mounted ? handleCopy : undefined}
-            className="rounded border border-border bg-background px-1.5 py-0.5 text-[10px] text-foreground transition-colors hover:border-primary hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50 sm:px-2 sm:py-1 sm:text-xs"
-            aria-label="코드 복사"
-            title="코드 복사"
+            className="flex items-center gap-1 rounded border border-border bg-background px-1.5 py-0.5 text-[10px] text-foreground transition-colors hover:border-primary hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50 sm:px-2 sm:py-1 sm:text-xs"
+            aria-label={copied ? '복사됨' : '코드 복사'}
+            title={copied ? '복사됨' : '코드 복사'}
             disabled={!mounted}
           >
-            {mounted && copied ? '✓' : '복사'}
+            {mounted && copied ? (
+              <>
+                <FaCheck className="size-3 text-green-500" />
+                <span>복사됨</span>
+              </>
+            ) : (
+              <>
+                <FaCopy className="size-3" />
+                <span>복사</span>
+              </>
+            )}
           </button>
         </div>
       </div>
