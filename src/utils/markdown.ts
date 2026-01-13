@@ -136,7 +136,9 @@ function parseMarkdownFile(filePath: string): Post | null {
       tags: data.tags || [category],
       date: data.date || '1970-01-01T00:00:00.000Z',
       slug,
-      filePath: path.relative(process.cwd(), filePath)
+      filePath: path.relative(process.cwd(), filePath),
+      series: data.series || undefined,
+      seriesOrder: data.seriesOrder ? parseInt(data.seriesOrder, 10) : undefined
     };
   } catch (error) {
     console.error(`Error parsing markdown file ${filePath}:`, error);
