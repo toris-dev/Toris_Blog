@@ -22,16 +22,20 @@ export interface Heading {
 interface TableOfContentsProps {
   headings: Heading[];
   className?: string;
+  scrollContainerRef?: React.RefObject<HTMLElement>;
 }
 
 export const TableOfContents: React.FC<TableOfContentsProps> = ({
   headings,
-  className
+  className,
+  scrollContainerRef
 }) => {
   const [activeId, setActiveId] = useState<string>('');
   const isScrollingRef = useRef(false);
   const isMounted = useIsMounted();
   const activeItemRef = useRef<HTMLButtonElement | null>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isScrollingAnimationRef = useRef(false);
 
   // 스크롤 시 현재 활성화된 헤딩 감지
   useEffect(() => {
@@ -72,47 +76,116 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
   useEffect(() => {
     if (!activeId || !activeItemRef.current) return;
     if (isScrollingRef.current) return; // 사용자가 클릭한 경우 스크롤하지 않음
+    if (isScrollingAnimationRef.current) return; // 스크롤 애니메이션 중에는 추가 스크롤 방지
 
-    const activeButton = activeItemRef.current;
-
-    // 가장 가까운 스크롤 가능한 부모 요소 찾기
-    let scrollContainer: HTMLElement | null = activeButton.parentElement;
-    while (scrollContainer) {
-      const style = window.getComputedStyle(scrollContainer);
-      if (
-        scrollContainer.scrollHeight > scrollContainer.clientHeight &&
-        (style.overflowY === 'auto' || style.overflowY === 'scroll')
-      ) {
-        break;
-      }
-      scrollContainer = scrollContainer.parentElement;
+    // 기존 timeout 제거 (debounce)
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
     }
 
-    // 스크롤 컨테이너가 있으면 해당 컨테이너 기준으로 확인
-    if (scrollContainer) {
-      const containerRect = scrollContainer.getBoundingClientRect();
-      const buttonRect = activeButton.getBoundingClientRect();
+    // debounce 적용 (100ms)
+    scrollTimeoutRef.current = setTimeout(() => {
+      const activeButton = activeItemRef.current;
+      if (!activeButton) return;
 
-      // 항목이 컨테이너 뷰포트 밖에 있으면 스크롤
-      if (
-        buttonRect.top < containerRect.top ||
-        buttonRect.bottom > containerRect.bottom
-      ) {
-        activeButton.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'nearest'
+      // scrollContainerRef가 제공되면 직접 사용, 없으면 부모 요소에서 찾기
+      let scrollContainer: HTMLElement | null = null;
+
+      if (scrollContainerRef?.current) {
+        scrollContainer = scrollContainerRef.current;
+      } else {
+        // 가장 가까운 스크롤 가능한 부모 요소 찾기 (기존 로직)
+        scrollContainer = activeButton.parentElement;
+        while (scrollContainer) {
+          const style = window.getComputedStyle(scrollContainer);
+          if (
+            scrollContainer.scrollHeight > scrollContainer.clientHeight &&
+            (style.overflowY === 'auto' || style.overflowY === 'scroll')
+          ) {
+            break;
+          }
+          scrollContainer = scrollContainer.parentElement;
+        }
+      }
+
+      // 스크롤 컨테이너가 있으면 해당 컨테이너 기준으로 확인
+      if (scrollContainer) {
+        // requestAnimationFrame을 사용하여 부드러운 스크롤 처리
+        requestAnimationFrame(() => {
+          const containerRect = scrollContainer!.getBoundingClientRect();
+          const buttonRect = activeButton.getBoundingClientRect();
+
+          // 항목이 컨테이너 뷰포트 밖에 있으면 스크롤
+          if (
+            buttonRect.top < containerRect.top ||
+            buttonRect.bottom > containerRect.bottom
+          ) {
+            isScrollingAnimationRef.current = true;
+
+            // 목차 컨테이너 내부 스크롤을 위해 scrollTop 직접 계산
+            const containerScrollTop = scrollContainer.scrollTop;
+            const containerHeight = scrollContainer.clientHeight;
+            const buttonOffsetTop = activeButton.offsetTop;
+            const buttonHeight = activeButton.offsetHeight;
+
+            // 활성 항목을 컨테이너 중앙에 위치시키기 위한 계산
+            const targetScrollTop =
+              buttonOffsetTop -
+              containerHeight / 2 +
+              buttonHeight / 2;
+
+            // 부드러운 스크롤 애니메이션
+            const startScrollTop = containerScrollTop;
+            const distance = targetScrollTop - startScrollTop;
+            const duration = 300; // 300ms
+            const startTime = performance.now();
+
+            const animateScroll = (currentTime: number) => {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+
+              // easeOutCubic 이징 함수
+              const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+              const currentScrollTop =
+                startScrollTop + distance * easeOutCubic;
+
+              scrollContainer.scrollTop = currentScrollTop;
+
+              if (progress < 1) {
+                requestAnimationFrame(animateScroll);
+              } else {
+                isScrollingAnimationRef.current = false;
+              }
+            };
+
+            requestAnimationFrame(animateScroll);
+          }
+        });
+      } else {
+        // 스크롤 컨테이너가 없으면 기본 동작
+        requestAnimationFrame(() => {
+          isScrollingAnimationRef.current = true;
+          activeButton.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'nearest'
+          });
+
+          // 스크롤 애니메이션 완료 후 플래그 리셋
+          setTimeout(() => {
+            isScrollingAnimationRef.current = false;
+          }, 600);
         });
       }
-    } else {
-      // 스크롤 컨테이너가 없으면 기본 동작
-      activeButton.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'nearest'
-      });
-    }
-  }, [activeId]);
+    }, 100);
+
+    // cleanup 함수
+    return () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, [activeId, scrollContainerRef]);
 
   // 헤딩 클릭 시 스크롤
   const handleClick = (id: string, e?: React.MouseEvent) => {
@@ -120,6 +193,12 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
     e?.stopPropagation();
 
     isScrollingRef.current = true;
+    isScrollingAnimationRef.current = true;
+
+    // 기존 timeout 제거
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
 
     // 요소 찾기 (재시도 로직 포함)
     const findAndScrollToElement = (attempt = 0) => {
@@ -166,6 +245,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
         // 스크롤 완료 후 플래그 리셋
         setTimeout(() => {
           isScrollingRef.current = false;
+          isScrollingAnimationRef.current = false;
         }, 1500);
         return;
       }
@@ -189,6 +269,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
         }
       );
       isScrollingRef.current = false;
+      isScrollingAnimationRef.current = false;
     };
 
     findAndScrollToElement();
