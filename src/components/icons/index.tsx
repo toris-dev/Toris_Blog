@@ -36,7 +36,9 @@ import { BsSun } from '@react-icons/all-files/bs/BsSun';
 import { FaArrowLeft } from '@react-icons/all-files/fa/FaArrowLeft';
 import { FaArrowRight } from '@react-icons/all-files/fa/FaArrowRight';
 import { FaBlog } from '@react-icons/all-files/fa/FaBlog';
+import { FaBookmark } from '@react-icons/all-files/fa/FaBookmark';
 import { FaCalendarAlt } from '@react-icons/all-files/fa/FaCalendarAlt';
+import { FaCheck } from '@react-icons/all-files/fa/FaCheck';
 import { FaCheckCircle } from '@react-icons/all-files/fa/FaCheckCircle';
 import { FaChevronLeft } from '@react-icons/all-files/fa/FaChevronLeft';
 import { FaChevronRight } from '@react-icons/all-files/fa/FaChevronRight';
@@ -45,6 +47,7 @@ import { FaClock } from '@react-icons/all-files/fa/FaClock';
 import { FaCloudUploadAlt } from '@react-icons/all-files/fa/FaCloudUploadAlt';
 import { FaCode } from '@react-icons/all-files/fa/FaCode';
 import { FaCodeBranch } from '@react-icons/all-files/fa/FaCodeBranch';
+import { FaCopy } from '@react-icons/all-files/fa/FaCopy';
 import { FaDatabase } from '@react-icons/all-files/fa/FaDatabase';
 import { FaDiscord } from '@react-icons/all-files/fa/FaDiscord';
 import { FaEdit } from '@react-icons/all-files/fa/FaEdit';
@@ -54,10 +57,12 @@ import { FaFolder } from '@react-icons/all-files/fa/FaFolder';
 import { FaFolderOpen } from '@react-icons/all-files/fa/FaFolderOpen';
 import { FaGit } from '@react-icons/all-files/fa/FaGit';
 import { FaGithub } from '@react-icons/all-files/fa/FaGithub';
+import { FaHeart } from '@react-icons/all-files/fa/FaHeart';
 import { FaHome } from '@react-icons/all-files/fa/FaHome';
 import { FaImage } from '@react-icons/all-files/fa/FaImage';
 import { FaInfoCircle } from '@react-icons/all-files/fa/FaInfoCircle';
 import { FaLaptopCode } from '@react-icons/all-files/fa/FaLaptopCode';
+import { FaList } from '@react-icons/all-files/fa/FaList';
 import { FaListAlt } from '@react-icons/all-files/fa/FaListAlt';
 import { FaLock } from '@react-icons/all-files/fa/FaLock';
 import { FaMarkdown } from '@react-icons/all-files/fa/FaMarkdown';
@@ -135,7 +140,9 @@ export {
   FaArrowLeft,
   FaArrowRight,
   FaBlog,
+  FaBookmark,
   FaCalendarAlt,
+  FaCheck,
   FaCheckCircle,
   FaChevronLeft,
   FaChevronRight,
@@ -144,6 +151,7 @@ export {
   FaCloudUploadAlt,
   FaCode,
   FaCodeBranch,
+  FaCopy,
   FaDatabase,
   FaDiscord,
   FaEdit,
@@ -153,10 +161,12 @@ export {
   FaFolderOpen,
   FaGit,
   FaGithub,
+  FaHeart,
   FaHome,
   FaImage,
   FaInfoCircle,
   FaLaptopCode,
+  FaList,
   FaListAlt,
   FaLock,
   FaMarkdown,
