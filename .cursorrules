@@ -1,0 +1,239 @@
+# Toris Blog - Cursor Rules
+
+## 역할 분담
+
+### Cursor (Auto)의 역할
+- **코드 작성 및 수정**: 컴포넌트, 유틸리티, API 라우트 개발
+- **테스트 작성**: 단위 테스트, 통합 테스트, E2E 테스트
+- **버그 수정**: 즉각적인 버그 수정 및 이슈 해결
+- **리팩토링**: 코드 품질 개선 및 최적화
+- **UI/UX 구현**: 사용자 인터페이스 및 상호작용 구현
+- **성능 최적화**: 렌더링 최적화, 번들 크기 최적화
+- **빠른 반복 개발**: 작은 규모의 기능 추가 및 수정
+
+### opencode의 역할
+- **대규모 분석 작업**: 코드베이스 전체 분석, 패턴 파악
+- **문서화**: 기술 문서, API 문서, 아키텍처 문서 작성
+- **아키텍처 설계**: 시스템 설계, 데이터 모델 설계
+- **코드베이스 탐색**: 전체 프로젝트 구조 파악 및 의존성 분석
+- **디자인 시스템 분석**: 컴포넌트 인벤토리, 디자인 토큰 추출
+- **콘텐츠 분석**: 마크다운 포스트 분석, 기술 스택 추출
+- **테스트 전략 수립**: 테스트 계획 및 전략 문서화
+
+## 프로젝트 코딩 컨벤션
+
+### TypeScript
+- 엄격한 타입 체크 사용
+- `any` 타입 사용 지양
+- 인터페이스는 `I` 접두사 없이 PascalCase 사용
+- 타입은 `type` 키워드 사용, 확장 가능한 경우 `interface` 사용
+
+### React 컴포넌트
+- 함수형 컴포넌트 사용
+- 컴포넌트명은 PascalCase
+- Props 인터페이스는 컴포넌트명 + `Props` 형식
+- `'use client'` 지시어는 클라이언트 컴포넌트에만 사용
+- Server Components 우선 사용
+
+### 파일 구조
+- 컴포넌트: `src/components/[category]/ComponentName.tsx`
+- 페이지: `src/app/[route]/page.tsx`
+- API 라우트: `src/app/api/[route]/route.ts`
+- 유틸리티: `src/utils/utilityName.ts`
+- 훅: `src/hooks/useHookName.ts`
+- 모델: `src/models/ModelName.ts`
+- 타입: `src/types/index.ts`
+
+### 네이밍 컨벤션
+- 컴포넌트: PascalCase (`Button.tsx`)
+- 함수/변수: camelCase (`getPostData`)
+- 상수: UPPER_SNAKE_CASE (`MAX_POSTS`)
+- 파일명: 컴포넌트는 PascalCase, 유틸리티는 camelCase
+
+### 스타일링
+- Tailwind CSS 우선 사용
+- CSS Modules는 필요한 경우만 사용 (`*.module.css`)
+- 인라인 스타일 지양
+- 반응형 디자인: 모바일 퍼스트 접근
+
+### 테스트
+- 테스트 파일은 `__tests__` 디렉토리 또는 `*.test.tsx` 형식
+- 컴포넌트 테스트: React Testing Library 사용
+- E2E 테스트: Cypress 사용
+- 테스트 커버리지 목표: 70%
+
+### 접근성
+- ARIA 속성 적절히 사용
+- 키보드 네비게이션 지원
+- 색상 대비 비율 준수 (WCAG AA 이상)
+- 시맨틱 HTML 사용
+
+### 성능
+- 불필요한 리렌더링 방지 (`React.memo`, `useMemo`, `useCallback`)
+- 이미지는 Next.js `Image` 컴포넌트 사용
+- 코드 스플리팅 적극 활용
+- Server Components 우선 사용
+
+## 커밋 컨벤션
+
+```
+<type>: <subject>
+
+<body>
+
+<footer>
+```
+
+### Type
+- `feat`: 새로운 기능 추가
+- `fix`: 버그 수정
+- `docs`: 문서 수정
+- `style`: 코드 포맷팅, 세미콜론 누락 등
+- `refactor`: 코드 리팩토링
+- `test`: 테스트 코드 추가/수정
+- `chore`: 빌드 업무 수정, 패키지 매니저 설정 등
+- `perf`: 성능 개선
+
+### 예시
+```
+feat: 비회원 댓글 시스템 추가
+
+- MongoDB 스키마 설계
+- API 라우트 구현
+- 댓글 UI 컴포넌트 추가
+- 테스트 코드 작성
+
+Closes #123
+```
+
+## 파일 구조 가이드
+
+### 컴포넌트 구조
+```typescript
+'use client'; // 클라이언트 컴포넌트인 경우만
+
+import { FC } from 'react';
+import { cn } from '@/utils/style';
+
+interface ComponentProps {
+  // Props 정의
+}
+
+export const Component: FC<ComponentProps> = ({ ...props }) => {
+  // 컴포넌트 로직
+  return (
+    // JSX
+  );
+};
+```
+
+### API 라우트 구조
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET(request: NextRequest) {
+  try {
+    // 로직
+    return NextResponse.json({ data });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Error message' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+### MongoDB 모델 구조
+```typescript
+import mongoose, { Schema, Document } from 'mongoose';
+
+export interface IModel extends Document {
+  // 필드 정의
+}
+
+const ModelSchema = new Schema<IModel>({
+  // 스키마 정의
+}, {
+  timestamps: true
+});
+
+export default mongoose.models.Model || mongoose.model<IModel>('Model', ModelSchema);
+```
+
+## 테스트 작성 가이드
+
+### 컴포넌트 테스트
+```typescript
+import { render, screen } from '@testing-library/react';
+import Component from '@/components/Component';
+
+describe('Component', () => {
+  it('should render correctly', () => {
+    render(<Component />);
+    expect(screen.getByText('Expected Text')).toBeInTheDocument();
+  });
+});
+```
+
+### API 테스트
+```typescript
+import { GET } from '@/app/api/route';
+import { NextRequest } from 'next/server';
+
+describe('/api/route', () => {
+  it('should return data', async () => {
+    const request = new NextRequest('http://localhost/api/route');
+    const response = await GET(request);
+    const data = await response.json();
+    expect(data).toBeDefined();
+  });
+});
+```
+
+## 디자인 시스템
+
+### 색상
+- CSS 변수 사용 (`--background`, `--foreground` 등)
+- 테마: light, dark, cyberpunk
+- `tailwind.config.ts`에서 커스텀 색상 정의
+
+### 타이포그래피
+- 기본 폰트: 시스템 폰트 스택
+- 제목: `font-bold`
+- 본문: 기본 크기
+
+### 간격
+- Tailwind spacing scale 사용
+- 일관된 간격 유지
+
+### 컴포넌트 패턴
+- CVA (Class Variance Authority) 사용
+- Radix UI 기반 컴포넌트
+- ForwardRef 패턴 사용
+
+## 보안 고려사항
+
+- 사용자 입력 검증 필수
+- XSS 방지 (DOMPurify 등)
+- CSRF 보호
+- 비밀번호 해싱 (bcrypt)
+- 환경 변수 보호
+- API 라우트 인증/인가 확인
+
+## 성능 최적화 가이드
+
+- 이미지 최적화 (Next.js Image)
+- 코드 스플리팅
+- 서버 컴포넌트 우선 사용
+- 불필요한 리렌더링 방지
+- 번들 크기 모니터링
+- Lighthouse 점수 유지
+
+## 참고 문서
+
+- [Next.js 공식 문서](https://nextjs.org/docs)
+- [React 공식 문서](https://react.dev)
+- [Tailwind CSS 공식 문서](https://tailwindcss.com/docs)
+- [Testing Library 공식 문서](https://testing-library.com)
+- [MongoDB Mongoose 문서](https://mongoosejs.com/docs)
