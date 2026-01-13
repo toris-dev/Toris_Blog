@@ -67,12 +67,6 @@ const Footer: FC = () => {
           <p className="text-sm text-muted-foreground">
             &copy; {year} Toris-dev. All rights reserved.
           </p>
-          <div className="mt-4 flex items-center sm:mt-0">
-            <div className="shadow-soft flex items-center rounded-full border border-border bg-primary/10 px-3 py-1 text-xs text-primary">
-              <FaCode className="mr-1 size-3" />
-              <span>Next.js</span>
-            </div>
-          </div>
         </div>
       </div>
     </footer>
