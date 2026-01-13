@@ -24,6 +24,8 @@ export interface Post {
   slug: string;
   filePath: string;
   description?: string;
+  series?: string;
+  seriesOrder?: number;
 }
 
 // GitHub comment types

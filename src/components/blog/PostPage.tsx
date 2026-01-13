@@ -20,6 +20,11 @@ import {
 } from 'framer-motion';
 import { Utterances } from './Utterances';
 import { ShareButtons } from './ShareButtons';
+import { CommentSection } from './CommentSection';
+import { PostViewCount } from './PostViewCount';
+import { ReadingTime } from './ReadingTime';
+import { PostSeries } from './PostSeries';
+import { RelatedPosts } from './RelatedPosts';
 import { AdSense } from '@/components/ads/AdSense';
 import {
   PostHeadingsProvider,
@@ -27,6 +32,11 @@ import {
 } from '@/contexts/PostHeadingsContext';
 import { TableOfContents } from '@/components/blog/TableOfContents';
 import { createPortal } from 'react-dom';
+
+import { SeriesMetadata } from '@/utils/postSeries';
+import { BookmarkButton } from './BookmarkButton';
+import { PostLikeButton } from './PostLikeButton';
+import { Post } from '@/types';
 
 // 마크다운 파일에서 가져올 때 사용할 인터페이스에 맞게 props를 수정합니다
 const PostPageContent: FC<{
@@ -37,6 +47,8 @@ const PostPageContent: FC<{
   date?: string;
   image?: string;
   postId: number | string;
+  series?: SeriesMetadata;
+  relatedPosts?: Post[];
 }> = ({
   title,
   category = 'Uncategorized',
@@ -44,7 +56,9 @@ const PostPageContent: FC<{
   content,
   date,
   image,
-  postId
+  postId,
+  series,
+  relatedPosts = []
 }) => {
   const { setHeadings, headings } = usePostHeadings();
   const [mounted, setMounted] = useState(false);
@@ -53,6 +67,7 @@ const PostPageContent: FC<{
   const { scrollY } = useScroll();
   const lastScrollY = useRef(0);
   const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const tocContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -240,18 +255,55 @@ const PostPageContent: FC<{
                           : null}
                     </div>
                   </div>
+                  {mounted && (
+                    <>
+                      <PostViewCount
+                        postId={postId.toString()}
+                        className="text-xs sm:text-sm"
+                      />
+                      <ReadingTime
+                        content={content}
+                        className="text-xs sm:text-sm"
+                      />
+                    </>
+                  )}
                 </div>
               </header>
 
               {mounted && (
-                <div className="mb-6 sm:mb-8 md:mb-10">
+                <div className="mb-6 flex items-center justify-between sm:mb-8 md:mb-10">
                   <ShareButtons
                     title={title}
                     description={shareDescription}
                     image={image}
                     url={shareUrl}
                   />
+                  <div className="flex items-center gap-2">
+                    <BookmarkButton
+                      postId={postId.toString()}
+                      title={title}
+                      variant="icon"
+                    />
+                    <PostLikeButton postId={postId.toString()} />
+                  </div>
                 </div>
+              )}
+
+              {/* 시리즈 네비게이션 */}
+              {series && (
+                <PostSeries
+                  series={series}
+                  currentPost={{
+                    id: typeof postId === 'number' ? postId : 0,
+                    slug: postId.toString(),
+                    title,
+                    content,
+                    category: category || 'Uncategorized',
+                    tags,
+                    date: date || '',
+                    filePath: ''
+                  }}
+                />
               )}
 
               <div
@@ -289,9 +341,21 @@ const PostPageContent: FC<{
                 )}
 
               {mounted && (
-                <div className="mt-6 sm:mt-8 md:mt-10 lg:mt-12">
-                  <Utterances repo="toris-dev/Toris_Blog" />
-                </div>
+                <>
+                  <div className="mt-6 sm:mt-8 md:mt-10 lg:mt-12">
+                    <Utterances repo="toris-dev/Toris_Blog" />
+                  </div>
+
+                  {/* 댓글 섹션 */}
+                  <div className="mt-12">
+                    <CommentSection postId={postId.toString()} />
+                  </div>
+
+                  {/* 관련 포스트 */}
+                  {relatedPosts.length > 0 && (
+                    <RelatedPosts posts={relatedPosts} currentPostId={postId} />
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -303,7 +367,10 @@ const PostPageContent: FC<{
             className="sticky hidden shrink-0 self-start xl:block xl:w-56 2xl:w-64"
             style={stickyStyle}
           >
-            <motion.div className="h-auto space-y-4 overflow-y-auto will-change-transform xl:space-y-6">
+            <motion.div
+              ref={tocContainerRef}
+              className="h-auto space-y-4 overflow-y-auto will-change-transform xl:space-y-6"
+            >
               <AnimatePresence mode="wait">
                 {isTocOpen ? (
                   <motion.div
@@ -325,7 +392,10 @@ const PostPageContent: FC<{
                         <FaTimes className="size-4" />
                       </button>
                     </div>
-                    <TableOfContents headings={headings} />
+                    <TableOfContents
+                      headings={headings}
+                      scrollContainerRef={tocContainerRef}
+                    />
                   </motion.div>
                 ) : (
                   <motion.button

@@ -6,6 +6,8 @@ import {
   getDefaultOGImageUrl,
   toAbsoluteUrl
 } from '@/utils/og-image';
+import { getSeriesMetadataByName } from '@/utils/postSeries';
+import { getRelatedPosts } from '@/utils/relatedPosts';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -54,6 +56,15 @@ export default async function Post({ params }: { params: { id: string } }) {
       return notFound();
     }
 
+    // 시리즈 정보 가져오기
+    const allPosts = getPostData();
+    const seriesMetadata = post.series
+      ? getSeriesMetadataByName(post.series, allPosts)
+      : null;
+
+    // 관련 포스트 가져오기
+    const relatedPosts = getRelatedPosts(post, allPosts, 3);
+
     // PostPage 컴포넌트의 props 타입에 맞게 변환
     const pageProps = {
       title: post.title,
@@ -62,7 +73,9 @@ export default async function Post({ params }: { params: { id: string } }) {
       content: post.content,
       date: post.date,
       image: post.preview_image_url,
-      postId: id
+      postId: id,
+      series: seriesMetadata || undefined,
+      relatedPosts
     };
 
     const baseUrl =
