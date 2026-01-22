@@ -172,7 +172,7 @@ const PostPageContent: FC<{
           >
             <div>
               {/* 상단 영역: 헤더와 공유하기 버튼 */}
-              <div className="mb-6 w-full sm:mb-8 md:mb-10 lg:mb-12">
+              <div className="my-6 w-full sm:my-8 md:my-10 lg:my-12">
                 <header className="mb-6 text-center sm:mb-8">
                   <h1 className="mb-3 text-xl font-bold leading-tight text-foreground sm:mb-4 sm:text-2xl md:text-3xl lg:text-4xl">
                     {title}
