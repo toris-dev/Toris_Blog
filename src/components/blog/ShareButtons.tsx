@@ -143,7 +143,7 @@ export function ShareButtons({
   }
 
   return (
-    <div className="my-8 flex flex-wrap items-center justify-center gap-3 border-y border-border py-6">
+    <div className="flex flex-wrap items-center justify-center gap-3">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <FaShare className="text-base" />
         <span>공유하기</span>
