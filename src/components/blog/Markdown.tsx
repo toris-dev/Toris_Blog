@@ -350,14 +350,22 @@ const MarkdownViewerComponent: React.FC<MarkdownProps> = ({
   // 이미지 컴포넌트 - SEO 최적화
   const imageComponents: Partial<Components> = {
     img({ node, src, alt, title, ...props }: any) {
-      // src가 상대 경로인 경우 절대 경로로 변환
+      // src 처리: 로컬 이미지(/images/...)는 그대로 사용, 외부 이미지만 baseUrl과 결합
       const baseUrl =
         process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
-      const imageSrc = src?.startsWith('http')
-        ? src
-        : src?.startsWith('/')
-          ? `${baseUrl}${src}`
-          : src;
+      
+      let imageSrc = src;
+      
+      if (src?.startsWith('http')) {
+        // 외부 URL은 그대로 사용
+        imageSrc = src;
+      } else if (src?.startsWith('/images/')) {
+        // 로컬 이미지는 그대로 사용 (Next.js가 자동으로 처리)
+        imageSrc = src;
+      } else if (src?.startsWith('/')) {
+        // 다른 로컬 경로도 그대로 사용
+        imageSrc = src;
+      }
 
       // alt 텍스트 개선: 없으면 제목에서 추출하거나 기본값 사용
       const optimizedAlt = alt || title || '블로그 포스트 이미지';
@@ -367,11 +375,14 @@ const MarkdownViewerComponent: React.FC<MarkdownProps> = ({
       const height = props.height ? Number(props.height) : 600;
 
       // 외부 이미지인 경우 unoptimized 사용
+      // 로컬 이미지(/images/...)는 최적화 사용, 외부 이미지만 unoptimized
       const isExternal =
-        imageSrc?.startsWith('http') && !imageSrc?.includes(baseUrl);
+        imageSrc?.startsWith('http') && 
+        !imageSrc?.includes('localhost') && 
+        !imageSrc?.includes('127.0.0.1');
 
       return (
-        <figure className="my-6 flex flex-col items-center">
+        <div className="my-6 flex flex-col items-center">
           <Image
             src={imageSrc || ''}
             alt={optimizedAlt}
@@ -384,12 +395,30 @@ const MarkdownViewerComponent: React.FC<MarkdownProps> = ({
             {...props}
           />
           {title && (
-            <figcaption className="mt-2 text-sm text-muted-foreground">
+            <div className="mt-2 text-sm text-muted-foreground text-center">
               {title}
-            </figcaption>
+            </div>
           )}
-        </figure>
+        </div>
       );
+    }
+  };
+
+  // p 컴포넌트 커스터마이징 - 이미지가 포함된 경우 p 태그를 렌더링하지 않음
+  const pComponents: Partial<Components> = {
+    p({ node, children, ...props }: any) {
+      // 자식 요소 중에 img가 있는지 확인
+      const hasImage = node?.children?.some(
+        (child: any) => child.type === 'element' && child.tagName === 'img'
+      );
+
+      // 이미지가 포함된 경우 div로 렌더링
+      if (hasImage) {
+        return <div {...props}>{children}</div>;
+      }
+
+      // 일반적인 경우 p 태그로 렌더링
+      return <p {...props}>{children}</p>;
     }
   };
 
@@ -397,7 +426,8 @@ const MarkdownViewerComponent: React.FC<MarkdownProps> = ({
   const components: Partial<Components> = {
     ...headingComponents,
     ...codeComponents,
-    ...imageComponents
+    ...imageComponents,
+    ...pComponents
   };
 
   // children이 변경될 때 헤딩 추출
