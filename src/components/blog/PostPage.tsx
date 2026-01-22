@@ -4,9 +4,7 @@ import { MarkdownViewer } from '@/components/blog/Markdown';
 import {
   FaCalendarAlt,
   FaFolder,
-  FaTags,
-  FaTimes,
-  AiOutlineMenu
+  FaTags
 } from '@/components/icons';
 import { cn } from '@/utils/style';
 import dayjs from 'dayjs';
@@ -31,7 +29,6 @@ import {
   usePostHeadings
 } from '@/contexts/PostHeadingsContext';
 import { TableOfContents } from '@/components/blog/TableOfContents';
-import { createPortal } from 'react-dom';
 
 import { SeriesMetadata } from '@/utils/postSeries';
 import { BookmarkButton } from './BookmarkButton';
@@ -62,12 +59,9 @@ const PostPageContent: FC<{
 }) => {
   const { setHeadings, headings } = usePostHeadings();
   const [mounted, setMounted] = useState(false);
-  const [isTocOpen, setIsTocOpen] = useState(true);
-  const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
   const { scrollY } = useScroll();
   const lastScrollY = useRef(0);
   const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const tocContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -101,24 +95,6 @@ const PostPageContent: FC<{
     };
   }, []);
 
-  // 모바일 목차 모달 닫기 (ESC 키)
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isMobileTocOpen) {
-        setIsMobileTocOpen(false);
-      }
-    };
-
-    if (isMobileTocOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
-    };
-  }, [isMobileTocOpen]);
 
   // 날짜 포맷팅 (서버와 클라이언트에서 동일한 결과 보장)
   const formattedDate = useMemo(
@@ -195,99 +171,102 @@ const PostPageContent: FC<{
             style={articleInnerStyle}
           >
             <div>
-              <header className="mb-6 text-center sm:mb-8 md:mb-10 lg:mb-12">
-                <h1 className="mb-3 text-xl font-bold leading-tight text-foreground sm:mb-4 sm:text-2xl md:text-3xl lg:text-4xl">
-                  {title}
-                </h1>
-                <div className="flex flex-wrap items-center justify-center gap-2 text-xs sm:gap-3 sm:text-sm md:gap-4">
-                  <span className="flex items-center text-muted-foreground">
-                    <FaCalendarAlt className="mr-1 sm:mr-1.5 md:mr-2" />
-                    {formattedDate}
-                  </span>
-                  <Link
-                    href={`/categories/${category}`}
-                    className="flex items-center text-muted-foreground transition-all hover:scale-105 hover:text-primary"
-                  >
-                    <FaFolder className="mr-1 sm:mr-1.5 md:mr-2" />
-                    {category}
-                  </Link>
-                  <div className="flex items-center gap-1.5 text-muted-foreground sm:gap-2">
-                    <FaTags className="mr-1 sm:mr-1.5 md:mr-2" />
-                    <div className="flex flex-wrap items-center gap-1">
-                      {Array.isArray(tags)
-                        ? tags.map((tag, index) => (
-                            <span key={index} className="flex items-center">
-                              <Link
-                                href={`/tags/${encodeURIComponent(tag)}`}
-                                className="transition-all hover:scale-105 hover:text-primary"
-                              >
-                                #{tag}
-                              </Link>
-                              {index < tags.length - 1 && (
-                                <span className="mx-0.5 sm:mx-1">,</span>
-                              )}
-                            </span>
-                          ))
-                        : typeof tags === 'string'
-                          ? (tags as string)
-                              .split(',')
-                              .map((tag: string, index: number) => {
-                                const trimmedTag = tag.trim();
-                                if (!trimmedTag) return null;
-                                const tagArray = (tags as string).split(',');
-                                return (
-                                  <span
-                                    key={index}
-                                    className="flex items-center"
-                                  >
-                                    <Link
-                                      href={`/tags/${encodeURIComponent(trimmedTag)}`}
-                                      className="transition-all hover:scale-105 hover:text-primary"
+              {/* 상단 영역: 헤더와 공유하기 버튼 */}
+              <div className="mb-6 w-full sm:mb-8 md:mb-10 lg:mb-12">
+                <header className="mb-6 text-center sm:mb-8">
+                  <h1 className="mb-3 text-xl font-bold leading-tight text-foreground sm:mb-4 sm:text-2xl md:text-3xl lg:text-4xl">
+                    {title}
+                  </h1>
+                  <div className="flex flex-wrap items-center justify-center gap-2 text-xs sm:gap-3 sm:text-sm md:gap-4">
+                    <span className="flex items-center text-muted-foreground">
+                      <FaCalendarAlt className="mr-1 sm:mr-1.5 md:mr-2" />
+                      {formattedDate}
+                    </span>
+                    <Link
+                      href={`/categories/${category}`}
+                      className="flex items-center text-muted-foreground transition-all hover:scale-105 hover:text-primary"
+                    >
+                      <FaFolder className="mr-1 sm:mr-1.5 md:mr-2" />
+                      {category}
+                    </Link>
+                    <div className="flex items-center gap-1.5 text-muted-foreground sm:gap-2">
+                      <FaTags className="mr-1 sm:mr-1.5 md:mr-2" />
+                      <div className="flex flex-wrap items-center gap-1">
+                        {Array.isArray(tags)
+                          ? tags.map((tag, index) => (
+                              <span key={index} className="flex items-center">
+                                <Link
+                                  href={`/tags/${encodeURIComponent(tag)}`}
+                                  className="transition-all hover:scale-105 hover:text-primary"
+                                >
+                                  #{tag}
+                                </Link>
+                                {index < tags.length - 1 && (
+                                  <span className="mx-0.5 sm:mx-1">,</span>
+                                )}
+                              </span>
+                            ))
+                          : typeof tags === 'string'
+                            ? (tags as string)
+                                .split(',')
+                                .map((tag: string, index: number) => {
+                                  const trimmedTag = tag.trim();
+                                  if (!trimmedTag) return null;
+                                  const tagArray = (tags as string).split(',');
+                                  return (
+                                    <span
+                                      key={index}
+                                      className="flex items-center"
                                     >
-                                      #{trimmedTag}
-                                    </Link>
-                                    {index < tagArray.length - 1 && (
-                                      <span className="mx-0.5 sm:mx-1">,</span>
-                                    )}
-                                  </span>
-                                );
-                              })
-                          : null}
+                                      <Link
+                                        href={`/tags/${encodeURIComponent(trimmedTag)}`}
+                                        className="transition-all hover:scale-105 hover:text-primary"
+                                      >
+                                        #{trimmedTag}
+                                      </Link>
+                                      {index < tagArray.length - 1 && (
+                                        <span className="mx-0.5 sm:mx-1">,</span>
+                                      )}
+                                    </span>
+                                  );
+                                })
+                            : null}
+                      </div>
+                    </div>
+                    {mounted && (
+                      <>
+                        <PostViewCount
+                          postId={postId.toString()}
+                          className="text-xs sm:text-sm"
+                        />
+                        <ReadingTime
+                          content={content}
+                          className="text-xs sm:text-sm"
+                        />
+                      </>
+                    )}
+                  </div>
+                </header>
+
+                {mounted && (
+                  <div className="flex items-center justify-between border-y border-border py-6">
+                    <ShareButtons
+                      title={title}
+                      description={shareDescription}
+                      image={image}
+                      url={shareUrl}
+                    />
+                    <div className="flex items-center gap-2">
+                      <BookmarkButton
+                        postId={postId.toString()}
+                        title={title}
+                        variant="icon"
+                      />
+                      <PostLikeButton postId={postId.toString()} />
                     </div>
                   </div>
-                  {mounted && (
-                    <>
-                      <PostViewCount
-                        postId={postId.toString()}
-                        className="text-xs sm:text-sm"
-                      />
-                      <ReadingTime
-                        content={content}
-                        className="text-xs sm:text-sm"
-                      />
-                    </>
-                  )}
-                </div>
-              </header>
-
-              {mounted && (
-                <div className="mb-6 flex items-center justify-between sm:mb-8 md:mb-10">
-                  <ShareButtons
-                    title={title}
-                    description={shareDescription}
-                    image={image}
-                    url={shareUrl}
-                  />
-                  <div className="flex items-center gap-2">
-                    <BookmarkButton
-                      postId={postId.toString()}
-                      title={title}
-                      variant="icon"
-                    />
-                    <PostLikeButton postId={postId.toString()} />
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
 
               {/* 시리즈 네비게이션 */}
               {series && (
@@ -306,9 +285,24 @@ const PostPageContent: FC<{
                 />
               )}
 
+              {/* 목차 (모든 화면 크기에서 표시) */}
+              {mounted && headings.length > 0 && (
+                <div className="mb-6">
+                  <div className="rounded-lg border border-border bg-card p-4">
+                    <div className="mb-3 flex items-center justify-between">
+                      <h3 className="text-sm font-semibold text-foreground">
+                        목차
+                      </h3>
+                    </div>
+                    <TableOfContents headings={headings} />
+                  </div>
+                </div>
+              )}
+
+              {/* 콘텐츠 뷰어 */}
               <div
                 className={cn(
-                  'prose prose-sm max-w-full dark:prose-invert sm:prose-sm md:prose-base lg:prose-base xl:prose-lg',
+                  'min-w-0 flex-1 prose prose-sm max-w-full dark:prose-invert sm:prose-sm md:prose-base lg:prose-base xl:prose-lg',
                   // Prose의 max-width 제한 완전히 제거
                   'prose-img:!w-full prose-img:!max-w-full',
                   'prose-pre:!w-full prose-pre:!min-w-0 prose-pre:!max-w-full prose-pre:!overflow-x-auto',
@@ -361,133 +355,8 @@ const PostPageContent: FC<{
           </div>
         </article>
 
-        {/* 목차 사이드바 (xl 이상에서만 표시) */}
-        {mounted && headings.length > 0 && (
-          <aside
-            className="sticky hidden shrink-0 self-start xl:block xl:w-56 2xl:w-64"
-            style={stickyStyle}
-          >
-            <motion.div
-              ref={tocContainerRef}
-              className="h-auto space-y-4 overflow-y-auto will-change-transform xl:space-y-6"
-            >
-              <AnimatePresence mode="wait">
-                {isTocOpen ? (
-                  <motion.div
-                    key="toc"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="mb-2 flex items-center justify-between">
-                      <h3 className="text-sm font-semibold text-foreground">
-                        목차
-                      </h3>
-                      <button
-                        onClick={() => setIsTocOpen(false)}
-                        className="rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                        aria-label="목차 닫기"
-                      >
-                        <FaTimes className="size-4" />
-                      </button>
-                    </div>
-                    <TableOfContents
-                      headings={headings}
-                      scrollContainerRef={tocContainerRef}
-                    />
-                  </motion.div>
-                ) : (
-                  <motion.button
-                    key="toc-toggle"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    transition={{ duration: 0.2 }}
-                    onClick={() => setIsTocOpen(true)}
-                    className="shadow-soft hover:shadow-medium w-full rounded-lg border border-border bg-card p-3 text-left text-sm font-medium text-foreground transition-all hover:bg-muted"
-                    aria-label="목차 열기"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-2">
-                        <AiOutlineMenu className="size-4" />
-                        목차
-                      </span>
-                    </div>
-                  </motion.button>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          </aside>
-        )}
       </div>
 
-      {/* 모바일 목차 플로팅 버튼 (xl 미만에서만 표시) */}
-      {mounted && headings.length > 0 && typeof window !== 'undefined' && (
-        <>
-          {/* 플로팅 버튼 */}
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setIsMobileTocOpen(true)}
-            className="fixed bottom-20 right-4 z-40 flex items-center justify-center rounded-full bg-primary p-4 text-primary-foreground shadow-lg transition-all hover:bg-primary/90 xl:hidden"
-            aria-label="목차 열기"
-          >
-            <AiOutlineMenu className="size-6" />
-          </motion.button>
-
-          {/* 모바일 목차 모달 */}
-          {createPortal(
-            <AnimatePresence>
-              {isMobileTocOpen && (
-                <>
-                  {/* 배경 오버레이 */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
-                    onClick={() => setIsMobileTocOpen(false)}
-                  />
-
-                  {/* 모달 컨텐츠 */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 100 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 100 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="fixed inset-x-0 bottom-0 z-50 max-h-[80vh] overflow-hidden rounded-t-2xl border-t border-border bg-card shadow-2xl xl:hidden"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    {/* 헤더 */}
-                    <div className="flex items-center justify-between border-b border-border bg-muted/30 p-4">
-                      <h3 className="text-lg font-semibold text-foreground">
-                        목차
-                      </h3>
-                      <button
-                        onClick={() => setIsMobileTocOpen(false)}
-                        className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                        aria-label="목차 닫기"
-                      >
-                        <FaTimes className="size-5" />
-                      </button>
-                    </div>
-
-                    {/* 목차 컨텐츠 */}
-                    <div className="custom-scrollbar max-h-[calc(80vh-4rem)] overflow-y-auto p-4">
-                      <TableOfContents headings={headings} />
-                    </div>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>,
-            document.body
-          )}
-        </>
-      )}
     </div>
   );
 };
