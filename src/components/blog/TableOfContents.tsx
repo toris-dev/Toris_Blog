@@ -123,31 +123,36 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
             isScrollingAnimationRef.current = true;
 
             // 목차 컨테이너 내부 스크롤을 위해 scrollTop 직접 계산
-            const containerScrollTop = scrollContainer.scrollTop;
-            const containerHeight = scrollContainer.clientHeight;
+            const containerScrollTop = scrollContainer?.scrollTop;
+            const containerHeight = scrollContainer?.clientHeight;
             const buttonOffsetTop = activeButton.offsetTop;
             const buttonHeight = activeButton.offsetHeight;
 
             // 활성 항목을 컨테이너 중앙에 위치시키기 위한 계산
             const targetScrollTop =
               buttonOffsetTop -
-              containerHeight / 2 +
+              (containerHeight ?? 0) / 2 +
               buttonHeight / 2;
 
             // 부드러운 스크롤 애니메이션
             const startScrollTop = containerScrollTop;
-            const distance = targetScrollTop - startScrollTop;
+            const distance = targetScrollTop - (startScrollTop ?? 0);
             const duration = 300; // 300ms
             const startTime = performance.now();
 
             const animateScroll = (currentTime: number) => {
+              if (!scrollContainer) {
+                isScrollingAnimationRef.current = false;
+                return;
+              }
+
               const elapsed = currentTime - startTime;
               const progress = Math.min(elapsed / duration, 1);
 
               // easeOutCubic 이징 함수
               const easeOutCubic = 1 - Math.pow(1 - progress, 3);
               const currentScrollTop =
-                startScrollTop + distance * easeOutCubic;
+                (startScrollTop ?? 0) + distance * easeOutCubic;
 
               scrollContainer.scrollTop = currentScrollTop;
 
