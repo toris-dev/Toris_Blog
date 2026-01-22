@@ -24,6 +24,10 @@ description: Thiel Fellowship의 철학을 통해 배우는 1인 개발자 성�
 
 ## Thiel Fellowship이란?
 
+<img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=600&fit=crop&auto=format" alt="Thiel Fellowship" width="800" height="400" style="border-radius: 12px;" />
+
+*Thiel Fellowship은 젊은 기업가들에게 실전 경험의 가치를 가르치는 프로그램입니다.*
+
 ### 프로그램 개요
 
 Thiel Fellowship은 다음과 같은 특징을 가지고 있습니다:
@@ -49,6 +53,10 @@ Thiel Fellowship의 핵심 철학은 다음과 같습니다:
 ***
 
 ## 왜 Thiel Fellowship에 관심을 가지게 되었나?
+
+<img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=600&fit=crop&auto=format" alt="실전 경험의 가치" width="800" height="400" style="border-radius: 12px;" />
+
+*실전 프로젝트를 통해 배우는 것이 가장 빠른 성장의 길입니다.*
 
 ### 제 경험과의 연결점
 
@@ -90,6 +98,10 @@ Thiel Fellowship의 핵심 철학은 다음과 같습니다:
 ***
 
 ## Thiel Fellowship 철학을 1인 개발자 성장에 적용하기
+
+<img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=600&fit=crop&auto=format" alt="1인 개발자 성장" width="800" height="400" style="border-radius: 12px;" />
+
+*Thiel Fellowship의 철학을 1인 개발자 성장에 적용하는 방법을 탐구합니다.*
 
 ### 1. 실전 프로젝트 중심의 학습
 
@@ -144,6 +156,8 @@ export async function POST(request: NextRequest) {
 
 #### 핵심 프로젝트: Love Trip & Bubble Bible
 
+*1개월 단위로 번갈아가며 MVP를 배포하는 개발 방식*
+
 Thiel Fellowship의 철학을 실천하기 위해, 저는 두 가지 핵심 프로젝트를 **1개월 단위로 번갈아가며** 발전시켜나가고 있습니다.
 
 **개발 방식: 번갈아가며 MVP 배포**
@@ -158,6 +172,8 @@ Thiel Fellowship의 철학을 실천하기 위해, 저는 두 가지 핵심 프�
 - **빠른 실패와 학습**: Thiel Fellowship 철학에 부합하는 개발 방식
 
 ##### 1. Love Trip (커플 여행 계획 서비스)
+
+<img src="/images/markdown/Thiel-Fellowship과-1인-개발자-성장-여정/lovetrip.png" alt="Love Trip 프로젝트" width="834" height="460" style="max-width: 100%; height: auto; border-radius: 12px;" />
 
 **현재 상태**: MVP 완성, 배포 완료
 
@@ -303,7 +319,11 @@ Bubble Bible은 성경 읽기 → 묵상 기록 → 공동체 나눔 → 보상�
 
 ### 2. 빠른 실패와 학습 사이클
 
-Thiel Fellowship이 강조하는 **"빠르게 실패하고 배우기"**를 적용합니다:
+<img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&h=600&fit=crop&auto=format" alt="빠른 실패와 학습" width="800" height="400" style="border-radius: 12px;" />
+
+*빠르게 실패하고 배우는 것이 장기적인 성공으로 이어집니다.*
+
+Thiel Fellowship이 강조하는 "**빠르게 실패하고 배우기**" 를 적용합니다:
 
 #### 실패를 통한 학습 사례
 
@@ -367,6 +387,10 @@ Thiel Fellowship이 제공하는 **네트워킹**의 가치를 인식하고 있�
 ***
 
 ## 1인 개발자로 성장하기 위한 구체적인 계획
+
+<img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=600&fit=crop&auto=format" alt="성장 계획" width="800" height="400" style="border-radius: 12px;" />
+
+*구체적이고 실행 가능한 성장 계획을 수립합니다.*
 
 ### 단기 계획 (3-6개월) - 1개월 단위 MVP 배포
 
@@ -494,6 +518,10 @@ Thiel Fellowship이 제공하는 **네트워킹**의 가치를 인식하고 있�
 
 ## Thiel Fellowship에서 배운 것들
 
+<img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&h=600&fit=crop&auto=format" alt="학습과 성장" width="800" height="400" style="border-radius: 12px;" />
+
+*Thiel Fellowship의 핵심 가치를 정리합니다.*
+
 ### 1. 전통적인 경로를 벗어나기
 
 대학을 중단하고 창업에 집중하는 Thiel Fellowship의 철학처럼, 저도 **전통적인 학습 경로를 벗어나 실전 경험**을 중시하고 있습니다.
@@ -528,6 +556,10 @@ Thiel Fellowship이 제공하는 **네트워킹**의 가치를 인식하고 있�
 ***
 
 ## 마무리
+
+<img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=600&fit=crop&auto=format" alt="성장 여정" width="800" height="400" style="border-radius: 12px;" />
+
+*1인 개발자로 성장하는 여정을 계속 이어갑니다.*
 
 Thiel Fellowship의 철학을 배움으로, 저는 **실전 경험의 가치**와 **자기 주도적 학습**의 중요성을 깊이 이해하게 되었습니다. 
 
