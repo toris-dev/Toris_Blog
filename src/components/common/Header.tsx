@@ -164,31 +164,34 @@ const Header: FC = () => {
         </div>
       </header>
 
-      {/* Mobile Bottom Navigation */}
+      {/* Mobile Bottom Navigation - 스크롤 다운 시 숨김, 스크롤 업 시 표시 (데스크톱 헤더와 동일한 isVisible + 디바운스 적용) */}
       <motion.div
         className="shadow-soft fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 md:hidden"
         initial={false}
-        animate={mounted ? { y: 0 } : { y: 100 }}
-        transition={{ duration: 0.3 }}
+        animate={
+          mounted ? (isVisible ? { y: 0 } : { y: 100 }) : { y: 100 }
+        }
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
       >
-        <div className="grid grid-cols-4 gap-1 p-2">
+        <div className="grid min-w-0 grid-cols-5 gap-0 px-1 py-1.5">
           {mobileNavItems.map(({ href, icon: Icon, label }) => (
             <motion.div
               key={href}
+              className="min-w-0"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
               <Link
                 href={href}
                 className={cn(
-                  'flex flex-col items-center justify-center rounded-lg p-2 text-xs transition-colors',
+                  'flex flex-col items-center justify-center gap-0.5 rounded-md px-1 py-1.5 text-[10px] transition-colors sm:text-xs',
                   pathname === href
                     ? 'bg-primary/10 text-primary'
                     : 'text-muted-foreground hover:bg-accent hover:text-foreground'
                 )}
               >
-                <Icon className="mb-1 size-5" />
-                <span>{label}</span>
+                <Icon className="size-4 shrink-0 sm:size-5" />
+                <span className="truncate">{label}</span>
               </Link>
             </motion.div>
           ))}
