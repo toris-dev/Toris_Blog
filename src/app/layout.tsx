@@ -10,7 +10,7 @@ import { AdSense } from '@/components/ads/AdSense';
 import '@/styles/globals.css';
 import { getPostData } from '@/utils/markdown';
 import { cn } from '@/utils/style';
-import { GoogleTagManager } from '@next/third-parties/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Metadata } from 'next';
@@ -207,7 +207,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         )}
       >
         <SEOOptimizer />
-        <GoogleTagManager gtmId="G-0KV4YD773C" />
+        <GoogleAnalytics gaId="G-0KV4YD773C" />
         <Analytics />
         <SpeedInsights />
         <ServiceWorkerRegistration />

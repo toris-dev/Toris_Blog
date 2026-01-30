@@ -49,6 +49,22 @@ export function AdSense({
       try {
         // AdSense 스크립트가 로드되었는지 확인
         if (typeof window !== 'undefined' && (window as any).adsbygoogle) {
+          const container = adRef.current;
+          // availableWidth=0 오류 방지: 컨테이너가 실제 너비를 가질 때만 푸시
+          const pushWhenVisible = () => {
+            const width = container.getBoundingClientRect().width;
+            if (width > 0) {
+              try {
+                ((window as any).adsbygoogle =
+                  (window as any).adsbygoogle || []).push({});
+              } catch (error) {
+                console.error('AdSense push error:', error);
+              }
+              return true;
+            }
+            return false;
+          };
+
           // 광고 삽입
           const ins = document.createElement('ins');
           ins.className = 'adsbygoogle';
@@ -60,14 +76,18 @@ export function AdSense({
             ins.setAttribute('data-full-width-responsive', 'true');
           }
 
-          adRef.current.appendChild(ins);
+          container.appendChild(ins);
 
-          // 광고 푸시
-          try {
-            ((window as any).adsbygoogle =
-              (window as any).adsbygoogle || []).push({});
-          } catch (error) {
-            console.error('AdSense push error:', error);
+          // 이미 너비가 있으면 즉시 푸시, 없으면 ResizeObserver로 대기
+          if (!pushWhenVisible()) {
+            const observer = new ResizeObserver(() => {
+              if (pushWhenVisible()) {
+                observer.disconnect();
+              }
+            });
+            observer.observe(container);
+            // 일정 시간 후에도 너비가 0이면 observer 해제 (메모리 누수 방지)
+            setTimeout(() => observer.disconnect(), 10000);
           }
         } else {
           // 스크립트가 아직 로드되지 않았으면 잠시 후 다시 시도

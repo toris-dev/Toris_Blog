@@ -4,18 +4,20 @@ import { getDefaultOGImageUrl } from '@/utils/og-image';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import ClientSearchPage from './_components/ClientSearchPage';
+import { PostsPageSkeleton } from './_components/PostsPageSkeleton';
 
 const baseUrl =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
 
 export const metadata: Metadata = {
-  title: '블로그 포스트 - 웹 개발 기술 아티클',
+  title: 'toris-dev 작성글 - 웹 개발 기술 아티클',
   description:
     '토리스의 웹 개발 기술 블로그 포스트 모음입니다. React, Next.js, TypeScript, JavaScript 등 최신 웹 개발 기술과 실무 경험을 공유합니다.',
   keywords: [
     '블로그 포스트',
     '웹 개발',
     '기술 블로그',
+    'toris-dev',
     'React',
     'Next.js',
     'TypeScript',
@@ -26,7 +28,7 @@ export const metadata: Metadata = {
     '토리스'
   ],
   openGraph: {
-    title: '블로그 포스트 - 웹 개발 기술 아티클',
+    title: 'toris-dev 작성글 - 웹 개발 기술 아티클',
     description:
       '토리스의 웹 개발 기술 블로그 포스트 모음입니다. React, Next.js, TypeScript, JavaScript 등 최신 웹 개발 기술과 실무 경험을 공유합니다.',
     type: 'website',
@@ -66,7 +68,7 @@ export default async function PostsPage({
   return (
     <>
       <StructuredData type="blog" />
-      <Suspense fallback={<div>로딩 중...</div>}>
+      <Suspense fallback={<PostsPageSkeleton />}>
         <ClientSearchPage initialPosts={posts} />
       </Suspense>
     </>

@@ -13,8 +13,44 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { cn } from '@/utils/style';
+
+/** 카테고리별 색상 매핑 (컴포넌트 외부 상수로 매 렌더마다 객체 생성 방지) */
+const CATEGORY_COLORS: Record<string, string> = {
+  Technology: 'text-blue-500 border-blue-500/20',
+  Programming: 'text-green-500 border-green-500/20',
+  Design: 'text-purple-500 border-purple-500/20',
+  Life: 'text-orange-500 border-orange-500/20',
+  Review: 'text-red-500 border-red-500/20',
+  Tutorial: 'text-indigo-500 border-indigo-500/20'
+};
+
+const DEFAULT_CATEGORY_COLOR = 'text-primary border-primary/20';
+
+/** 로딩/마운트 전 공통 스켈레톤 UI */
+function SidebarSkeleton() {
+  return (
+    <div className="shadow-medium w-full rounded-xl border border-border bg-card">
+      <div className="p-6">
+        <div className="flex animate-pulse flex-col items-center space-y-4">
+          <div className="size-20 rounded-full bg-background/50" />
+          <div className="h-4 w-24 rounded bg-background/50" />
+          <div className="h-3 w-32 rounded bg-background/50" />
+          <div className="space-y-2">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="h-8 w-full rounded bg-background/50"
+                aria-hidden
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 interface CategorySidebarProps {
   currentCategory?: string;
@@ -26,155 +62,88 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
   posts: propPosts
 }) => {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
-    new Set()
+    () => new Set()
   );
-  const [posts, setPosts] = useState<Post[]>(propPosts || []);
-  const [loading, setLoading] = useState(!propPosts);
+  const [localPosts, setLocalPosts] = useState<Post[]>([]);
+  const [fetchLoading, setFetchLoading] = useState(!propPosts);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // 클라이언트에서만 렌더링되도록 설정 (hydration mismatch 방지)
+  const currentCategory =
+    propCurrentCategory ?? searchParams.get('category') ?? undefined;
+
+  const posts = propPosts ?? localPosts;
+  const loading = !propPosts && fetchLoading;
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // URL에서 현재 카테고리 파악
-  const currentCategory =
-    propCurrentCategory || searchParams.get('category') || undefined;
-
-  // posts prop이 없을 때 API에서 데이터 가져오기
   useEffect(() => {
-    if (!propPosts) {
-      const fetchPosts = async () => {
-        try {
-          setLoading(true);
-          const response = await fetch('/api/posts');
-          if (response.ok) {
-            const data = await response.json();
-            setPosts(data);
-          } else {
-            console.error('Failed to fetch posts');
-          }
-        } catch (error) {
-          console.error('Error fetching posts:', error);
-        } finally {
-          setLoading(false);
+    if (propPosts) return;
+    let cancelled = false;
+    const fetchPosts = async () => {
+      try {
+        setFetchLoading(true);
+        const response = await fetch('/api/posts');
+        if (!response.ok) {
+          console.error('Failed to fetch posts');
+          return;
         }
-      };
-
-      fetchPosts();
-    }
-  }, [propPosts]);
-
-  // propPosts가 변경될 때 상태 업데이트
-  useEffect(() => {
-    if (propPosts) {
-      setPosts(propPosts);
-      setLoading(false);
-    }
-  }, [propPosts]);
-
-  // 카테고리별로 포스트 그룹화
-  const categorizedPosts = posts.reduce(
-    (acc, post) => {
-      if (!acc[post.category]) {
-        acc[post.category] = [];
+        const data = await response.json();
+        if (!cancelled) setLocalPosts(data);
+      } catch (error) {
+        if (!cancelled) console.error('Error fetching posts:', error);
+      } finally {
+        if (!cancelled) setFetchLoading(false);
       }
-      acc[post.category].push(post);
-      return acc;
-    },
-    {} as Record<string, Post[]>
+    };
+    fetchPosts();
+    return () => {
+      cancelled = true;
+    };
+  }, [propPosts]);
+
+  const categorizedPosts = useMemo(
+    () =>
+      posts.reduce<Record<string, Post[]>>((acc, post) => {
+        if (!acc[post.category]) acc[post.category] = [];
+        acc[post.category].push(post);
+        return acc;
+      }, {}),
+    [posts]
   );
 
-  const categories = Object.keys(categorizedPosts).sort();
+  const categories = useMemo(
+    () => Object.keys(categorizedPosts).sort(),
+    [categorizedPosts]
+  );
 
-  const toggleCategory = (category: string) => {
-    const newExpanded = new Set(expandedCategories);
-    if (newExpanded.has(category)) {
-      newExpanded.delete(category);
-    } else {
-      newExpanded.add(category);
-    }
-    setExpandedCategories(newExpanded);
-  };
+  const toggleCategory = useCallback((category: string) => {
+    setExpandedCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(category)) next.delete(category);
+      else next.add(category);
+      return next;
+    });
+  }, []);
 
-  // 카테고리별 색상 매핑
-  const getCategoryColor = (category: string) => {
-    const colors = {
-      Technology: 'text-blue-500 border-blue-500/20',
-      Programming: 'text-green-500 border-green-500/20',
-      Design: 'text-purple-500 border-purple-500/20',
-      Life: 'text-orange-500 border-orange-500/20',
-      Review: 'text-red-500 border-red-500/20',
-      Tutorial: 'text-indigo-500 border-indigo-500/20'
-    };
-    return (
-      colors[category as keyof typeof colors] ||
-      'text-primary border-primary/20'
-    );
-  };
+  const getCategoryColor = useCallback((category: string) => {
+    return CATEGORY_COLORS[category] ?? DEFAULT_CATEGORY_COLOR;
+  }, []);
 
-  if (!mounted) {
-    return (
-      <div className="shadow-medium w-full rounded-xl border border-border bg-card">
-        <div className="p-6">
-          <div className="flex animate-pulse flex-col items-center space-y-4">
-            <div className="size-20 rounded-full bg-background/50"></div>
-            <div className="h-4 w-24 rounded bg-background/50"></div>
-            <div className="h-3 w-32 rounded bg-background/50"></div>
-            <div className="space-y-2">
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={i}
-                  className="h-8 w-full rounded bg-background/50"
-                ></div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className="shadow-medium w-full rounded-xl border border-border bg-card">
-        <div className="p-6">
-          <div className="flex animate-pulse flex-col items-center space-y-4">
-            <div className="size-20 rounded-full bg-background/50"></div>
-            <div className="h-4 w-24 rounded bg-background/50"></div>
-            <div className="h-3 w-32 rounded bg-background/50"></div>
-            <div className="space-y-2">
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={i}
-                  className="h-8 w-full rounded bg-background/50"
-                ></div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  if (!mounted || loading) {
+    return <SidebarSkeleton />;
   }
 
   return (
-    <div
-      className="shadow-medium w-full rounded-xl border border-border bg-card"
-      suppressHydrationWarning
-    >
+    <div className="shadow-medium w-full rounded-xl border border-border bg-card">
       {/* Profile Section */}
-      <div className="border-b border-border p-6" suppressHydrationWarning>
-        <div
-          className="flex flex-col items-center text-center"
-          suppressHydrationWarning
-        >
+      <div className="border-b border-border p-6">
+        <div className="flex flex-col items-center text-center">
           {/* Avatar */}
-          <div
-            className="shadow-soft relative mb-4 size-20 overflow-hidden rounded-full border-2 border-border bg-primary/10"
-            suppressHydrationWarning
-          >
+          <div className="shadow-soft relative mb-4 size-20 overflow-hidden rounded-full border-2 border-border bg-primary/10">
             <Image
               src="/images/logo.png"
               alt="토리스 로고"
@@ -182,7 +151,6 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
               height={80}
               className="size-full object-cover"
               priority
-              suppressHydrationWarning
             />
           </div>
 
@@ -227,11 +195,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
         </div>
       </div>
 
-      {/* 바로가기 */}
-      <div className="border-b border-border px-6 pb-4">
-        <h3 className="mb-2 text-sm font-semibold text-muted-foreground">
-          바로가기
-        </h3>
+      <div className="border-b border-border px-6 pb-4 my-4">
         <Link
           href="/todos"
           className={cn(
@@ -255,14 +219,15 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
 
         {/* All Posts Link */}
         <div className="mb-3">
-          <Link
-            href="/posts"
-            className={`block rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-background/80 ${
-              !currentCategory
-                ? 'bg-primary/10 text-primary'
-                : 'text-foreground/80 hover:text-foreground'
-            }`}
-          >
+        <Link
+          href="/posts"
+          className={cn(
+            'block rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-background/80',
+            !currentCategory
+              ? 'bg-primary/10 text-primary'
+              : 'text-foreground/80 hover:text-foreground'
+          )}
+        >
             <span className="flex items-center justify-between">
               <span>All Posts</span>
               <span className="text-xs text-muted-foreground">
@@ -286,16 +251,20 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
               >
                 <button
                   onClick={() => toggleCategory(category)}
-                  className={`flex w-full items-center justify-between px-3 py-2 text-left text-sm font-medium transition-all hover:bg-background/80 ${
+                  className={cn(
+                    'flex w-full items-center justify-between px-3 py-2 text-left text-sm font-medium transition-all hover:bg-background/80',
                     isActive
                       ? 'bg-primary/10 text-primary'
                       : 'text-foreground/80 hover:text-foreground'
-                  }`}
+                  )}
                 >
                   <span className="flex items-center">
                     <span
-                      className={`mr-2 size-2 rounded-full bg-current ${getCategoryColor(category).split(' ')[0]}`}
-                    ></span>
+                      className={cn(
+                        'mr-2 size-2 rounded-full bg-current',
+                        getCategoryColor(category).split(' ')[0]
+                      )}
+                    />
                     {category}
                   </span>
                   <div className="flex items-center space-x-2">

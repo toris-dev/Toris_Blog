@@ -5,35 +5,37 @@ import { Post } from '@/types';
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { memo } from 'react';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      ease: [0.42, 0, 0.58, 1] as const
+    }
+  }
+};
 
 interface PostsSectionProps {
   featuredPosts: Post[];
 }
 
-export default function PostsSection({ featuredPosts }: PostsSectionProps) {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: [0.42, 0, 0.58, 1] as const
-      }
-    }
-  };
+function PostsSection({ featuredPosts }: PostsSectionProps) {
 
   return (
     <section className="px-4 py-16" aria-labelledby="latest-posts-heading">
@@ -115,3 +117,5 @@ export default function PostsSection({ featuredPosts }: PostsSectionProps) {
     </section>
   );
 }
+
+export default memo(PostsSection);
