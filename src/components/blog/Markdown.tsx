@@ -389,6 +389,7 @@ const MarkdownViewerComponent: React.FC<MarkdownProps> = ({
             width={width}
             height={height}
             className="max-h-[600px] w-auto rounded-lg object-contain"
+            sizes="(max-width: 768px) 100vw, 800px"
             loading="lazy"
             title={title || optimizedAlt}
             unoptimized={isExternal}

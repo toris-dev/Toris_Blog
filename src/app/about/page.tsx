@@ -16,11 +16,15 @@ import {
   SiSpring,
   SiTypescript
 } from '@/components/icons';
-import ProjectModal from '@/components/ui/ProjectModal';
-import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ComponentType } from 'react';
+import { ComponentType, useState } from 'react';
+
+const ProjectModal = dynamic(
+  () => import('@/components/ui/ProjectModal').then((m) => m.default),
+  { ssr: false }
+);
 
 export default function AboutPage() {
   // 모달 상태 관리

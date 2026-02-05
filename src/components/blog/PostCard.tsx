@@ -56,6 +56,7 @@ const PostCard: FC<PostCardProps> = ({
               height={225}
               alt={title}
               className="w-full object-cover"
+              sizes="(max-width: 768px) 100vw, 400px"
               priority
             />
           </motion.div>
