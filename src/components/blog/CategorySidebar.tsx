@@ -14,6 +14,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { cn } from '@/utils/style';
 
 /** 카테고리별 색상 매핑 (컴포넌트 외부 상수로 매 렌더마다 객체 생성 방지) */
@@ -33,17 +34,13 @@ function SidebarSkeleton() {
   return (
     <div className="shadow-medium w-full rounded-xl border border-border bg-card">
       <div className="p-6">
-        <div className="flex animate-pulse flex-col items-center space-y-4">
-          <div className="size-20 rounded-full bg-background/50" />
-          <div className="h-4 w-24 rounded bg-background/50" />
-          <div className="h-3 w-32 rounded bg-background/50" />
-          <div className="space-y-2">
+        <div className="flex flex-col items-center space-y-4">
+          <Skeleton className="size-20 rounded-full" />
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-3 w-32" />
+          <div className="w-full space-y-2">
             {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className="h-8 w-full rounded bg-background/50"
-                aria-hidden
-              />
+              <Skeleton key={i} className="h-8 w-full" aria-hidden />
             ))}
           </div>
         </div>
