@@ -18,15 +18,17 @@ import { Inter, Space_Grotesk } from 'next/font/google';
 import Script from 'next/script';
 import { ReactNode } from 'react';
 
-// 웹 폰트 설정
+// 웹 폰트 설정 (display: swap으로 FOIT 완화)
 const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-sans'
+  variable: '--font-sans',
+  display: 'swap'
 });
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-space-grotesk'
+  variable: '--font-space-grotesk',
+  display: 'swap'
 });
 
 export const metadata: Metadata = {
@@ -107,12 +109,22 @@ export const metadata: Metadata = {
     creator: '@toris_dev',
     images: ['/images/twitter-image.png']
   },
-  verification: {
-    google: 'your-google-verification-code',
-    other: {
-      'naver-site-verification': 'your-naver-verification-code'
-    }
-  },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
+  process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION
+    ? {
+        verification: {
+          ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && {
+            google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+          }),
+          ...(process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION && {
+            other: {
+              'naver-site-verification':
+                process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION
+            }
+          })
+        }
+      }
+    : {}),
   alternates: {
     canonical:
       process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app',
@@ -207,7 +219,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         )}
       >
         <SEOOptimizer />
-        <GoogleAnalytics gaId="G-0KV4YD773C" />
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        )}
         <Analytics />
         <SpeedInsights />
         <ServiceWorkerRegistration />

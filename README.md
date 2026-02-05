@@ -197,8 +197,12 @@ NEXT_PUBLIC_SITE_URL=https://your-domain.com
 # 선택적: Google AdSense Publisher ID
 NEXT_PUBLIC_ADSENSE_PUBLISHER_ID=ca-pub-xxxxxxxxxxxxx
 
-# 선택적: Google Tag Manager ID
-NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
+# 선택적: Google Analytics 4 측정 ID (GA4)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+
+# 선택적: 사이트 소유권 확인 (Google Search Console, Naver)
+NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-google-verification-code
+NEXT_PUBLIC_NAVER_SITE_VERIFICATION=your-naver-verification-code
 
 # 할일 관리 인가된 지갑 주소 (쉼표로 구분)
 # 예: NEXT_PUBLIC_AUTHORIZED_ADDRESSES=0x1234...,0x5678...
