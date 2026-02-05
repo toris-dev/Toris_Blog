@@ -1,7 +1,11 @@
 import type { NextConfig } from 'next';
+import withBundleAnalyzer from '@next/bundle-analyzer';
 import withRemoveImports from 'next-remove-imports';
 
 const removeImports = withRemoveImports();
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true'
+});
 
 // Next.js 16에 맞는 설정
 const nextConfig: NextConfig = {
@@ -80,4 +84,5 @@ const nextConfig: NextConfig = {
   }
 };
 
-export default removeImports(nextConfig);
+const configWithRemoveImports = removeImports(nextConfig);
+export default bundleAnalyzer(configWithRemoveImports);
