@@ -18,33 +18,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
 import { saveSearchHistory, filterByDateRange, sortPosts, SearchFilters } from '@/utils/search';
 import { SearchHistory } from '@/components/search/SearchHistory';
 import { HighlightText } from '@/components/search/HighlightText';
-
-// Debounce helper function
-function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  wait: number
-): ((...args: Parameters<T>) => void) & { cancel: () => void } {
-  let timeout: ReturnType<typeof setTimeout> | null = null;
-
-  const debounced = function (...args: Parameters<T>) {
-    const later = () => {
-      timeout = null;
-      func(...args);
-    };
-
-    if (timeout) clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  } as ((...args: Parameters<T>) => void) & { cancel: () => void };
-
-  debounced.cancel = () => {
-    if (timeout) {
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-
-  return debounced;
-}
+import { debounce } from '@/utils/debounce';
+import { SkeletonPostList } from '@/components/ui/Skeleton';
 
 // 인터페이스 정의
 interface SearchResultProps {
@@ -56,52 +31,6 @@ interface SearchResultProps {
 interface ClientSearchPageProps {
   initialPosts: Post[];
 }
-
-// 스켈레톤 카드 컴포넌트
-const SkeletonCard = () => {
-  return (
-    <div className="overflow-hidden rounded-xl border border-primary/30 shadow-sm">
-      <div className="relative h-48 w-full animate-pulse bg-primary/10"></div>
-      <div className="p-5">
-        <div className="mb-2 h-6 w-3/4 animate-pulse rounded-md bg-primary/10"></div>
-        <div className="mb-4 space-y-2">
-          <div className="h-4 w-full animate-pulse rounded-md bg-primary/10"></div>
-          <div className="h-4 w-full animate-pulse rounded-md bg-primary/10"></div>
-          <div className="h-4 w-2/3 animate-pulse rounded-md bg-primary/10"></div>
-        </div>
-        <div className="flex items-center justify-between">
-          <div className="h-3 w-1/4 animate-pulse rounded-md bg-primary/10"></div>
-          <div className="flex space-x-1">
-            <div className="h-4 w-10 animate-pulse rounded-full bg-primary/10"></div>
-            <div className="h-4 w-10 animate-pulse rounded-full bg-primary/10"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// 스켈레톤 검색 결과 컴포넌트
-const SearchSkeleton = () => {
-  return (
-    <motion.div
-      initial={false}
-      animate={false}
-      className="space-y-6"
-      suppressHydrationWarning
-    >
-      <div className="mb-4 flex items-center justify-between">
-        <div className="h-7 w-1/4 animate-pulse rounded-md bg-primary/10"></div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {[...Array(6)].map((_, index) => (
-          <SkeletonCard key={index} />
-        ))}
-      </div>
-    </motion.div>
-  );
-};
 
 const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -436,6 +365,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                             alt={post.title}
                             fill
                             className="object-cover transition-all group-hover:scale-105"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
                         ) : (
                           <div className="flex size-full items-center justify-center">

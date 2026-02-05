@@ -4,8 +4,9 @@ import { Post } from '@/types';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaBlog, FaTimes } from '@/components/icons';
+import { debounce } from '@/utils/debounce';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -42,25 +43,30 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     }
   }, [isOpen]);
 
-  // 검색어로 필터링
-  useEffect(() => {
-    if (!searchTerm.trim()) {
-      setFilteredPosts(posts);
-      return;
-    }
+  const debouncedFilterRef = useRef(
+    debounce((term: string, list: Post[]) => {
+      if (!term.trim()) {
+        setFilteredPosts(list);
+        return;
+      }
+      const lowerTerm = term.toLowerCase();
+      const filtered = list.filter(
+        (post) =>
+          post.title.toLowerCase().includes(lowerTerm) ||
+          post.content?.toLowerCase().includes(lowerTerm) ||
+          post.description?.toLowerCase().includes(lowerTerm) ||
+          post.category.toLowerCase().includes(lowerTerm) ||
+          (typeof post.tags === 'string'
+            ? post.tags.toLowerCase().includes(lowerTerm)
+            : post.tags?.some((tag) => tag.toLowerCase().includes(lowerTerm)))
+      );
+      setFilteredPosts(filtered);
+    }, 250)
+  );
 
-    const lowerTerm = searchTerm.toLowerCase();
-    const filtered = posts.filter(
-      (post) =>
-        post.title.toLowerCase().includes(lowerTerm) ||
-        post.content?.toLowerCase().includes(lowerTerm) ||
-        post.description?.toLowerCase().includes(lowerTerm) ||
-        post.category.toLowerCase().includes(lowerTerm) ||
-        (typeof post.tags === 'string'
-          ? post.tags.toLowerCase().includes(lowerTerm)
-          : post.tags?.some((tag) => tag.toLowerCase().includes(lowerTerm)))
-    );
-    setFilteredPosts(filtered);
+  useEffect(() => {
+    debouncedFilterRef.current(searchTerm, posts);
+    return () => debouncedFilterRef.current.cancel();
   }, [searchTerm, posts]);
 
   // 모달이 열릴 때 입력창에 포커스

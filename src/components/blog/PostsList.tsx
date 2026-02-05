@@ -5,7 +5,9 @@ import { Post } from '@/types';
 import { getPosts } from '@/utils/fetch';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { debounce } from '@/utils/debounce';
 
 export default function PostsList() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -39,37 +41,62 @@ export default function PostsList() {
     fetchData();
   }, []);
 
-  // Filter posts based on search query and selected category
+  const debouncedFilterRef = useRef(
+    debounce(
+      (
+        query: string,
+        category: string | null,
+        list: Post[],
+        setFiltered: (posts: Post[]) => void
+      ) => {
+        let result = list;
+        if (query) {
+          const q = query.toLowerCase();
+          result = result.filter(
+            (post) =>
+              post.title.toLowerCase().includes(q) ||
+              post.description?.toLowerCase().includes(q) ||
+              (Array.isArray(post.tags)
+                ? post.tags.some((tag) => tag.toLowerCase().includes(q))
+                : post.tags?.toLowerCase().includes(q))
+          );
+        }
+        if (category) {
+          result = result.filter((post) => post.category === category);
+        }
+        setFiltered(result);
+      },
+      250
+    )
+  );
+
   useEffect(() => {
-    let result = posts;
-
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      result = result.filter(
-        (post) =>
-          post.title.toLowerCase().includes(query) ||
-          post.description?.toLowerCase().includes(query) ||
-          (Array.isArray(post.tags)
-            ? post.tags.some((tag) => tag.toLowerCase().includes(query))
-            : post.tags?.toLowerCase().includes(query))
-      );
-    }
-
-    if (selectedCategory) {
-      result = result.filter((post) => post.category === selectedCategory);
-    }
-
-    setFilteredPosts(result);
+    debouncedFilterRef.current(
+      searchQuery,
+      selectedCategory,
+      posts,
+      setFilteredPosts
+    );
+    return () => debouncedFilterRef.current.cancel();
   }, [searchQuery, selectedCategory, posts]);
 
   if (loading) {
     return (
-      <div className="container flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="mx-auto size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-          <p className="mt-4 text-lg text-foreground/70">
-            포스트를 불러오는 중...
-          </p>
+      <div className="container space-y-6 px-4 py-16 sm:px-6 lg:px-8">
+        <Skeleton className="h-10 w-48" />
+        <div className="flex flex-col gap-4 sm:flex-row">
+          <Skeleton className="h-10 flex-1" />
+          <Skeleton className="h-10 w-40" />
+        </div>
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="space-y-4 rounded-lg border border-border p-6">
+              <Skeleton className="h-6 w-24" />
+              <Skeleton className="h-6 w-3/4" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-5/6" />
+            </div>
+          ))}
         </div>
       </div>
     );
