@@ -1,6 +1,26 @@
+import dns from 'node:dns';
 import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
+
+/**
+ * `mongodb+srv://` resolves Atlas via DNS SRV. On some Windows setups the system
+ * resolver refuses Node's queries (querySrv ECONNREFUSED). Prefer explicit or
+ * public DNS first; override entirely with `MONGODB_DNS_SERVERS=8.8.8.8,1.1.1.1`.
+ */
+const mongodbDnsServers = process.env.MONGODB_DNS_SERVERS?.trim();
+if (mongodbDnsServers) {
+  dns.setServers(mongodbDnsServers.split(',').map((s) => s.trim()).filter(Boolean));
+} else if (
+  MONGODB_URI?.startsWith('mongodb+srv://') &&
+  process.platform === 'win32'
+) {
+  const fallback = ['8.8.8.8', '1.1.1.1'];
+  dns.setServers([
+    ...fallback,
+    ...dns.getServers().filter((s) => !fallback.includes(s))
+  ]);
+}
 
 if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
