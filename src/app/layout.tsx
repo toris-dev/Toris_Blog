@@ -147,6 +147,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const gaMeasurementId =
+    process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-0KV4YD773C';
+
   // 서버에서 posts 데이터 가져오기 (SEO를 위해)
   let posts: any[] = [];
   try {
@@ -219,9 +222,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         )}
       >
         <SEOOptimizer />
-        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-        )}
         <Analytics />
         <SpeedInsights />
         <ServiceWorkerRegistration />
@@ -268,6 +268,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <CookieConsent />
         </Providers>
       </body>
+      <GoogleAnalytics gaId={gaMeasurementId} />
     </html>
   );
 }
