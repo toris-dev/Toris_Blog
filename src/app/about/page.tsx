@@ -58,10 +58,14 @@ export default function AboutPage() {
       jQuery: FaCode,
       MyBatis: FaDatabase,
       iBatis: FaDatabase,
+      NestJS: FaNodeJs,
+      tRPC: FaServer,
+      Terraform: FaServer,
       // Database
       MongoDB: FaDatabase,
       MySQL: FaDatabase,
       MariaDB: FaDatabase,
+      PostgreSQL: FaDatabase,
       Supabase: FaDatabase,
       // DevOps & Tools
       Git: FaGit,
@@ -106,6 +110,8 @@ export default function AboutPage() {
       category: 'Backend',
       technologies: [
         'Node.js',
+        'NestJS',
+        'tRPC',
         'Spring',
         'Java8',
         'JSP',
@@ -116,16 +122,23 @@ export default function AboutPage() {
     },
     {
       category: 'Database',
-      technologies: ['MongoDB', 'MySQL', 'MariaDB', 'Supabase']
+      technologies: ['PostgreSQL', 'MongoDB', 'MySQL', 'MariaDB', 'Supabase']
     },
     {
       category: 'DevOps & Tools',
-      technologies: ['Git', 'Docker', 'AWS', 'Vercel', 'Notion', 'Slack']
+      technologies: ['Git', 'Docker', 'AWS', 'Terraform', 'Vercel', 'Notion', 'Slack']
     }
   ];
 
   // 경력 정보
   const experiences = [
+    {
+      period: '2026.02 - 현재 (약 3개월)',
+      company: '21앤',
+      role: 'FullStack Developer',
+      description:
+        '병원·모델 전자계약 B2B2C 플랫폼 — React Native(Expo) 앱, NestJS·tRPC API, Next.js 관리자, PostgreSQL·AWS·Terraform'
+    },
     {
       period: '2024.08 - 2024.08',
       company: '셈웨어',
@@ -137,6 +150,45 @@ export default function AboutPage() {
 
   // 회사 프로젝트
   const companyProjects = [
+    {
+      name: '21앤(21n) — 병원 시술 전자계약 플랫폼',
+      period: '2026.02 - 현재 (약 3개월)',
+      team: '풀스택(앱·API·어드민·인프라) — 팀 구성은 협업 중',
+      description:
+        '병원과 모델(사용자)을 연결하는 전자계약·포인트·쿠폰·알림 올인원 B2B2C. PG 없이 은행 API 기반 송금·조회, 관리자·앱·API 모노레포',
+      role: [
+        'React Native(Expo) 사용자 앱 — 계약·캘린더·포인트·계좌·SNS·마이페이지·알림·소셜 로그인',
+        'NestJS·tRPC 백엔드 — 전자서명·PDF·알림·도메인 API',
+        'Next.js 통합·병원 관리자 웹 — 대시보드·정산·쿠폰·엑셀 등',
+        'AWS(ECS Fargate, RDS, S3, ALB) 및 Terraform 기반 인프라 협업'
+      ],
+      techStack: [
+        'React Native',
+        'Expo',
+        'Next.js',
+        'TypeScript',
+        'NestJS',
+        'tRPC',
+        'PostgreSQL',
+        'Docker',
+        'AWS',
+        'Terraform',
+        'Git'
+      ],
+      achievements: [
+        '전자계약·PDF·스토리지 파이프라인을 도메인 요구에 맞게 설계·구현 중',
+        '모노레포(apps/admin, api, user-app, packages) 기준으로 개발 환경·배포 흐름 정리',
+        '포인트·초대코드·은행 연동 등 정책 반영을 API·앱·어드민에 일관되게 반영'
+      ],
+      learnings: [
+        'B2B2C에서 계약 상태·권한·정산 규칙을 먼저 모델링할수록 UI·API 속도가 나온다는 점',
+        '전자서명·PDF·외부 웹훅은 실패·재시도·멱등 설계가 운영 비용을 좌우한다는 점',
+        '앱·웹·API·인프라를 동시에 맡을 때 Terraform·Docker·공유 패키지로 경계를 나누는 연습',
+        'Noto Sans KR 등 앱 타이포·캘린더 UX처럼 사용자 경험 디테일이 브랜드와 직결된다는 점'
+      ],
+      link: '/posts/21n-econtract-platform',
+      isDeveloping: true
+    },
     {
       name: '잇다',
       period: '2025.01 - 2025.08 (8개월)',
