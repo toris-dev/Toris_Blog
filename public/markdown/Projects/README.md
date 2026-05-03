@@ -14,6 +14,7 @@ tags: [FullStack, Hub, Development]
 
 ### 🎯 **Projects** - 프로젝트 포트폴리오
 
+- **21앤(21n)**: 병원 시술 전자계약 B2B2C 플랫폼 (진행 중, 커리어)
 - **TorisBlog**: 기술 블로그 개발 프로젝트
 - **개인 프로젝트**: 사이드 프로젝트 및 토이 프로젝트
 - **협업 프로젝트**: 팀 프로젝트 및 업무 경험
@@ -86,9 +87,9 @@ tags: [FullStack, Hub, Development]
 
 ## 🎯 현재 진행 중인 프로젝트
 
-1. **TorisBlog**: Next.js 기반 개인 기술 블로그
-2. **포트폴리오 사이트**: 개인 포트폴리오 웹사이트
-3. **기술 스택 학습**: 최신 프론트엔드 기술 습득
+1. **21앤(21n)**: 병원 시술 **전자계약** B2B2C 플랫폼 — React Native(Expo)·NestJS·Next.js·PostgreSQL·AWS·Terraform 모노레포 ([소개 글](/posts/21n-econtract-platform))
+2. **TorisBlog**: Next.js 기반 개인 기술 블로그
+3. **기술 스택 학습**: 최신 프론트엔드·모바일·인프라 기술 습득
 
 ## 📈 학습 로드맵
 
