@@ -16,7 +16,6 @@ import {
   useScroll,
   useMotionValueEvent
 } from 'framer-motion';
-import { Utterances } from './Utterances';
 import { ShareButtons } from './ShareButtons';
 import { CommentSection } from './CommentSection';
 import { PostViewCount } from './PostViewCount';
@@ -336,10 +335,6 @@ const PostPageContent: FC<{
 
               {mounted && (
                 <>
-                  <div className="mt-6 sm:mt-8 md:mt-10 lg:mt-12">
-                    <Utterances repo="toris-dev/Toris_Blog" />
-                  </div>
-
                   {/* 댓글 섹션 */}
                   <div className="mt-12">
                     <CommentSection postId={postId.toString()} />

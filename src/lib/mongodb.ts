@@ -1,7 +1,7 @@
 import dns from 'node:dns';
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI?.trim();
 
 /**
  * `mongodb+srv://` resolves Atlas via DNS SRV. On some Windows setups the system
@@ -10,7 +10,9 @@ const MONGODB_URI = process.env.MONGODB_URI;
  */
 const mongodbDnsServers = process.env.MONGODB_DNS_SERVERS?.trim();
 if (mongodbDnsServers) {
-  dns.setServers(mongodbDnsServers.split(',').map((s) => s.trim()).filter(Boolean));
+  dns.setServers(
+    mongodbDnsServers.split(',').map((s) => s.trim()).filter(Boolean)
+  );
 } else if (
   MONGODB_URI?.startsWith('mongodb+srv://') &&
   process.platform === 'win32'
@@ -22,8 +24,27 @@ if (mongodbDnsServers) {
   ]);
 }
 
-if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+/**
+ * Atlas/Vercel 템플릿 URI는 `...mongodb.net/?retryWrites=...` 처럼 DB 경로가 비어
+ * 있는 경우가 많습니다. 이 때 기본 DB는 드라이버에 따라 `test` 등으로 잡혀
+ * 데이터가 "없는 것처럼" 보이거나 권한 오류가 날 수 있습니다.
+ * - URI에 `/dbname`을 넣거나
+ * - `MONGODB_DB_NAME`(선택)으로 명시하세요.
+ */
+function resolveDbName(uri: string): string | undefined {
+  const fromEnv = process.env.MONGODB_DB_NAME?.trim();
+  if (fromEnv) return fromEnv;
+
+  const emptyPathAfterHost =
+    /@[^/?]+\/\?/i.test(uri) ||
+    /\.mongodb\.net\/\?/i.test(uri) ||
+    /\.mongodb\.net\/$/i.test(uri);
+
+  if (emptyPathAfterHost) {
+    return 'torisblog';
+  }
+
+  return undefined;
 }
 
 interface MongooseCache {
@@ -43,18 +64,28 @@ if (!global.mongoose) {
 }
 
 async function connectDB() {
+  if (!MONGODB_URI) {
+    throw new Error(
+      'MONGODB_URI가 없습니다. .env.local(로컬) 또는 Vercel 환경 변수에 연결 문자열을 넣어 주세요.'
+    );
+  }
+
   if (cached.conn) {
     return cached.conn;
   }
 
   if (!cached.promise) {
-    const opts = {
-      bufferCommands: false
+    const dbName = resolveDbName(MONGODB_URI);
+    const opts: mongoose.ConnectOptions = {
+      bufferCommands: false,
+      serverSelectionTimeoutMS: 15_000,
+      maxPoolSize: 10,
+      /** Windows·일부 네트워크에서 IPv6 SRV 경로가 막혀 Atlas 접속이 안 될 때 IPv4 우선 */
+      family: 4,
+      ...(dbName ? { dbName } : {})
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((m) => m);
   }
 
   try {
@@ -68,4 +99,3 @@ async function connectDB() {
 }
 
 export default connectDB;
-

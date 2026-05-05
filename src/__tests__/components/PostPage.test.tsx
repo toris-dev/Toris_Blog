@@ -22,9 +22,11 @@ jest.mock('@/components/blog/Markdown', () => ({
   ),
 }))
 
-// Mock Utterances
-jest.mock('@/components/blog/Utterances', () => ({
-  Utterances: () => <div data-testid="utterances">Utterances</div>,
+// Mock CommentSection (avoids fetch to /api/comments in tests)
+jest.mock('@/components/blog/CommentSection', () => ({
+  CommentSection: ({ postId }: { postId: string }) => (
+    <div data-testid="comment-section">Comments {postId}</div>
+  ),
 }))
 
 // Mock ShareButtons

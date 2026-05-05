@@ -48,7 +48,7 @@ flowchart LR
 - ✅ **반응형 디자인**: 모바일, 태블릿, 데스크톱 모든 기기 지원
 - ✅ **SEO 최적화**: 메타 태그, 구조화된 데이터, sitemap, robots.txt, OG 이미지 자동 생성
 - ✅ **RSS Feed**: `/feed.xml` 엔드포인트로 RSS 피드 제공
-- ✅ **댓글 시스템**: Utterances를 활용한 GitHub 기반 댓글 시스템
+- ✅ **댓글 시스템**: Next.js API Routes + MongoDB 기반 자체 댓글
 - ✅ **공유 기능**: 카카오톡, 트위터, 링크 복사 등 소셜 공유 기능
 - ✅ **쿠키 관리**: 사용자 동의 기반 쿠키 관리 및 Google AdSense 통합
 - ✅ **성능 모니터링**: Vercel Analytics 및 Speed Insights 통합
@@ -329,7 +329,7 @@ pnpm cypress:run:search
 - [x] 접근성 개선 (ARIA 속성, 색상 대비, 링크 접근성)
 - [x] SEO 최적화 (메타 태그, 구조화된 데이터, OG 이미지 자동 생성)
 - [x] E2E 테스트 강화
-- [x] 댓글 시스템 (Utterances) 통합
+- [x] 댓글 시스템 (자체 API + MongoDB)
 - [x] 소셜 공유 기능 (카카오톡, 트위터, 링크 복사)
 - [x] 쿠키 관리 및 Google AdSense 통합
 - [x] Vercel Analytics 및 Speed Insights 통합
@@ -357,7 +357,7 @@ pnpm cypress:run:search
 ### 2025년 12월
 
 - **Next.js 16 업그레이드**: 최신 버전으로 업그레이드
-- **댓글 시스템**: Utterances를 활용한 GitHub 기반 댓글 시스템 통합
+- **댓글 시스템**: Next.js API + MongoDB 기반 자체 댓글로 전환
 - **소셜 공유**: 카카오톡, 트위터, 링크 복사 기능 추가
 - **쿠키 관리**: 사용자 동의 기반 쿠키 관리 시스템 구현
 - **Google AdSense**: 쿠키 동의 기반 광고 통합

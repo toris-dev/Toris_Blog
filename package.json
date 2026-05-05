@@ -26,7 +26,8 @@
     "test:unit": "jest",
     "test:e2e": "cypress run",
     "test:all": "jest && cypress run",
-    "test:ci": "start-server-and-test dev http://localhost:3000 cypress:run"
+    "test:ci": "start-server-and-test dev http://localhost:3000 cypress:run",
+    "mongo:ping": "node scripts/mongo-ping.cjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.1",
