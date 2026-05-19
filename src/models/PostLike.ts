@@ -14,8 +14,7 @@ const PostLikeSchema = new Schema<IPostLike>(
     postId: {
       type: String,
       required: true,
-      unique: true,
-      index: true
+      unique: true
     },
     likeCount: {
       type: Number,
@@ -37,8 +36,6 @@ const PostLikeSchema = new Schema<IPostLike>(
   }
 );
 
-// 인덱스
-PostLikeSchema.index({ postId: 1 });
 PostLikeSchema.index({ likeCount: -1 });
 
 const PostLike =

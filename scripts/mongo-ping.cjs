@@ -28,11 +28,7 @@ if (!uri) {
 }
 
 if (uri.startsWith('mongodb+srv://') && process.platform === 'win32') {
-  const fallback = ['8.8.8.8', '1.1.1.1'];
-  dns.setServers([
-    ...fallback,
-    ...dns.getServers().filter((s) => !fallback.includes(s))
-  ]);
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
 }
 
 function resolveDbName(u) {

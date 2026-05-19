@@ -14,8 +14,7 @@ const PostViewSchema = new Schema<IPostView>(
     postId: {
       type: String,
       required: true,
-      unique: true,
-      index: true
+      unique: true
     },
     viewCount: {
       type: Number,
@@ -38,8 +37,6 @@ const PostViewSchema = new Schema<IPostView>(
   }
 );
 
-// 인덱스
-PostViewSchema.index({ postId: 1 });
 PostViewSchema.index({ viewCount: -1 });
 
 const PostView =
