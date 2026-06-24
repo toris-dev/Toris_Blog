@@ -41,7 +41,13 @@ export const metadata: Metadata = {
 export default function AboutLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <StructuredData type="person" />
+      <StructuredData
+        page="about"
+        breadcrumb={[
+          { name: '홈', url: '/' },
+          { name: '소개', url: '/about' }
+        ]}
+      />
       {children}
     </>
   );

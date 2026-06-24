@@ -53,7 +53,20 @@ export const metadata: Metadata = {
 export default function TodosPage() {
   return (
     <>
-      <StructuredData type="website" />
+      <StructuredData
+        page="software"
+        data={{
+          url: `${baseUrl}/todos`,
+          name: '할일 관리 - Toris Blog',
+          description: PAGE_DESCRIPTION,
+          applicationCategory: 'ProductivityApplication',
+          sameAs: ['https://github.com/toris-dev/Toris_Blog']
+        }}
+        breadcrumb={[
+          { name: '홈', url: '/' },
+          { name: '할일 관리', url: '/todos' }
+        ]}
+      />
       <TodosPageClient />
     </>
   );

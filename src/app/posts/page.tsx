@@ -67,7 +67,13 @@ export default async function PostsPage({
 
   return (
     <>
-      <StructuredData type="blog" />
+      <StructuredData
+        page="blog-listing"
+        breadcrumb={[
+          { name: '홈', url: '/' },
+          { name: '포스트', url: '/posts' }
+        ]}
+      />
       <Suspense fallback={<PostsPageSkeleton />}>
         <ClientSearchPage initialPosts={posts} />
       </Suspense>

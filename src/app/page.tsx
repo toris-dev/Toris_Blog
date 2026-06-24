@@ -46,8 +46,7 @@ export default function Home() {
 
   return (
     <>
-      <StructuredData type="website" />
-      <StructuredData type="person" />
+      <StructuredData page="home" />
 
       <div>
         <HeroSection />

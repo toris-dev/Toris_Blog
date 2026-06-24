@@ -1,3 +1,4 @@
+import StructuredData from '@/components/seo/StructuredData';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
@@ -25,5 +26,22 @@ export const metadata: Metadata = {
 };
 
 export default function GuestbookLayout({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <StructuredData
+        page="collection"
+        data={{
+          url: `${baseUrl}/guestbook`,
+          name: '방명록 | Toris Blog',
+          description:
+            'Toris Blog 방명록입니다. 방문 소감이나 인사를 남겨주세요.'
+        }}
+        breadcrumb={[
+          { name: '홈', url: '/' },
+          { name: '방명록', url: '/guestbook' }
+        ]}
+      />
+      {children}
+    </>
+  );
 }

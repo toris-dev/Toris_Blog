@@ -79,9 +79,24 @@ export default async function TagPage({
     return notFound();
   }
 
+  const title = `#${decodedTag} 태그 - 블로그 포스트`;
+  const description = `#${decodedTag} 태그가 포함된 블로그 포스트 ${posts.length}개를 확인하세요.`;
+
   return (
     <>
-      <StructuredData type="blog" />
+      <StructuredData
+        page="collection"
+        data={{
+          url: `${baseUrl}/tags/${tag}`,
+          name: title,
+          description
+        }}
+        breadcrumb={[
+          { name: '홈', url: '/' },
+          { name: '포스트', url: '/posts' },
+          { name: `#${decodedTag}`, url: `/tags/${tag}` }
+        ]}
+      />
       <Suspense fallback={<div>로딩 중...</div>}>
         <ClientSearchPage initialPosts={posts} />
       </Suspense>

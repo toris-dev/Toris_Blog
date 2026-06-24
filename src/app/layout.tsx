@@ -190,9 +190,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
         <link rel="manifest" href="/manifest.json" />
 
-        <StructuredData type="website" />
-        <StructuredData type="person" />
-        <StructuredData type="organization" />
+        <StructuredData page="global" />
 
         {/* Google AdSense - 쿠키 동의 후에만 로드 */}
         {process.env.NEXT_PUBLIC_ADSENSE_ID && (

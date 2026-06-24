@@ -119,8 +119,11 @@ export default async function Post({ params }: { params: { id: string } }) {
 
     return (
       <>
-        <StructuredData type="article" data={structuredData} />
-        <StructuredData type="breadcrumb" data={{ items: breadcrumbItems }} />
+        <StructuredData
+          page="article"
+          data={structuredData}
+          breadcrumb={breadcrumbItems}
+        />
         <PostPage {...pageProps} />
       </>
     );

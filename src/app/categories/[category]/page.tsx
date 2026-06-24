@@ -79,9 +79,27 @@ export default async function CategoryPage({
     return notFound();
   }
 
+  const title = `${decodedCategory} 카테고리 - 블로그 포스트`;
+  const description = `${decodedCategory} 카테고리의 블로그 포스트 ${posts.length}개를 확인하세요.`;
+
   return (
     <>
-      <StructuredData type="blog" />
+      <StructuredData
+        page="collection"
+        data={{
+          url: `${baseUrl}/categories/${category}`,
+          name: title,
+          description
+        }}
+        breadcrumb={[
+          { name: '홈', url: '/' },
+          { name: '포스트', url: '/posts' },
+          {
+            name: decodedCategory,
+            url: `/categories/${category}`
+          }
+        ]}
+      />
       <Suspense fallback={<div>로딩 중...</div>}>
         <ClientSearchPage initialPosts={posts} />
       </Suspense>

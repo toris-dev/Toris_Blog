@@ -1,3 +1,4 @@
+import StructuredData from '@/components/seo/StructuredData';
 import { getDefaultOGImageUrl } from '@/utils/og-image';
 import { Metadata } from 'next';
 
@@ -40,5 +41,22 @@ export default function ContactLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <StructuredData
+        page="contact"
+        data={{
+          url: `${baseUrl}/contact`,
+          name: '문의하기 - Toris Dev Blog',
+          description:
+            '블로그에 관한 피드백이나 협업 제안은 언제든지 환영합니다. 문의사항을 남겨주세요.'
+        }}
+        breadcrumb={[
+          { name: '홈', url: '/' },
+          { name: '문의하기', url: '/contact' }
+        ]}
+      />
+      {children}
+    </>
+  );
 }
