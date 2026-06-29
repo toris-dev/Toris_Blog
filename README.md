@@ -58,6 +58,10 @@ flowchart LR
   - 리스트, 칸반 보드, 캘린더 뷰 지원
   - 이더리움 지갑 기반 인가 시스템 (읽기는 공개, 쓰기/수정/삭제는 인가된 사용자만)
   - MongoDB Atlas를 통한 영구 데이터 저장
+- ✅ **제2의 뇌 지식 베이스**: `toris-docs`를 비공개 RAG 원천 문서로 흡수
+  - `content/second-brain`에 저장하며 블로그 포스트 목록에는 노출하지 않음
+  - `/api/second-brain/search`에서 서버 전용 검색/retrieval 제공
+  - 운영 환경에서는 `SECOND_BRAIN_API_KEY` 헤더 인증으로 보호
 
 ---
 
@@ -133,6 +137,8 @@ flowchart LR
 
 ```
 Toris_Blog/
+├── content/
+│   └── second-brain/     # 비공개 제2의 뇌 원천 문서(RAG/retrieval용)
 ├── public/
 │   └── markdown/          # 마크다운 포스트 파일들
 │       ├── Archive/       # 아카이브 카테고리
@@ -178,6 +184,25 @@ Toris_Blog/
 │   └── e2e/              # 테스트 파일들
 └── README.md
 ```
+
+### 제2의 뇌 사용 방식
+
+`content/second-brain`은 공개 글이 아니라 개인 지식 원천입니다. `public/markdown`에 넣으면 포스트, 카테고리, sitemap, 검색 UI에 섞이므로 `toris-docs` 문서는 이 디렉토리에만 둡니다.
+
+검색 API:
+
+```bash
+curl "http://localhost:8080/api/second-brain/search?q=SnapMate&limit=5"
+```
+
+운영 환경에서는 다음 중 하나로 인증해야 합니다.
+
+```bash
+curl "https://your-domain.com/api/second-brain/search?q=SnapMate" \
+  -H "x-second-brain-key: $SECOND_BRAIN_API_KEY"
+```
+
+RAG를 붙일 때는 이 API의 `results`를 LLM 프롬프트의 근거 문맥으로 넣고, 답변에는 `title`, `path`, `heading`을 출처로 표시합니다. 벡터 DB가 필요해지기 전까지는 현재처럼 서버 파일 시스템 기반 lexical retrieval로 운영하고, 질의 품질이나 문서 규모가 커질 때 embeddings/벡터 스토어로 교체합니다.
 
 ---
 
