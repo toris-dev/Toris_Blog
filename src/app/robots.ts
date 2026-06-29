@@ -15,7 +15,15 @@ const publicAllow = [
   '/contact'
 ];
 
-const publicDisallow = ['/api/*', '/admin/*', '/_next/*', '/favicon.ico', '/*.json$', '/offline'];
+const publicDisallow = [
+  '/api/*',
+  '/admin/*',
+  '/_next/*',
+  '/favicon.ico',
+  '/*.json$',
+  '/offline',
+  '/ask'
+];
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -41,27 +49,27 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: 'GPTBot',
         allow: publicAllow,
-        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook']
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook', '/ask']
       },
       {
         userAgent: 'ChatGPT-User',
         allow: publicAllow,
-        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook']
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook', '/ask']
       },
       {
         userAgent: 'ClaudeBot',
         allow: publicAllow,
-        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook']
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook', '/ask']
       },
       {
         userAgent: 'Google-Extended',
         allow: publicAllow,
-        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook']
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook', '/ask']
       },
       {
         userAgent: 'PerplexityBot',
         allow: publicAllow,
-        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook']
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook', '/ask']
       }
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

@@ -1,28 +1,9 @@
 import { getSecondBrainStats, searchSecondBrain } from '@/utils/secondBrain';
+import { isSecondBrainAuthorized } from '@/utils/secondBrainAuth';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-
-function isAuthorized(request: NextRequest): boolean {
-  if (process.env.NODE_ENV !== 'production') {
-    return true;
-  }
-
-  const configuredKey = process.env.SECOND_BRAIN_API_KEY;
-
-  if (!configuredKey) {
-    return false;
-  }
-
-  const authorization = request.headers.get('authorization');
-  const bearerToken = authorization?.startsWith('Bearer ')
-    ? authorization.slice('Bearer '.length)
-    : null;
-  const headerKey = request.headers.get('x-second-brain-key');
-
-  return bearerToken === configuredKey || headerKey === configuredKey;
-}
 
 function parseLimit(value: string | null): number {
   const parsed = Number(value);
@@ -30,7 +11,7 @@ function parseLimit(value: string | null): number {
 }
 
 export async function GET(request: NextRequest) {
-  if (!isAuthorized(request)) {
+  if (!isSecondBrainAuthorized(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -51,7 +32,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  if (!isAuthorized(request)) {
+  if (!isSecondBrainAuthorized(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
