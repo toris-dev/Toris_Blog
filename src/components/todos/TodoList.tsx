@@ -39,7 +39,7 @@ export default function TodoList({ onAddTodo, onEditTodo }: TodoListProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div className="flex items-center gap-2">
           <Button 
             onClick={onAddTodo} 
@@ -52,7 +52,7 @@ export default function TodoList({ onAddTodo, onEditTodo }: TodoListProps) {
           </Button>
         </div>
 
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex flex-wrap items-center gap-2">
           <select
             value={filterStatus}
             onChange={(e) =>
@@ -83,7 +83,7 @@ export default function TodoList({ onAddTodo, onEditTodo }: TodoListProps) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center py-12 text-muted-foreground"
+          className="py-12 text-center text-muted-foreground"
         >
           {filterStatus === 'all' ? (
             <div className="space-y-2">

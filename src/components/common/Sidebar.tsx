@@ -83,7 +83,7 @@ function SidebarPanel({
             fullWidthResponsive={true}
             className="w-full"
           />
-        </motion.div>
+        </div>
       )}
     </>
   );
@@ -165,7 +165,7 @@ function PostDetailSidebar({ posts }: SidebarProps) {
             >
               <div className="sidebar-scrollbar flex max-h-[calc(100vh-7rem)] flex-col overflow-y-auto rounded-xl border border-border bg-card/95 p-4 shadow-lg backdrop-blur-md">
                 <SidebarPanel posts={posts} onClose={close} showHeader />
-              </motion.div>
+              </div>
             </motion.aside>
           </>
         )}

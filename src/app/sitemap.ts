@@ -1,8 +1,7 @@
 import { getPostData } from '@/utils/markdown';
 import { MetadataRoute } from 'next';
 
-// 6시간마다 재생성
-export const revalidate = 21600;
+export const revalidate = 604800;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
@@ -13,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: 'weekly' as const,
       priority: 1
     },
     {
@@ -31,7 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/posts`,
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: 'weekly' as const,
       priority: 0.9
     }
   ];

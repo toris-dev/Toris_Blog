@@ -1,3 +1,4 @@
+import { CACHE_CONTROL_HEADER } from '@/config/cache';
 import { getPosts } from '@/utils/fetch';
 import RSS from 'rss';
 
@@ -5,8 +6,7 @@ import RSS from 'rss';
 const DOMAIN =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-dev.vercel.app';
 
-// 6시간마다 재생성
-export const revalidate = 21600;
+export const revalidate = 604800;
 
 // 태그를 배열로 변환하는 헬퍼 함수
 function normalizeCategories(tags: string | string[] | undefined): string[] {
@@ -63,7 +63,7 @@ export async function GET() {
       headers: {
         'Content-Type': 'application/xml; charset=utf-8',
         // ISG를 위한 캐시 제어 헤더 설정
-        'Cache-Control': `public, s-maxage=${21600}, stale-while-revalidate`
+        'Cache-Control': CACHE_CONTROL_HEADER
       }
     });
   } catch (error) {

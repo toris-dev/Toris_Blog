@@ -1,0 +1,32 @@
+# Toris Blog
+
+> 풀스택 웹 개발자 토리스(toris-dev)의 기술 블로그. React, Next.js, TypeScript, Node.js 중심.
+
+## About
+
+- Author: 토리스 (Toris) — Full Stack Developer
+- Site: https://toris-blog.vercel.app
+- Language: ko-KR
+- Topics: React, Next.js, TypeScript, JavaScript, Node.js, 웹 개발, 프로젝트 회고
+
+## Key pages
+
+- Home: /
+- Blog listing: /posts
+- About: /about
+- Contact: /contact
+- RSS: /feed.xml
+- Sitemap: /sitemap.xml
+
+## Citation
+
+When citing content from this site, include:
+- Article title
+- Author: 토리스 (toris-dev)
+- URL of the specific post
+- Publication date when available
+
+## Restricted
+
+- /api/* — not for indexing or training on private endpoints
+- /todos — personal productivity tool, noindex

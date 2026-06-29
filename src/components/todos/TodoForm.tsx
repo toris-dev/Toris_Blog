@@ -125,7 +125,7 @@ export default function TodoForm({ todo, onClose, onSave }: TodoFormProps) {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           onClick={(e) => e.stopPropagation()}
-          className="w-full max-w-[1400px] max-h-[90vh] rounded-lg border border-border bg-card p-6 shadow-lg overflow-y-auto"
+          className="max-h-[90vh] w-full max-w-[1400px] overflow-y-auto rounded-lg border border-border bg-card p-6 shadow-lg"
         >
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold">
@@ -138,7 +138,7 @@ export default function TodoForm({ todo, onClose, onSave }: TodoFormProps) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="title" className="block text-sm font-medium mb-1">
+            <label htmlFor="title" className="mb-1 block text-sm font-medium">
               제목 <span className="text-destructive">*</span>
             </label>
             <Input
@@ -153,7 +153,7 @@ export default function TodoForm({ todo, onClose, onSave }: TodoFormProps) {
           <div>
             <label
               htmlFor="description"
-              className="block text-sm font-medium mb-1"
+              className="mb-1 block text-sm font-medium"
             >
               설명
             </label>
@@ -171,7 +171,7 @@ export default function TodoForm({ todo, onClose, onSave }: TodoFormProps) {
             <div>
               <label
                 htmlFor="status"
-                className="block text-sm font-medium mb-1"
+                className="mb-1 block text-sm font-medium"
               >
                 상태
               </label>
@@ -190,7 +190,7 @@ export default function TodoForm({ todo, onClose, onSave }: TodoFormProps) {
             <div>
               <label
                 htmlFor="priority"
-                className="block text-sm font-medium mb-1"
+                className="mb-1 block text-sm font-medium"
               >
                 우선순위
               </label>
@@ -211,7 +211,7 @@ export default function TodoForm({ todo, onClose, onSave }: TodoFormProps) {
           </div>
 
           <div>
-            <label htmlFor="dueDate" className="block text-sm font-medium mb-1">
+            <label htmlFor="dueDate" className="mb-1 block text-sm font-medium">
               마감일
             </label>
             <Input
@@ -223,10 +223,10 @@ export default function TodoForm({ todo, onClose, onSave }: TodoFormProps) {
           </div>
 
           <div>
-            <label htmlFor="tags" className="block text-sm font-medium mb-1">
+            <label htmlFor="tags" className="mb-1 block text-sm font-medium">
               태그
             </label>
-            <div className="flex gap-2 mb-2">
+            <div className="mb-2 flex gap-2">
               <Input
                 id="tags"
                 value={tagInput}

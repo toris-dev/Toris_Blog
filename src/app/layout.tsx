@@ -142,7 +142,10 @@ export const metadata: Metadata = {
     }
   },
   other: {
-    'google-adsense-account': 'ca-pub-your-adsense-id'
+    'google-adsense-account': 'ca-pub-your-adsense-id',
+    'ai-content-declaration':
+      'public-blog; cite author 토리스 and canonical URL when summarizing',
+    'llms-txt': '/llms.txt'
   }
 };
 
@@ -189,6 +192,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           href={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app'}/feed.xml`}
         />
         <link rel="manifest" href="/manifest.json" />
+        <link rel="author" href="/llms.txt" type="text/plain" title="LLMs content guide" />
 
         <StructuredData page="global" />
 

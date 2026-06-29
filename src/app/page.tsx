@@ -6,8 +6,8 @@ import { getPostData } from '@/utils/markdown';
 import { getDefaultOGImageUrl } from '@/utils/og-image';
 import { Metadata } from 'next';
 
-// 6시간마다 재생성
-export const revalidate = 21600;
+// ISR Writes 절감: 7일 (온디맨드 /api/revalidate 우선)
+export const revalidate = 604800;
 
 const PAGE_TITLE = 'Toris Blog - 웹 개발자의 기술 블로그';
 const PAGE_DESCRIPTION =

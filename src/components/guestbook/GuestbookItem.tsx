@@ -36,7 +36,7 @@ export function GuestbookItem({ guestbook, index }: GuestbookItemProps) {
         </div>
       </div>
 
-      <div className="text-foreground whitespace-pre-wrap break-words pl-13">
+      <div className="whitespace-pre-wrap break-words pl-12 text-foreground">
         {guestbook.message}
       </div>
     </motion.div>

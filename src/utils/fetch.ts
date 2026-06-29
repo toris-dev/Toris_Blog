@@ -1,5 +1,6 @@
 import { cache } from 'react';
 import { unstable_cache } from 'next/cache';
+import { REVALIDATE_SECONDS } from '@/config/cache';
 import { Post } from '@/types';
 import {
   getCategories as getMarkdownCategories,
@@ -14,12 +15,12 @@ import {
 // React cache로 요청 단위 캐싱
 const getCachedPostDataRequest = cache(async () => getPostData());
 
-// Next.js cache로 ISR 캐싱 (6시간마다 재검증)
+// Next.js cache로 ISR 캐싱 (7일, 온디맨드 revalidate 우선)
 const getCachedPostData = unstable_cache(
   async () => getCachedPostDataRequest(),
   ['all-posts'],
   {
-    revalidate: 21600, // 6시간
+    revalidate: REVALIDATE_SECONDS,
     tags: ['posts']
   }
 );
@@ -71,7 +72,7 @@ const getCachedPostBySlug = unstable_cache(
   async (slug: string) => getCachedPostBySlugRequest(slug),
   ['post-by-slug'],
   {
-    revalidate: 21600, // 6시간
+    revalidate: REVALIDATE_SECONDS,
     tags: ['posts', 'post']
   }
 );
@@ -99,7 +100,7 @@ const getCachedCategories = unstable_cache(
   async () => getCachedCategoriesRequest(),
   ['all-categories'],
   {
-    revalidate: 21600, // 6시간
+    revalidate: REVALIDATE_SECONDS,
     tags: ['categories', 'posts'] // posts 태그와 연결하여 포스트 변경 시 카테고리도 재검증
   }
 );

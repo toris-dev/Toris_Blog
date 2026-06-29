@@ -38,21 +38,21 @@ export function TodosPageClient() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 rounded-lg border border-primary/20 bg-primary/5 mb-4"
+          className="mb-4 rounded-lg border border-primary/20 bg-primary/5 p-4"
         >
           <div className="flex items-center gap-2">
-            <div className="size-2 rounded-full bg-primary animate-pulse" />
+            <div className="size-2 animate-pulse rounded-full bg-primary" />
             <p className="text-sm text-muted-foreground">
               <span className="font-semibold text-primary">toris-dev</span>의 할일 관리 시스템
             </p>
           </div>
         </motion.div>
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <div>
-              <div className="flex items-center gap-2 mb-2">
+              <div className="mb-2 flex items-center gap-2">
                 <h1 className="text-3xl font-bold">할일 관리</h1>
-                <span className="px-3 py-1 text-sm font-semibold rounded-full bg-primary/10 text-primary border border-primary/20">
+                <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
                   toris-dev
                 </span>
               </div>

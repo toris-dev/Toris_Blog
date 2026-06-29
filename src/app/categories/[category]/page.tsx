@@ -9,7 +9,7 @@ import ClientSearchPage from '@/app/posts/_components/ClientSearchPage';
 const baseUrl =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
 
-export const revalidate = 21600; // 6시간마다 재생성
+export const revalidate = 604800;
 
 export async function generateStaticParams() {
   const categories = getCategories();

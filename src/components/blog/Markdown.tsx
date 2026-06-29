@@ -396,7 +396,7 @@ const MarkdownViewerComponent: React.FC<MarkdownProps> = ({
             {...props}
           />
           {title && (
-            <div className="mt-2 text-sm text-muted-foreground text-center">
+            <div className="mt-2 text-center text-sm text-muted-foreground">
               {title}
             </div>
           )}

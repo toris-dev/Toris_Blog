@@ -68,7 +68,7 @@ export function PostSeries({ series, currentPost }: PostSeriesProps) {
                     className={cn(
                       'flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors',
                       post.id === currentPost.slug
-                        ? 'bg-primary/10 text-primary font-semibold'
+                        ? 'bg-primary/10 font-semibold text-primary'
                         : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
                     )}
                   >
@@ -94,7 +94,7 @@ export function PostSeries({ series, currentPost }: PostSeriesProps) {
             <FaChevronLeft className="size-4" />
             <div className="flex flex-col items-start">
               <span className="text-xs text-muted-foreground">이전 포스트</span>
-              <span className="text-sm font-medium text-foreground line-clamp-1">
+              <span className="line-clamp-1 text-sm font-medium text-foreground">
                 {navigation.previous.title}
               </span>
             </div>
@@ -110,7 +110,7 @@ export function PostSeries({ series, currentPost }: PostSeriesProps) {
           >
             <div className="flex flex-col items-end">
               <span className="text-xs text-muted-foreground">다음 포스트</span>
-              <span className="text-sm font-medium text-foreground line-clamp-1">
+              <span className="line-clamp-1 text-sm font-medium text-foreground">
                 {navigation.next.title}
               </span>
             </div>

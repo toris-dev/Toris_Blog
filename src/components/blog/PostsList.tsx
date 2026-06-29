@@ -71,13 +71,9 @@ export default function PostsList() {
   );
 
   useEffect(() => {
-    debouncedFilterRef.current(
-      searchQuery,
-      selectedCategory,
-      posts,
-      setFilteredPosts
-    );
-    return () => debouncedFilterRef.current.cancel();
+    const debouncedFilter = debouncedFilterRef.current;
+    debouncedFilter(searchQuery, selectedCategory, posts, setFilteredPosts);
+    return () => debouncedFilter.cancel();
   }, [searchQuery, selectedCategory, posts]);
 
   if (loading) {

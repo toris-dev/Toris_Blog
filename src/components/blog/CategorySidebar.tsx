@@ -192,7 +192,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
         </div>
       </div>
 
-      <div className="border-b border-border px-6 pb-4 my-4">
+      <div className="my-4 border-b border-border px-6 pb-4">
         <Link
           href="/todos"
           className={cn(

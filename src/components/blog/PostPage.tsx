@@ -301,7 +301,7 @@ const PostPageContent: FC<{
               {/* 콘텐츠 뷰어 */}
               <div
                 className={cn(
-                  'min-w-0 flex-1 prose prose-sm max-w-full dark:prose-invert sm:prose-sm md:prose-base lg:prose-base xl:prose-lg',
+                  'prose prose-sm min-w-0 max-w-full flex-1 dark:prose-invert sm:prose-sm md:prose-base lg:prose-base xl:prose-lg',
                   // Prose의 max-width 제한 완전히 제거
                   'prose-img:!w-full prose-img:!max-w-full',
                   'prose-pre:!w-full prose-pre:!min-w-0 prose-pre:!max-w-full prose-pre:!overflow-x-auto',

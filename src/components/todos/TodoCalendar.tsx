@@ -93,7 +93,7 @@ export default function TodoCalendar({
           key={day}
           onClick={() => setSelectedDate(isSelected ? null : dateString)}
           className={`
-            relative p-2 rounded-lg border transition-colors
+            relative rounded-lg border p-2 transition-colors
             ${isToday ? 'border-primary bg-primary/10' : 'border-border'}
             ${isSelected ? 'ring-2 ring-primary' : ''}
             ${hasTodos ? 'hover:bg-muted' : ''}
@@ -113,7 +113,7 @@ export default function TodoCalendar({
               {dayTodos.slice(0, 2).map((todo) => (
                 <div
                   key={todo.id}
-                  className={`h-1 w-1 rounded-full ${
+                  className={`size-1 rounded-full ${
                     todo.status === 'completed'
                       ? 'bg-green-500'
                       : todo.status === 'in-progress'
@@ -147,7 +147,7 @@ export default function TodoCalendar({
           <Button variant="outline" size="icon" onClick={goToPreviousMonth}>
             <FaChevronLeft className="size-4" />
           </Button>
-          <h2 className="text-xl font-bold min-w-[200px] text-center">
+          <h2 className="min-w-[200px] text-center text-xl font-bold">
             {currentDate.format('YYYY년 MM월')}
           </h2>
           <Button variant="outline" size="icon" onClick={goToNextMonth}>

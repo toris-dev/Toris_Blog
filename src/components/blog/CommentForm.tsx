@@ -69,7 +69,7 @@ export function CommentForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       {errors.length > 0 && (
         <div className="rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
-          <ul className="list-disc list-inside space-y-1">
+          <ul className="list-inside list-disc space-y-1">
             {errors.map((error, index) => (
               <li key={index}>{error}</li>
             ))}

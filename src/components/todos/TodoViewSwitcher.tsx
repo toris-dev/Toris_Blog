@@ -38,7 +38,7 @@ export default function TodoViewSwitcher({
               'flex items-center gap-2 transition-all',
               isActive 
                 ? 'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90' 
-                : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                : 'text-muted-foreground hover:bg-accent hover:text-foreground'
             )}
           >
             <Icon className="size-4" />

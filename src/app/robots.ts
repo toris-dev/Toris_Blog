@@ -1,65 +1,67 @@
 import { MetadataRoute } from 'next';
 
-export default function robots(): MetadataRoute.Robots {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
+const baseUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
 
+const publicAllow = [
+  '/',
+  '/posts',
+  '/posts/*',
+  '/categories',
+  '/categories/*',
+  '/tags',
+  '/tags/*',
+  '/about',
+  '/contact'
+];
+
+const publicDisallow = ['/api/*', '/admin/*', '/_next/*', '/favicon.ico', '/*.json$', '/offline'];
+
+export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
         userAgent: '*',
-        allow: [
-          '/',
-          '/posts',
-          '/posts/*',
-          '/categories',
-          '/categories/*',
-          '/tags',
-          '/tags/*',
-          '/about',
-          '/contact'
-        ],
-        disallow: [
-          '/api/*',
-          '/admin/*',
-          '/_next/*',
-          '/favicon.ico',
-          '/*.json$',
-          '/offline'
-        ],
-        crawlDelay: 1
+        allow: publicAllow,
+        disallow: publicDisallow,
+        crawlDelay: 2
       },
       {
         userAgent: 'Googlebot',
-        allow: [
-          '/',
-          '/posts',
-          '/posts/*',
-          '/categories',
-          '/categories/*',
-          '/tags',
-          '/tags/*',
-          '/about',
-          '/contact'
-        ],
-        disallow: ['/api/*', '/admin/*', '/_next/*', '/offline'],
-        crawlDelay: 0
+        allow: publicAllow,
+        disallow: publicDisallow
       },
       {
         userAgent: 'Bingbot',
-        allow: [
-          '/',
-          '/posts',
-          '/posts/*',
-          '/categories',
-          '/categories/*',
-          '/tags',
-          '/tags/*',
-          '/about',
-          '/contact'
-        ],
-        disallow: ['/api/*', '/admin/*', '/_next/*', '/offline'],
+        allow: publicAllow,
+        disallow: publicDisallow,
         crawlDelay: 1
+      },
+      // AEO / GEO: AI 검색·답변 엔진용 공개 콘텐츠 허용
+      {
+        userAgent: 'GPTBot',
+        allow: publicAllow,
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook']
+      },
+      {
+        userAgent: 'ChatGPT-User',
+        allow: publicAllow,
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook']
+      },
+      {
+        userAgent: 'ClaudeBot',
+        allow: publicAllow,
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook']
+      },
+      {
+        userAgent: 'Google-Extended',
+        allow: publicAllow,
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook']
+      },
+      {
+        userAgent: 'PerplexityBot',
+        allow: publicAllow,
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook']
       }
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

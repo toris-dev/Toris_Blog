@@ -65,8 +65,9 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   );
 
   useEffect(() => {
-    debouncedFilterRef.current(searchTerm, posts);
-    return () => debouncedFilterRef.current.cancel();
+    const debouncedFilter = debouncedFilterRef.current;
+    debouncedFilter(searchTerm, posts);
+    return () => debouncedFilter.cancel();
   }, [searchTerm, posts]);
 
   // 모달이 열릴 때 입력창에 포커스

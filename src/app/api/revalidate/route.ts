@@ -1,3 +1,4 @@
+import { REVALIDATE_SECONDS } from '@/config/cache';
 import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
     // 각 태그에 대해 재검증
     // Next.js 16: revalidateTag는 tag와 type을 받습니다
     for (const tag of tags) {
-      revalidateTag(tag, { expire: 6 * 60 * 60 * 1000 });
+      revalidateTag(tag, { expire: REVALIDATE_SECONDS * 1000 });
     }
 
     return NextResponse.json({

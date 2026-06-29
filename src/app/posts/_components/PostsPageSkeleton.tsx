@@ -4,7 +4,7 @@
  */
 export function PostsPageSkeleton() {
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
+    <div className="space-y-6 duration-300 animate-in fade-in">
       {/* 검색/필터 영역 */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="h-10 w-full max-w-md animate-pulse rounded-lg bg-primary/10 sm:w-80" />
@@ -33,8 +33,8 @@ export function PostsPageSkeleton() {
               <div className="flex items-center justify-between">
                 <div className="h-3 w-1/4 animate-pulse rounded-md bg-primary/10" />
                 <div className="flex gap-1">
-                  <div className="h-9 w-9 animate-pulse rounded-full bg-primary/10" />
-                  <div className="h-9 w-9 animate-pulse rounded-full bg-primary/10" />
+                  <div className="size-9 animate-pulse rounded-full bg-primary/10" />
+                  <div className="size-9 animate-pulse rounded-full bg-primary/10" />
                 </div>
               </div>
             </div>

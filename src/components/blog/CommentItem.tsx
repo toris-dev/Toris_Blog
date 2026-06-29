@@ -140,7 +140,7 @@ export function CommentItem({ comment, onUpdate }: CommentItemProps) {
             onCancel={() => setIsEditing(false)}
           />
         ) : (
-          <div className="text-foreground whitespace-pre-wrap break-words">
+          <div className="whitespace-pre-wrap break-words text-foreground">
             {comment.content}
           </div>
         )}
@@ -191,7 +191,7 @@ function CommentEditForm({ initialContent, onSubmit, onCancel }: CommentEditForm
         required
         disabled={isSubmitting}
         rows={3}
-        className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+        className="flex w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
       />
       <div className="flex justify-end gap-2">
         <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>

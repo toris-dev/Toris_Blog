@@ -198,7 +198,13 @@ export function buildArticleGraph(
       license: SITE.license,
       ...(tags.length > 0 ? { keywords: tags.join(', ') } : {}),
       ...(data.category ? { articleSection: data.category } : {}),
-      ...(data.wordCount ? { wordCount: data.wordCount } : {})
+      ...(data.wordCount ? { wordCount: data.wordCount } : {}),
+      speakable: {
+        '@type': 'SpeakableSpecification',
+        cssSelector: ['article h1', 'article .prose p']
+      },
+      isAccessibleForFree: true,
+      genre: data.category ?? 'Technology'
     }
   ];
 

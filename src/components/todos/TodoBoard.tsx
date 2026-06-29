@@ -37,7 +37,7 @@ export default function TodoBoard({ onAddTodo, onEditTodo }: TodoBoardProps) {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {columns.map((column) => {
           const todos = getTodosByStatus(column.status);
 
@@ -49,13 +49,13 @@ export default function TodoBoard({ onAddTodo, onEditTodo }: TodoBoardProps) {
               className="flex flex-col rounded-lg border border-border bg-muted/30 p-4"
             >
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="font-semibold text-lg">{column.label}</h3>
+                <h3 className="text-lg font-semibold">{column.label}</h3>
                 <span className="rounded-full bg-background px-2 py-1 text-sm font-medium">
                   {todos.length}
                 </span>
               </div>
 
-              <div className="flex-1 space-y-3 overflow-y-auto min-h-[200px] max-h-[600px]">
+              <div className="max-h-[600px] min-h-[200px] flex-1 space-y-3 overflow-y-auto">
                 {todos.length === 0 ? (
                   <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
                     할일이 없습니다

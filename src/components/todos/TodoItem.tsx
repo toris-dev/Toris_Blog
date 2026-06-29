@@ -75,14 +75,14 @@ export default function TodoItem({ todo, onEdit }: TodoItemProps) {
       )}
     >
       <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-2">
+        <div className="min-w-0 flex-1">
+          <div className="mb-2 flex items-center gap-2">
             <button
               onClick={handleToggleStatus}
               disabled={!isAuthorized}
               className={cn(
-                "flex-shrink-0 mt-0.5 transition-opacity",
-                !isAuthorized && "opacity-50 cursor-not-allowed"
+                "mt-0.5 flex-shrink-0 transition-opacity",
+                !isAuthorized && "cursor-not-allowed opacity-50"
               )}
               aria-label={`상태 변경: ${statusInfo.label}`}
               title={!isAuthorized ? '인가된 지갑으로 연결해주세요' : ''}
@@ -97,8 +97,8 @@ export default function TodoItem({ todo, onEdit }: TodoItemProps) {
             </button>
             <h3
               className={cn(
-                'font-semibold text-lg flex-1',
-                todo.status === 'completed' && 'line-through text-muted-foreground'
+                'flex-1 text-lg font-semibold',
+                todo.status === 'completed' && 'text-muted-foreground line-through'
               )}
             >
               {todo.title}
@@ -106,7 +106,7 @@ export default function TodoItem({ todo, onEdit }: TodoItemProps) {
           </div>
 
           {todo.description && (
-            <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+            <p className="mb-3 line-clamp-2 text-sm text-muted-foreground">
               {todo.description}
             </p>
           )}
@@ -114,7 +114,7 @@ export default function TodoItem({ todo, onEdit }: TodoItemProps) {
           <div className="flex flex-wrap items-center gap-2 text-xs">
             <span
               className={cn(
-                'px-2 py-1 rounded-full font-medium',
+                'rounded-full px-2 py-1 font-medium',
                 statusInfo.color
               )}
             >
@@ -122,7 +122,7 @@ export default function TodoItem({ todo, onEdit }: TodoItemProps) {
             </span>
 
             {priorityInfo && (
-              <span className={cn('px-2 py-1 rounded-full', priorityInfo.color)}>
+              <span className={cn('rounded-full px-2 py-1', priorityInfo.color)}>
                 우선순위: {priorityInfo.label}
               </span>
             )}
@@ -130,7 +130,7 @@ export default function TodoItem({ todo, onEdit }: TodoItemProps) {
             {todo.dueDate && (
               <span
                 className={cn(
-                  'px-2 py-1 rounded-full',
+                  'rounded-full px-2 py-1',
                   isOverdue && todo.status !== 'completed'
                     ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
                     : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200'
@@ -145,7 +145,7 @@ export default function TodoItem({ todo, onEdit }: TodoItemProps) {
                 {todo.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                    className="rounded-full bg-blue-100 px-2 py-1 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
                   >
                     #{tag}
                   </span>
@@ -155,9 +155,9 @@ export default function TodoItem({ todo, onEdit }: TodoItemProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex shrink-0 items-center gap-2">
           {!isAuthorized && (
-            <div className="flex items-center gap-1 px-2 py-1 rounded text-xs text-muted-foreground bg-muted/50">
+            <div className="flex items-center gap-1 rounded bg-muted/50 px-2 py-1 text-xs text-muted-foreground">
               <FaLock className="size-3" />
               <span className="hidden sm:inline">읽기 전용</span>
             </div>
@@ -167,7 +167,7 @@ export default function TodoItem({ todo, onEdit }: TodoItemProps) {
               variant="ghost"
               size="icon"
               onClick={() => onEdit(todo)}
-              className="opacity-0 group-hover:opacity-100 transition-opacity"
+              className="opacity-0 transition-opacity group-hover:opacity-100"
               aria-label="수정"
             >
               <FaEdit className="size-4" />
@@ -178,7 +178,7 @@ export default function TodoItem({ todo, onEdit }: TodoItemProps) {
               variant="ghost"
               size="icon"
               onClick={handleDelete}
-              className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive"
+              className="text-destructive opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100"
               aria-label="삭제"
             >
               <FaTrash className="size-4" />
