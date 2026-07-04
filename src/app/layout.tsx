@@ -91,23 +91,14 @@ export const metadata: Metadata = {
     siteName: 'Toris Blog',
     title: 'Toris Blog - 웹 개발자의 기술 블로그',
     description:
-      '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript, Node.js 등 웹 개발 기술과 프로젝트 경험을 공유합니다.',
-    images: [
-      {
-        url: '/images/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Toris Blog - 웹 개발자의 기술 블로그'
-      }
-    ]
+      '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript, Node.js 등 웹 개발 기술과 프로젝트 경험을 공유합니다.'
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Toris Blog - 웹 개발자의 기술 블로그',
     description:
       '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript, Node.js 등 웹 개발 기술과 프로젝트 경험을 공유합니다.',
-    creator: '@toris_dev',
-    images: ['/images/twitter-image.png']
+    creator: '@toris_dev'
   },
   ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
   process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION

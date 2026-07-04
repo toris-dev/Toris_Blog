@@ -1,29 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    <linearGradient id="tg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#EC4899"/>
     </linearGradient>
-    <filter id="shadow">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
-    </filter>
   </defs>
-  
-  <!-- 배경 원 -->
-  <circle cx="64" cy="64" r="60" fill="url(#grad)" filter="url(#shadow)"/>
-  
-  <!-- 코드 브래킷 아이콘 </> (Full Stack Developer) -->
-  <g transform="translate(64, 64)" fill="white" stroke="white" stroke-width="2">
-    <!-- 왼쪽 브래킷 < -->
-    <path d="M -20 -14 L -20 14 L -12 14 L -12 8 L -16 8 L -16 -8 L -12 -8 L -12 -14 Z" 
-          opacity="0.95"/>
-    
-    <!-- 슬래시 / -->
-    <line x1="-6" y1="-14" x2="6" y2="14" 
-          stroke-width="3" stroke-linecap="round" opacity="0.95"/>
-    
-    <!-- 오른쪽 브래킷 > -->
-    <path d="M 12 -14 L 12 -8 L 16 -8 L 16 8 L 12 8 L 12 14 L 20 14 L 20 -14 Z" 
-          opacity="0.95"/>
-  </g>
+  <rect width="128" height="128" rx="28" fill="url(#tg)"/>
+  <rect x="30" y="34" width="68" height="15" rx="7.5" fill="#FFFFFF"/>
+  <rect x="56.5" y="34" width="15" height="60" rx="7.5" fill="#FFFFFF"/>
+  <rect x="76" y="80" width="14" height="14" rx="3.5" fill="#34D399"/>
 </svg>

@@ -6,8 +6,7 @@ import {
   FaPaperPlane,
   FaSearch,
   FaUser,
-  FaListAlt,
-  SiNextjs
+  FaListAlt
 } from '@/components/icons';
 import { cn } from '@/utils/style';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
@@ -103,13 +102,29 @@ const Header: FC = () => {
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link href="/" className="flex items-center gap-2 font-bold">
               <motion.div
-                className="shadow-soft flex size-8 items-center justify-center rounded-full bg-primary/10"
+                className="shadow-soft flex size-8 items-center justify-center"
                 whileHover={{
                   rotate: 360,
                   transition: { duration: 0.6, ease: 'easeInOut' }
                 }}
               >
-                <SiNextjs className="size-5 text-primary" />
+                <svg
+                  viewBox="0 0 128 128"
+                  className="size-8"
+                  role="img"
+                  aria-label="Toris Blog 로고"
+                >
+                  <defs>
+                    <linearGradient id="toris-logo-g" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#6366F1" />
+                      <stop offset="100%" stopColor="#EC4899" />
+                    </linearGradient>
+                  </defs>
+                  <rect width="128" height="128" rx="28" fill="url(#toris-logo-g)" />
+                  <rect x="30" y="34" width="68" height="15" rx="7.5" fill="#FFFFFF" />
+                  <rect x="56.5" y="34" width="15" height="60" rx="7.5" fill="#FFFFFF" />
+                  <rect x="76" y="80" width="14" height="14" rx="3.5" fill="#34D399" />
+                </svg>
               </motion.div>
               <span className="text-xl font-bold text-foreground">
                 Toris Blog
