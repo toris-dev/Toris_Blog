@@ -59,7 +59,7 @@ export function usePostLike(postId: string): UsePostLikeReturn {
 
     setLiked(newLiked);
     setLikeCount(newCount);
-    saveLiked(postId, newLiked);
+    // 낙관적 UI는 React 상태로만 반영. localStorage는 toggleLike가 단일 소스로 관리
 
     try {
       const result = await toggleLike(postId);
