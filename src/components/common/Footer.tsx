@@ -42,6 +42,12 @@ const Footer: FC = () => {
               >
                 블로그
               </Link>
+              <Link
+                href="/projects"
+                className="block text-sm text-muted-foreground hover:text-primary"
+              >
+                프로젝트
+              </Link>
             </div>
           </div>
 

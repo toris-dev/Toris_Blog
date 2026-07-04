@@ -42,29 +42,29 @@ function AmbientBackground() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       <motion.div
-        className="absolute -left-40 -top-40 size-[34rem] rounded-full opacity-30 blur-[120px]"
+        className="absolute -left-40 -top-40 size-[34rem] rounded-full opacity-20 blur-[120px] dark:opacity-30"
         style={{ background: 'radial-gradient(circle, #6366F1, transparent 70%)' }}
         animate={reduce ? undefined : { x: [0, 60, 0], y: [0, 40, 0] }}
         transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
-        className="absolute -right-40 top-1/4 size-[30rem] rounded-full opacity-25 blur-[120px]"
+        className="absolute -right-40 top-1/4 size-[30rem] rounded-full opacity-15 blur-[120px] dark:opacity-25"
         style={{ background: 'radial-gradient(circle, #F43F5E, transparent 70%)' }}
         animate={reduce ? undefined : { x: [0, -50, 0], y: [0, 60, 0] }}
         transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
-        className="absolute bottom-0 left-1/3 size-[28rem] rounded-full opacity-20 blur-[120px]"
+        className="absolute bottom-0 left-1/3 size-[28rem] rounded-full opacity-10 blur-[120px] dark:opacity-20"
         style={{ background: 'radial-gradient(circle, #22C55E, transparent 70%)' }}
         animate={reduce ? undefined : { x: [0, 40, 0], y: [0, -50, 0] }}
         transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }}
       />
       {/* 미세 그리드 텍스처 */}
       <div
-        className="absolute inset-0 opacity-[0.04]"
+        className="absolute inset-0 text-slate-900 opacity-5 dark:text-white dark:opacity-[0.04]"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)',
+            'linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)',
           backgroundSize: '72px 72px'
         }}
       />
@@ -95,7 +95,7 @@ function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE }}
-          className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium tracking-widest text-slate-300 backdrop-blur-md"
+          className="inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-slate-900/5 px-4 py-1.5 text-xs font-medium tracking-widest text-slate-600 backdrop-blur-md dark:border-white/10 dark:bg-white/5 dark:text-slate-300"
         >
           <span className="relative flex size-2">
             <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60" />
@@ -104,7 +104,7 @@ function Hero() {
           PERSONAL PROJECTS
         </motion.span>
 
-        <h1 className="mt-8 text-5xl font-bold leading-[1.08] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
+        <h1 className="mt-8 text-5xl font-bold leading-[1.08] tracking-tight text-slate-900 dark:text-white sm:text-6xl md:text-7xl lg:text-8xl">
           {words.map((word, i) => (
             <motion.span
               key={word}
@@ -127,7 +127,7 @@ function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7, ease: EASE }}
-          className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg"
+          className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-400 sm:text-lg"
         >
           여행 플랫폼부터 데스크톱 도구, AI 파이프라인, Web3까지 —
           만들고 싶은 것을 직접 만드는 풀스택 개발자의 실험실입니다.
@@ -145,7 +145,7 @@ function Hero() {
             { value: '5', label: '주력 언어' }
           ].map((stat) => (
             <div key={stat.label} className="text-center">
-              <div className="text-3xl font-bold tabular-nums text-white sm:text-4xl">
+              <div className="text-3xl font-bold tabular-nums text-slate-900 dark:text-white sm:text-4xl">
                 {stat.value}
               </div>
               <div className="mt-1 text-xs text-slate-500">{stat.label}</div>
@@ -165,9 +165,9 @@ function Hero() {
         <motion.div
           animate={reduce ? undefined : { y: [0, 8, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-          className="flex h-10 w-6 items-start justify-center rounded-full border border-white/20 p-1.5"
+          className="flex h-10 w-6 items-start justify-center rounded-full border border-slate-900/20 p-1.5 dark:border-white/20"
         >
-          <div className="h-2 w-1 rounded-full bg-white/50" />
+          <div className="h-2 w-1 rounded-full bg-slate-900/40 dark:bg-white/50" />
         </motion.div>
       </motion.div>
     </section>
@@ -182,7 +182,7 @@ function TechMarquee() {
   return (
     <div
       aria-hidden
-      className="relative overflow-hidden border-y border-white/5 bg-white/[0.02] py-5"
+      className="relative overflow-hidden border-y border-slate-900/10 bg-slate-900/[0.03] py-5 dark:border-white/5 dark:bg-white/[0.02]"
       style={{
         maskImage:
           'linear-gradient(90deg, transparent, black 12%, black 88%, transparent)'
@@ -199,7 +199,7 @@ function TechMarquee() {
             className="flex items-center gap-10 text-sm font-medium tracking-widest text-slate-600"
           >
             {item}
-            <span className="size-1 rounded-full bg-slate-700" />
+            <span className="size-1 rounded-full bg-slate-400 dark:bg-slate-700" />
           </span>
         ))}
       </motion.div>
@@ -255,7 +255,7 @@ function TiltCard({ project, index }: { project: Project; index: number }) {
         <Link
           href={`/projects/${project.slug}`}
           aria-label={`${project.name} 프로젝트 자세히 보기`}
-          className="flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md transition-colors duration-300 hover:border-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-400"
+          className="flex h-full flex-col overflow-hidden rounded-3xl border border-slate-900/10 bg-white/70 shadow-sm backdrop-blur-md transition-colors duration-300 hover:border-slate-900/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-500 dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none dark:hover:border-white/20"
         >
           {/* 호버 시 액센트 글로우 */}
           <div
@@ -293,25 +293,25 @@ function TiltCard({ project, index }: { project: Project; index: number }) {
 
           <div className="relative flex flex-1 flex-col p-6">
             <div className="flex items-start justify-between gap-3">
-              <h3 className="text-xl font-bold text-white">{project.name}</h3>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">{project.name}</h3>
               <FiArrowUpRight
                 aria-hidden
-                className="mt-1 size-5 shrink-0 text-slate-500 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white"
+                className="mt-1 size-5 shrink-0 text-slate-500 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-slate-900 dark:group-hover:text-white"
               />
             </div>
-            <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-400">
+            <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
               {project.tagline}
             </p>
             <div className="mt-auto flex flex-wrap gap-1.5 pt-5">
               {project.tech.slice(0, 3).map((t) => (
                 <span
                   key={t}
-                  className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] font-medium text-slate-300"
+                  className="rounded-md border border-slate-900/10 bg-slate-900/5 px-2 py-0.5 text-[11px] font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"
                 >
                   {t}
                 </span>
               ))}
-              <span className="ml-auto text-[11px] tabular-nums text-slate-600">
+              <span className="ml-auto text-[11px] tabular-nums text-slate-500 dark:text-slate-600">
                 {project.year}
               </span>
             </div>
@@ -348,21 +348,21 @@ function MoreProjects() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
             whileTap={{ scale: 0.98 }}
-            className="group flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-colors duration-300 hover:border-white/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-400"
+            className="group flex items-center justify-between gap-4 rounded-2xl border border-slate-900/10 bg-white/70 p-5 shadow-sm transition-colors duration-300 hover:border-slate-900/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-500 dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none dark:hover:border-white/25"
           >
             <div>
-              <div className="flex items-center gap-2 font-semibold text-white">
+              <div className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
                 <FiGithub aria-hidden className="size-4 text-slate-500" />
                 {p.name}
               </div>
-              <p className="mt-1.5 text-sm text-slate-400">{p.description}</p>
+              <p className="mt-1.5 text-sm text-slate-600 dark:text-slate-400">{p.description}</p>
               <span className="mt-2 inline-block text-[11px] font-medium tracking-wide text-slate-600">
                 {p.tech}
               </span>
             </div>
             <FiArrowUpRight
               aria-hidden
-              className="size-5 shrink-0 text-slate-600 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white"
+              className="size-5 shrink-0 text-slate-500 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-slate-900 dark:text-slate-600 dark:group-hover:text-white"
             />
           </motion.a>
         ))}
@@ -381,7 +381,7 @@ function BottomCta() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.8, ease: EASE }}
-        className="relative mx-auto max-w-4xl overflow-hidden rounded-[2.5rem] border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] px-6 py-16 text-center backdrop-blur-md sm:px-16"
+        className="relative mx-auto max-w-4xl overflow-hidden rounded-[2.5rem] border border-slate-900/10 bg-gradient-to-b from-slate-900/[0.04] to-slate-900/[0.01] px-6 py-16 text-center backdrop-blur-md dark:border-white/10 dark:from-white/[0.06] dark:to-white/[0.02] sm:px-16"
       >
         <div
           aria-hidden
@@ -391,16 +391,16 @@ function BottomCta() {
               'radial-gradient(500px circle at 50% 120%, rgba(99,102,241,0.25), transparent 70%)'
           }}
         />
-        <h2 className="relative text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        <h2 className="relative text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
           함께 만들고 싶은 것이 있나요?
         </h2>
-        <p className="relative mx-auto mt-4 max-w-xl text-slate-400">
+        <p className="relative mx-auto mt-4 max-w-xl text-slate-600 dark:text-slate-400">
           새로운 아이디어, 협업 제안, 기술 이야기 — 무엇이든 환영합니다.
         </p>
         <div className="relative mt-9 flex flex-wrap items-center justify-center gap-3">
           <Link
             href="/contact"
-            className="group inline-flex h-12 items-center gap-2 rounded-full bg-white px-7 text-sm font-semibold text-slate-950 transition-transform duration-200 hover:scale-[1.03] active:scale-[0.97]"
+            className="group inline-flex h-12 items-center gap-2 rounded-full bg-slate-900 px-7 text-sm font-semibold text-white transition-transform duration-200 hover:scale-[1.03] active:scale-[0.97] dark:bg-white dark:text-slate-950"
           >
             문의하기
             <FiArrowRight
@@ -412,7 +412,7 @@ function BottomCta() {
             href="https://github.com/toris-dev"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-12 items-center gap-2 rounded-full border border-white/15 bg-white/5 px-7 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
+            className="inline-flex h-12 items-center gap-2 rounded-full border border-slate-900/15 bg-slate-900/5 px-7 text-sm font-semibold text-slate-900 transition-colors duration-200 hover:bg-slate-900/10 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
           >
             <FiGithub aria-hidden className="size-4" />
             GitHub
@@ -427,7 +427,7 @@ function BottomCta() {
 
 export default function ProjectsLanding() {
   return (
-    <div className="min-h-dvh bg-[#050810] text-white">
+    <div className="min-h-dvh bg-slate-50 text-slate-900 dark:bg-[#050810] dark:text-white">
       <Hero />
       <TechMarquee />
       <section className="mx-auto max-w-6xl px-4 py-24">
@@ -442,7 +442,7 @@ export default function ProjectsLanding() {
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
               Featured Projects
             </h2>
-            <p className="mt-3 text-slate-400">
+            <p className="mt-3 text-slate-600 dark:text-slate-400">
               각 프로젝트를 클릭하면 전용 랜딩 페이지로 이동합니다.
             </p>
           </div>

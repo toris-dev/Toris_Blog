@@ -6,7 +6,7 @@ import {
   FaPaperPlane,
   FaSearch,
   FaUser,
-  FaListAlt
+  AiOutlineFolderOpen
 } from '@/components/icons';
 import { cn } from '@/utils/style';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
@@ -20,7 +20,7 @@ import ThemeToggle from './ThemeToggle';
 const mobileNavItems = [
   { href: '/', icon: FaHome, label: '홈' },
   { href: '/posts', icon: FaBlog, label: '블로그' },
-  { href: '/todos', icon: FaListAlt, label: '할일' },
+  { href: '/projects', icon: AiOutlineFolderOpen, label: '프로젝트' },
   { href: '/about', icon: FaUser, label: '소개' },
   { href: '/contact', icon: FaPaperPlane, label: '문의' }
 ];

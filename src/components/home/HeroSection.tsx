@@ -151,6 +151,18 @@ export default function HeroSection() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Link
+                  href="/projects"
+                  className="shadow-soft hover:shadow-medium inline-flex items-center justify-center rounded-lg border border-border bg-card px-6 py-3 font-medium transition-all hover:border-primary hover:bg-primary/10"
+                  aria-label="개인 프로젝트 쇼케이스 보기"
+                >
+                  프로젝트 보기
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
                   href="/about"
                   className="shadow-soft hover:shadow-medium inline-flex items-center justify-center rounded-lg border border-border bg-card px-6 py-3 font-medium transition-all hover:border-primary hover:bg-primary/10"
                   aria-label="토리스 소개 페이지"

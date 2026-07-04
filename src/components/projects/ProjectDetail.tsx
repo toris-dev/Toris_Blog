@@ -106,7 +106,7 @@ export default function ProjectDetail({
         : 'bg-amber-400';
 
   return (
-    <div className="min-h-dvh bg-[#050810] text-white">
+    <div className="min-h-dvh bg-slate-50 text-slate-900 dark:bg-[#050810] dark:text-white">
       {/* ------------------------------- Hero ------------------------------- */}
       <section ref={heroRef} className="relative overflow-hidden px-4 pb-16 pt-28 sm:pt-32">
         <motion.div
@@ -115,7 +115,7 @@ export default function ProjectDetail({
           className="pointer-events-none absolute inset-0"
         >
           <div
-            className="absolute -top-1/3 left-1/2 size-[42rem] -translate-x-1/2 rounded-full opacity-30 blur-[140px]"
+            className="absolute -top-1/3 left-1/2 size-[42rem] -translate-x-1/2 rounded-full opacity-20 blur-[140px] dark:opacity-30"
             style={{
               background: `radial-gradient(circle, ${project.accent.from}, transparent 70%)`
             }}
@@ -130,7 +130,7 @@ export default function ProjectDetail({
           >
             <Link
               href="/projects"
-              className="group inline-flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-white"
+              className="group inline-flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
             >
               <FiArrowLeft
                 aria-hidden
@@ -154,7 +154,7 @@ export default function ProjectDetail({
             >
               {project.category}
             </span>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-xs font-medium text-slate-300">
+            <span className="inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-slate-900/5 px-3.5 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
               <span className={`size-1.5 rounded-full ${statusColor}`} />
               {project.status}
             </span>
@@ -176,7 +176,7 @@ export default function ProjectDetail({
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.32, ease: EASE }}
-            className="mt-5 max-w-2xl text-xl leading-relaxed text-slate-300 sm:text-2xl"
+            className="mt-5 max-w-2xl text-xl leading-relaxed text-slate-700 dark:text-slate-300 sm:text-2xl"
           >
             {project.tagline}
           </motion.p>
@@ -185,7 +185,7 @@ export default function ProjectDetail({
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.42, ease: EASE }}
-            className="mt-6 max-w-3xl leading-relaxed text-slate-400"
+            className="mt-6 max-w-3xl leading-relaxed text-slate-600 dark:text-slate-400"
           >
             {project.description}
           </motion.p>
@@ -211,7 +211,7 @@ export default function ProjectDetail({
             </a>
             <Link
               href="/contact"
-              className="inline-flex h-12 items-center rounded-full border border-white/15 bg-white/5 px-7 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10"
+              className="inline-flex h-12 items-center rounded-full border border-slate-900/15 bg-slate-900/5 px-7 text-sm font-semibold text-slate-900 transition-colors duration-200 hover:bg-slate-900/10 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
             >
               프로젝트 문의
             </Link>
@@ -226,12 +226,12 @@ export default function ProjectDetail({
           transition={{ duration: 1, delay: 0.6, ease: EASE }}
           className="relative z-10 mx-auto mt-16 max-w-5xl"
         >
-          <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-2 backdrop-blur-md sm:p-3">
+          <div className="overflow-hidden rounded-3xl border border-slate-900/10 bg-white/70 p-2 shadow-lg backdrop-blur-md dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none sm:p-3">
             <div className="flex items-center gap-1.5 px-3 pb-2 pt-1 sm:px-4">
               <span className="size-2.5 rounded-full bg-[#FF5F57]" />
               <span className="size-2.5 rounded-full bg-[#FEBC2E]" />
               <span className="size-2.5 rounded-full bg-[#28C840]" />
-              <span className="ml-3 hidden truncate rounded-md bg-white/5 px-3 py-0.5 text-[11px] text-slate-500 sm:block">
+              <span className="ml-3 hidden truncate rounded-md bg-slate-900/5 px-3 py-0.5 text-[11px] text-slate-500 dark:bg-white/5 sm:block">
                 github.com/toris-dev/{project.github.split('/').pop()}
               </span>
             </div>
@@ -270,7 +270,7 @@ export default function ProjectDetail({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.6, delay: (i % 3) * 0.08, ease: EASE }}
-                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors duration-300 hover:border-white/20"
+                className="group relative overflow-hidden rounded-2xl border border-slate-900/10 bg-white/70 p-6 shadow-sm transition-colors duration-300 hover:border-slate-900/25 dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none dark:hover:border-white/20"
               >
                 <div
                   aria-hidden
@@ -287,10 +287,10 @@ export default function ProjectDetail({
                 >
                   <Icon aria-hidden className="size-5" />
                 </div>
-                <h3 className="relative mt-5 font-semibold text-white">
+                <h3 className="relative mt-5 font-semibold text-slate-900 dark:text-white">
                   {feature.title}
                 </h3>
-                <p className="relative mt-2 text-sm leading-relaxed text-slate-400">
+                <p className="relative mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                   {feature.description}
                 </p>
               </motion.div>
@@ -306,9 +306,9 @@ export default function ProjectDetail({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.7, ease: EASE }}
-          className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03]"
+          className="overflow-hidden rounded-3xl border border-slate-900/10 bg-white/70 shadow-sm dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none"
         >
-          <div className="grid divide-y divide-white/5 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          <div className="grid divide-y divide-slate-900/10 dark:divide-white/5 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {[
               { label: '플랫폼', value: project.platform },
               { label: '상태', value: project.status },
@@ -318,11 +318,11 @@ export default function ProjectDetail({
                 <div className="text-xs font-medium uppercase tracking-widest text-slate-500">
                   {meta.label}
                 </div>
-                <div className="mt-2 font-semibold text-white">{meta.value}</div>
+                <div className="mt-2 font-semibold text-slate-900 dark:text-white">{meta.value}</div>
               </div>
             ))}
           </div>
-          <div className="border-t border-white/5 p-6">
+          <div className="border-t border-slate-900/10 p-6 dark:border-white/5">
             <div className="text-xs font-medium uppercase tracking-widest text-slate-500">
               기술 스택
             </div>
@@ -330,7 +330,7 @@ export default function ProjectDetail({
               {project.tech.map((t) => (
                 <span
                   key={t}
-                  className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-medium text-slate-200"
+                  className="rounded-lg border border-slate-900/10 bg-slate-900/5 px-3 py-1.5 text-sm font-medium text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200"
                 >
                   {t}
                 </span>
@@ -356,7 +356,7 @@ export default function ProjectDetail({
             >
               <Link
                 href={`/projects/${p.slug}`}
-                className={`group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors duration-300 hover:border-white/25 ${
+                className={`group flex h-full flex-col rounded-2xl border border-slate-900/10 bg-white/70 p-6 shadow-sm transition-colors duration-300 hover:border-slate-900/25 dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none dark:hover:border-white/25 ${
                   align === 'right' ? 'items-end text-right' : ''
                 }`}
               >
@@ -375,10 +375,10 @@ export default function ProjectDetail({
                     />
                   )}
                 </span>
-                <span className="mt-3 text-xl font-bold text-white">
+                <span className="mt-3 text-xl font-bold text-slate-900 dark:text-white">
                   {p.name}
                 </span>
-                <span className="mt-1 line-clamp-1 text-sm text-slate-400">
+                <span className="mt-1 line-clamp-1 text-sm text-slate-600 dark:text-slate-400">
                   {p.tagline}
                 </span>
               </Link>
