@@ -1,6 +1,15 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { MarkdownViewer } from '@/components/blog/Markdown'
 import { ThemeProvider } from 'next-themes'
+import React from 'react'
+
+// Mock react-markdown
+jest.mock('react-markdown', () => ({
+  __esModule: true,
+  default: ({ children }: { children: string }) => (
+    <div data-testid="react-markdown">{children}</div>
+  ),
+}))
 
 // Mock mermaid
 jest.mock('mermaid', () => ({
@@ -15,9 +24,7 @@ jest.mock('mermaid', () => ({
 // Mock CodeBlock
 jest.mock('@/components/blog/CodeBlock', () => ({
   CodeBlock: ({ code, language }: { code: string; language: string }) => (
-    <div data-testid="code-block" data-language={language}>
-      {code}
-    </div>
+    React.createElement('div', { 'data-testid': 'code-block', 'data-language': language }, code)
   ),
 }))
 
