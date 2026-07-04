@@ -12,9 +12,17 @@ const customJestConfig = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
+  globals: {
+    'ts-jest': {
+      tsconfig: {
+        esModuleInterop: true,
+        allowSyntheticDefaultImports: true
+      }
+    }
+  },
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
   transformIgnorePatterns: [
-    '/node_modules/(?!(react-markdown|remark-gfm|rehype-raw|unified|mdast-util-from-markdown|micromark|mdast-util-to-string|unist-util-visit|unist-util-visit-parents|vfile|bail|is-plain-obj|trough|decode-named-character-reference|character-entities|character-reference-invalid|character-entities-legacy|escape-string-regexp|markdown-table|longest-streak|ccount|unist-util-is|unist-util-position|unist-builder|unist-util-find-after|unist-util-find-all-after|unist-util-find-before|unist-util-find-all-before|unist-util-find-between|unist-util-generated|unist-util-position-from-estree|unist-util-remove-position|unist-util-source|unist-util-stringify-position|vfile-message)/)'
+    '/node_modules/(?!(react-markdown|remark-gfm|rehype-raw|unified|mdast-util-from-markdown|micromark|mdast-util-to-string|unist-util-visit|unist-util-visit-parents|vfile|bail|is-plain-obj|trough|decode-named-character-reference|character-entities|character-reference-invalid|character-entities-legacy|escape-string-regexp|markdown-table|longest-streak|ccount|unist-util-is|unist-util-position|unist-builder|unist-util-find-after|unist-util-find-all-after|unist-util-find-before|unist-util-find-all-before|unist-util-find-between|unist-util-generated|unist-util-position-from-estree|unist-util-remove-position|unist-util-source|unist-util-stringify-position|vfile-message|mermaid|cytoscape|dagre-d3|mdast-util-mdx|remark-parse|remark-stringify)/)'
   ],
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',

@@ -1,6 +1,10 @@
+/**
+ * @jest-environment node
+ */
+
 import { GET, POST } from '@/app/api/comments/route';
 import { PUT, DELETE } from '@/app/api/comments/[commentId]/route';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Comment from '@/models/Comment';
 

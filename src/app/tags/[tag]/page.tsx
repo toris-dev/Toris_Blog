@@ -9,7 +9,7 @@ import ClientSearchPage from '@/app/posts/_components/ClientSearchPage';
 const baseUrl =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
 
-export const revalidate = 604800;
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   const tags = getTags();
