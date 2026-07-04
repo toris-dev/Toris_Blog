@@ -1,0 +1,417 @@
+/* Design System: Toris Blog - Animations & Interactions */
+
+@layer base {
+  /* ============================================
+     ENTRANCE ANIMATIONS
+     ============================================ */
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideLeft {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideRight {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* ============================================
+     HOVER & INTERACTION ANIMATIONS
+     ============================================ */
+
+  @keyframes scaleHover {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+    100% {
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes cardLift {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-4px);
+    }
+  }
+
+  @keyframes underlineExpand {
+    from {
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+    to {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  /* ============================================
+     SCROLL ANIMATIONS
+     ============================================ */
+
+  @keyframes parallaxFloat {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes staggerFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ============================================
+     PAGE TRANSITIONS
+     ============================================ */
+
+  @keyframes fadeInPage {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOutPage {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes slideInPage {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* ============================================
+     LOADING STATES
+     ============================================ */
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* ============================================
+     UTILITY ANIMATIONS
+     ============================================ */
+
+  .animate-fade-in {
+    animation: fadeIn var(--duration-slow) var(--timing-ease-out) forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp var(--duration-slow) var(--timing-ease-out) forwards;
+  }
+
+  .animate-slide-down {
+    animation: slideDown var(--duration-slow) var(--timing-ease-out) forwards;
+  }
+
+  .animate-slide-left {
+    animation: slideLeft var(--duration-slow) var(--timing-ease-out) forwards;
+  }
+
+  .animate-slide-right {
+    animation: slideRight var(--duration-slow) var(--timing-ease-out) forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn var(--duration-slow) var(--timing-ease-out) forwards;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse 2s var(--timing-ease-in-out) infinite;
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .animate-float {
+    animation: parallaxFloat 3s var(--timing-ease-in-out) infinite;
+  }
+
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+
+  .animate-bounce {
+    animation: bounce 1s ease-in-out infinite;
+  }
+}
+
+@layer components {
+  /* ============================================
+     INTERACTIVE COMPONENTS
+     ============================================ */
+
+  /* Button Base Interactions */
+  .btn-interactive {
+    transition: all var(--duration-base) var(--timing-ease-out);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-interactive:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-interactive:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Link Interactions */
+  .link-interactive {
+    position: relative;
+    transition: color var(--duration-fast) var(--timing-ease-out);
+    cursor: pointer;
+  }
+
+  .link-interactive::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width var(--duration-base) var(--timing-ease-out);
+  }
+
+  .link-interactive:hover::after {
+    width: 100%;
+  }
+
+  /* Card Interactions */
+  .card-interactive {
+    transition: all var(--duration-base) var(--timing-ease-out);
+    border: 1px solid var(--color-border);
+  }
+
+  .card-interactive:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-accent);
+  }
+
+  /* Focus Ring */
+  .focus-ring {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    transition: outline var(--duration-fast) var(--timing-ease-out);
+  }
+
+  .focus-ring:focus-visible {
+    outline-color: var(--color-ring);
+  }
+
+  /* Tap Feedback */
+  .tap-feedback {
+    transition: all var(--duration-fast) var(--timing-ease-out);
+  }
+
+  .tap-feedback:active {
+    transform: scale(0.98);
+  }
+
+  /* ============================================
+     SCROLL TRIGGER UTILITIES
+     ============================================ */
+
+  .scroll-fade-in {
+    opacity: 0;
+    animation: slideUp var(--duration-slow) var(--timing-ease-out) forwards;
+  }
+
+  /* Stagger animation for lists */
+  .stagger-item {
+    animation: staggerFadeIn var(--duration-slow) var(--timing-ease-out) backwards;
+  }
+
+  .stagger-item:nth-child(1) {
+    animation-delay: 0ms;
+  }
+
+  .stagger-item:nth-child(2) {
+    animation-delay: 50ms;
+  }
+
+  .stagger-item:nth-child(3) {
+    animation-delay: 100ms;
+  }
+
+  .stagger-item:nth-child(4) {
+    animation-delay: 150ms;
+  }
+
+  .stagger-item:nth-child(5) {
+    animation-delay: 200ms;
+  }
+
+  .stagger-item:nth-child(n + 6) {
+    animation-delay: calc(50ms * (n - 5));
+  }
+
+  /* ============================================
+     PAGE TRANSITION UTILITIES
+     ============================================ */
+
+  .page-fade-in {
+    animation: fadeInPage var(--duration-slow) var(--timing-ease-out) forwards;
+  }
+
+  .page-fade-out {
+    animation: fadeOutPage var(--duration-slow) var(--timing-ease-out) forwards;
+  }
+
+  .page-slide-in {
+    animation: slideInPage var(--duration-slow) var(--timing-ease-out) forwards;
+  }
+
+  /* ============================================
+     CURSOR STYLES
+     ============================================ */
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .cursor-default {
+    cursor: default;
+  }
+
+  .cursor-not-allowed {
+    cursor: not-allowed;
+  }
+
+  .cursor-grab {
+    cursor: grab;
+  }
+
+  .cursor-grabbing {
+    cursor: grabbing;
+  }
+}
