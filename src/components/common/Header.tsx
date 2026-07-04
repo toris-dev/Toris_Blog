@@ -76,6 +76,11 @@ const Header: FC = () => {
         label: '블로그',
         isActive: pathname.startsWith('/posts')
       },
+      {
+        href: '/projects',
+        label: '프로젝트',
+        isActive: pathname.startsWith('/projects')
+      },
       { href: '/todos', label: '할일 관리', isActive: pathname === '/todos' },
       { href: '/about', label: '소개', isActive: pathname === '/about' },
       { href: '/contact', label: '문의', isActive: pathname === '/contact' }

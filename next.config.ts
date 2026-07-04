@@ -79,6 +79,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'opengraph.githubassets.com',
+        port: '',
+        pathname: '/**'
+      },
+      {
+        protocol: 'https',
         hostname: 'avatars.githubusercontent.com',
         port: '',
         pathname: '/**'
