@@ -28,27 +28,19 @@ export default function CookieSettingModal({
     localStorage.setItem('cookie-consent', 'customized');
     localStorage.setItem('cookie-consent-date', new Date().toISOString());
     onClose();
-    window.location.reload();
   };
 
   const handleAcceptAll = () => {
-    setSettings({
+    const newSettings = {
       essential: true,
       analytics: true,
       marketing: true
-    });
-    localStorage.setItem(
-      'cookie-settings',
-      JSON.stringify({
-        essential: true,
-        analytics: true,
-        marketing: true
-      })
-    );
+    };
+    setSettings(newSettings);
+    localStorage.setItem('cookie-settings', JSON.stringify(newSettings));
     localStorage.setItem('cookie-consent', 'accepted');
     localStorage.setItem('cookie-consent-date', new Date().toISOString());
     onClose();
-    window.location.reload();
   };
 
   if (!isOpen) {

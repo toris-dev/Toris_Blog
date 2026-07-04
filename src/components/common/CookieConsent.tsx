@@ -12,10 +12,8 @@ export default function CookieConsent() {
 
   useEffect(() => {
     setMounted(true);
-    // 쿠키 동의 상태 확인
     const consent = localStorage.getItem('cookie-consent');
     if (!consent) {
-      // 약간의 딜레이 후 배너 표시 (사용자 경험 개선)
       setTimeout(() => setShowBanner(true), 1000);
     }
   }, []);
@@ -29,8 +27,6 @@ export default function CookieConsent() {
     }));
     localStorage.setItem('cookie-consent-date', new Date().toISOString());
     setShowBanner(false);
-    // 페이지 리로드하여 광고 스크립트 활성화
-    window.location.reload();
   };
 
   const handleReject = () => {
