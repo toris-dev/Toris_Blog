@@ -1,5 +1,4 @@
 {
-  "nodeVersion": "24.x",
   "buildCommand": "pnpm run build",
   "devCommand": "pnpm run dev",
   "installCommand": "pnpm install"
