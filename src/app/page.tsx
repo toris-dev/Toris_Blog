@@ -1,3 +1,4 @@
+import BlogShowcaseSection from '@/components/home/BlogShowcaseSection';
 import HeroSection from '@/components/home/HeroSection';
 import PostsSection from '@/components/home/PostsSection';
 import TechStackSection from '@/components/home/TechStackSection';
@@ -38,20 +39,51 @@ export const metadata: Metadata = {
   }
 };
 
-const FEATURED_POSTS_COUNT = 3;
+const FEATURED_POSTS_COUNT = 6;
+const TOP_TAGS_COUNT = 18;
 
 export default function Home() {
   const posts = getPostData();
   const featuredPosts = posts.slice(0, FEATURED_POSTS_COUNT);
+
+  // 카테고리별 포스트 수 (많은 순)
+  const categoryMap = new Map<string, number>();
+  posts.forEach((post) => {
+    categoryMap.set(post.category, (categoryMap.get(post.category) || 0) + 1);
+  });
+  const categories = [...categoryMap.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count);
+
+  // 태그별 포스트 수 (많은 순 상위 N개)
+  const tagMap = new Map<string, number>();
+  posts.forEach((post) => {
+    (Array.isArray(post.tags) ? post.tags : []).forEach((tag) => {
+      tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+    });
+  });
+  const topTags = [...tagMap.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, TOP_TAGS_COUNT);
 
   return (
     <>
       <StructuredData page="home" />
 
       <div>
-        <HeroSection />
-        <TechStackSection />
+        <HeroSection
+          postCount={posts.length}
+          categoryCount={categories.length}
+          tagCount={tagMap.size}
+        />
+        <BlogShowcaseSection
+          categories={categories}
+          topTags={topTags}
+          postCount={posts.length}
+        />
         <PostsSection featuredPosts={featuredPosts} />
+        <TechStackSection />
       </div>
     </>
   );

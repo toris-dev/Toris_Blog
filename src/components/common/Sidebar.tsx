@@ -114,32 +114,34 @@ export default function Sidebar({ posts }: SidebarProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="hidden lg:block"
+          className="fixed left-4 top-24 z-40 hidden lg:block"
         >
-          <div className="sticky top-24 px-4">
-            <OpenSidebarButton
-              onClick={toggle}
-              className="shadow-soft relative z-10"
-            />
-          </div>
+          <OpenSidebarButton
+            onClick={toggle}
+            className="shadow-soft relative z-10"
+          />
         </motion.div>
       )}
 
       <AnimatePresence mode="wait">
         {isOpen && (
-          <motion.aside
+          <aside
             aria-label="카테고리 탐색"
-            initial={{ x: -320, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -320, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="hidden lg:block lg:w-80 lg:shrink-0"
-            style={{ overflow: 'visible' }}
           >
-            <div className="sidebar-scrollbar sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto px-4">
-              <SidebarPanel posts={posts} onClose={close} />
-            </div>
-          </motion.aside>
+            {/* fixed 패널 — 어떤 페이지·스크롤에서도 뷰포트에 고정 */}
+            <motion.div
+              initial={{ x: -320, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -320, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="fixed left-0 top-24 z-40 w-80"
+            >
+              <div className="sidebar-scrollbar h-[calc(100vh-7rem)] overflow-y-auto px-4">
+                <SidebarPanel posts={posts} onClose={close} />
+              </div>
+            </motion.div>
+          </aside>
         )}
       </AnimatePresence>
     </>

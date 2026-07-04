@@ -1,13 +1,22 @@
 'use client';
 
 import { FaArrowRight } from '@/components/icons';
-import { SiNextDotJs } from '@/components/icons';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import SplineAnimation from './SplineAnimation';
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  postCount?: number;
+  categoryCount?: number;
+  tagCount?: number;
+}
+
+export default function HeroSection({
+  postCount = 0,
+  categoryCount = 0,
+  tagCount = 0
+}: HeroSectionProps) {
   const [displayText, setDisplayText] = useState('');
   const fullText = 'Toris Blog';
   const [isTyping, setIsTyping] = useState(true);
@@ -92,13 +101,16 @@ export default function HeroSection() {
             variants={itemVariants}
           >
             <motion.div
-              className="mb-6 inline-flex items-center rounded-full bg-primary/10 px-4 py-2 text-sm text-primary"
+              className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium tracking-wide text-primary"
               variants={itemVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <SiNextDotJs className="mr-2 size-4" />
-              개발 블로그
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
+              </span>
+              TORIS-DEV · 기술 블로그
             </motion.div>
 
             <motion.h1
@@ -170,6 +182,31 @@ export default function HeroSection() {
                   소개
                 </Link>
               </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4"
+              variants={itemVariants}
+            >
+              {[
+                { value: postCount, suffix: '+', label: '기술 포스트' },
+                { value: categoryCount, suffix: '', label: '카테고리' },
+                { value: tagCount, suffix: '+', label: '태그' },
+                { value: 11, suffix: '+', label: '개인 프로젝트' }
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  className="text-center lg:text-left"
+                >
+                  <div className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-bold tabular-nums text-transparent">
+                    {stat.value}
+                    {stat.suffix}
+                  </div>
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
             </motion.div>
           </motion.div>
 
