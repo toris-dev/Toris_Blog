@@ -54,7 +54,7 @@ export default function CookieSettingModal({
           쿠키 설정
         </h2>
 
-        <div className="space-y-4 mb-6">
+        <div className="mb-6 space-y-4">
           <div className="flex items-start gap-3">
             <input
               type="checkbox"
@@ -64,10 +64,10 @@ export default function CookieSettingModal({
               className="mt-1 cursor-not-allowed"
             />
             <div className="flex-1">
-              <label htmlFor="essential" className="font-semibold text-sm">
+              <label htmlFor="essential" className="text-sm font-semibold">
                 필수 쿠키
               </label>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="mt-1 text-xs text-muted-foreground">
                 웹사이트 기능을 위해 필수적입니다. 항상 활성화됩니다.
               </p>
             </div>
@@ -84,10 +84,10 @@ export default function CookieSettingModal({
               className="mt-1 cursor-pointer"
             />
             <div className="flex-1">
-              <label htmlFor="analytics" className="font-semibold text-sm">
+              <label htmlFor="analytics" className="text-sm font-semibold">
                 분석 쿠키
               </label>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="mt-1 text-xs text-muted-foreground">
                 방문자 분석 및 사이트 성능 개선에 사용됩니다.
               </p>
             </div>
@@ -104,10 +104,10 @@ export default function CookieSettingModal({
               className="mt-1 cursor-pointer"
             />
             <div className="flex-1">
-              <label htmlFor="marketing" className="font-semibold text-sm">
+              <label htmlFor="marketing" className="text-sm font-semibold">
                 마케팅 쿠키
               </label>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="mt-1 text-xs text-muted-foreground">
                 맞춤형 광고 및 마케팅 활동에 사용됩니다.
               </p>
             </div>
