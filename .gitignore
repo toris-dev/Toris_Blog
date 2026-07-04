@@ -40,3 +40,6 @@ public/**/.obsidian/**
 .cursor/**
 
 docs/**
+
+# file-based storage (views, likes)
+.data/
