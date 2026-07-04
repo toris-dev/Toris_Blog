@@ -5,6 +5,7 @@ import { AdSense } from '@/components/ads/AdSense';
 import { useSidebar } from './SidebarToggle';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AiOutlineMenu, FaTimes } from '@/components/icons';
+import { usePathname } from 'next/navigation';
 import { Suspense, useEffect } from 'react';
 import { cn } from '@/utils/style';
 
@@ -93,7 +94,10 @@ function OpenSidebarButton({
  * - 오버레이/스크림 없음 → 열어도 본문이 blur 되거나 어두워지지 않음
  */
 export default function Sidebar({ posts }: SidebarProps) {
+  const pathname = usePathname();
   const { isOpen, toggle, close } = useSidebar();
+  // 프로덕션 서비스 랜딩(/projects)은 풀블리드 — 블로그 사이드바 제외
+  const isProjectRoute = pathname?.startsWith('/projects') ?? false;
 
   // ESC로 닫기
   useEffect(() => {
@@ -106,6 +110,10 @@ export default function Sidebar({ posts }: SidebarProps) {
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [isOpen, close]);
+
+  if (isProjectRoute) {
+    return null;
+  }
 
   return (
     <>

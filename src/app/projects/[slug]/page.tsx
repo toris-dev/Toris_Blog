@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import ProjectDetail from '@/components/projects/ProjectDetail';
-import { getAdjacentProjects, getProject, projects } from '@/data/projects';
+import { LANDINGS } from '@/components/projects/landing';
+import { getProject, projects } from '@/data/projects';
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
@@ -22,11 +22,11 @@ export async function generateMetadata({
     return { title: '프로젝트를 찾을 수 없습니다 | Toris Blog' };
   }
   return {
-    title: `${project.name} — ${project.tagline} | Toris Blog`,
+    title: `${project.name} — ${project.tagline}`,
     description: project.description,
     openGraph: {
-      title: `${project.name} | Toris Projects`,
-      description: project.tagline,
+      title: `${project.name} — ${project.tagline}`,
+      description: project.description,
       images: [{ url: project.image }],
       type: 'website'
     }
@@ -36,12 +36,11 @@ export async function generateMetadata({
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
   const project = getProject(slug);
+  const Landing = project ? LANDINGS[project.slug] : undefined;
 
-  if (!project) {
+  if (!project || !Landing) {
     notFound();
   }
 
-  const { prev, next } = getAdjacentProjects(slug);
-
-  return <ProjectDetail project={project} prev={prev} next={next} />;
+  return <Landing project={project} />;
 }
