@@ -1,6 +1,45 @@
 // Learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
+// Polyfill for Request and Response in test environment
+if (typeof global.Request === 'undefined') {
+  global.Request = class Request {
+    constructor(input, init) {
+      this.url = typeof input === 'string' ? input : input.url;
+      this.method = init?.method || 'GET';
+      this.headers = init?.headers || {};
+      this._body = init?.body;
+    }
+
+    async json() {
+      return JSON.parse(this._body);
+    }
+
+    async text() {
+      return this._body;
+    }
+  };
+}
+
+if (typeof global.Response === 'undefined') {
+  global.Response = class Response {
+    constructor(body, init) {
+      this.body = body;
+      this.status = init?.status || 200;
+      this.headers = init?.headers || {};
+      this._bodyText = typeof body === 'string' ? body : JSON.stringify(body);
+    }
+
+    async json() {
+      return JSON.parse(this._bodyText);
+    }
+
+    async text() {
+      return this._bodyText;
+    }
+  };
+}
+
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
   useRouter() {
