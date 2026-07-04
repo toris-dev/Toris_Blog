@@ -1,6 +1,5 @@
 /* Design System: Toris Blog - Design Tokens */
 
-@layer base {
   :root {
     /* Color Palette - Primary */
     --color-primary: #18181B;
@@ -115,17 +114,15 @@
     --color-surface: #27272A;
     --color-surface-variant: #3F3F46;
   }
-}
 
 /* Breakpoints - Tailwind compatible */
-@layer utilities {
+
   /* Mobile First Approach */
   /* sm: 640px */
   /* md: 768px */
   /* lg: 1024px */
   /* xl: 1280px */
   /* 2xl: 1536px */
-}
 
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {

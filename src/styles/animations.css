@@ -1,6 +1,5 @@
 /* Design System: Toris Blog - Animations & Interactions */
 
-@layer base {
   /* ============================================
      ENTRANCE ANIMATIONS
      ============================================ */
@@ -259,9 +258,7 @@
   .animate-bounce {
     animation: bounce 1s ease-in-out infinite;
   }
-}
 
-@layer components {
   /* ============================================
      INTERACTIVE COMPONENTS
      ============================================ */
@@ -414,4 +411,4 @@
   .cursor-grabbing {
     cursor: grabbing;
   }
-}
+
