@@ -47,7 +47,7 @@ describe('Header', () => {
 
     await waitFor(() => {
       expect(screen.getAllByText('홈').length).toBeGreaterThan(0)
-      expect(screen.getByText('블로그')).toBeInTheDocument()
+      expect(screen.getAllByText('블로그').length).toBeGreaterThan(0)
       expect(screen.getByText('할일 관리')).toBeInTheDocument()
     })
   })

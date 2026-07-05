@@ -185,8 +185,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="manifest" href="/manifest.json" />
         <link rel="author" href="/llms.txt" type="text/plain" title="LLMs content guide" />
 
-        <StructuredData page="global" />
-
         {/* Google AdSense - 쿠키 동의 후에만 로드 */}
         {process.env.NEXT_PUBLIC_ADSENSE_ID && (
           <Script
@@ -214,6 +212,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           spaceGrotesk.variable
         )}
       >
+        {/* JSON-LD은 body에서 렌더 → React가 <head>로 일관되게 hoist (head 직접 삽입 시 hydration mismatch #418 발생) */}
+        <StructuredData page="global" />
         <SEOOptimizer />
         <Analytics />
         <SpeedInsights />
