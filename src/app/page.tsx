@@ -1,8 +1,7 @@
-import BlogShowcaseSection from '@/components/home/BlogShowcaseSection';
-import HeroSection from '@/components/home/HeroSection';
-import PostsSection from '@/components/home/PostsSection';
-import TechStackSection from '@/components/home/TechStackSection';
+import Home3DLanding from '@/components/home/landing/Home3DLanding';
+import type { LandingPost } from '@/components/home/landing/types';
 import StructuredData from '@/components/seo/StructuredData';
+import { moreProjects, projects } from '@/data/projects';
 import { getPostData } from '@/utils/markdown';
 import { getDefaultOGImageUrl } from '@/utils/og-image';
 import { Metadata } from 'next';
@@ -67,24 +66,36 @@ export default function Home() {
     .sort((a, b) => b.count - a.count)
     .slice(0, TOP_TAGS_COUNT);
 
+  // 클라이언트 랜딩으로 넘길 직렬화 가능한 최소 payload
+  const landingPosts: LandingPost[] = featuredPosts.map((post) => ({
+    title: post.title,
+    slug: post.slug,
+    category: post.category,
+    date: post.date,
+    description: post.description,
+    image: post.preview_image_url,
+    tags: Array.isArray(post.tags)
+      ? post.tags
+      : typeof post.tags === 'string'
+        ? post.tags.split(',').map((t) => t.trim())
+        : []
+  }));
+
   return (
     <>
       <StructuredData page="home" />
 
-      <div>
-        <HeroSection
-          postCount={posts.length}
-          categoryCount={categories.length}
-          tagCount={tagMap.size}
-        />
-        <BlogShowcaseSection
-          categories={categories}
-          topTags={topTags}
-          postCount={posts.length}
-        />
-        <PostsSection featuredPosts={featuredPosts} />
-        <TechStackSection />
-      </div>
+      <Home3DLanding
+        data={{
+          postCount: posts.length,
+          categoryCount: categories.length,
+          tagCount: tagMap.size,
+          projectCount: projects.length + moreProjects.length,
+          featuredPosts: landingPosts,
+          categories,
+          topTags
+        }}
+      />
     </>
   );
 }
