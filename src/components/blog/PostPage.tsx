@@ -9,13 +9,8 @@ import {
 import { cn } from '@/utils/style';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { FC, useState, useEffect, useRef, useMemo } from 'react';
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useMotionValueEvent
-} from 'framer-motion';
+import { FC, useState, useEffect, useMemo } from 'react';
+import { motion, useScroll } from 'framer-motion';
 import { ShareButtons } from './ShareButtons';
 import { CommentSection } from './CommentSection';
 import { PostViewCount } from './PostViewCount';
@@ -58,40 +53,11 @@ const PostPageContent: FC<{
 }) => {
   const { setHeadings, headings } = usePostHeadings();
   const [mounted, setMounted] = useState(false);
-  const { scrollY } = useScroll();
-  const lastScrollY = useRef(0);
-  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  // 읽기 진행바 — 페이지 스크롤 진행률
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  // 스크롤 이벤트 핸들러 최적화: debounce 적용 및 불필요한 상태 업데이트 방지
-  // isHeaderVisible은 사용되지 않으므로 제거하고, 스크롤 이벤트만 최소한으로 처리
-  useMotionValueEvent(scrollY, 'change', (latest) => {
-    // 기존 timeout 제거
-    if (debounceTimeoutRef.current) {
-      clearTimeout(debounceTimeoutRef.current);
-    }
-
-    // 마지막 스크롤 위치 저장
-    const previousScrollY = lastScrollY.current;
-    lastScrollY.current = latest;
-
-    // debounce 적용 (100ms 후 실행) - 불필요한 리렌더링 방지
-    debounceTimeoutRef.current = setTimeout(() => {
-      // 현재는 isHeaderVisible을 사용하지 않으므로 상태 업데이트 제거
-      // 필요시 여기에 스크롤 관련 로직 추가 가능
-    }, 100);
-  });
-
-  // 컴포넌트 언마운트 시 timeout 정리
-  useEffect(() => {
-    return () => {
-      if (debounceTimeoutRef.current) {
-        clearTimeout(debounceTimeoutRef.current);
-      }
-    };
   }, []);
 
 
@@ -157,21 +123,27 @@ const PostPageContent: FC<{
 
   return (
     <div className="w-full max-w-full overflow-x-hidden">
+      {/* 읽기 진행바 */}
+      <motion.div
+        aria-hidden
+        className="fixed inset-x-0 top-16 z-40 h-0.5 origin-left bg-gradient-to-r from-primary to-secondary"
+        style={{ scaleX: scrollYProgress }}
+      />
       <div
         className="mx-auto flex w-full max-w-full flex-col gap-3 px-4 sm:gap-4 sm:px-6 md:gap-6 md:px-8 lg:flex-row lg:items-start lg:gap-6 lg:px-6 xl:gap-8 xl:px-8"
         suppressHydrationWarning
         style={containerStyle}
       >
         {/* 메인 콘텐츠 */}
-        <article className="min-w-0 max-w-full flex-1 overflow-x-hidden pb-12 sm:pb-16 md:pb-20 lg:pb-24 xl:pb-32">
+        <article className="min-w-0 max-w-full flex-1 overflow-x-hidden pb-16 md:pb-24">
           <div
-            className="mx-auto w-full max-w-full overflow-x-hidden sm:max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl"
+            className="mx-auto w-full max-w-full overflow-x-hidden sm:max-w-2xl md:max-w-3xl"
             suppressHydrationWarning
             style={articleInnerStyle}
           >
             <div>
               {/* 상단 영역: 헤더와 공유하기 버튼 */}
-              <div className="my-6 w-full sm:my-8 md:my-10 lg:my-12">
+              <div className="my-6 w-full sm:my-8">
                 <header className="mb-6 text-center sm:mb-8">
                   <h1 className="mb-3 text-xl font-bold leading-tight text-foreground sm:mb-4 sm:text-2xl md:text-3xl lg:text-4xl">
                     {title}
@@ -284,29 +256,51 @@ const PostPageContent: FC<{
                 />
               )}
 
-              {/* 목차 (모든 화면 크기에서 표시) */}
+              {/* 목차 — 모바일/태블릿: 접이식, 데스크톱: 우측 고정 레일 */}
               {mounted && headings.length > 0 && (
-                <div className="mb-6">
-                  <div className="rounded-lg border border-border bg-card p-4">
-                    <div className="mb-3 flex items-center justify-between">
-                      <h3 className="text-sm font-semibold text-foreground">
-                        목차
-                      </h3>
-                    </div>
+                <details className="group mb-6 2xl:hidden">
+                  <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+                    목차
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      className="size-4 text-muted-foreground transition-transform duration-200 group-open:rotate-180"
+                    >
+                      <path
+                        d="M5 7.5L10 12.5L15 7.5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </summary>
+                  <div className="rounded-b-lg border-x border-b border-border bg-card px-4 py-3">
                     <TableOfContents headings={headings} />
                   </div>
-                </div>
+                </details>
               )}
 
               {/* 콘텐츠 뷰어 */}
               <div
                 className={cn(
-                  'prose prose-sm min-w-0 max-w-full flex-1 dark:prose-invert sm:prose-sm md:prose-base lg:prose-base xl:prose-lg',
-                  // Prose의 max-width 제한 완전히 제거
-                  'prose-img:!w-full prose-img:!max-w-full',
+                  // 기기 공통 본문 16px(prose-base) — 과도한 업스케일 제거
+                  'prose prose-base min-w-0 max-w-full flex-1 dark:prose-invert',
+                  // 제목 스케일 축소: 모바일에서 h1 24px, 데스크톱 30px
+                  'prose-h1:text-2xl sm:prose-h1:text-3xl',
+                  'prose-h2:mb-4 prose-h2:mt-10 prose-h2:text-xl sm:prose-h2:text-2xl',
+                  'prose-h3:text-lg sm:prose-h3:text-xl',
+                  'prose-p:leading-relaxed',
+                  // 앵커 이동 시 고정 헤더에 가리지 않게
+                  'prose-headings:scroll-mt-28',
+                  // 이미지: 원본 비율 유지 + 중앙 정렬 (강제 풀폭 제거 — 렌더러의 max-h 600px 유지)
+                  'prose-img:mx-auto prose-img:size-auto prose-img:max-w-full prose-img:rounded-xl',
+                  // 비디오/유튜브 임베드: 16:9 반응형 + 세로 제한
+                  '[&_iframe]:mx-auto [&_iframe]:aspect-video [&_iframe]:h-auto [&_iframe]:w-full [&_iframe]:max-w-2xl [&_iframe]:rounded-xl',
+                  '[&_video]:mx-auto [&_video]:max-h-[60vh] [&_video]:w-auto [&_video]:max-w-full [&_video]:rounded-xl',
                   'prose-pre:!w-full prose-pre:!min-w-0 prose-pre:!max-w-full prose-pre:!overflow-x-auto',
                   'prose-code:!break-words',
-                  // Mermaid 컨테이너 스타일 (CSS 모듈 클래스는 직접 CSS에서 처리)
                   // CodeBlock 스타일
                   '[&_div[data-code-block="true"]]:!w-full [&_div[data-code-block="true"]]:!min-w-0 [&_div[data-code-block="true"]]:!max-w-full',
                   '[&_div[data-code-block="true"]_div]:!min-w-0 [&_div[data-code-block="true"]_div]:!overflow-x-auto'
@@ -350,6 +344,20 @@ const PostPageContent: FC<{
           </div>
         </article>
 
+        {/* 데스크톱 목차 레일 — 뷰포트 고정, 본문과 독립 스크롤 */}
+        {mounted && headings.length > 0 && (
+          <nav
+            aria-label="목차"
+            className="fixed right-8 top-28 hidden w-60 2xl:block"
+          >
+            <div className="max-h-[70vh] overflow-y-auto rounded-lg border border-border bg-card/80 p-4 backdrop-blur-sm">
+              <h3 className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                목차
+              </h3>
+              <TableOfContents headings={headings} />
+            </div>
+          </nav>
+        )}
       </div>
 
     </div>
