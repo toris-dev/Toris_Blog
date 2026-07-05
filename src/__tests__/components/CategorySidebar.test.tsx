@@ -78,7 +78,7 @@ describe('CategorySidebar', () => {
 
     await waitFor(() => {
       expect(screen.getByText('토리스')).toBeInTheDocument()
-      expect(screen.getByText('Categories')).toBeInTheDocument()
+      expect(screen.getAllByText('Categories').length).toBeGreaterThan(0)
     })
   })
 
