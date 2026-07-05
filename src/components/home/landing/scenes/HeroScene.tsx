@@ -55,8 +55,8 @@ export default function HeroScene({ postCount, projectCount }: HeroSceneProps) {
     >
       {/* 배경: 방사형 글로우 + 그리드 */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-1/3 size-[42rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-600/20 blur-[120px]" />
-        <div className="absolute right-1/4 top-2/3 size-[28rem] rounded-full bg-fuchsia-600/10 blur-[120px]" />
+        <div className="absolute left-1/2 top-1/3 size-[42rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-[120px]" />
+        <div className="absolute right-1/4 top-2/3 size-[28rem] rounded-full bg-secondary/10 blur-[120px]" />
       </div>
 
       {/* 떠다니는 3D 카드 (데스크톱 전용, 장식이므로 aria-hidden) */}
@@ -67,7 +67,7 @@ export default function HeroScene({ postCount, projectCount }: HeroSceneProps) {
       >
         {/* 터미널 창 */}
         <motion.div
-          className="absolute left-[8%] top-[24%] w-64 rounded-xl border border-white/10 bg-slate-900/70 p-3 shadow-2xl backdrop-blur"
+          className="absolute left-[8%] top-[24%] w-64 rounded-xl border border-border bg-card/80 p-3 shadow-2xl backdrop-blur"
           animate={shift(28)}
           transition={{ type: 'spring', stiffness: 60, damping: 18 }}
           style={{ rotateY: 14, rotateX: 6 }}
@@ -77,44 +77,44 @@ export default function HeroScene({ postCount, projectCount }: HeroSceneProps) {
             <span className="size-2.5 rounded-full bg-amber-400/80" />
             <span className="size-2.5 rounded-full bg-emerald-400/80" />
           </div>
-          <pre className="whitespace-pre-wrap font-mono text-[11px] leading-relaxed text-slate-300">
-            <span className="text-fuchsia-400">const</span> dev ={' '}
-            <span className="text-emerald-300">&apos;토리스&apos;</span>
+          <pre className="whitespace-pre-wrap font-mono text-[11px] leading-relaxed text-muted-foreground">
+            <span className="text-secondary">const</span> dev ={' '}
+            <span className="text-accent">&apos;토리스&apos;</span>
             {'\n'}
-            <span className="text-fuchsia-400">await</span> ship(blog, projects)
+            <span className="text-secondary">await</span> ship(blog, projects)
           </pre>
         </motion.div>
 
         {/* 블로그 카드 */}
         <motion.div
-          className="absolute right-[9%] top-[22%] w-56 rounded-xl border border-white/10 bg-slate-900/70 p-4 shadow-2xl backdrop-blur"
+          className="absolute right-[9%] top-[22%] w-56 rounded-xl border border-border bg-card/80 p-4 shadow-2xl backdrop-blur"
           animate={shift(-34)}
           transition={{ type: 'spring', stiffness: 60, damping: 18 }}
           style={{ rotateY: -16, rotateX: 6 }}
         >
-          <div className="flex items-center gap-2 text-indigo-300">
+          <div className="flex items-center gap-2 text-primary">
             <FaBlog className="size-4" />
             <span className="text-xs font-semibold uppercase tracking-wider">
               Latest
             </span>
           </div>
-          <p className="mt-2 text-sm font-semibold text-white">
+          <p className="mt-2 text-sm font-semibold text-foreground">
             {postCount}편의 기술 기록
           </p>
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1 text-xs text-muted-foreground">
             학습 · 빌드 · 디버깅 · 배포까지
           </p>
         </motion.div>
 
         {/* 스택 아이콘 */}
         <motion.div
-          className="absolute bottom-[16%] left-[16%] flex gap-3 rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 shadow-2xl backdrop-blur"
+          className="absolute bottom-[16%] left-[16%] flex gap-3 rounded-xl border border-border bg-card/80 px-4 py-3 shadow-2xl backdrop-blur"
           animate={shift(40)}
           transition={{ type: 'spring', stiffness: 60, damping: 18 }}
         >
-          <SiNextDotJs className="size-6 text-white" />
-          <SiReact className="size-6 text-sky-400" />
-          <SiTypescript className="size-6 text-blue-400" />
+          <SiNextDotJs className="size-6 text-foreground" />
+          <SiReact className="size-6 text-sky-500" />
+          <SiTypescript className="size-6 text-blue-500" />
         </motion.div>
       </div>
 
@@ -127,7 +127,7 @@ export default function HeroScene({ postCount, projectCount }: HeroSceneProps) {
           initial={{ opacity: 0, y: reduce ? 0 : 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE }}
-          className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-indigo-200"
+          className="inline-flex items-center gap-2 rounded-full border border-border bg-foreground/5 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-primary"
         >
           Full-Stack Developer · {projectCount}+ Projects
         </motion.span>
@@ -136,7 +136,7 @@ export default function HeroScene({ postCount, projectCount }: HeroSceneProps) {
           initial={{ opacity: 0, y: reduce ? 0 : 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.05, ease: EASE }}
-          className="mt-6 bg-gradient-to-br from-white via-indigo-100 to-indigo-400 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent sm:text-6xl md:text-7xl"
+          className="mt-6 bg-gradient-to-br from-foreground via-foreground to-primary bg-clip-text text-5xl font-extrabold tracking-tight text-transparent sm:text-6xl md:text-7xl"
         >
           Toris Dev Universe
         </motion.h1>
@@ -145,11 +145,11 @@ export default function HeroScene({ postCount, projectCount }: HeroSceneProps) {
           initial={{ opacity: 0, y: reduce ? 0 : 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
-          className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300 sm:text-xl"
+          className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-xl"
         >
           풀스택 웹 개발자 토리스의 기술 블로그.
           <br className="hidden sm:block" />
-          <span className="text-slate-400">
+          <span className="text-muted-foreground/80">
             React, Next.js, TypeScript로 만드는 모던 웹 개발 이야기.
           </span>
         </motion.p>
@@ -166,8 +166,8 @@ export default function HeroScene({ postCount, projectCount }: HeroSceneProps) {
               href={href}
               className={
                 primary
-                  ? 'group inline-flex items-center gap-2 rounded-full bg-indigo-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition-colors hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300'
-                  : 'group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-slate-100 transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300'
+                  ? 'group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+                  : 'group inline-flex items-center gap-2 rounded-full border border-border bg-foreground/5 px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-foreground/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
               }
             >
               <Icon className="size-4" />
@@ -180,7 +180,7 @@ export default function HeroScene({ postCount, projectCount }: HeroSceneProps) {
 
       {/* 스크롤 인디케이터 */}
       <motion.div
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-slate-400"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-muted-foreground"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.6 }}
