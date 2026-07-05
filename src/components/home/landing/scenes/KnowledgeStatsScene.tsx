@@ -26,13 +26,13 @@ function StatPanel({
   Icon: React.ComponentType<{ className?: string }>;
 }) {
   return (
-    <div className="group relative rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-6 transition-transform duration-300 [transform-style:preserve-3d] hover:-translate-y-1 motion-safe:hover:[transform:translateY(-4px)_rotateX(6deg)]">
-      <Icon className="size-7 text-indigo-300" />
-      <div className="mt-4 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+    <div className="group relative rounded-2xl border border-border bg-gradient-to-b from-foreground/[0.07] to-foreground/[0.02] p-6 transition-transform duration-300 [transform-style:preserve-3d] hover:-translate-y-1 motion-safe:hover:[transform:translateY(-4px)_rotateX(6deg)]">
+      <Icon className="size-7 text-primary" />
+      <div className="mt-4 text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
         {value}
       </div>
-      <div className="mt-1 text-sm font-medium text-slate-400">{label}</div>
-      <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-indigo-400/0 transition group-hover:ring-indigo-400/30" />
+      <div className="mt-1 text-sm font-medium text-muted-foreground">{label}</div>
+      <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-primary/0 transition group-hover:ring-primary/30" />
     </div>
   );
 }
@@ -86,9 +86,9 @@ export default function KnowledgeStatsScene({
         {/* 카테고리 칩 (궤도처럼 늘어놓기) */}
         <Reveal className="mt-8 flex flex-wrap gap-2">
           {categories.slice(0, 6).map((c) => (
-            <Chip key={c.name} className="bg-indigo-500/10 text-indigo-100">
+            <Chip key={c.name} className="bg-primary/10 text-primary">
               {c.name}
-              <span className="ml-1.5 text-indigo-300/70">{c.count}</span>
+              <span className="ml-1.5 text-primary/70">{c.count}</span>
             </Chip>
           ))}
         </Reveal>
@@ -105,22 +105,22 @@ export default function KnowledgeStatsScene({
                 <Reveal delay={(i % 3) * 0.06}>
                   <Link
                     href={`/posts/${post.slug}`}
-                    className="group flex h-full flex-col rounded-2xl border border-white/10 bg-slate-900/60 p-5 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-indigo-400/40 hover:shadow-indigo-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300"
+                    className="group flex h-full flex-col rounded-2xl border border-border bg-card/70 p-5 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-primary/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
-                    <span className="inline-flex w-fit rounded-md bg-indigo-500/15 px-2 py-0.5 text-xs font-semibold text-indigo-200">
+                    <span className="inline-flex w-fit rounded-md bg-primary/15 px-2 py-0.5 text-xs font-semibold text-primary">
                       {post.category}
                     </span>
-                    <h3 className="mt-3 line-clamp-2 text-lg font-bold text-white group-hover:text-indigo-200">
+                    <h3 className="mt-3 line-clamp-2 text-lg font-bold text-foreground group-hover:text-primary">
                       {post.title}
                     </h3>
                     {post.description && (
-                      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-400">
+                      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                         {post.description}
                       </p>
                     )}
-                    <div className="mt-auto flex items-center justify-between pt-4 text-xs text-slate-500">
+                    <div className="mt-auto flex items-center justify-between pt-4 text-xs text-muted-foreground/70">
                       <span>{post.date}</span>
-                      <FaArrowRight className="size-3.5 text-indigo-300 transition-transform group-hover:translate-x-1" />
+                      <FaArrowRight className="size-3.5 text-primary transition-transform group-hover:translate-x-1" />
                     </div>
                   </Link>
                 </Reveal>

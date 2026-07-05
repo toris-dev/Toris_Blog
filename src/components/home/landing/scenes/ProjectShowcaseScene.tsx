@@ -23,7 +23,7 @@ export default function ProjectShowcaseScene() {
             title={
               <>
                 {projects.length + moreProjects.length}개의 개인 프로젝트,{' '}
-                <span className="text-emerald-300">직접 만든 것들</span>
+                <span className="text-accent">직접 만든 것들</span>
               </>
             }
             description="여행 플랫폼부터 데스크톱 도구, AI 파이프라인, Web3까지 — 아이디어를 실제 제품으로 옮긴 기록."
@@ -42,7 +42,7 @@ export default function ProjectShowcaseScene() {
             >
               <Link
                 href={`/projects/${p.slug}`}
-                className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 shadow-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300"
+                className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/70 shadow-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-foreground/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 {/* 액센트 배너 */}
                 <div
@@ -64,12 +64,12 @@ export default function ProjectShowcaseScene() {
 
                 <div className="flex flex-1 flex-col p-5">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-bold text-white">{p.name}</h3>
-                    <span className="rounded-full border border-white/10 px-2 py-0.5 text-[10px] font-medium text-slate-400">
+                    <h3 className="text-lg font-bold text-foreground">{p.name}</h3>
+                    <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                       {p.status}
                     </span>
                   </div>
-                  <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-400">
+                  <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                     {p.tagline}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-1.5">
@@ -77,15 +77,15 @@ export default function ProjectShowcaseScene() {
                       <Chip key={t}>{t}</Chip>
                     ))}
                     {p.tech.length > 4 && (
-                      <Chip className="text-slate-400">+{p.tech.length - 4}</Chip>
+                      <Chip className="text-muted-foreground">+{p.tech.length - 4}</Chip>
                     )}
                   </div>
-                  <div className="mt-auto flex items-center justify-between pt-5 text-xs text-slate-500">
+                  <div className="mt-auto flex items-center justify-between pt-5 text-xs text-muted-foreground/70">
                     <span className="inline-flex items-center gap-1.5">
                       <AiFillGithub className="size-4" />
                       {p.year}
                     </span>
-                    <FaArrowRight className="size-3.5 text-white/70 transition-transform group-hover:translate-x-1" />
+                    <FaArrowRight className="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-1" />
                   </div>
                 </div>
               </Link>
@@ -101,17 +101,17 @@ export default function ProjectShowcaseScene() {
               href={p.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-start gap-3 rounded-xl border border-white/10 bg-slate-900/50 p-4 transition-colors hover:border-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300"
+              className="group flex items-start gap-3 rounded-xl border border-border bg-card/60 p-4 transition-colors hover:border-foreground/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
-              <AiFillGithub className="mt-0.5 size-5 shrink-0 text-slate-300" />
+              <AiFillGithub className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
               <span className="min-w-0">
-                <span className="flex items-center gap-1.5 text-sm font-semibold text-white">
+                <span className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
                   {p.name}
                 </span>
-                <span className="mt-1 line-clamp-2 block text-xs leading-relaxed text-slate-400">
+                <span className="mt-1 line-clamp-2 block text-xs leading-relaxed text-muted-foreground">
                   {p.description}
                 </span>
-                <span className="mt-1.5 block text-[11px] font-medium text-slate-500">
+                <span className="mt-1.5 block text-[11px] font-medium text-muted-foreground/70">
                   {p.tech}
                 </span>
               </span>
@@ -122,7 +122,7 @@ export default function ProjectShowcaseScene() {
         <Reveal className="mt-12 flex justify-center">
           <Link
             href="/projects"
-            className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-slate-100 transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300"
+            className="group inline-flex items-center gap-2 rounded-full border border-border bg-foreground/5 px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-foreground/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             모든 프로젝트 보기
             <FaArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
