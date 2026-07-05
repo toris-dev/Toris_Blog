@@ -56,6 +56,14 @@ const NODES = [
   { icon: FiFilm, label: 'Render', caption: 'mp4 렌더' }
 ];
 
+const STAGE_DETAILS = [
+  { title: 'Crawl', desc: '12개 뉴스 소스를 순회하며 오늘의 기사를 수집합니다.', metric: '12 sources · 47 articles' },
+  { title: 'Dedupe', desc: '제목만 바꾼 중복 기사를 자동으로 걸러냅니다.', metric: '47 → 18 unique' },
+  { title: 'Summarize', desc: 'API 비용 없이 로컬 LLM이 3줄 요약을 작성합니다.', metric: 'qwen2.5:14b · 로컬 추론' },
+  { title: 'Design', desc: '요약을 카드뉴스 템플릿에 자동으로 배치합니다.', metric: '18 cards · 브랜드 템플릿' },
+  { title: 'Render', desc: '자막을 얹은 숏폼 비디오를 렌더링합니다.', metric: '1080×1920 · 58s · h264' }
+];
+
 const NEWS = [
   { tag: 'React', title: 'React 20 RC, 컴파일러 기본 탑재' },
   { tag: 'AI', title: 'qwen2.5 로컬 벤치마크 총정리' },
@@ -263,19 +271,39 @@ function PipelineSection({ reduce }: { reduce: boolean }) {
   useMotionValueEvent(scrollYProgress, 'change', (v) => setStep(Math.max(0, Math.min(4, Math.floor(v * 5)))));
   const active = reduce ? 4 : step;
   return (
-    <section id="pipeline" ref={ref} className={reduce ? 'relative' : 'relative h-[300vh]'}>
+    <section id="pipeline" ref={ref} className={reduce ? 'relative' : 'relative h-[220vh]'}>
       <div
         className={
           reduce
-            ? 'mx-auto flex max-w-5xl flex-col justify-center px-6 py-28'
+            ? 'relative mx-auto flex max-w-5xl flex-col justify-center px-6 py-28'
             : 'sticky top-0 mx-auto flex h-screen max-w-5xl flex-col justify-center px-6'
         }
       >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 text-slate-900 opacity-[0.04] dark:text-white"
+          style={{
+            backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)',
+            backgroundSize: '24px 24px'
+          }}
+        />
         <div className="text-center">
           <p className={OVERLINE}>Pipeline</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">스크롤하는 동안, 하루치가 끝납니다</h2>
         </div>
-        <div className="mt-14 flex flex-col md:flex-row md:items-center">
+        <div className="relative mx-auto mt-10 w-full max-w-3xl">
+          <div className="flex items-center justify-between font-mono text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+            <span>Pipeline</span>
+            <span className="tabular-nums">STAGE {active + 1}/5</span>
+          </div>
+          <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-white/10">
+            <motion.div
+              style={{ scaleX: reduce ? 1 : scrollYProgress }}
+              className="size-full origin-left rounded-full bg-green-500"
+            />
+          </div>
+        </div>
+        <div className="mt-10 flex flex-col md:flex-row md:items-center">
           {NODES.map((n, i) => (
             <Fragment key={n.label}>
               <motion.div
@@ -294,18 +322,28 @@ function PipelineSection({ reduce }: { reduce: boolean }) {
             </Fragment>
           ))}
         </div>
-        <div className="mt-10 h-8 text-center">
+        <div className="mx-auto mt-10 w-full max-w-md">
           <AnimatePresence mode="wait">
-            <motion.p
+            <motion.div
               key={active}
-              initial={reduce ? false : { opacity: 0, y: 10 }}
+              initial={reduce ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reduce ? undefined : { opacity: 0, y: -10 }}
-              transition={{ duration: 0.25 }}
-              className="font-mono text-sm text-slate-500 dark:text-slate-400"
+              exit={reduce ? undefined : { opacity: 0, y: -12 }}
+              transition={{ duration: 0.25, ease: EASE }}
+              className={`${CARD} p-5`}
             >
-              {NODES[active].caption}
-            </motion.p>
+              <div className="flex items-baseline justify-between gap-3">
+                <h3 className="font-mono text-sm font-bold text-green-600 dark:text-green-400">
+                  {STAGE_DETAILS[active].title}
+                </h3>
+                <span className="whitespace-nowrap font-mono text-xs text-slate-500 dark:text-slate-400">
+                  {STAGE_DETAILS[active].metric}
+                </span>
+              </div>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                {STAGE_DETAILS[active].desc}
+              </p>
+            </motion.div>
           </AnimatePresence>
         </div>
       </div>

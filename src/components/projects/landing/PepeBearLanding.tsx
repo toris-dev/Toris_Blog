@@ -46,6 +46,12 @@ const PHASES = [
   { pos: '15%', label: 'Launch', caption: '공정 런칭 · LP 소각' }, { pos: '50%', label: 'Growth', caption: '홀더 10K · CEX 논의' }, { pos: '85%', label: 'Moon', caption: '생태계 확장' }
 ];
 
+const MILESTONES = [
+  ['공정 런칭', 'LP 소각', '밈 에어드랍'],
+  ['홀더 10K', 'CEX 상장 논의', '업적 시즌 2'],
+  ['생태계 확장', 'NFT 컬렉션', '게임 파트너십']
+];
+
 function RocketIcon() {
   return (
     <svg aria-hidden width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -377,8 +383,10 @@ function PhaseSection({ reduce }: { reduce: boolean }) {
   const [stage, setStage] = useState(reduce ? 2 : -1);
   useMotionValueEvent(scrollYProgress, 'change', (v) => setStage(v >= 0.85 ? 2 : v >= 0.5 ? 1 : v >= 0.15 ? 0 : -1));
   const shown = reduce ? 2 : stage;
+  const pct = useTransform(scrollYProgress, (v) => Math.round(v * 100));
+  const phaseIdx = Math.max(0, shown);
   return (
-    <section ref={ref} className={reduce ? 'relative' : 'relative h-[250vh]'}>
+    <section ref={ref} className={reduce ? 'relative' : 'relative h-[200vh]'}>
       <div
         className={
           reduce
@@ -390,7 +398,24 @@ function PhaseSection({ reduce }: { reduce: boolean }) {
           <p className={OVERLINE}>Roadmap</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Launch → Growth → Moon</h2>
         </div>
-        <div className="relative mt-20">
+        <div className="mt-14 flex items-center justify-between font-mono text-xs font-semibold uppercase tracking-widest">
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={phaseIdx}
+              initial={reduce ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduce ? undefined : { opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+              className={ACCENT_TEXT}
+            >
+              PHASE {phaseIdx + 1} · {PHASES[phaseIdx].label.toUpperCase()}
+            </motion.span>
+          </AnimatePresence>
+          <span className="tabular-nums text-slate-500 dark:text-slate-400">
+            {reduce ? <span>100</span> : <motion.span>{pct}</motion.span>}%
+          </span>
+        </div>
+        <div className="relative mt-12">
           <div className="h-1.5 rounded-full bg-slate-200 dark:bg-white/10" />
           <motion.div style={{ scaleX: reduce ? 1 : scrollYProgress }} className={`absolute inset-0 origin-left rounded-full ${GRAD}`} />
           {PHASES.map((p, i) => (
@@ -420,15 +445,29 @@ function PhaseSection({ reduce }: { reduce: boolean }) {
             </svg>
           </motion.div>
         </div>
-        <div className="mt-16 h-8 text-center">
+        <div className="mt-16 min-h-[6.5rem]">
           <AnimatePresence mode="wait">
-            <motion.p
-              key={shown} initial={reduce ? false : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }} exit={reduce ? undefined : { opacity: 0, y: -10 }}
-              transition={{ duration: 0.25 }} className="text-sm font-semibold text-slate-600 dark:text-slate-300"
+            <motion.div
+              key={phaseIdx}
+              exit={reduce ? undefined : { opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="grid grid-cols-3 gap-2 sm:gap-3"
             >
-              {shown >= 0 ? PHASES[shown].caption : '스크롤해서 여정을 시작하세요'}
-            </motion.p>
+              {MILESTONES[phaseIdx].map((m, i) => (
+                <motion.div
+                  key={m}
+                  initial={reduce ? false : { opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: reduce ? 0 : 0.05 + i * 0.08, ease: EASE }}
+                  className="rounded-2xl bg-white/70 p-3 text-center ring-1 ring-emerald-900/10 dark:bg-white/5 dark:ring-white/10 sm:px-4"
+                >
+                  <p className={`text-[10px] font-bold uppercase tracking-widest ${ACCENT_TEXT}`}>
+                    {PHASES[phaseIdx].label}
+                  </p>
+                  <p className="mt-1 text-xs font-semibold sm:text-sm">{m}</p>
+                </motion.div>
+              ))}
+            </motion.div>
           </AnimatePresence>
         </div>
       </div>

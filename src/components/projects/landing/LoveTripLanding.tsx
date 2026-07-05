@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import {
   motion,
+  useMotionValueEvent,
   useReducedMotion,
   useScroll,
   useSpring,
@@ -331,6 +332,12 @@ function MapPin({
   );
 }
 
+const PLAN_STEPS = [
+  { title: '조건 입력', desc: '출발지·예산·일정만' },
+  { title: '자동 생성', desc: '교통+숙소+코스 완성' },
+  { title: '함께 편집', desc: '커플이 실시간 협업' }
+];
+
 function FormToMapSection() {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
@@ -338,6 +345,11 @@ function FormToMapSection() {
     target: ref,
     offset: ['start start', 'end end']
   });
+  const [stepIdx, setStepIdx] = useState(0);
+  useMotionValueEvent(scrollYProgress, 'change', (v) =>
+    setStepIdx(v >= 0.66 ? 2 : v >= 0.33 ? 1 : 0)
+  );
+  const activeStep = reduce ? 2 : stepIdx;
   const formOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
   const formX = useTransform(scrollYProgress, [0, 0.4], [0, -40]);
   const mapOpacity = useTransform(scrollYProgress, [0.3, 0.7], [0, 1]);
@@ -357,7 +369,7 @@ function FormToMapSection() {
   );
 
   return (
-    <section ref={ref} className={reduce ? 'relative' : 'relative h-[220vh]'}>
+    <section ref={ref} className={reduce ? 'relative' : 'relative h-[180vh]'}>
       <div
         className={
           reduce
@@ -373,22 +385,51 @@ function FormToMapSection() {
               title="입력은 한 번, 계획은 완성"
               sub="폼을 채우는 순간 경로·일정·코스가 지도 위에 그려집니다. 스크롤해 보세요."
             />
-            <ul className="mt-8 space-y-3">
-              {[
-                '최적 교통편 자동 매칭',
-                '숙소 · 데이트 코스 추천',
-                'Day별 일정표 생성'
-              ].map((t, i) => (
-                <Reveal key={t} delay={0.1 + i * 0.08} y={16}>
-                  <li className="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-300">
-                    <span className="flex size-5 items-center justify-center rounded-full bg-rose-500/15 text-rose-500 dark:text-rose-400">
-                      <Ico className="size-3">{paths.check}</Ico>
+            <ol className="mt-8 hidden space-y-3 lg:block">
+              {PLAN_STEPS.map((s, i) => (
+                <li
+                  key={s.title}
+                  className={`rounded-2xl border px-4 py-3 transition-all duration-300 ${
+                    activeStep === i
+                      ? 'border-rose-500/60 bg-rose-500/5 opacity-100 dark:bg-rose-500/10'
+                      : 'border-slate-900/10 opacity-35 dark:border-white/10'
+                  }`}
+                >
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">
+                    {i + 1}. {s.title}
+                    <span className="ml-1.5 font-medium text-slate-500 dark:text-slate-400">
+                      — {s.desc}
                     </span>
-                    {t}
-                  </li>
-                </Reveal>
+                  </p>
+                </li>
               ))}
-            </ul>
+            </ol>
+            <div className="mt-6 flex flex-wrap gap-2 lg:hidden">
+              {PLAN_STEPS.map((s, i) => (
+                <span
+                  key={s.title}
+                  className={`rounded-full border px-3 py-1 text-[11px] font-semibold transition-all duration-300 ${
+                    activeStep === i
+                      ? 'border-rose-500/60 bg-rose-500/10 text-rose-600 opacity-100 dark:text-rose-300'
+                      : 'border-slate-900/10 text-slate-500 opacity-35 dark:border-white/10 dark:text-slate-400'
+                  }`}
+                >
+                  {i + 1}. {s.title}
+                </span>
+              ))}
+            </div>
+            <div aria-hidden className="mt-6 flex gap-2">
+              {PLAN_STEPS.map((s, i) => (
+                <span
+                  key={s.title}
+                  className={`size-2 rounded-full transition-colors duration-300 ${
+                    activeStep >= i
+                      ? 'bg-rose-500'
+                      : 'bg-slate-300 dark:bg-white/15'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
           <BrowserFrame url="lovetrip.app/plan → /course">
             <div className="relative h-[380px] bg-white dark:bg-slate-900">
