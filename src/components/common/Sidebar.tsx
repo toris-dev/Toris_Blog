@@ -96,8 +96,11 @@ function OpenSidebarButton({
 export default function Sidebar({ posts }: SidebarProps) {
   const pathname = usePathname();
   const { isOpen, toggle, close } = useSidebar();
-  // 프로덕션 서비스 랜딩(/projects)은 풀블리드 — 블로그 사이드바 제외
+  // 풀블리드 랜딩은 블로그 사이드바 제외:
+  // - 프로덕션 서비스 랜딩(/projects)
+  // - 몰입형 3D 홈(/)
   const isProjectRoute = pathname?.startsWith('/projects') ?? false;
+  const isHomeRoute = pathname === '/';
 
   // ESC로 닫기
   useEffect(() => {
@@ -111,7 +114,7 @@ export default function Sidebar({ posts }: SidebarProps) {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [isOpen, close]);
 
-  if (isProjectRoute) {
+  if (isProjectRoute || isHomeRoute) {
     return null;
   }
 
