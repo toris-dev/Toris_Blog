@@ -3,6 +3,14 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { ethers } from 'ethers';
 import toast from 'react-hot-toast';
+import { buildTodoAuthMessage } from '@/utils/todoAuth';
+
+/** Todo 변경 API 호출 시 첨부할 서명 헤더 */
+export interface WalletAuthHeaders {
+  'x-wallet-address': string;
+  'x-wallet-signature': string;
+  'x-wallet-timestamp': string;
+}
 
 interface WalletContextType {
   address: string | null;
@@ -10,6 +18,8 @@ interface WalletContextType {
   isAuthorized: boolean;
   connectWallet: () => Promise<void>;
   disconnectWallet: () => void;
+  /** 지갑으로 인증 메시지에 서명해 서버 검증용 헤더를 만든다. */
+  signAuthHeaders: () => Promise<WalletAuthHeaders | null>;
   isLoading: boolean;
 }
 
@@ -115,6 +125,39 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     toast.success('지갑 연결이 해제되었습니다.');
   };
 
+  // 서버가 검증할 서명 헤더 생성 (개인키 소유 증명)
+  const signAuthHeaders = async (): Promise<WalletAuthHeaders | null> => {
+    if (typeof window === 'undefined' || !window.ethereum) {
+      toast.error('이더리움 지갑이 필요합니다.');
+      return null;
+    }
+
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const signerAddress = (await signer.getAddress()).toLowerCase();
+
+      const timestamp = Date.now();
+      const signature = await signer.signMessage(
+        buildTodoAuthMessage(timestamp)
+      );
+
+      return {
+        'x-wallet-address': signerAddress,
+        'x-wallet-signature': signature,
+        'x-wallet-timestamp': timestamp.toString()
+      };
+    } catch (error: any) {
+      console.error('서명 실패:', error);
+      if (error?.code === 4001) {
+        toast.error('서명이 거부되었습니다.');
+      } else {
+        toast.error('서명에 실패했습니다.');
+      }
+      return null;
+    }
+  };
+
   const isConnected = !!address;
   const isAuthorized = isConnected && authorizedAddresses.length > 0
     ? authorizedAddresses.includes(address.toLowerCase())
@@ -128,6 +171,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         isAuthorized,
         connectWallet,
         disconnectWallet,
+        signAuthHeaders,
         isLoading
       }}
     >

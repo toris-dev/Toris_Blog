@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { TodoItem } from '@/types/todo';
 import connectDB from '@/lib/mongodb';
 import Todo from '@/models/Todo';
+import { verifyTodoAuth } from '@/utils/todoAuth';
 
 export async function GET() {
   try {
@@ -35,19 +36,14 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { todo, walletAddress } = body;
-
-    // 인가된 지갑 주소 확인
-    const authorizedAddresses = process.env.NEXT_PUBLIC_AUTHORIZED_ADDRESSES
-      ? process.env.NEXT_PUBLIC_AUTHORIZED_ADDRESSES.split(',').map((addr) =>
-          addr.trim().toLowerCase()
-        )
-      : [];
-
-    if (!authorizedAddresses.includes(walletAddress?.toLowerCase())) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    // 지갑 서명 검증 (개인키 소유자만 통과)
+    const auth = verifyTodoAuth(request);
+    if (!auth.ok) {
+      return NextResponse.json({ error: auth.reason }, { status: 403 });
     }
+
+    const body = await request.json();
+    const { todo } = body;
 
     await connectDB();
 
@@ -85,19 +81,14 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { id, updates, walletAddress } = body;
-
-    // 인가된 지갑 주소 확인
-    const authorizedAddresses = process.env.NEXT_PUBLIC_AUTHORIZED_ADDRESSES
-      ? process.env.NEXT_PUBLIC_AUTHORIZED_ADDRESSES.split(',').map((addr) =>
-          addr.trim().toLowerCase()
-        )
-      : [];
-
-    if (!authorizedAddresses.includes(walletAddress?.toLowerCase())) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    // 지갑 서명 검증
+    const auth = verifyTodoAuth(request);
+    if (!auth.ok) {
+      return NextResponse.json({ error: auth.reason }, { status: 403 });
     }
+
+    const body = await request.json();
+    const { id, updates } = body;
 
     await connectDB();
 
@@ -139,26 +130,20 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    // 지갑 서명 검증
+    const auth = verifyTodoAuth(request);
+    if (!auth.ok) {
+      return NextResponse.json({ error: auth.reason }, { status: 403 });
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-    const walletAddress = searchParams.get('walletAddress');
 
-    if (!id || !walletAddress) {
+    if (!id) {
       return NextResponse.json(
         { error: 'Missing required parameters' },
         { status: 400 }
       );
-    }
-
-    // 인가된 지갑 주소 확인
-    const authorizedAddresses = process.env.NEXT_PUBLIC_AUTHORIZED_ADDRESSES
-      ? process.env.NEXT_PUBLIC_AUTHORIZED_ADDRESSES.split(',').map((addr) =>
-          addr.trim().toLowerCase()
-        )
-      : [];
-
-    if (!authorizedAddresses.includes(walletAddress.toLowerCase())) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
     await connectDB();

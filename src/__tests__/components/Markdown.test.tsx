@@ -3,13 +3,52 @@ import { MarkdownViewer } from '@/components/blog/Markdown'
 import { ThemeProvider } from 'next-themes'
 import React from 'react'
 
-// Mock react-markdown
-jest.mock('react-markdown', () => ({
-  __esModule: true,
-  default: ({ children }: { children: string }) => (
-    <div data-testid="react-markdown">{children}</div>
-  ),
-}))
+// Mock react-markdown: parse markdown line-by-line so heading lines render
+// through the real component's custom heading renderers (passed via `components`).
+// This lets the component's DOM-based heading extraction (querySelectorAll('h2'))
+// work under test, while non-heading lines render as plain text.
+jest.mock('react-markdown', () => {
+  const React = require('react')
+  return {
+    __esModule: true,
+    default: ({
+      children,
+      components,
+    }: {
+      children: string
+      components?: Record<string, React.ComponentType<any>>
+    }) => {
+      const comps = components || {}
+      const nodes = String(children)
+        .split('\n')
+        .map((line, i) => {
+          const h3 = line.match(/^###\s+(.*)/)
+          if (h3) {
+            const El = comps.h3 || 'h3'
+            return React.createElement(El, { key: i }, h3[1])
+          }
+          const h2 = line.match(/^##\s+(.*)/)
+          if (h2) {
+            const El = comps.h2 || 'h2'
+            return React.createElement(El, { key: i }, h2[1])
+          }
+          const h1 = line.match(/^#\s+(.*)/)
+          if (h1) {
+            const El = comps.h1 || 'h1'
+            return React.createElement(El, { key: i }, h1[1])
+          }
+          return line
+            ? React.createElement('span', { key: i }, `${line} `)
+            : null
+        })
+      return React.createElement('div', { 'data-testid': 'react-markdown' }, nodes)
+    },
+  }
+})
+
+// Mock ESM-only remark/rehype plugins (avoids transform issues; unused by mocked ReactMarkdown)
+jest.mock('rehype-raw', () => ({ __esModule: true, default: () => () => {} }))
+jest.mock('remark-gfm', () => ({ __esModule: true, default: () => () => {} }))
 
 // Mock mermaid
 jest.mock('mermaid', () => ({
@@ -47,7 +86,10 @@ describe('MarkdownViewer', () => {
 
     await waitFor(() => {
       expect(screen.getByTestId('react-markdown')).toBeInTheDocument()
-      expect(screen.getByTestId('react-markdown')).toHaveTextContent(content)
+      expect(screen.getByTestId('react-markdown')).toHaveTextContent('Test Heading')
+      expect(screen.getByTestId('react-markdown')).toHaveTextContent(
+        'This is a test paragraph.'
+      )
     })
   })
 

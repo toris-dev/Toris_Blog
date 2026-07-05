@@ -32,7 +32,7 @@ const TodoContext = createContext<TodoContextType | undefined>(undefined);
 export function TodoProvider({ children }: { children: ReactNode }) {
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { isAuthorized, address } = useWallet();
+  const { isAuthorized, address, signAuthHeaders } = useWallet();
 
   // 서버에서 할일 로드
   useEffect(() => {
@@ -71,14 +71,17 @@ export function TodoProvider({ children }: { children: ReactNode }) {
     }
 
     try {
+      const authHeaders = await signAuthHeaders();
+      if (!authHeaders) return;
+
       const response = await fetch('/api/todos', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          ...authHeaders
         },
         body: JSON.stringify({
-          todo: todoData,
-          walletAddress: address
+          todo: todoData
         })
       });
 
@@ -103,15 +106,18 @@ export function TodoProvider({ children }: { children: ReactNode }) {
     }
 
     try {
+      const authHeaders = await signAuthHeaders();
+      if (!authHeaders) return;
+
       const response = await fetch('/api/todos', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          ...authHeaders
         },
         body: JSON.stringify({
           id,
-          updates,
-          walletAddress: address
+          updates
         })
       });
 
@@ -138,12 +144,13 @@ export function TodoProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      const response = await fetch(
-        `/api/todos?id=${id}&walletAddress=${address}`,
-        {
-          method: 'DELETE'
-        }
-      );
+      const authHeaders = await signAuthHeaders();
+      if (!authHeaders) return;
+
+      const response = await fetch(`/api/todos?id=${id}`, {
+        method: 'DELETE',
+        headers: { ...authHeaders }
+      });
 
       if (response.ok) {
         setTodos((prev) => prev.filter((todo) => todo.id !== id));
