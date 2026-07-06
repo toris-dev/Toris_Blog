@@ -10,6 +10,8 @@ tags: [Learning, CSS, Grid, Layout]
 
 CSS Grid는 2차원 레이아웃 시스템으로, 행(row)과 열(column)을 동시에 제어할 수 있는 강력한 레이아웃 도구입니다. Flexbox가 1차원 레이아웃에 최적화되어 있다면, Grid는 복잡한 2차원 레이아웃을 구현하는 데 최적화되어 있습니다.
 
+<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=600&fit=crop&auto=format" alt="CSS Grid Layout" style="border-radius: 12px; margin: 20px 0;" />
+
 ## 📚 목차
 
 1. [Grid 기본 개념](#grid-기본-개념)

@@ -8,6 +8,8 @@ tags: ['Next.js', 'Next.js 15', 'React 19', 'Web Development', 'Fullstack']
 
 ## 🚀 Next.js 15 출시: 웹 개발의 새로운 지평
 
+<img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=600&fit=crop&auto=format" alt="Next.js Web Development" style="border-radius: 12px; margin: 20px 0;" />
+
 2024년 10월 21일 출시된 Next.js 15는 웹 개발 경험과 애플리케이션 성능을 혁신적으로 개선하는 다양한 기능과 변경 사항을 도입했습니다. 특히 React 19 지원, Turbopack의 안정화, 그리고 새로운 캐싱 및 비동기 API는 개발자들에게 더욱 강력한 도구를 제공합니다.
 
 ### Next.js 15의 주요 특징

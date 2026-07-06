@@ -8,6 +8,8 @@ tags: ['Learning', 'DevOps', 'CI/CD', 'Infrastructure']
 
 # 🚀 DevOps 기본 개념과 실천 방법
 
+<img src="https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=1200&h=600&fit=crop&auto=format" alt="DevOps Infrastructure" style="border-radius: 12px; margin: 20px 0;" />
+
 > 개발과 운영의 경계를 허물고 효율성을 극대화하는 DevOps 문화 이해하기
 
 DevOps는 단순한 도구나 기술이 아닌, 조직 문화와 철학의 변화를 의미합니다. 이 글에서는 DevOps의 핵심 개념과 실제 적용 방법에 대해 알아보겠습니다.

@@ -8,6 +8,8 @@ categories: ['Learning']
 
 # SQL 기본 개념과 실무 활용
 
+<img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=1200&h=600&fit=crop&auto=format" alt="SQL Database" style="border-radius: 12px; margin: 20px 0;" />
+
 ## 🗄️ 데이터베이스 기본 개념
 
 ### 관계형 데이터베이스(RDBMS)란?

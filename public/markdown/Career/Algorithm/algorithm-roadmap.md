@@ -1,7 +1,7 @@
 ---
-title: [Career] 내가 짜는 알고리즘 로드맵✨
+title: [Career] 알고리즘 학습 로드맵
 date: 2025-07-09T16:55:19.890Z
-slug: 알고리즘-로드맵
+slug: algorithm-roadmap
 category: Career
 tags: [Career, Algorithm, Java, CodingTest]
 ---
@@ -27,20 +27,18 @@ tags: [Career, Algorithm, Java, CodingTest]
 
 #### Java 자료구조
 
-- **Collection Framework**: [[Java Collection Framework]]
-
+- **Collection Framework**
   - List (ArrayList, LinkedList)
   - Set (HashSet, TreeSet)
   - Map (HashMap, TreeMap)
   - Queue, Stack
 
-- **Stream API**: [[Java Stream 정리!!!]]
-
+- **Stream API**
   - Stream 생성
   - 중간 연산 (map, filter, sorted 등)
   - 최종 연산 (collect, forEach, reduce 등)
 
-- **Wrapper Class**: [[Java Wrapper Class 란]]
+- **Wrapper Class**
   - 기본 타입과 래퍼 클래스의 차이
   - 오토박싱/언박싱
   - 타입 변환
@@ -49,9 +47,9 @@ tags: [Career, Algorithm, Java, CodingTest]
 
 #### 탐색 알고리즘
 
-- **DFS (깊이 우선 탐색)**: [[BFS, DFS, 백트래킹 정리]]
-- **BFS (너비 우선 탐색)**: [[BFS, DFS, 백트래킹 정리]]
-- **백트래킹**: [[BFS, DFS, 백트래킹 정리]]
+- **DFS (깊이 우선 탐색)**
+- **BFS (너비 우선 탐색)**
+- **백트래킹**
 
 #### 정렬 알고리즘
 
@@ -61,7 +59,7 @@ tags: [Career, Algorithm, Java, CodingTest]
 
 #### 누적합 알고리즘
 
-- **Prefix Sum**: [[누적합 알고리즘]]
+- **Prefix Sum**
   - 1차원 누적합
   - 2차원 누적합
   - 구간합 계산

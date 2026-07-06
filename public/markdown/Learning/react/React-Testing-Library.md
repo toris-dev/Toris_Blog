@@ -8,6 +8,8 @@ tags: ['React', 'Testing', 'React Testing Library', 'Jest', 'Frontend']
 
 ## 🐐 React Testing Library (RTL) 철학: 사용자처럼 테스트하라
 
+<img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=600&fit=crop&auto=format" alt="React Testing" style="border-radius: 12px; margin: 20px 0;" />
+
 React Testing Library (RTL)는 "테스트는 소프트웨어가 동작하는 방식과 유사해야 한다"는 핵심 원칙을 가지고 있습니다. 이는 구현의 세부 사항(예: 컴포넌트의 내부 상태, props, 생명주기 메서드)을 테스트하는 대신, 사용자가 애플리케이션과 상호작용하는 방식에 초점을 맞추는 것을 의미합니다.
 
 과거에 많이 사용되던 Enzyme과 같은 도구는 컴포넌트의 내부를 쉽게 조회하고 조작할 수 있게 해주었지만, 이는 테스트가 구현에 너무 밀접하게 결합되는 문제를 낳았습니다. 결과적으로, 기능은 동일하더라도 내부 리팩토링만으로도 테스트가 쉽게 깨지는 현상이 발생했습니다.
@@ -83,3 +85,26 @@ await userEvent.type(input, 'Hello, World!');
 ```
 
 RTL의 철학을 이해하고 올바른 쿼리를 사용하는 것은, 단순히 테스트를 통과시키는 것을 넘어, 더 견고하고 접근성 높으며 유지보수하기 좋은 React 애플리케이션을 만드는 데 큰 도움이 됩니다.
+
+---
+
+## 참고 자료 및 추가 학습
+
+### 공식 문서
+
+- [React Testing Library 공식 문서](https://testing-library.com/docs/react-testing-library/intro/) - 최신 가이드
+- [Jest 공식 문서](https://jestjs.io/) - 테스트 프레임워크
+- [Testing Library Best Practices](https://testing-library.com/docs/queries/about/)
+
+### 학습 자료
+
+- [Common Mistakes with React Testing Library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
+- [Testing React Applications - Kent C. Dodds](https://egghead.io/courses/test-react-components-with-jest-and-react-testing-library)
+- [Accessible Component Testing - W3C ARIA](https://www.w3.org/WAI/test-evaluate/)
+
+### 온라인 플레이그라운드
+
+- [CodeSandbox React Testing Example](https://codesandbox.io/)
+- [React Testing Library Cheat Sheet](https://testing-library.com/docs/react-testing-library/cheatsheet/)
+
+_테스트는 더 이상 고통이 아니다. React Testing Library와 함께 자신감 있게 개발하자!_ 🚀
