@@ -151,7 +151,7 @@ export function ShareButtons({
       <div className="flex items-center gap-2">
         <button
           onClick={handleKakaoShare}
-          className="flex items-center justify-center rounded-lg bg-[#FEE500] px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-[#FEE500]/90"
+          className="flex min-h-[44px] items-center justify-center rounded-lg bg-[#FEE500] px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-[#FEE500]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           aria-label="카카오톡 공유"
           title="카카오톡 공유"
         >
@@ -167,7 +167,7 @@ export function ShareButtons({
         </button>
         <button
           onClick={handleTwitterShare}
-          className="flex items-center justify-center rounded-lg bg-[#1DA1F2] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1DA1F2]/90"
+          className="flex min-h-[44px] items-center justify-center rounded-lg bg-[#1DA1F2] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1DA1F2]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           aria-label="트위터 공유"
           title="트위터 공유"
         >
@@ -176,7 +176,7 @@ export function ShareButtons({
         </button>
         <button
           onClick={handleCopyLink}
-          className="flex items-center justify-center rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+          className="flex min-h-[44px] items-center justify-center rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           aria-label="링크 복사"
           title="링크 복사"
         >

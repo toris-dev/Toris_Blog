@@ -130,9 +130,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
 
             // 활성 항목을 컨테이너 중앙에 위치시키기 위한 계산
             const targetScrollTop =
-              buttonOffsetTop -
-              (containerHeight ?? 0) / 2 +
-              buttonHeight / 2;
+              buttonOffsetTop - (containerHeight ?? 0) / 2 + buttonHeight / 2;
 
             // 부드러운 스크롤 애니메이션
             const startScrollTop = containerScrollTop;
@@ -286,73 +284,65 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
 
   return (
     <div className={className || ''}>
-      <motion.div
-        className="shadow-soft rounded-lg border border-border bg-card p-3 sm:p-4"
-        initial={false}
-        animate={isMounted ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      >
-        <h3 className="mb-3 text-base font-bold text-foreground sm:mb-4 sm:text-lg">
-          목차
-        </h3>
-        <ul className="space-y-1.5">
-          {headings.map((heading, index) => {
-            const isActive = activeId === heading.id;
-            const indent = heading.level - 2; // h2부터 시작하므로 level 2가 기본
-            // Tailwind CSS로 padding-left 처리 (일반적인 경우)
-            const paddingClasses: Record<number, string> = {
-              0: 'pl-0',
-              1: 'pl-4',
-              2: 'pl-8',
-              3: 'pl-12',
-              4: 'pl-16',
-              5: 'pl-20'
-            };
-            const paddingClass = paddingClasses[indent] || '';
-            // 동적 값이 필요한 경우를 위한 style (Tailwind로 처리 불가능한 경우만)
-            const dynamicPadding = paddingClass
-              ? undefined
-              : { paddingLeft: `${indent * 16}px` };
+      {/* 카드/제목은 감싸는 쪽(PostPage의 nav·details)에서 담당한다.
+          여기서 다시 렌더하면 목차 박스·제목이 이중으로 겹쳐 보인다. */}
+      <ul className="space-y-1.5">
+        {headings.map((heading, index) => {
+          const isActive = activeId === heading.id;
+          const indent = heading.level - 2; // h2부터 시작하므로 level 2가 기본
+          // Tailwind CSS로 padding-left 처리 (일반적인 경우)
+          const paddingClasses: Record<number, string> = {
+            0: 'pl-0',
+            1: 'pl-4',
+            2: 'pl-8',
+            3: 'pl-12',
+            4: 'pl-16',
+            5: 'pl-20'
+          };
+          const paddingClass = paddingClasses[indent] || '';
+          // 동적 값이 필요한 경우를 위한 style (Tailwind로 처리 불가능한 경우만)
+          const dynamicPadding = paddingClass
+            ? undefined
+            : { paddingLeft: `${indent * 16}px` };
 
-            return (
-              <motion.li
-                key={heading.id}
-                className={`transition-colors ${paddingClass}`}
-                style={dynamicPadding}
-                initial={false}
-                animate={
-                  isMounted ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }
-                }
-                transition={{
-                  duration: 0.3,
-                  delay: 0.5 + index * 0.05
-                }}
+          return (
+            <motion.li
+              key={heading.id}
+              className={`transition-colors ${paddingClass}`}
+              style={dynamicPadding}
+              initial={false}
+              animate={isMounted ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }}
+              transition={{
+                duration: 0.3,
+                // 진입 지연을 짧게 (마지막 항목까지 최대 ~0.3s). 기존 0.5+누적은
+                // 긴 목차에서 마지막 항목이 1.5s 뒤에 떠 micro-interaction 범위를 벗어났다.
+                delay: 0.1 + Math.min(index, 4) * 0.05
+              }}
+            >
+              <button
+                ref={isActive ? activeItemRef : null}
+                data-heading-id={heading.id}
+                onClick={(e) => handleClick(heading.id, e)}
+                type="button"
+                className={`w-full rounded px-1.5 py-0.5 text-left text-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-2 sm:py-1 sm:text-sm ${
+                  isActive
+                    ? 'border-l-2 border-primary bg-primary/10 font-semibold text-primary'
+                    : 'text-muted-foreground hover:bg-primary/5 hover:text-primary'
+                }`}
               >
-                <button
-                  ref={isActive ? activeItemRef : null}
-                  data-heading-id={heading.id}
-                  onClick={(e) => handleClick(heading.id, e)}
-                  type="button"
-                  className={`w-full rounded px-1.5 py-0.5 text-left text-xs transition-all sm:px-2 sm:py-1 sm:text-sm ${
-                    isActive
-                      ? 'border-l-2 border-primary bg-primary/10 font-semibold text-primary'
-                      : 'text-muted-foreground hover:bg-primary/5 hover:text-primary'
-                  }`}
+                <motion.span
+                  className="block truncate"
+                  initial={false}
+                  whileHover={isMounted ? { x: 4 } : undefined}
+                  transition={{ duration: 0.2 }}
                 >
-                  <motion.span
-                    className="block truncate"
-                    initial={false}
-                    whileHover={isMounted ? { x: 4 } : undefined}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {heading.text}
-                  </motion.span>
-                </button>
-              </motion.li>
-            );
-          })}
-        </ul>
-      </motion.div>
+                  {heading.text}
+                </motion.span>
+              </button>
+            </motion.li>
+          );
+        })}
+      </ul>
     </div>
   );
 };

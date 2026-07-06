@@ -31,15 +31,19 @@ export function BookmarkButton({
         variant="ghost"
         size="icon"
         onClick={handleClick}
-        className={cn('size-8', className)}
+        className={className}
         aria-label={isBookmarked ? '북마크 제거' : '북마크 추가'}
+        aria-pressed={isBookmarked}
       >
         <motion.div
           animate={isBookmarked ? { scale: [1, 1.2, 1] } : {}}
           transition={{ duration: 0.3 }}
         >
           <FaBookmark
-            className={cn('size-4', isBookmarked && 'fill-current text-primary')}
+            className={cn(
+              'size-4',
+              isBookmarked && 'fill-current text-primary'
+            )}
           />
         </motion.div>
       </Button>
@@ -57,9 +61,7 @@ export function BookmarkButton({
         animate={isBookmarked ? { scale: [1, 1.2, 1] } : {}}
         transition={{ duration: 0.3 }}
       >
-        <FaBookmark
-          className={cn('size-4', isBookmarked && 'fill-current')}
-        />
+        <FaBookmark className={cn('size-4', isBookmarked && 'fill-current')} />
       </motion.div>
       <span>{isBookmarked ? '북마크됨' : '북마크'}</span>
     </Button>

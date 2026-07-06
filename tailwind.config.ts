@@ -72,8 +72,12 @@ const config: Config = {
           to: { height: '0' }
         },
         'blur-in': {
+          // 종료 상태를 filter:none으로 둔다 (blur(0)과 시각적으로 동일).
+          // filter가 none이 아니면 이 요소가 자식 position:fixed의 기준
+          // (containing block)이 되어, 내부 목차/진행바 fixed가 뷰포트에
+          // 고정되지 못하고 콘텐츠와 함께 스크롤되는 버그가 발생한다.
           from: { filter: 'blur(10px)', opacity: '0' },
-          to: { filter: 'blur(0)', opacity: '1' }
+          to: { filter: 'none', opacity: '1' }
         },
         'slide-up': {
           from: { transform: 'translateY(100%)', opacity: '0' },
