@@ -353,9 +353,9 @@ const MarkdownViewerComponent: React.FC<MarkdownProps> = ({
       // src 처리: 로컬 이미지(/images/...)는 그대로 사용, 외부 이미지만 baseUrl과 결합
       const baseUrl =
         process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
-      
+
       let imageSrc = src;
-      
+
       if (src?.startsWith('http')) {
         // 외부 URL은 그대로 사용
         imageSrc = src;
@@ -377,8 +377,8 @@ const MarkdownViewerComponent: React.FC<MarkdownProps> = ({
       // 외부 이미지인 경우 unoptimized 사용
       // 로컬 이미지(/images/...)는 최적화 사용, 외부 이미지만 unoptimized
       const isExternal =
-        imageSrc?.startsWith('http') && 
-        !imageSrc?.includes('localhost') && 
+        imageSrc?.startsWith('http') &&
+        !imageSrc?.includes('localhost') &&
         !imageSrc?.includes('127.0.0.1');
 
       return (
@@ -388,7 +388,7 @@ const MarkdownViewerComponent: React.FC<MarkdownProps> = ({
             alt={optimizedAlt}
             width={width}
             height={height}
-            className="max-h-[600px] w-auto rounded-lg object-contain"
+            className="max-h-[600px] w-auto rounded-xl object-contain"
             sizes="(max-width: 768px) 100vw, 800px"
             loading="lazy"
             title={title || optimizedAlt}

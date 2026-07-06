@@ -314,7 +314,9 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
               animate={isMounted ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }}
               transition={{
                 duration: 0.3,
-                delay: 0.5 + index * 0.05
+                // 진입 지연을 짧게 (마지막 항목까지 최대 ~0.3s). 기존 0.5+누적은
+                // 긴 목차에서 마지막 항목이 1.5s 뒤에 떠 micro-interaction 범위를 벗어났다.
+                delay: 0.1 + Math.min(index, 4) * 0.05
               }}
             >
               <button
@@ -322,7 +324,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
                 data-heading-id={heading.id}
                 onClick={(e) => handleClick(heading.id, e)}
                 type="button"
-                className={`w-full rounded px-1.5 py-0.5 text-left text-xs transition-all sm:px-2 sm:py-1 sm:text-sm ${
+                className={`w-full rounded px-1.5 py-0.5 text-left text-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-2 sm:py-1 sm:text-sm ${
                   isActive
                     ? 'border-l-2 border-primary bg-primary/10 font-semibold text-primary'
                     : 'text-muted-foreground hover:bg-primary/5 hover:text-primary'
