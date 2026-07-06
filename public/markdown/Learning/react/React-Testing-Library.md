@@ -8,7 +8,7 @@ tags: ['React', 'Testing', 'React Testing Library', 'Jest', 'Frontend']
 
 ## 🐐 React Testing Library (RTL) 철학: 사용자처럼 테스트하라
 
-<img src="https://images.unsplash.com/photo-1516321318423-f06f70259b51?w=1200&h=600&fit=crop&auto=format" alt="React Testing" style="border-radius: 12px; margin: 20px 0;" />
+<img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=600&fit=crop&auto=format" alt="React Testing" style="border-radius: 12px; margin: 20px 0;" />
 
 React Testing Library (RTL)는 "테스트는 소프트웨어가 동작하는 방식과 유사해야 한다"는 핵심 원칙을 가지고 있습니다. 이는 구현의 세부 사항(예: 컴포넌트의 내부 상태, props, 생명주기 메서드)을 테스트하는 대신, 사용자가 애플리케이션과 상호작용하는 방식에 초점을 맞추는 것을 의미합니다.
 
