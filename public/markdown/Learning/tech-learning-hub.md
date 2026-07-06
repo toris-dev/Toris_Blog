@@ -6,13 +6,13 @@ category: Dev
 tags: [Learning, Technology, FullStack]
 ---
 
-# 📚 기술 학습 자료실
+# 기술 학습 자료실
 
 > 풀스택 개발자를 위한 기술 학습 자료와 참고 문서 저장소
 
-## 📁 기술 스택별 자료 구성
+## 기술 스택별 자료 구성
 
-### ⚛️ **Frontend - React Ecosystem**
+### Frontend - React Ecosystem
 
 - **React 핵심 개념**: 컴포넌트, 상태 관리, 라이프사이클
 - **Next.js**: SSR/SSG, 라우팅, API Routes
@@ -26,7 +26,7 @@ tags: [Learning, Technology, FullStack]
 - 포트폴리오 사이트 구축
 - 개인 프로젝트 프론트엔드 개발
 
-### 🎨 **Frontend - Styling**
+### Frontend - Styling
 
 - **CSS 고급 기법**: Grid, Flexbox, Animation
 - **CSS-in-JS**: Styled Components, Emotion
@@ -40,7 +40,7 @@ tags: [Learning, Technology, FullStack]
 - 디자인 시스템 구축
 - 사용자 경험 개선
 
-### 🚀 **Backend - Node.js**
+### Backend - Node.js
 
 - **Node.js 기초**: 이벤트 루프, 모듈 시스템
 - **Express.js**: 라우팅, 미들웨어, 에러 처리
@@ -54,7 +54,7 @@ tags: [Learning, Technology, FullStack]
 - API 서버 구축
 - 데이터베이스 설계 및 관리
 
-### 🔧 **DevOps & Tools**
+### DevOps & Tools
 
 - **배포 자동화**: CI/CD 파이프라인, GitHub Actions
 - **클라우드 서비스**: AWS, Vercel, Netlify
@@ -68,7 +68,7 @@ tags: [Learning, Technology, FullStack]
 - 개발 환경 구축
 - 성능 모니터링 및 최적화
 
-### 🔗 **Web3 & Emerging Tech**
+### Web3 & Emerging Tech
 
 - **블록체인 기초**: 개념, 스마트 컨트랙트
 - **Web3 개발**: Solidity, Web3.js, Ethers.js
@@ -81,7 +81,7 @@ tags: [Learning, Technology, FullStack]
 - Web3 서비스 아이디어 구현
 - 미래 기술 트렌드 대응
 
-### 📖 **Technical Writing**
+### Technical Writing
 
 - **기술 문서 작성**: README, API 문서, 코드 주석
 - **블로그 포스팅**: 기술 학습 내용 정리
@@ -93,27 +93,27 @@ tags: [Learning, Technology, FullStack]
 - 포트폴리오 문서화
 - 팀 협업 시 커뮤니케이션
 
-## 🔗 다른 영역과의 연결
+## 다른 영역과의 연결
 
-### 🎯 **프로젝트 지원**
+### 프로젝트 지원
 
 - React + TypeScript → 프론트엔드 개발 역량
 - Node.js + Database → 백엔드 개발 역량
 - DevOps → 배포 및 운영 경험
 
-### 💼 **커리어 지원**
+### 커리어 지원
 
 - 기술 스택 학습 → 취업/이직 준비
 - 포트폴리오 → 실무 능력 증명
 - 기술 블로그 → 개인 브랜딩
 
-### 📈 **성장 지원**
+### 성장 지원
 
 - 지속적 학습 → 기술 역량 향상
 - 문제 해결 경험 → 실무 적응력 증대
 - 커뮤니티 참여 → 네트워킹 및 지식 공유
 
-## 🎯 현재 학습 중인 기술
+## 현재 학습 중인 기술
 
 ### 즉시 학습 (우선순위 높음)
 
@@ -133,7 +133,7 @@ tags: [Learning, Technology, FullStack]
 2. **클라우드 아키텍처**: AWS 서비스 활용
 3. **Web3 개발**: 스마트 컨트랙트, DApp 개발
 
-## 📊 학습 진도 관리
+## 학습 진도 관리
 
 ### 학습 방법론
 
@@ -153,7 +153,7 @@ tags: [Learning, Technology, FullStack]
 - **문제 해결 능력**: 새로운 문제 상황에서의 대응 능력
 - **코드 품질**: 클린 코드, 테스트 코드 작성 능력
 
-## 🔧 학습 도구 및 리소스
+## 학습 도구 및 리소스
 
 ### 공식 문서
 

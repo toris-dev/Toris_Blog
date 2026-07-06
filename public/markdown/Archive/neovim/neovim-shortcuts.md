@@ -1,7 +1,7 @@
 ---
 title: [Archive] NeoVim 단축키 정리
 date: 2025-07-09T16:55:19.881Z
-slug: neovim-단축키
+slug: neovim-shortcuts
 category: Archive
 tags: [Archive, NeoVim]
 ---
