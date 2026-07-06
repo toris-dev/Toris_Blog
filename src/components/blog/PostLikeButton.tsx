@@ -22,6 +22,8 @@ export function PostLikeButton({ postId, className }: PostLikeButtonProps) {
       size="sm"
       onClick={toggle}
       disabled={isLoading}
+      aria-label={liked ? '좋아요 취소' : '좋아요'}
+      aria-pressed={liked}
       className={cn('gap-2', className)}
     >
       <motion.div
