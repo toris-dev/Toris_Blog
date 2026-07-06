@@ -10,6 +10,8 @@ tags: [Learning, CSS, Grid, Layout, Frontend]
 
 CSS Grid는 2차원 레이아웃 시스템으로, 행(row)과 열(column)을 동시에 제어할 수 있는 강력한 레이아웃 도구입니다. Flexbox가 1차원 레이아웃에 최적화되어 있다면, Grid는 복잡한 2차원 레이아웃을 구현하는 데 최적화되어 있습니다.
 
+<img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=600&fit=crop&auto=format" alt="CSS Grid Layout" style="border-radius: 12px; margin: 20px 0;" />
+
 ## Grid 기본 개념
 
 ### Grid Container vs Grid Item
@@ -320,6 +322,19 @@ IE11에서는 부분 지원 (구버전 문법 필요)
 
 ## 참고 자료
 
-- [MDN CSS Grid](https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Grid_Layout)
-- [CSS-Tricks Complete Guide to Grid](https://css-tricks.com/snippets/css/complete-guide-grid/)
-- [Grid by Example](https://gridbyexample.com/)
+### 공식 문서
+- [MDN CSS Grid Layout](https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Grid_Layout) - Mozilla의 공식 가이드
+- [W3C CSS Grid Module](https://www.w3.org/TR/css-grid-1/) - 공식 스펙
+
+### 학습 자료
+- [CSS-Tricks Complete Guide to Grid](https://css-tricks.com/snippets/css/complete-guide-grid/) - 가장 포괄적인 가이드
+- [Grid by Example - Rachel Andrew](https://gridbyexample.com/) - 실제 예제 모음
+- [CSS Grid Generator](https://cssgrid-generator.netlify.app/) - 인터랙티브 Grid 생성기
+
+### 온라인 환경에서 실습
+- [CodePen CSS Grid Collection](https://codepen.io/collection/DgwjWL/) - 실제 Grid 예제
+- [JSFiddle CSS Grid Examples](https://jsfiddle.net/) - 즉시 테스트 가능
+
+### 관련 포스팅
+- [Flexbox vs Grid 비교](/public/markdown/Learning/css/flexbox-guide)
+- [반응형 디자인 패턴](/public/markdown/Learning/css/responsive-design)
