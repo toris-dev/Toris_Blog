@@ -1,11 +1,7 @@
 'use client';
 
 import { MarkdownViewer } from '@/components/blog/Markdown';
-import {
-  FaCalendarAlt,
-  FaFolder,
-  FaTags
-} from '@/components/icons';
+import { FaCalendarAlt, FaFolder, FaTags } from '@/components/icons';
 import { cn } from '@/utils/style';
 import dayjs from 'dayjs';
 import Link from 'next/link';
@@ -59,7 +55,6 @@ const PostPageContent: FC<{
   useEffect(() => {
     setMounted(true);
   }, []);
-
 
   // 날짜 포맷팅 (서버와 클라이언트에서 동일한 결과 보장)
   const formattedDate = useMemo(
@@ -122,7 +117,11 @@ const PostPageContent: FC<{
   }, [content]);
 
   return (
-    <div className="w-full max-w-full overflow-x-hidden">
+    // overflow-x-clip (NOT -hidden): overflow-x:hidden은 브라우저가
+    // overflow-y를 auto로 강제해 이 래퍼가 스크롤 컨테이너가 되고,
+    // 그러면 내부 목차의 position:sticky가 뷰포트가 아닌 이 컨테이너
+    // 기준이 되어 스크롤을 따라오지 못한다. clip은 이 강제가 없다.
+    <div className="w-full max-w-full overflow-x-clip">
       {/* 읽기 진행바 */}
       <motion.div
         aria-hidden
@@ -135,9 +134,9 @@ const PostPageContent: FC<{
         style={containerStyle}
       >
         {/* 메인 콘텐츠 */}
-        <article className="min-w-0 max-w-full flex-1 overflow-x-hidden pb-16 md:pb-24">
+        <article className="min-w-0 max-w-full flex-1 overflow-x-clip pb-16 md:pb-24">
           <div
-            className="mx-auto w-full max-w-full overflow-x-hidden sm:max-w-2xl md:max-w-3xl"
+            className="mx-auto w-full max-w-full overflow-x-clip sm:max-w-2xl md:max-w-3xl"
             suppressHydrationWarning
             style={articleInnerStyle}
           >
@@ -196,7 +195,9 @@ const PostPageContent: FC<{
                                         #{trimmedTag}
                                       </Link>
                                       {index < tagArray.length - 1 && (
-                                        <span className="mx-0.5 sm:mx-1">,</span>
+                                        <span className="mx-0.5 sm:mx-1">
+                                          ,
+                                        </span>
                                       )}
                                     </span>
                                   );
@@ -258,7 +259,7 @@ const PostPageContent: FC<{
 
               {/* 목차 — 모바일/태블릿: 접이식, 데스크톱: 우측 고정 레일 */}
               {mounted && headings.length > 0 && (
-                <details className="group mb-6 2xl:hidden">
+                <details className="group mb-6 xl:hidden">
                   <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
                     목차
                     <svg
@@ -344,13 +345,18 @@ const PostPageContent: FC<{
           </div>
         </article>
 
-        {/* 데스크톱 목차 레일 — 뷰포트 고정, 본문과 독립 스크롤 */}
+        {/* 데스크톱 목차 레일 — flow 안 sticky 컬럼.
+            fixed 대신 flex 형제 + sticky로 두어야 (1) 스크롤 시 뷰포트를
+            따라오고 (2) 우측 공간을 실제로 차지해 본문 좌측 여백이 줄어든다. */}
         {mounted && headings.length > 0 && (
           <nav
             aria-label="목차"
-            className="fixed right-8 top-28 hidden w-60 2xl:block"
+            // self-stretch: flex 부모의 items-start 때문에 nav가 목차 높이로
+            // 축소되면, 그 안의 sticky 요소가 부모 경계에 갇혀 붙지 못한다.
+            // 부모(article) 높이만큼 늘려야 sticky가 스크롤 내내 작동한다.
+            className="hidden w-64 shrink-0 self-stretch xl:block"
           >
-            <div className="max-h-[70vh] overflow-y-auto rounded-lg border border-border bg-card/80 p-4 backdrop-blur-sm">
+            <div className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-lg border border-border bg-card/80 p-4 backdrop-blur-sm">
               <h3 className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 목차
               </h3>
@@ -359,7 +365,6 @@ const PostPageContent: FC<{
           </nav>
         )}
       </div>
-
     </div>
   );
 };
