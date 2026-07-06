@@ -8,6 +8,8 @@ tags: ['React', 'Three.js', '3D', 'WebGL', 'JavaScript']
 
 ## 🚀 React에서 Three.js로 3D 웹 시작하기
 
+<img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=1200&h=600&fit=crop&auto=format" alt="3D Web Graphics" style="border-radius: 12px; margin: 20px 0;" />
+
 최근 웹 트렌드 중 하나는 사용자에게 더욱 몰입감 있는 경험을 제공하는 인터랙티브 3D 웹입니다. Three.js는 WebGL을 기반으로 하는 강력한 JavaScript 3D 라이브러리로, 웹 브라우저에서 GPU 가속 3D 애니메이션을 만들 수 있게 해줍니다.
 
 React와 Three.js를 함께 사용하면 복잡한 3D 장면을 컴포넌트 기반으로 관리하고, React의 선언적인 UI 패턴을 3D 그래픽스에 적용할 수 있습니다. `@react-three/fiber`와 `@react-three/drei` 같은 라이브러리는 이러한 통합을 더욱 쉽게 만들어 줍니다.

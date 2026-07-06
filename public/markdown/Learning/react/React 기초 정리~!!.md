@@ -8,6 +8,8 @@ tags: ['React', 'JavaScript', 'Frontend']
 
 ## ⚛️ React 핵심 개념: 컴포넌트, 상태, 그리고 훅
 
+<img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1200&h=600&fit=crop&auto=format" alt="React" style="border-radius: 12px; margin: 20px 0;" />
+
 React는 사용자 인터페이스를 구축하기 위한 선언적이고 효율적이며 유연한 JavaScript 라이브러리입니다. "컴포넌트"라고 불리는 작고 고립된 코드 조각을 사용하여 복잡한 UI를 구성할 수 있습니다.
 
 ### 1. 컴포넌트와 상태(State)
