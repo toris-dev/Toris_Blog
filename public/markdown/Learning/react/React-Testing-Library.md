@@ -91,21 +91,20 @@ RTL의 철학을 이해하고 올바른 쿼리를 사용하는 것은, 단순히
 ## 참고 자료 및 추가 학습
 
 ### 공식 문서
+
 - [React Testing Library 공식 문서](https://testing-library.com/docs/react-testing-library/intro/) - 최신 가이드
 - [Jest 공식 문서](https://jestjs.io/) - 테스트 프레임워크
 - [Testing Library Best Practices](https://testing-library.com/docs/queries/about/)
 
 ### 학습 자료
+
 - [Common Mistakes with React Testing Library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
 - [Testing React Applications - Kent C. Dodds](https://egghead.io/courses/test-react-components-with-jest-and-react-testing-library)
 - [Accessible Component Testing - W3C ARIA](https://www.w3.org/WAI/test-evaluate/)
 
 ### 온라인 플레이그라운드
+
 - [CodeSandbox React Testing Example](https://codesandbox.io/)
 - [React Testing Library Cheat Sheet](https://testing-library.com/docs/react-testing-library/cheatsheet/)
-
-### 관련 포스팅
-- [Jest 설정 가이드](/public/markdown/Learning/react/jest-setup-guide)
-- [접근성 테스팅](/public/markdown/Learning/web/accessibility-testing)
 
 _테스트는 더 이상 고통이 아니다. React Testing Library와 함께 자신감 있게 개발하자!_ 🚀

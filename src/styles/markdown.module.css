@@ -347,12 +347,25 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid hsl(var(--border));
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .viewerContainer img:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* 모션 감소 설정을 존중 (접근성) */
+@media (prefers-reduced-motion: reduce) {
+  .viewerContainer img {
+    transition: none;
+  }
+
+  .viewerContainer img:hover {
+    transform: none;
+  }
 }
 
 .viewerContainer video {
