@@ -1,5 +1,6 @@
 import {
   buildBreadcrumbNode,
+  buildOrganizationNode,
   buildPersonNode,
   buildWebPageNode,
   buildWebSiteNode,
@@ -39,6 +40,7 @@ export function buildGlobalGraph() {
 
   return createJsonLdGraph([
     buildPersonNode(baseUrl),
+    buildOrganizationNode(baseUrl),
     buildWebSiteNode(baseUrl, 'compact')
   ]);
 }
@@ -50,6 +52,7 @@ export function buildHomeGraph() {
 
   return createJsonLdGraph([
     buildPersonNode(baseUrl),
+    buildOrganizationNode(baseUrl),
     buildWebSiteNode(baseUrl, 'full'),
     buildWebPageNode(baseUrl, {
       url: pageUrl,
@@ -71,6 +74,7 @@ export function buildAboutGraph(breadcrumb?: BreadcrumbItem[]) {
 
   const nodes = [
     buildPersonNode(baseUrl),
+    buildOrganizationNode(baseUrl),
     buildWebSiteNode(baseUrl, 'compact'),
     buildWebPageNode(baseUrl, {
       url: pageUrl,
@@ -100,6 +104,7 @@ export function buildBlogListingGraph(breadcrumb?: BreadcrumbItem[]) {
 
   const nodes = [
     buildPersonNode(baseUrl),
+    buildOrganizationNode(baseUrl),
     buildWebSiteNode(baseUrl, 'compact'),
     {
       '@type': 'Blog',
@@ -109,7 +114,7 @@ export function buildBlogListingGraph(breadcrumb?: BreadcrumbItem[]) {
       description: SITE.blog.description,
       inLanguage: SITE.inLanguage,
       author: { '@id': ids.person },
-      publisher: { '@id': ids.person },
+      publisher: { '@id': ids.organization },
       license: SITE.license
     },
     buildWebPageNode(baseUrl, {
@@ -143,6 +148,7 @@ export function buildCollectionGraph(
 
   const nodes = [
     buildPersonNode(baseUrl),
+    buildOrganizationNode(baseUrl),
     buildWebSiteNode(baseUrl, 'compact'),
     buildWebPageNode(baseUrl, {
       url: pageUrl,
@@ -175,6 +181,7 @@ export function buildArticleGraph(
 
   const nodes = [
     buildPersonNode(baseUrl),
+    buildOrganizationNode(baseUrl),
     buildWebSiteNode(baseUrl, 'compact'),
     buildWebPageNode(baseUrl, {
       url: pageUrl,
@@ -191,7 +198,7 @@ export function buildArticleGraph(
       datePublished: data.publishedAt,
       dateModified: data.modifiedAt ?? data.publishedAt,
       author: { '@id': ids.person },
-      publisher: { '@id': ids.person },
+      publisher: { '@id': ids.organization },
       mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
       url: pageUrl,
       inLanguage: SITE.inLanguage,
@@ -228,6 +235,7 @@ export function buildSoftwareGraph(
 
   const nodes = [
     buildPersonNode(baseUrl),
+    buildOrganizationNode(baseUrl),
     buildWebSiteNode(baseUrl, 'compact'),
     buildWebPageNode(baseUrl, {
       url: pageUrl,
@@ -274,6 +282,7 @@ export function buildWebPageGraph(
 
   const nodes = [
     buildPersonNode(baseUrl),
+    buildOrganizationNode(baseUrl),
     buildWebSiteNode(baseUrl, 'compact'),
     buildWebPageNode(baseUrl, {
       url: pageUrl,

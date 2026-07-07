@@ -32,6 +32,26 @@ export function buildPersonNode(baseUrl: string): JsonLdNode {
   };
 }
 
+export function buildOrganizationNode(baseUrl: string): JsonLdNode {
+  const ids = getNodeIds(baseUrl);
+
+  return {
+    '@type': 'Organization',
+    '@id': ids.organization,
+    name: SITE.organization.name,
+    alternateName: SITE.organization.alternateName,
+    url: baseUrl,
+    logo: {
+      '@type': 'ImageObject',
+      url: absoluteUrl(baseUrl, SITE.organization.logoPath),
+      width: SITE.organization.logoWidth,
+      height: SITE.organization.logoHeight
+    },
+    founder: { '@id': ids.person },
+    sameAs: [...SITE.organization.sameAs]
+  };
+}
+
 export function buildWebSiteNode(
   baseUrl: string,
   variant: 'full' | 'compact' = 'compact'
@@ -56,7 +76,7 @@ export function buildWebSiteNode(
     description: SITE.description,
     inLanguage: SITE.inLanguage,
     image: absoluteUrl(baseUrl, SITE.imagePath),
-    publisher: { '@id': ids.person },
+    publisher: { '@id': ids.organization },
     potentialAction: {
       '@type': 'SearchAction',
       target: `${baseUrl}/posts?search={search_term_string}`,

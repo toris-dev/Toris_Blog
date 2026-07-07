@@ -13,6 +13,27 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true
   },
+  // 보안 헤더 (HSTS는 Vercel/도메인 레벨에서 이미 적용됨).
+  // 값싼 신뢰 신호 — GEO 감사에서 지적된 누락 헤더 보완.
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin'
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()'
+          }
+        ]
+      }
+    ];
+  },
   // ESLint 빌드 시 무시 설정
   // eslint: {
   //   ignoreDuringBuilds: true,

@@ -112,6 +112,25 @@ function getCategoryFromPath(filePath: string): string {
   return parts[0] || 'Uncategorized';
 }
 
+// 마크다운 본문에서 검색/소셜/AI 스니펫용 평문 요약을 만든다.
+// 헤딩(#)·이미지(<img>, ![]())·HTML·링크·코드펜스·강조기호를 제거해
+// description/og:description/twitter:description/JSON-LD가 깨진 마크다운을
+// 그대로 노출하지 않도록 한다. (GEO 감사에서 최우선으로 지적된 버그)
+export function toPlainExcerpt(markdown: string, maxLen = 155): string {
+  const text = (markdown || '')
+    .replace(/```[\s\S]*?```/g, ' ') // 코드펜스
+    .replace(/<[^>]+>/g, ' ') // HTML 태그 (<img> 등)
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ') // 마크다운 이미지
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // 링크 → 텍스트
+    .replace(/^\s{0,3}(#{1,6}|>|[-*+]|\d+\.)\s+/gm, '') // 줄머리 마커
+    .replace(/[`*_~]/g, '') // 강조/인라인코드 기호
+    .replace(/&[a-z]+;/gi, ' ') // HTML 엔티티
+    .replace(/\s+/g, ' ') // 공백 정리
+    .trim();
+  if (text.length <= maxLen) return text;
+  return text.substring(0, maxLen).trim() + '…';
+}
+
 // 마크다운 파일을 Post 타입으로 변환
 function parseMarkdownFile(filePath: string): Post | null {
   try {
@@ -129,9 +148,7 @@ function parseMarkdownFile(filePath: string): Post | null {
       id,
       title: data.title || fileName,
       content,
-      description:
-        data.description ||
-        content.substring(0, 150).replace(/\n/g, ' ') + '...',
+      description: data.description || toPlainExcerpt(content),
       category,
       tags: data.tags || [category],
       date: data.date || '1970-01-01T00:00:00.000Z',
