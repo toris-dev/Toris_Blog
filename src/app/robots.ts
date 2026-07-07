@@ -70,6 +70,28 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: 'PerplexityBot',
         allow: publicAllow,
         disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook', '/ask']
+      },
+      // ChatGPT 검색 fetcher(OAI-SearchBot)와 그 외 AI 검색봇도 명시 허용.
+      // 명시하지 않으면 `*` 규칙의 Crawl-delay를 상속해 색인이 느려진다.
+      {
+        userAgent: 'OAI-SearchBot',
+        allow: publicAllow,
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook', '/ask']
+      },
+      {
+        userAgent: 'Applebot-Extended',
+        allow: publicAllow,
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook', '/ask']
+      },
+      {
+        userAgent: 'Amazonbot',
+        allow: publicAllow,
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook', '/ask']
+      },
+      {
+        userAgent: 'CCBot',
+        allow: publicAllow,
+        disallow: [...publicDisallow, '/todos', '/bookmarks', '/guestbook', '/ask']
       }
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

@@ -17,6 +17,15 @@
 - Contact: /contact
 - RSS: /feed.xml
 - Sitemap: /sitemap.xml
+- Full content (all posts, plain text): /llms-full.txt
+
+## Featured posts
+
+- [AI 코딩 에이전트 2026 총정리](/posts/ai-coding-agents-2026-overview): 하네스·Claude Code·Codex를 한 편으로 잇는 개요.
+- [하네스 엔지니어링](/posts/harness-engineering): 에이전트 성능을 좌우하는 하네스(도구·컨텍스트·루프) 설계.
+- [Claude Code 동향](/posts/claude-code-trends): Claude Code의 기능·워크플로 변화와 실사용 관점 정리.
+- [Codex 동향](/posts/codex-trends): OpenAI Codex CLI의 방향성과 코딩 에이전트 경쟁 구도.
+- [Claude Code $200 vs Codex $200](/posts/claude-code-vs-codex-200): 동일 예산에서 두 코딩 에이전트의 실전 비교.
 
 ## Citation
 

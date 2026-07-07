@@ -1,5 +1,6 @@
 import {
   buildBreadcrumbNode,
+  buildOrganizationNode,
   buildPersonNode,
   buildWebPageNode,
   buildWebSiteNode,
@@ -34,12 +35,17 @@ export type SoftwareStructuredData = {
   sameAs?: string[];
 };
 
+// 전역 블록: 사이트 전 페이지에 렌더된다(layout). 사이트 엔티티(Person·
+// Organization·WebSite)를 "여기 한 곳에서만" 정의하고, 페이지별 그래프는
+// 이 @id들을 교차-스크립트로 참조한다(Google은 한 페이지의 모든 JSON-LD를
+// 병합해 @id를 해석). WebSite는 SearchAction을 담기 위해 full 변형을 쓴다.
 export function buildGlobalGraph() {
   const baseUrl = getBaseUrl();
 
   return createJsonLdGraph([
     buildPersonNode(baseUrl),
-    buildWebSiteNode(baseUrl, 'compact')
+    buildOrganizationNode(baseUrl),
+    buildWebSiteNode(baseUrl, 'full')
   ]);
 }
 
@@ -49,8 +55,6 @@ export function buildHomeGraph() {
   const pageUrl = baseUrl;
 
   return createJsonLdGraph([
-    buildPersonNode(baseUrl),
-    buildWebSiteNode(baseUrl, 'full'),
     buildWebPageNode(baseUrl, {
       url: pageUrl,
       name: SITE.name,
@@ -70,8 +74,6 @@ export function buildAboutGraph(breadcrumb?: BreadcrumbItem[]) {
     : undefined;
 
   const nodes = [
-    buildPersonNode(baseUrl),
-    buildWebSiteNode(baseUrl, 'compact'),
     buildWebPageNode(baseUrl, {
       url: pageUrl,
       name: '소개 - 풀스택 웹 개발자 토리스',
@@ -99,8 +101,6 @@ export function buildBlogListingGraph(breadcrumb?: BreadcrumbItem[]) {
     : undefined;
 
   const nodes = [
-    buildPersonNode(baseUrl),
-    buildWebSiteNode(baseUrl, 'compact'),
     {
       '@type': 'Blog',
       '@id': ids.blog,
@@ -109,7 +109,7 @@ export function buildBlogListingGraph(breadcrumb?: BreadcrumbItem[]) {
       description: SITE.blog.description,
       inLanguage: SITE.inLanguage,
       author: { '@id': ids.person },
-      publisher: { '@id': ids.person },
+      publisher: { '@id': ids.organization },
       license: SITE.license
     },
     buildWebPageNode(baseUrl, {
@@ -142,8 +142,6 @@ export function buildCollectionGraph(
     : undefined;
 
   const nodes = [
-    buildPersonNode(baseUrl),
-    buildWebSiteNode(baseUrl, 'compact'),
     buildWebPageNode(baseUrl, {
       url: pageUrl,
       name: data.name,
@@ -174,8 +172,6 @@ export function buildArticleGraph(
   const tags = data.tags?.filter(Boolean) ?? [];
 
   const nodes = [
-    buildPersonNode(baseUrl),
-    buildWebSiteNode(baseUrl, 'compact'),
     buildWebPageNode(baseUrl, {
       url: pageUrl,
       name: data.title,
@@ -191,7 +187,7 @@ export function buildArticleGraph(
       datePublished: data.publishedAt,
       dateModified: data.modifiedAt ?? data.publishedAt,
       author: { '@id': ids.person },
-      publisher: { '@id': ids.person },
+      publisher: { '@id': ids.organization },
       mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
       url: pageUrl,
       inLanguage: SITE.inLanguage,
@@ -227,8 +223,6 @@ export function buildSoftwareGraph(
     : undefined;
 
   const nodes = [
-    buildPersonNode(baseUrl),
-    buildWebSiteNode(baseUrl, 'compact'),
     buildWebPageNode(baseUrl, {
       url: pageUrl,
       name: data.name,
@@ -273,8 +267,6 @@ export function buildWebPageGraph(
     : undefined;
 
   const nodes = [
-    buildPersonNode(baseUrl),
-    buildWebSiteNode(baseUrl, 'compact'),
     buildWebPageNode(baseUrl, {
       url: pageUrl,
       name: data.name,

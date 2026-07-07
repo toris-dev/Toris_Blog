@@ -20,6 +20,7 @@ export const SITE = {
       '풀스택 웹 개발자로 React, Next.js, TypeScript, Node.js를 주로 사용합니다.',
     sameAs: [
       'https://github.com/toris-dev',
+      'https://www.linkedin.com/in/joohwan-yu',
       'https://x.com/TorisDev',
       'https://discord.com/users/516088509891870760'
     ],
@@ -34,6 +35,16 @@ export const SITE = {
       'Backend Development'
     ]
   },
+  // publisher용 Organization. BlogPosting의 publisher는 Person이 아니라
+  // logo를 가진 Organization이어야 Rich Results 'publisher logo' 경고가 없다.
+  organization: {
+    name: 'Toris Blog',
+    alternateName: 'toris-dev',
+    logoPath: '/images/og-image.png',
+    logoWidth: 1200,
+    logoHeight: 630,
+    sameAs: ['https://github.com/toris-dev', 'https://x.com/TorisDev']
+  },
   blog: {
     name: 'Toris Blog',
     description: '웹 개발 기술과 프로젝트 경험을 공유하는 기술 블로그',
@@ -45,6 +56,7 @@ export function getNodeIds(baseUrl: string) {
   return {
     website: `${baseUrl}/#website`,
     person: `${baseUrl}/#person`,
+    organization: `${baseUrl}/#organization`,
     blog: `${baseUrl}/posts#blog`
   } as const;
 }
