@@ -37,6 +37,55 @@ const gh = (repo: string) => `https://github.com/toris-dev/${repo}`;
 
 export const projects: Project[] = [
   {
+    slug: 'nova-chain',
+    name: 'NOVA Chain',
+    tagline: 'AI 에이전트를 위한 자율 온체인 실행 레이어',
+    description:
+      'AI 에이전트가 직접 트랜잭션하고, 조율하고, 온체인에서 정산하는 모듈러 Layer 2 프로토콜. 자율 실행(Autonomous Execution), 컴포저블 에이전트 지갑, 검증 가능한 AI 액션을 프로토콜 레벨에서 제공합니다. 인터랙티브 랜딩 — 캔버스 네트워크 시각화, 카운트업 지표, 스크롤 로드맵을 갖춘 컨셉 프로덕트.',
+    category: 'Web3 · Layer 2 프로토콜',
+    platform: 'Web',
+    year: '2026',
+    status: '개발 중',
+    accent: { from: '#22D3EE', to: '#3B82F6', glow: 'rgba(34,211,238,0.35)' },
+    tech: [
+      'Next.js 16',
+      'React 19',
+      'TypeScript',
+      'Framer Motion',
+      'Canvas',
+      'Tailwind CSS'
+    ],
+    features: [
+      {
+        icon: 'zap',
+        title: 'Autonomous Execution',
+        description:
+          '에이전트가 온체인 1급 시민으로 동작. 사람 개입 없이 멀티스텝 전략을 스케줄·트리거·실행하며, 가스는 추상화되고 실행은 프로토콜이 보장.'
+      },
+      {
+        icon: 'wallet',
+        title: 'Composable Agent Wallets',
+        description:
+          '에이전트를 위한 프로그래머블 스마트 계정. 범위 제한 권한, 지출 한도, 세션 키로 안전하게 트랜잭션하고 모든 NOVA 앱과 조합.'
+      },
+      {
+        icon: 'shield',
+        title: 'Verifiable AI Actions',
+        description:
+          '모든 에이전트 결정이 증명 가능. 모델 출력·인텐트를 온체인 검증해 에이전트가 무엇을 했는지 신뢰하고 누구에게나 증명.'
+      },
+      {
+        icon: 'layers',
+        title: '모듈러 프로토콜 스택',
+        description:
+          'Agent Runtime → Intent Router → Settlement Layer → Data Availability. 인텐트에서 정산까지 이어지는 4계층 모듈러 아키텍처.'
+      }
+    ],
+    github: 'https://github.com/toris-dev',
+    image: '/images/projects/nova-chain.png',
+    span: 'lg'
+  },
+  {
     slug: 'love-trip',
     name: 'LOVETRIP',
     tagline: '교통·숙소·데이트 코스·경비를 한 번에, 맞춤형 여행 설계',

@@ -25,12 +25,13 @@ export function Reveal({
   y?: number;
   className?: string;
 }) {
+  const reduce = useReducedMotion();
   return (
     <motion.div
-      initial={{ opacity: 0, y }}
+      initial={{ opacity: 0, y: reduce ? 0 : y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.7, delay, ease: EASE }}
+      transition={{ duration: reduce ? 0.01 : 0.7, delay: reduce ? 0 : delay, ease: EASE }}
       className={className}
     >
       {children}
