@@ -3,10 +3,11 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/utils/style';
 
-const skeletonVariants = cva('animate-pulse rounded bg-muted', {
+// shimmer 1.5s 기반 (animate-pulse 대신). skeleton-shimmer는 animations.css 정의.
+const skeletonVariants = cva('skeleton-shimmer rounded', {
   variants: {
     variant: {
-      default: 'bg-muted',
+      default: '',
       card: 'overflow-hidden rounded-xl border border-border shadow-sm',
       text: 'h-4 rounded-md'
     }
@@ -22,10 +23,7 @@ export interface SkeletonProps
 
 export function Skeleton({ className, variant, ...props }: SkeletonProps) {
   return (
-    <div
-      className={cn(skeletonVariants({ variant }), className)}
-      {...props}
-    />
+    <div className={cn(skeletonVariants({ variant }), className)} {...props} />
   );
 }
 

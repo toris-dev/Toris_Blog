@@ -17,6 +17,7 @@ import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import { Heading } from './TableOfContents';
 import { CodeBlock } from './CodeBlock';
+import { slugify, buildHeadingIdMap } from '@/utils/headings';
 
 // Import highlight.js theme for code syntax highlighting
 // 라이트/다크 모드에 따라 동적으로 로드
@@ -27,29 +28,8 @@ interface MarkdownProps {
   onHeadingsChange?: (headings: Heading[]) => void;
 }
 
-// 텍스트를 slug로 변환하는 함수
-// 이모지와 특수문자를 처리하도록 개선
-const slugify = (text: string): string => {
-  // 이모지와 특수문자를 제거하되, 한글과 영문은 유지
-  let slug = text
-    .toLowerCase()
-    .trim()
-    // 이모지 제거 (유니코드 범위)
-    .replace(/[\u{1F300}-\u{1F9FF}]/gu, '')
-    .replace(/[\u{2600}-\u{26FF}]/gu, '')
-    .replace(/[\u{2700}-\u{27BF}]/gu, '')
-    // 영문, 숫자, 한글, 공백, 하이픈, 언더스코어만 유지
-    .replace(/[^\w\s가-힣-]/g, '')
-    .replace(/[\s_-]+/g, '-') // 공백, 언더스코어, 하이픈을 하이픈으로
-    .replace(/^-+|-+$/g, ''); // 앞뒤 하이픈 제거
-
-  // 빈 문자열이면 인덱스 기반 ID 생성
-  if (!slug) {
-    return '';
-  }
-
-  return slug;
-};
+// slugify / 헤딩 추출은 @/utils/headings 에서 공유한다
+// (PostPage 목차와 여기의 h2 id가 동일 로직으로 생성되어 앵커가 항상 일치)
 
 // 코드 내용 기반 해시 생성 (결정론적)
 const hashString = (str: string): string => {
@@ -69,56 +49,6 @@ const MarkdownViewerComponent: React.FC<MarkdownProps> = ({
 }) => {
   const { theme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // 헤딩 ID를 동기적으로 계산 (결정론적, hydration mismatch 방지)
-  // 서버와 클라이언트에서 동일한 결과를 보장하기 위해 렌더링 시점에 계산
-  const computeHeadingIdsSync = useCallback((content: string) => {
-    const headingIdsMap = new Map<string, string>();
-    const idCounts = new Map<string, number>();
-    let headingIndex = 0;
-
-    // 마크다운에서 h2 헤딩만 추출하여 ID 미리 계산 (목차는 h2만 표시)
-    const headingRegex = /^(#{2})\s+(.+)$/gm;
-    let match;
-    const headingOrder: Array<{ level: number; text: string }> = [];
-
-    while ((match = headingRegex.exec(content)) !== null) {
-      headingOrder.push({
-        level: 2, // h2만 추출
-        text: match[2].trim()
-      });
-    }
-
-    // 순서대로 ID 할당 (결정론적)
-    headingOrder.forEach(({ level, text }) => {
-      const key = `${level}-${text}`;
-      let baseId = slugify(text);
-
-      // slugify가 실패하면 텍스트 기반 해시 생성
-      if (!baseId) {
-        // 텍스트의 해시값을 기반으로 ID 생성 (결정론적)
-        let hash = 0;
-        for (let i = 0; i < text.length; i++) {
-          const char = text.charCodeAt(i);
-          hash = (hash << 5) - hash + char;
-          hash = hash & hash; // 32비트 정수로 변환
-        }
-        baseId = `heading-${Math.abs(hash).toString(36)}`;
-      }
-
-      // 중복 ID 처리
-      if (idCounts.has(baseId)) {
-        const count = idCounts.get(baseId)! + 1;
-        idCounts.set(baseId, count);
-        headingIdsMap.set(key, `${baseId}-${count}`);
-      } else {
-        idCounts.set(baseId, 0);
-        headingIdsMap.set(key, baseId);
-      }
-    });
-
-    return headingIdsMap;
-  }, []);
 
   // Mermaid ID를 동기적으로 계산 (결정론적)
   const computeMermaidIdsSync = useCallback((content: string) => {
@@ -142,11 +72,7 @@ const MarkdownViewerComponent: React.FC<MarkdownProps> = ({
 
   // 렌더링 시점에 동기적으로 ID 계산 (서버와 클라이언트에서 동일)
   // useMemo로 메모이제이션하여 무한 루프 방지
-  const headingIdsMap = useMemo(
-    () => computeHeadingIdsSync(children),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [children]
-  );
+  const headingIdsMap = useMemo(() => buildHeadingIdMap(children), [children]);
   const mermaidIdsMap = useMemo(
     () => computeMermaidIdsSync(children),
     // eslint-disable-next-line react-hooks/exhaustive-deps
