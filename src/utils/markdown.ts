@@ -118,6 +118,9 @@ function getCategoryFromPath(filePath: string): string {
 // 그대로 노출하지 않도록 한다. (GEO 감사에서 최우선으로 지적된 버그)
 export function toPlainExcerpt(markdown: string, maxLen = 155): string {
   const text = (markdown || '')
+    // 선두 H1은 대개 <title>과 중복되는 글 제목이므로 통째로 제거해
+    // 스니펫이 실제 첫 문장부터 시작하게 한다.
+    .replace(/^\s*#\s+.*(?:\r?\n|$)/, ' ')
     .replace(/```[\s\S]*?```/g, ' ') // 코드펜스
     .replace(/<[^>]+>/g, ' ') // HTML 태그 (<img> 등)
     .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ') // 마크다운 이미지
