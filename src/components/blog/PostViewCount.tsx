@@ -3,7 +3,13 @@
 import { useEffect, useState } from 'react';
 import { FaEye } from '@/components/icons';
 import { cn } from '@/utils/style';
-import { getViewCount, hasViewedRecently, incrementViewCount, markAsViewed } from '@/utils/postViews';
+import {
+  getViewCount,
+  hasViewedRecently,
+  incrementViewCount,
+  markAsViewed
+} from '@/utils/postViews';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 interface PostViewCountProps {
   postId: string;
@@ -11,7 +17,11 @@ interface PostViewCountProps {
   showIcon?: boolean;
 }
 
-export function PostViewCount({ postId, className, showIcon = true }: PostViewCountProps) {
+export function PostViewCount({
+  postId,
+  className,
+  showIcon = true
+}: PostViewCountProps) {
   const [viewCount, setViewCount] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -57,9 +67,14 @@ export function PostViewCount({ postId, className, showIcon = true }: PostViewCo
 
   if (isLoading) {
     return (
-      <div className={cn('flex items-center gap-1.5 text-sm text-muted-foreground', className)}>
+      <div
+        className={cn(
+          'flex items-center gap-1.5 text-sm text-muted-foreground',
+          className
+        )}
+      >
         {showIcon && <FaEye className="size-4" />}
-        <span>...</span>
+        <Skeleton className="h-4 w-8" aria-label="조회수 불러오는 중" />
       </div>
     );
   }
@@ -67,7 +82,12 @@ export function PostViewCount({ postId, className, showIcon = true }: PostViewCo
   const formattedCount = viewCount !== null ? viewCount.toLocaleString() : '0';
 
   return (
-    <div className={cn('flex items-center gap-1.5 text-sm text-muted-foreground', className)}>
+    <div
+      className={cn(
+        'flex items-center gap-1.5 text-sm text-muted-foreground',
+        className
+      )}
+    >
       {showIcon && <FaEye className="size-4" />}
       <span>{formattedCount}</span>
     </div>

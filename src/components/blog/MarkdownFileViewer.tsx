@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 // import GitHubComments from '../comments/GitHubComments'; // TODO: GitHubComments 컴포넌트 구현 필요
 import { MarkdownViewer } from './Markdown';
+import { SkeletonPostDetail } from '@/components/ui/Skeleton';
 
 interface MarkdownFileViewerProps {
   slug: string;
@@ -76,7 +77,11 @@ const MarkdownFileViewer: React.FC<MarkdownFileViewerProps> = ({ slug }) => {
   }, [slug]);
 
   if (loading) {
-    return <div className="p-4">Loading...</div>;
+    return (
+      <div className="p-4" aria-busy="true" aria-label="문서 불러오는 중">
+        <SkeletonPostDetail />
+      </div>
+    );
   }
 
   if (error) {

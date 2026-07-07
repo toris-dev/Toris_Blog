@@ -5,6 +5,7 @@ import { CommentForm } from './CommentForm';
 import { CommentItem } from './CommentItem';
 import { Comment, CommentFormData } from '@/types/comment';
 import { Button } from '@/components/ui/Button';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { cn } from '@/utils/style';
 
 interface CommentSectionProps {
@@ -20,27 +21,30 @@ export function CommentSection({ postId }: CommentSectionProps) {
   const [total, setTotal] = useState(0);
 
   // 댓글 조회
-  const fetchComments = useCallback(async (pageNum: number = 1) => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(
-        `/api/comments?postId=${encodeURIComponent(postId)}&page=${pageNum}&limit=20`
-      );
+  const fetchComments = useCallback(
+    async (pageNum: number = 1) => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          `/api/comments?postId=${encodeURIComponent(postId)}&page=${pageNum}&limit=20`
+        );
 
-      if (!response.ok) {
-        throw new Error('댓글을 불러오는데 실패했습니다.');
+        if (!response.ok) {
+          throw new Error('댓글을 불러오는데 실패했습니다.');
+        }
+
+        const data = await response.json();
+        setComments(data.comments || []);
+        setHasMore(data.pagination.page < data.pagination.totalPages);
+        setTotal(data.pagination.total);
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      } finally {
+        setIsLoading(false);
       }
-
-      const data = await response.json();
-      setComments(data.comments || []);
-      setHasMore(data.pagination.page < data.pagination.totalPages);
-      setTotal(data.pagination.total);
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [postId]);
+    },
+    [postId]
+  );
 
   useEffect(() => {
     fetchComments(page);
@@ -63,7 +67,9 @@ export function CommentSection({ postId }: CommentSectionProps) {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error?.message || '댓글 작성에 실패했습니다.');
+        throw new Error(
+          errorData.error?.message || '댓글 작성에 실패했습니다.'
+        );
       }
 
       // 댓글 목록 새로고침
@@ -84,24 +90,57 @@ export function CommentSection({ postId }: CommentSectionProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-foreground">
-          댓글 {total > 0 && <span className="text-muted-foreground">({total})</span>}
+          댓글{' '}
+          {total > 0 && (
+            <span className="text-muted-foreground">({total})</span>
+          )}
         </h2>
       </div>
 
       {/* 댓글 작성 폼 */}
       <div className="rounded-lg border border-border bg-card p-6">
-        <CommentForm postId={postId} onSubmit={handleSubmit} isSubmitting={isSubmitting} />
+        <CommentForm
+          postId={postId}
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+        />
       </div>
 
       {/* 댓글 목록 */}
       {isLoading ? (
-        <div className="text-center text-muted-foreground">댓글을 불러오는 중...</div>
+        <div
+          className="space-y-4"
+          aria-label="댓글 불러오는 중"
+          aria-busy="true"
+        >
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="rounded-lg border border-border bg-card p-4"
+            >
+              <div className="mb-3 flex items-center gap-2">
+                <Skeleton className="size-8 rounded-full" />
+                <Skeleton className="h-4 w-24" />
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-4/5" />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : comments.length === 0 ? (
-        <div className="text-center text-muted-foreground">아직 댓글이 없습니다.</div>
+        <div className="text-center text-muted-foreground">
+          아직 댓글이 없습니다.
+        </div>
       ) : (
         <div className="space-y-4">
           {comments.map((comment) => (
-            <CommentItem key={comment.id} comment={comment} onUpdate={handleUpdate} />
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              onUpdate={handleUpdate}
+            />
           ))}
         </div>
       )}

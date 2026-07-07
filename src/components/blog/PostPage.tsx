@@ -19,6 +19,7 @@ import {
   usePostHeadings
 } from '@/contexts/PostHeadingsContext';
 import { TableOfContents } from '@/components/blog/TableOfContents';
+import { extractHeadings } from '@/utils/headings';
 
 import { SeriesMetadata } from '@/utils/postSeries';
 import { BookmarkButton } from './BookmarkButton';
@@ -47,8 +48,13 @@ const PostPageContent: FC<{
   series,
   relatedPosts = []
 }) => {
-  const { setHeadings, headings } = usePostHeadings();
+  const { setHeadings } = usePostHeadings();
   const [mounted, setMounted] = useState(false);
+
+  // 목차 헤딩을 content에서 동기적으로 추출한다.
+  // onHeadingsChange 콜백(마운트 후 비동기)을 기다리지 않으므로 목차가 첫
+  // 페인트부터 존재 → "목차가 뒤늦게 떠서 본문이 밀리는" 레이아웃 시프트 제거.
+  const headings = useMemo(() => extractHeadings(content), [content]);
   // 읽기 진행바 — 페이지 스크롤 진행률
   const { scrollYProgress } = useScroll();
 
@@ -257,8 +263,10 @@ const PostPageContent: FC<{
                 />
               )}
 
-              {/* 목차 — 모바일/태블릿: 접이식, 데스크톱: 우측 고정 레일 */}
-              {mounted && headings.length > 0 && (
+              {/* 목차 — 모바일/태블릿: 접이식, 데스크톱: 우측 고정 레일.
+                  headings는 content에서 동기 계산되므로 mounted 게이트 없이
+                  첫 페인트부터 렌더 → 레이아웃 시프트 없음. */}
+              {headings.length > 0 && (
                 <details className="group mb-6 xl:hidden">
                   <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
                     목차
@@ -348,7 +356,7 @@ const PostPageContent: FC<{
         {/* 데스크톱 목차 레일 — flow 안 sticky 컬럼.
             fixed 대신 flex 형제 + sticky로 두어야 (1) 스크롤 시 뷰포트를
             따라오고 (2) 우측 공간을 실제로 차지해 본문 좌측 여백이 줄어든다. */}
-        {mounted && headings.length > 0 && (
+        {headings.length > 0 && (
           <nav
             aria-label="목차"
             // self-stretch: flex 부모의 items-start 때문에 nav가 목차 높이로
