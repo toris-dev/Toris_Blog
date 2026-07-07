@@ -20,6 +20,7 @@ export const SITE = {
       '풀스택 웹 개발자로 React, Next.js, TypeScript, Node.js를 주로 사용합니다.',
     sameAs: [
       'https://github.com/toris-dev',
+      'https://www.linkedin.com/in/joohwan-yu',
       'https://x.com/TorisDev',
       'https://discord.com/users/516088509891870760'
     ],
