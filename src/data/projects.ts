@@ -9,6 +9,15 @@ export interface ProjectFeature {
   description: string;
 }
 
+/** 목록 필터용 태그 */
+export type ProjectTag =
+  | 'Company'
+  | 'Personal'
+  | 'Web3'
+  | 'Mobile'
+  | 'Frontend'
+  | 'Fullstack';
+
 export interface Project {
   slug: string;
   name: string;
@@ -18,6 +27,7 @@ export interface Project {
   platform: string;
   year: string;
   status: '운영 중' | '개발 중' | '출시';
+  tags: ProjectTag[];
   accent: {
     from: string;
     to: string;
@@ -37,53 +47,125 @@ const gh = (repo: string) => `https://github.com/toris-dev/${repo}`;
 
 export const projects: Project[] = [
   {
-    slug: 'nova-chain',
-    name: 'NOVA Chain',
-    tagline: 'AI 에이전트를 위한 자율 온체인 실행 레이어',
+    slug: 'toris-blog',
+    name: 'Toris Blog',
+    tagline: '개발 지식을 아카이브하고 공유하는 기술 블로그',
     description:
-      'AI 에이전트가 직접 트랜잭션하고, 조율하고, 온체인에서 정산하는 모듈러 Layer 2 프로토콜. 자율 실행(Autonomous Execution), 컴포저블 에이전트 지갑, 검증 가능한 AI 액션을 프로토콜 레벨에서 제공합니다. 인터랙티브 랜딩 — 캔버스 네트워크 시각화, 카운트업 지표, 스크롤 로드맵을 갖춘 컨셉 프로덕트.',
-    category: 'Web3 · Layer 2 프로토콜',
+      'Next.js 16 App Router 기반 개인 기술 블로그. MDX 콘텐츠, 카테고리·태그 필터, GitHub 기반 조회수·좋아요, 목차·다크모드, GEO/SEO 최적화까지 — 개발자의 지식 아카이브이자 생산성 기록입니다.',
+    category: '기술 블로그',
     platform: 'Web',
     year: '2026',
-    status: '개발 중',
-    accent: { from: '#22D3EE', to: '#3B82F6', glow: 'rgba(34,211,238,0.35)' },
-    tech: [
-      'Next.js 16',
-      'React 19',
-      'TypeScript',
-      'Framer Motion',
-      'Canvas',
-      'Tailwind CSS'
-    ],
+    status: '운영 중',
+    tags: ['Personal', 'Frontend', 'Fullstack'],
+    accent: { from: '#0EA5E9', to: '#22D3EE', glow: 'rgba(14,165,233,0.35)' },
+    tech: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS', 'MDX', 'Vercel'],
     features: [
       {
-        icon: 'zap',
-        title: 'Autonomous Execution',
+        icon: 'book',
+        title: 'MDX 콘텐츠 렌더링',
         description:
-          '에이전트가 온체인 1급 시민으로 동작. 사람 개입 없이 멀티스텝 전략을 스케줄·트리거·실행하며, 가스는 추상화되고 실행은 프로토콜이 보장.'
+          '마크다운/MDX 기반 글 작성, 코드 하이라이트, 목차 자동 생성으로 읽기 좋은 글.'
       },
       {
-        icon: 'wallet',
-        title: 'Composable Agent Wallets',
+        icon: 'list',
+        title: '카테고리 · 태그 필터',
+        description: '카테고리 칩과 태그로 원하는 글을 빠르게 탐색하는 아카이브.'
+      },
+      {
+        icon: 'activity',
+        title: '조회수 · 좋아요 (외부 DB 없이)',
         description:
-          '에이전트를 위한 프로그래머블 스마트 계정. 범위 제한 권한, 지출 한도, 세션 키로 안전하게 트랜잭션하고 모든 NOVA 앱과 조합.'
+          'GitHub Issue를 저장소로 활용해 서버리스로 조회수·좋아요를 집계.'
       },
       {
         icon: 'shield',
-        title: 'Verifiable AI Actions',
+        title: 'GEO · SEO 최적화',
         description:
-          '모든 에이전트 결정이 증명 가능. 모델 출력·인텐트를 온체인 검증해 에이전트가 무엇을 했는지 신뢰하고 누구에게나 증명.'
-      },
-      {
-        icon: 'layers',
-        title: '모듈러 프로토콜 스택',
-        description:
-          'Agent Runtime → Intent Router → Settlement Layer → Data Availability. 인텐트에서 정산까지 이어지는 4계층 모듈러 아키텍처.'
+          'JSON-LD, sitemap, robots, llms.txt, 정제된 메타 설명으로 AI·검색 노출 강화.'
       }
     ],
-    github: 'https://github.com/toris-dev',
-    image: '/images/projects/nova-chain.png',
+    github: gh('Toris_Blog'),
+    image: '/images/projects/toris-blog.png',
     span: 'lg'
+  },
+  {
+    slug: 'ym-guide',
+    name: 'YM Guide',
+    tagline: '나에게 맞는 청년 정책·금융 혜택을 한 번에',
+    description:
+      '흩어진 청년 정책·금융·복지 혜택을 조건 기반으로 큐레이션하는 플랫폼. 나이·지역·소득·관심사를 입력하면 맞춤 정책을 추천하고 금융 교육 콘텐츠까지 제공하는, 공공서비스보다 친절한 SaaS 경험입니다.',
+    category: '정책 · 금융 큐레이션',
+    platform: 'Web',
+    year: '2026',
+    status: '개발 중',
+    tags: ['Personal', 'Frontend', 'Fullstack'],
+    accent: { from: '#3B82F6', to: '#22C55E', glow: 'rgba(59,130,246,0.35)' },
+    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase'],
+    features: [
+      {
+        icon: 'list',
+        title: '조건 기반 정책 추천',
+        description: '나이·지역·소득·관심사 조건으로 맞춤 정책을 필터링해 추천.'
+      },
+      {
+        icon: 'award',
+        title: '정책 카드 큐레이션',
+        description: '복잡한 정책을 한눈에 보는 카드 UI와 매칭도 표시.'
+      },
+      {
+        icon: 'chart',
+        title: '금융 교육 대시보드',
+        description: '청년 금융 리터러시를 높이는 학습 콘텐츠와 진행 지표.'
+      },
+      {
+        icon: 'users',
+        title: '친절한 공공 SaaS UX',
+        description:
+          '공공 서비스의 딱딱함을 걷어낸 신뢰감 있고 접근성 높은 인터페이스.'
+      }
+    ],
+    github: gh('ym_guide'),
+    image: '/images/projects/ym-guide.png',
+    span: 'md'
+  },
+  {
+    slug: 'cryptotrade-gg',
+    name: 'CryptoTrade.gg',
+    tagline: '암호화폐 트레이드 전적을 데이터로 증명',
+    description:
+      '거래소 트레이드 기록을 불러와 승률·손익(PnL)·자산 배분을 시각화하는 크립토 트레이딩 대시보드. 트레이더의 전적을 한 페이지에 정리해 데이터로 실력을 보여주는 op.gg 스타일 서비스입니다.',
+    category: 'Web3 · 데이터 대시보드',
+    platform: 'Web',
+    year: '2025',
+    status: '개발 중',
+    tags: ['Personal', 'Web3', 'Frontend', 'Fullstack'],
+    accent: { from: '#3B82F6', to: '#22D3EE', glow: 'rgba(59,130,246,0.35)' },
+    tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Recharts', 'Web3'],
+    features: [
+      {
+        icon: 'chart',
+        title: 'PnL 성과 차트',
+        description: '기간별 손익 곡선을 인터랙티브 라인 차트로 시각화.'
+      },
+      {
+        icon: 'trending',
+        title: '승률 · ROI 카드',
+        description: '승률·총 수익률·거래 횟수 등 핵심 지표를 카운트업으로 강조.'
+      },
+      {
+        icon: 'list',
+        title: '자산 배분 테이블',
+        description: '보유 토큰별 비중과 성과를 테이블로 한눈에.'
+      },
+      {
+        icon: 'activity',
+        title: '데이터 중심 대시보드',
+        description: '트레이딩 터미널처럼 날카로운 다크 UI와 데이터 밀도.'
+      }
+    ],
+    github: gh('CryptoTrade.gg'),
+    image: '/images/projects/cryptotrade.png',
+    span: 'md'
   },
   {
     slug: 'love-trip',
@@ -123,8 +205,9 @@ export const projects: Project[] = [
           '함께 쓰는 공동 여행 설계 툴. 사용자가 만든 데이트 코스를 탐색하고 나만의 코스를 공유하는 UGC 커뮤니티.'
       }
     ],
+    tags: ['Personal', 'Fullstack', 'Frontend'],
     github: gh('love-trip'),
-    image: og('love-trip'),
+    image: '/images/projects/love-trip.png',
     span: 'lg'
   },
   {
@@ -175,6 +258,7 @@ export const projects: Project[] = [
         description: 'CPU · 메모리 · 포트 모니터 내장. 한국어/English, 라이트/다크 테마.'
       }
     ],
+    tags: ['Personal', 'Fullstack'],
     github: gh('TraceDesk'),
     image: og('TraceDesk'),
     span: 'sm'
@@ -217,6 +301,7 @@ export const projects: Project[] = [
           'Firebase Functions 시크릿 기반 안전한 업로드 파이프라인. 인프라 관리 부담 최소화.'
       }
     ],
+    tags: ['Personal', 'Mobile'],
     github: gh('SnapMate'),
     image: og('SnapMate'),
     span: 'sm'
@@ -256,6 +341,7 @@ export const projects: Project[] = [
         description: '카드뉴스를 이어붙여 숏폼 비디오까지 생성하는 엔드투엔드 파이프라인.'
       }
     ],
+    tags: ['Personal', 'Fullstack'],
     github: gh('devPulse'),
     image: og('devPulse'),
     span: 'md'
@@ -291,6 +377,7 @@ export const projects: Project[] = [
         description: '하나의 코드베이스로 iOS와 Android를 동시에. 네이티브급 성능.'
       }
     ],
+    tags: ['Personal', 'Mobile'],
     github: gh('loca'),
     image: og('loca'),
     span: 'md'
@@ -337,6 +424,7 @@ export const projects: Project[] = [
           '교회 등록·그룹 생성·그룹 게시판, 멤버 간 레벨·연속일·영향력 랭킹과 그룹 통계.'
       }
     ],
+    tags: ['Personal', 'Mobile', 'Frontend'],
     github: gh('bubble-bible'),
     image: og('bubble-bible'),
     span: 'md'
@@ -376,6 +464,7 @@ export const projects: Project[] = [
         description: 'Launch → Growth → Moon, 단계 기반 성장 로드맵 시각화.'
       }
     ],
+    tags: ['Personal', 'Web3', 'Frontend'],
     github: gh('PEPEBear'),
     image: og('PEPEBear'),
     span: 'sm'
@@ -410,6 +499,7 @@ export const projects: Project[] = [
         description: '2004 플래시 게임 감성을 현대적 웹 경험으로 재해석.'
       }
     ],
+    tags: ['Personal', 'Web3', 'Frontend'],
     github: gh('YETI_SITE'),
     image: og('YETI_SITE'),
     span: 'sm'
@@ -418,12 +508,6 @@ export const projects: Project[] = [
 
 /** 벤토 그리드에는 없지만 함께 보여줄 보조 프로젝트 */
 export const moreProjects = [
-  {
-    name: 'CryptoTrade.gg',
-    description: '트레이드 전적을 한눈에 보는 크립토 대시보드',
-    tech: 'TypeScript · Next.js',
-    github: gh('CryptoTrade.gg')
-  },
   {
     name: 'volley-king-30',
     description: '30초 안에 승부를 가르는 하이퍼캐주얼 배구 게임',
