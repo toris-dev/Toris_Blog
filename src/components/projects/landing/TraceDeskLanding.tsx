@@ -30,6 +30,7 @@ import { AccentButton, CountUp, EASE, GhostButton, Reveal } from './shared';
 const CARD =
   'rounded-2xl bg-white p-6 ring-1 ring-slate-200 dark:bg-slate-900/60 dark:ring-white/10';
 const OVERLINE = 'text-xs font-semibold uppercase tracking-[0.2em] text-indigo-500';
+const RELEASES_URL = 'https://github.com/toris-dev/TraceDesk/releases';
 
 const FEED = [
   { time: '09:12', title: 'VS Code — toris-blog', meta: '47분 집중', dot: 'bg-indigo-500', dashed: false },
@@ -115,7 +116,7 @@ function Hero({ project, reduce }: { project: Project; reduce: boolean }) {
           transition={{ duration: 0.6, delay: 0.4, ease: EASE }}
           className="mt-8 flex flex-wrap items-center justify-center gap-3"
         >
-          <AccentButton href={project.github} from={project.accent.from} to={project.accent.to} glow={project.accent.glow}>
+          <AccentButton href={RELEASES_URL} from={project.accent.from} to={project.accent.to} glow={project.accent.glow}>
             <FiDownload aria-hidden />
             무료 다운로드
           </AccentButton>
@@ -502,7 +503,7 @@ function FinalCta({ project }: { project: Project }) {
           설치 1분, 설정 0분. 내일 아침 첫 회고가 달라집니다.
         </p>
         <div className="mt-8 flex justify-center">
-          <AccentButton href={project.github} from={project.accent.from} to={project.accent.to} glow={project.accent.glow}>
+          <AccentButton href={RELEASES_URL} from={project.accent.from} to={project.accent.to} glow={project.accent.glow}>
             <FiDownload aria-hidden />
             무료 다운로드
           </AccentButton>
