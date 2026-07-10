@@ -11,10 +11,8 @@ export const LANDINGS: Record<string, LandingComponent> = {
   'cryptotrade-gg': dynamic(() => import('./CryptoTradeLanding')),
   'love-trip': dynamic(() => import('./LoveTripLanding')),
   tracedesk: dynamic(() => import('./TraceDeskLanding')),
-  snapmate: dynamic(() => import('./SnapMateLanding')),
   devpulse: dynamic(() => import('./DevPulseLanding')),
   loca: dynamic(() => import('./LocaLanding')),
-  'bubble-bible': dynamic(() => import('./BubbleBibleLanding')),
   pepebear: dynamic(() => import('./PepeBearLanding')),
   yeti: dynamic(() => import('./YetiLanding'))
 };
