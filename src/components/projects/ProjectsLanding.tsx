@@ -25,6 +25,8 @@ import { cn } from '@/utils/style';
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const MARQUEE_ITEMS = [
+  'asyncraft',
+  'TorisUI',
   'Next.js',
   'React',
   'TypeScript',
@@ -84,19 +86,25 @@ function AmbientBackground() {
     >
       <motion.div
         className="absolute -left-40 -top-40 size-[34rem] rounded-full opacity-20 blur-[120px] dark:opacity-30"
-        style={{ background: 'radial-gradient(circle, #6366F1, transparent 70%)' }}
+        style={{
+          background: 'radial-gradient(circle, #6366F1, transparent 70%)'
+        }}
         animate={reduce ? undefined : { x: [0, 60, 0], y: [0, 40, 0] }}
         transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
         className="absolute -right-40 top-1/4 size-[30rem] rounded-full opacity-15 blur-[120px] dark:opacity-25"
-        style={{ background: 'radial-gradient(circle, #F43F5E, transparent 70%)' }}
+        style={{
+          background: 'radial-gradient(circle, #F43F5E, transparent 70%)'
+        }}
         animate={reduce ? undefined : { x: [0, -50, 0], y: [0, 60, 0] }}
         transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
         className="absolute bottom-0 left-1/3 size-[28rem] rounded-full opacity-10 blur-[120px] dark:opacity-20"
-        style={{ background: 'radial-gradient(circle, #22C55E, transparent 70%)' }}
+        style={{
+          background: 'radial-gradient(circle, #22C55E, transparent 70%)'
+        }}
         animate={reduce ? undefined : { x: [0, 40, 0], y: [0, -50, 0] }}
         transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }}
       />
@@ -172,8 +180,8 @@ function Hero() {
           transition={{ duration: 0.8, delay: 0.7, ease: EASE }}
           className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-400 sm:text-lg"
         >
-          기술 블로그부터 여행 플랫폼, 정책 큐레이션, Web3 트레이딩 대시보드까지 —
-          만들고 싶은 것을 직접 서비스로 만드는 풀스택 개발자의 실험실입니다.
+          오픈소스 라이브러리와 디자인 시스템부터 AI 자동화, 모바일, Web3까지 —
+          아이디어를 실제로 쓰이는 제품으로 만드는 풀스택 개발자의 실험실입니다.
         </motion.p>
 
         <motion.div
@@ -400,8 +408,8 @@ function ProjectGallery() {
             Projects
           </h2>
           <p className="mt-3 max-w-lg text-slate-600 dark:text-slate-400">
-            각 프로젝트를 클릭하면 전용 랜딩 페이지로 이동합니다. 실제 서비스처럼
-            직접 만든 제품들을 둘러보세요.
+            각 프로젝트를 클릭하면 전용 랜딩 페이지로 이동합니다. 실제
+            서비스처럼 직접 만든 제품들을 둘러보세요.
           </p>
         </div>
         <span className="text-sm tabular-nums text-slate-500">
@@ -438,7 +446,7 @@ function ProjectGallery() {
               {f}
               <span
                 className={cn(
-                  'tabular-nums text-[11px]',
+                  'text-[11px] tabular-nums',
                   selected ? 'opacity-70' : 'text-slate-400 dark:text-slate-500'
                 )}
               >

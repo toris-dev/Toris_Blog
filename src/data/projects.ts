@@ -47,6 +47,93 @@ const gh = (repo: string) => `https://github.com/toris-dev/${repo}`;
 
 export const projects: Project[] = [
   {
+    slug: 'asyncraft',
+    name: 'asyncraft',
+    tagline: '실패하는 비동기 흐름을 견고하게 만드는 제로 의존성 툴킷',
+    description:
+      'retry, timeout, circuit breaker, 동시성 제한, async map, single-flight memoize를 하나의 작고 조합 가능한 패키지로 제공하는 TypeScript 라이브러리. 모든 대기가 AbortSignal을 지원하며 ESM·CJS와 완전한 타입 추론을 함께 제공합니다.',
+    category: 'Developer Tool · npm',
+    platform: 'Library (Node.js ≥ 18)',
+    year: '2026',
+    status: '운영 중',
+    tags: ['Personal', 'Fullstack'],
+    accent: { from: '#22D3EE', to: '#8B5CF6', glow: 'rgba(34,211,238,0.35)' },
+    tech: ['TypeScript', 'Node.js', 'Vitest', 'tsup', 'fast-check'],
+    features: [
+      {
+        icon: 'zap',
+        title: '10개의 비동기 프리미티브',
+        description:
+          'retry·timeout·circuit breaker·concurrency limit부터 memoize·debounce까지 한 패키지에서 조합.'
+      },
+      {
+        icon: 'shield',
+        title: 'AbortSignal everywhere',
+        description:
+          '대기, 재시도, 큐에 들어간 작업까지 취소 가능. 타이머와 이벤트 리스너 누수를 테스트로 방지.'
+      },
+      {
+        icon: 'layers',
+        title: 'Zero dependency · Tree-shakeable',
+        description:
+          '런타임 의존성 없이 필요한 함수만 번들에 포함. ESM·CJS·타입 선언을 동시에 배포.'
+      },
+      {
+        icon: 'cpu',
+        title: 'AI-friendly API',
+        description:
+          '전체 TSDoc과 llms.txt로 개발자와 코딩 에이전트가 올바른 프리미티브를 빠르게 선택.'
+      }
+    ],
+    github: gh('asyncraft'),
+    image: og('asyncraft'),
+    span: 'lg'
+  },
+  {
+    slug: 'torisui-kit',
+    name: 'TorisUI Kit',
+    tagline:
+      'Fluid, accessible, dark-first — 제품을 빠르게 만드는 React UI 시스템',
+    description:
+      '@toris-dev/ui로 배포되는 모던 React 컴포넌트 라이브러리. Soft-glass 비주얼, 유연한 디자인 토큰, 키보드 접근성, reduced-motion 대응과 30개 이상의 프로덕션 컴포넌트를 모노레포·문서 플레이그라운드·자동 릴리스 파이프라인으로 관리합니다.',
+    category: 'Design System · npm',
+    platform: 'React Library · Web',
+    year: '2026',
+    status: '운영 중',
+    tags: ['Personal', 'Frontend'],
+    accent: { from: '#A855F7', to: '#EC4899', glow: 'rgba(168,85,247,0.38)' },
+    tech: ['React', 'TypeScript', 'CSS', 'Vitest', 'pnpm'],
+    features: [
+      {
+        icon: 'layers',
+        title: '30+ 프로덕션 컴포넌트',
+        description:
+          'Button·Dialog·Tabs·Toast·Data display까지 실제 제품에 필요한 인터랙션을 일관된 API로 제공.'
+      },
+      {
+        icon: 'award',
+        title: '접근성 기본값',
+        description:
+          'WAI-ARIA 패턴, roving focus, focus trap, 키보드·터치 조작과 reduced-motion을 기본 지원.'
+      },
+      {
+        icon: 'activity',
+        title: 'Fluid soft-glass motion',
+        description:
+          '다크 퍼스트 글래스 표면과 토큰 기반 테마, 부담 없이 반응하는 마이크로 인터랙션.'
+      },
+      {
+        icon: 'check',
+        title: '검증된 릴리스 하네스',
+        description:
+          'lint·typecheck·test·build 품질 게이트와 Changesets·Trusted Publishing으로 안전하게 배포.'
+      }
+    ],
+    github: gh('torisui-kit'),
+    image: og('torisui-kit'),
+    span: 'md'
+  },
+  {
     slug: 'toris-blog',
     name: 'Toris Blog',
     tagline: '개발 지식을 아카이브하고 공유하는 기술 블로그',
@@ -58,7 +145,14 @@ export const projects: Project[] = [
     status: '운영 중',
     tags: ['Personal', 'Frontend', 'Fullstack'],
     accent: { from: '#0EA5E9', to: '#22D3EE', glow: 'rgba(14,165,233,0.35)' },
-    tech: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS', 'MDX', 'Vercel'],
+    tech: [
+      'Next.js 16',
+      'React 19',
+      'TypeScript',
+      'Tailwind CSS',
+      'MDX',
+      'Vercel'
+    ],
     features: [
       {
         icon: 'book',
@@ -69,7 +163,8 @@ export const projects: Project[] = [
       {
         icon: 'list',
         title: '카테고리 · 태그 필터',
-        description: '카테고리 칩과 태그로 원하는 글을 빠르게 탐색하는 아카이브.'
+        description:
+          '카테고리 칩과 태그로 원하는 글을 빠르게 탐색하는 아카이브.'
       },
       {
         icon: 'activity',
@@ -150,7 +245,8 @@ export const projects: Project[] = [
       {
         icon: 'trending',
         title: '승률 · ROI 카드',
-        description: '승률·총 수익률·거래 횟수 등 핵심 지표를 카운트업으로 강조.'
+        description:
+          '승률·총 수익률·거래 횟수 등 핵심 지표를 카운트업으로 강조.'
       },
       {
         icon: 'list',
@@ -178,7 +274,14 @@ export const projects: Project[] = [
     year: '2026',
     status: '개발 중',
     accent: { from: '#F43F5E', to: '#FB7185', glow: 'rgba(244,63,94,0.35)' },
-    tech: ['Next.js 16', 'React 19', 'TypeScript', 'Supabase', 'Naver Maps', 'Tour API'],
+    tech: [
+      'Next.js 16',
+      'React 19',
+      'TypeScript',
+      'Supabase',
+      'Naver Maps',
+      'Tour API'
+    ],
     features: [
       {
         icon: 'map',
@@ -256,7 +359,8 @@ export const projects: Project[] = [
       {
         icon: 'monitor',
         title: '시스템 모니터',
-        description: 'CPU · 메모리 · 포트 모니터 내장. 한국어/English, 라이트/다크 테마.'
+        description:
+          'CPU · 메모리 · 포트 모니터 내장. 한국어/English, 라이트/다크 테마.'
       }
     ],
     tags: ['Personal', 'Fullstack'],
@@ -280,7 +384,8 @@ export const projects: Project[] = [
       {
         icon: 'globe',
         title: '개발 뉴스 크롤링',
-        description: '주요 개발 뉴스 소스를 주기적으로 수집하는 크롤러 파이프라인.'
+        description:
+          '주요 개발 뉴스 소스를 주기적으로 수집하는 크롤러 파이프라인.'
       },
       {
         icon: 'cpu',
@@ -296,7 +401,8 @@ export const projects: Project[] = [
       {
         icon: 'video',
         title: '비디오 렌더링',
-        description: '카드뉴스를 이어붙여 숏폼 비디오까지 생성하는 엔드투엔드 파이프라인.'
+        description:
+          '카드뉴스를 이어붙여 숏폼 비디오까지 생성하는 엔드투엔드 파이프라인.'
       }
     ],
     tags: ['Personal', 'Fullstack'],
@@ -332,7 +438,8 @@ export const projects: Project[] = [
       {
         icon: 'smartphone',
         title: 'Flutter 크로스플랫폼',
-        description: '하나의 코드베이스로 iOS와 Android를 동시에. 네이티브급 성능.'
+        description:
+          '하나의 코드베이스로 iOS와 Android를 동시에. 네이티브급 성능.'
       }
     ],
     tags: ['Personal', 'Mobile'],
@@ -362,7 +469,8 @@ export const projects: Project[] = [
       {
         icon: 'gamepad',
         title: '게임화 경험',
-        description: '참여로 포인트를 얻고 업적을 해금하고 레벨업하는 홀더 경험.'
+        description:
+          '참여로 포인트를 얻고 업적을 해금하고 레벨업하는 홀더 경험.'
       },
       {
         icon: 'trending',
@@ -397,7 +505,8 @@ export const projects: Project[] = [
       {
         icon: 'rocket',
         title: '토큰 런칭 사이트',
-        description: 'Pump.fun 런칭과 함께한 공식 웹사이트. 홀더 온보딩의 시작점.'
+        description:
+          'Pump.fun 런칭과 함께한 공식 웹사이트. 홀더 온보딩의 시작점.'
       },
       {
         icon: 'list',
