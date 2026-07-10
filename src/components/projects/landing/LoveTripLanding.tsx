@@ -12,6 +12,7 @@ import {
   type MotionValue
 } from 'framer-motion';
 import type { Project } from '@/data/projects';
+import WaitlistForm from '@/components/projects/WaitlistForm';
 import { BrowserFrame } from './DeviceFrames';
 import { AccentButton, CountUp, EASE, GhostButton, Reveal } from './shared';
 
@@ -774,21 +775,7 @@ function FinalCta({ project }: { project: Project }) {
           출시 소식을 가장 먼저 받아보세요. 사전 등록자에게 프리미엄 코스를
           먼저 열어드립니다.
         </p>
-        <div className="mx-auto mt-8 flex w-full max-w-md flex-col gap-3 sm:flex-row">
-          <input
-            type="email"
-            placeholder="이메일 주소"
-            aria-label="이메일 주소"
-            className="h-12 flex-1 rounded-full border border-slate-900/15 bg-white px-5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-rose-500 dark:border-white/15 dark:bg-white/5 dark:text-white"
-          />
-          <AccentButton
-            from={project.accent.from}
-            to={project.accent.to}
-            glow={project.accent.glow}
-          >
-            사전 등록
-          </AccentButton>
-        </div>
+        <WaitlistForm project={project} className="mt-8" />
       </motion.div>
     </section>
   );

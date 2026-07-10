@@ -11,6 +11,7 @@ import {
   useTransform
 } from 'framer-motion';
 import type { Project } from '@/data/projects';
+import WaitlistForm from '@/components/projects/WaitlistForm';
 import { PhoneFrame } from './DeviceFrames';
 import { AccentButton, CountUp, EASE, GhostButton, Reveal } from './shared';
 
@@ -721,14 +722,8 @@ function FinalCta({ project }: { project: Project }) {
         <p className="mt-4 text-slate-600 dark:text-slate-400">
           출시와 동시에 당신의 역이 열립니다. 가장 먼저 입장해 보세요.
         </p>
-        <div className="mt-8 flex flex-col items-center gap-3">
-          <AccentButton
-            from={project.accent.from}
-            to={project.accent.to}
-            glow={project.accent.glow}
-          >
-            사전 등록하기
-          </AccentButton>
+        <div className="mt-8 flex w-full flex-col items-center gap-3">
+          <WaitlistForm project={project} ctaLabel="사전 등록하기" />
           <p className="text-xs text-slate-500 dark:text-slate-400">
             iOS · Android · Flutter 크로스플랫폼
           </p>
