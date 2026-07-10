@@ -756,7 +756,7 @@ function LandingFooter({ project }: { project: Project }) {
             rel="noopener noreferrer"
             className="transition-colors hover:text-slate-900 dark:hover:text-white"
           >
-            GitHub
+            라이브 사이트 ↗
           </a>
           <Link
             href="/projects"

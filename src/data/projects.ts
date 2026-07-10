@@ -206,7 +206,8 @@ export const projects: Project[] = [
       }
     ],
     tags: ['Personal', 'Fullstack', 'Frontend'],
-    github: gh('love-trip'),
+    // 저장소는 비공개 → 방문자용 링크는 라이브 서비스로 연결
+    github: 'https://love2trip.vercel.app',
     image: '/images/projects/love-trip.png',
     span: 'lg'
   },
@@ -261,49 +262,6 @@ export const projects: Project[] = [
     tags: ['Personal', 'Fullstack'],
     github: gh('TraceDesk'),
     image: og('TraceDesk'),
-    span: 'sm'
-  },
-  {
-    slug: 'snapmate',
-    name: 'SnapMate',
-    tagline: '찍는 순간, 함께 보는 실시간 공유 갤러리',
-    description:
-      '커플, 가족, 친구, 소규모 그룹이 앱 내 카메라로 촬영한 순간을 즉시 공유하고 함께 추억을 쌓는 실시간 공유 갤러리 서비스. Cloudflare R2 기반의 가벼운 미디어 파이프라인으로 빠르게 업로드하고 즉시 확인합니다.',
-    category: '소셜 · 사진',
-    platform: 'Mobile (iOS · Android)',
-    year: '2026',
-    status: '개발 중',
-    accent: { from: '#F59E0B', to: '#FB923C', glow: 'rgba(245,158,11,0.35)' },
-    tech: ['React Native', 'Expo', 'Firebase Functions', 'Cloudflare R2', 'TypeScript'],
-    features: [
-      {
-        icon: 'camera',
-        title: '인앱 카메라 즉시 공유',
-        description:
-          '앱 안에서 찍으면 그룹 갤러리에 바로. 찍고 보내는 과정이 하나의 흐름으로.'
-      },
-      {
-        icon: 'users',
-        title: '그룹 실시간 갤러리',
-        description:
-          '커플·가족·친구 그룹별 갤러리에서 서로의 순간을 실시간으로 함께 감상.'
-      },
-      {
-        icon: 'zap',
-        title: 'R2 미디어 스토리지',
-        description:
-          'Cloudflare R2 + UUID 경로 설계로 빠르고 경제적인 미디어 저장. signed URL 강화 로드맵.'
-      },
-      {
-        icon: 'cloud',
-        title: '서버리스 백엔드',
-        description:
-          'Firebase Functions 시크릿 기반 안전한 업로드 파이프라인. 인프라 관리 부담 최소화.'
-      }
-    ],
-    tags: ['Personal', 'Mobile'],
-    github: gh('SnapMate'),
-    image: og('SnapMate'),
     span: 'sm'
   },
   {
@@ -378,55 +336,9 @@ export const projects: Project[] = [
       }
     ],
     tags: ['Personal', 'Mobile'],
-    github: gh('loca'),
+    // 저장소는 비공개 → 방문자용 링크는 라이브 서비스로 연결
+    github: 'https://loca.vercel.app',
     image: og('loca'),
-    span: 'md'
-  },
-  {
-    slug: 'bubble-bible',
-    name: 'Bubble Bible',
-    tagline: '읽고, 나누고, 함께 자라는 성경 앱',
-    description:
-      '성경 읽기 습관과 교회·그룹 단위의 교제를 하나의 흐름으로 제공하는 React Native 앱. 개역한글 본문, 포인트·레벨 시스템, 커뮤니티, 읽기 계획, 그룹 랭킹까지 — 말씀과 함께하는 일상을 만듭니다.',
-    category: '종교 · 커뮤니티',
-    platform: 'Mobile (iOS · Android)',
-    year: '2026',
-    status: '개발 중',
-    accent: { from: '#D97706', to: '#FBBF24', glow: 'rgba(217,119,6,0.35)' },
-    tech: ['React Native', 'Expo', 'TypeScript'],
-    features: [
-      {
-        icon: 'book',
-        title: '성경 본문 리더',
-        description:
-          '개역한글 성경, 폰트 크기·종류·색상 조절, 구절 하이라이트와 북마크.'
-      },
-      {
-        icon: 'award',
-        title: '포인트 & 레벨 시스템',
-        description:
-          '읽기 +200, 좋아요 +100, 댓글 +300. Believer에서 Saint(Lv.99)까지 성장하는 재미.'
-      },
-      {
-        icon: 'message',
-        title: '커뮤니티',
-        description: 'QT 나눔, 찬양 추천, 성경 질문 게시판과 레벨 뱃지 프로필.'
-      },
-      {
-        icon: 'check',
-        title: '읽기 계획 체크리스트',
-        description: '성경 읽기 계획을 등록하고 체크하며 달성 포인트 획득.'
-      },
-      {
-        icon: 'users',
-        title: '교회 그룹 & 랭킹',
-        description:
-          '교회 등록·그룹 생성·그룹 게시판, 멤버 간 레벨·연속일·영향력 랭킹과 그룹 통계.'
-      }
-    ],
-    tags: ['Personal', 'Mobile', 'Frontend'],
-    github: gh('bubble-bible'),
-    image: og('bubble-bible'),
     span: 'md'
   },
   {
@@ -506,21 +418,13 @@ export const projects: Project[] = [
   }
 ];
 
-/** 벤토 그리드에는 없지만 함께 보여줄 보조 프로젝트 */
-export const moreProjects = [
-  {
-    name: 'volley-king-30',
-    description: '30초 안에 승부를 가르는 하이퍼캐주얼 배구 게임',
-    tech: 'Game',
-    github: gh('volley-king-30')
-  },
-  {
-    name: 'toris-docs',
-    description: '나만의 제 2의 뇌 — 지식 베이스 & 문서 시스템',
-    tech: 'Python',
-    github: gh('toris-docs')
-  }
-];
+/** 벤토 그리드에는 없지만 함께 보여줄 보조 프로젝트 (공개 접근 가능한 것만) */
+export const moreProjects: Array<{
+  name: string;
+  description: string;
+  tech: string;
+  github: string;
+}> = [];
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
