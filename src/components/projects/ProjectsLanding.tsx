@@ -25,6 +25,7 @@ import { cn } from '@/utils/style';
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const MARQUEE_ITEMS = [
+  '밈캐치',
   'asyncraft',
   'TorisUI',
   'Next.js',
