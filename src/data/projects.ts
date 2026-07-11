@@ -47,6 +47,172 @@ const gh = (repo: string) => `https://github.com/toris-dev/${repo}`;
 
 export const projects: Project[] = [
   {
+    slug: 'memecatch',
+    name: '밈캐치',
+    tagline: '그 밈, 3초 안에 — 한국 밈 트렌드 사전',
+    description:
+      '유행하는 밈·유행어·챌린지의 뜻과 유래, 그리고 "지금 써도 되는지"까지 알려주는 한국 밈 트렌드 사전. 사용 안전 신호등과 밈 생명 게이지로 1,733개 밈을 큐레이션하고, 초성 검색·상황별 사용 가이드·제보 검수 시스템을 갖춘 PWA 서비스입니다.',
+    category: '트렌드 사전 · 커뮤니티',
+    platform: 'Web · PWA',
+    year: '2026',
+    status: '운영 중',
+    tags: ['Personal', 'Frontend', 'Fullstack'],
+    accent: { from: '#F97316', to: '#FBBF24', glow: 'rgba(249,115,22,0.35)' },
+    tech: [
+      'Next.js 16',
+      'React 19',
+      'TypeScript',
+      'Tailwind CSS v4',
+      'Supabase',
+      'Serwist PWA'
+    ],
+    features: [
+      {
+        icon: 'shield',
+        title: '사용 안전 신호등',
+        description:
+          '"지금 써도 되는가"를 색+아이콘+텍스트로. 써도 됨/맥락 주의/이미 늦음/쓰면 위험, 직장·친구·자녀·SNS 상황별 가이드까지.'
+      },
+      {
+        icon: 'activity',
+        title: '밈 생명 게이지',
+        description:
+          '급상승 → 유행 → 식는 중 → 추억. 밈의 생애주기를 불꽃 미터로 시각화하고 트렌드 점수를 pg_cron 일배치로 갱신.'
+      },
+      {
+        icon: 'zap',
+        title: '초성·유사어 검색',
+        description:
+          'Postgres pg_trgm + 초성 generated column으로 한국어 검색 구현. "ㅇㅍㅌ"만 쳐도 영포티가 나온다.'
+      },
+      {
+        icon: 'users',
+        title: '제보·검수 커뮤니티',
+        description:
+          '실시간 중복 검사로 새 밈 제보, RLS 기본 deny + security definer RPC로 안전한 반응·댓글·신고.'
+      }
+    ],
+    github: 'https://catchmeme.com',
+    image: og('memeCatch'),
+    span: 'lg'
+  },
+  {
+    slug: 'coursepick',
+    name: '코스픽',
+    tagline: '오늘 걷기 좋은 길을 골라드립니다',
+    description:
+      '내 상황(누구와, 목적, 시간, 조건)에 맞는 산책·러닝·등산 코스를 추천하는 한국형 코스 큐레이션 앱. 지도가 아니라 "실패 없는 코스 선택"이 핵심 — 강아지 데려가도 되는지, 유모차가 되는지, 밤에 안전한지에 답합니다.',
+    category: '아웃도어 · 큐레이션',
+    platform: 'Mobile (Android 우선)',
+    year: '2026',
+    status: '개발 중',
+    tags: ['Personal', 'Mobile'],
+    accent: { from: '#22C55E', to: '#4ADE80', glow: 'rgba(34,197,94,0.35)' },
+    tech: ['Flutter', 'Dart', 'Kakao Map', 'Supabase', 'AdMob'],
+    features: [
+      {
+        icon: 'pin',
+        title: '상황별 코스 추천',
+        description:
+          '"오늘 어디 걷지?" 상황 버튼 6개 — 누구와, 무슨 목적으로, 얼마나 걸을지로 코스를 좁혀준다.'
+      },
+      {
+        icon: 'check',
+        title: '실패 방지 정보 중심',
+        description:
+          '반려견 동반, 유모차 통행, 야간 안전, 화장실 위치 — 걷기 전에 알아야 할 조건을 상세 화면 최상단에.'
+      },
+      {
+        icon: 'map',
+        title: '카카오맵 폴리라인',
+        description: '코스 경로를 지도 위 폴리라인으로 시각화하고 저장.'
+      }
+    ],
+    github: gh('coursepick'),
+    image: og('coursepick'),
+    span: 'md'
+  },
+  {
+    slug: 'instagram-pipeline',
+    name: 'Instagram Pipeline',
+    tagline: 'AI 릴리즈 뉴스를 카드뉴스로 — 수집·요약·게시 자동화',
+    description:
+      'Claude·Codex·Grok·Gemini 4개 벤더의 릴리즈 뉴스를 자동 수집·요약해 인스타그램 카드뉴스(캐러셀)로 렌더링하고 승인 모드를 거쳐 게시하는 로컬 파이프라인. LLM 큐레이션은 claude CLI 구독 로그인으로 API 키 없이 동작합니다.',
+    category: 'AI 자동화 · 파이프라인',
+    platform: 'CLI · Automation',
+    year: '2026',
+    status: '운영 중',
+    tags: ['Personal', 'Fullstack'],
+    accent: { from: '#E1306C', to: '#F77737', glow: 'rgba(225,48,108,0.35)' },
+    tech: ['Python', 'uv', 'Playwright', 'Claude CLI', 'Cloudflare R2', 'Meta API'],
+    features: [
+      {
+        icon: 'globe',
+        title: '멀티소스 수집',
+        description:
+          'RSS·markdown-poll·browser-scrape 3전략으로 4개 AI 벤더의 릴리즈 소식을 수집, 소스 열화(stale) 경보까지.'
+      },
+      {
+        icon: 'cpu',
+        title: 'LLM 중요도 큐레이션',
+        description:
+          'claude CLI로 항목별 요약과 중요도 스코어(0~100) 산출 — 임계값 미만은 기록만 하고 건너뛴다.'
+      },
+      {
+        icon: 'layers',
+        title: '카드뉴스 렌더링',
+        description:
+          'Playwright로 캐러셀 카드 JPEG 렌더 + 미리보기 갤러리. 모든 카드에 "비공식 요약" 마커 표기.'
+      },
+      {
+        icon: 'shield',
+        title: '승인 모드 기본',
+        description:
+          'review 모드가 기본, 게시는 명시적 opt-in. 토큰은 .env가 아닌 SQLite credentials 테이블에 저장.'
+      }
+    ],
+    github: gh('instagram_pipeline'),
+    image: og('instagram_pipeline'),
+    span: 'md'
+  },
+  {
+    slug: 'golmok-survivor',
+    name: '골목길 생존기',
+    tagline: '서울 골목, 한 칸만 더 — 한국형 무한 횡단 게임',
+    description:
+      '한국의 도로·골목·지하철·시장·한강을 한 칸씩 건너며 기록을 갱신하는 원터치 하이퍼캐주얼 게임. Crossy Road류의 검증된 손맛에 한국 도시 생활 풍경을 입혔습니다. Flutter + Flame 엔진, 3-레이어 디자인 토큰 시스템으로 제작 중.',
+    category: '게임 · 하이퍼캐주얼',
+    platform: 'Mobile (Android → iOS)',
+    year: '2026',
+    status: '개발 중',
+    tags: ['Personal', 'Mobile'],
+    accent: { from: '#16C172', to: '#FF7A1A', glow: 'rgba(22,193,114,0.35)' },
+    tech: ['Flutter', 'Flame', 'Dart', 'AdMob'],
+    features: [
+      {
+        icon: 'gamepad',
+        title: '원터치 횡단 손맛',
+        description:
+          '탭/스와이프만으로 전진·좌우·후진. 조작 즉시 반응, 억울하지 않은 죽음이 MVP 4대 목표.'
+      },
+      {
+        icon: 'map',
+        title: '한국 도시 테마',
+        description:
+          '골목·지하철·시장·한강 — 매일 지나치는 서울 풍경을 레인으로. 건너가 그린 × 택시 오렌지 브랜드.'
+      },
+      {
+        icon: 'layers',
+        title: '토큰 기반 디자인 시스템',
+        description:
+          'primitive→semantic→component 3-레이어 토큰을 Flutter ThemeData로 브릿지해 브랜드 일관성 유지.'
+      }
+    ],
+    github: gh('hwanseung-jiok'),
+    image: og('hwanseung-jiok'),
+    span: 'md'
+  },
+  {
     slug: 'asyncraft',
     name: 'asyncraft',
     tagline: '실패하는 비동기 흐름을 견고하게 만드는 제로 의존성 툴킷',
