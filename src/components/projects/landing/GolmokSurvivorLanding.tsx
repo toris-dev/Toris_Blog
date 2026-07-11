@@ -383,7 +383,7 @@ function Hero({ project }: { project: Project }) {
               to={project.accent.to}
               glow={project.accent.glow}
             >
-              GitHub 보기
+              GitHub 프로필
             </AccentButton>
             <GhostButton href="#golmok-gameplay">게임플레이 보기</GhostButton>
           </div>
@@ -724,8 +724,8 @@ function FinalCta({ project }: { project: Project }) {
           입니다
         </h2>
         <p className="mt-4 text-slate-600 dark:text-slate-400">
-          개발 과정은 GitHub에서 전부 공개됩니다. 한 칸씩 쌓이는 커밋을
-          지켜봐 주세요.
+          한 칸씩 완성되어 가는 중입니다. 출시 소식은 GitHub 프로필에서
+          만나보세요.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <AccentButton
@@ -734,7 +734,7 @@ function FinalCta({ project }: { project: Project }) {
             to={project.accent.to}
             glow={project.accent.glow}
           >
-            GitHub 보기
+            GitHub 프로필
           </AccentButton>
           <Link
             href="/projects"
@@ -766,7 +766,7 @@ function LandingFooter({ project }: { project: Project }) {
             rel="noopener noreferrer"
             className="transition-colors hover:text-slate-900 dark:hover:text-white"
           >
-            GitHub ↗
+            GitHub 프로필 ↗
           </a>
           <Link
             href="/projects"

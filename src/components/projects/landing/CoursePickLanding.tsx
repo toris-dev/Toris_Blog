@@ -294,7 +294,7 @@ function Hero({ project }: { project: Project }) {
               to={project.accent.to}
               glow={project.accent.glow}
             >
-              GitHub 보기
+              GitHub 프로필
             </AccentButton>
             <GhostButton href="#coursepick-flow">추천 흐름 보기</GhostButton>
           </div>
@@ -751,7 +751,7 @@ function FinalCta({ project }: { project: Project }) {
           </span>
         </h2>
         <p className="mt-4 text-slate-600 dark:text-slate-400">
-          개발 여정과 설계 문서는 GitHub에서 공개하고 있습니다.
+          출시를 향해 답사하며 만드는 중입니다. 개발 소식은 GitHub 프로필에서 만나보세요.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <AccentButton
@@ -760,7 +760,7 @@ function FinalCta({ project }: { project: Project }) {
             to={project.accent.to}
             glow={project.accent.glow}
           >
-            GitHub 보기
+            GitHub 프로필
           </AccentButton>
           <Link
             href="/projects"
@@ -792,7 +792,7 @@ function LandingFooter({ project }: { project: Project }) {
             rel="noopener noreferrer"
             className="transition-colors hover:text-slate-900 dark:hover:text-white"
           >
-            GitHub ↗
+            GitHub 프로필 ↗
           </a>
           <Link
             href="/projects"
