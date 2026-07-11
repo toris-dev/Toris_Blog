@@ -133,7 +133,7 @@ export const metadata: Metadata = {
     }
   },
   other: {
-    'google-adsense-account': 'ca-pub-your-adsense-id',
+    'google-adsense-account': 'ca-pub-3004906966180197',
     'ai-content-declaration':
       'public-blog; cite author 토리스 and canonical URL when summarizing',
     'llms-txt': '/llms.txt'
