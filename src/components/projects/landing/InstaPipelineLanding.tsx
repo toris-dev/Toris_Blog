@@ -249,7 +249,7 @@ function Hero({ project }: { project: Project }) {
               to={project.accent.to}
               glow={project.accent.glow}
             >
-              GitHub 보기
+              GitHub 프로필
             </AccentButton>
             <GhostButton href="#pipeline-flow">파이프라인 보기</GhostButton>
           </div>
@@ -628,8 +628,8 @@ function FinalCta({ project }: { project: Project }) {
           이 정리합니다
         </h2>
         <p className="mt-4 text-slate-600 dark:text-slate-400">
-          코드 전체가 공개되어 있습니다. 클론해서 나만의 뉴스 채널을
-          자동화해 보세요.
+          수집부터 게시까지, 승인 한 번이면 끝. 다른 프로젝트는 GitHub
+          프로필에서 볼 수 있습니다.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <AccentButton
@@ -638,7 +638,7 @@ function FinalCta({ project }: { project: Project }) {
             to={project.accent.to}
             glow={project.accent.glow}
           >
-            GitHub 보기
+            GitHub 프로필
           </AccentButton>
           <Link
             href="/projects"
@@ -670,7 +670,7 @@ function LandingFooter({ project }: { project: Project }) {
             rel="noopener noreferrer"
             className="transition-colors hover:text-slate-900 dark:hover:text-white"
           >
-            GitHub ↗
+            GitHub 프로필 ↗
           </a>
           <Link
             href="/projects"

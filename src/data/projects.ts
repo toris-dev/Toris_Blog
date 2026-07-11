@@ -128,7 +128,8 @@ export const projects: Project[] = [
         description: '코스 경로를 지도 위 폴리라인으로 시각화하고 저장.'
       }
     ],
-    github: gh('coursepick'),
+    // 저장소 비공개 → 방문자용 링크는 GitHub 프로필로
+    github: 'https://github.com/toris-dev',
     image: og('coursepick'),
     span: 'md'
   },
@@ -171,7 +172,8 @@ export const projects: Project[] = [
           'review 모드가 기본, 게시는 명시적 opt-in. 토큰은 .env가 아닌 SQLite credentials 테이블에 저장.'
       }
     ],
-    github: gh('instagram_pipeline'),
+    // 저장소 비공개 → 방문자용 링크는 GitHub 프로필로
+    github: 'https://github.com/toris-dev',
     image: og('instagram_pipeline'),
     span: 'md'
   },
@@ -208,7 +210,8 @@ export const projects: Project[] = [
           'primitive→semantic→component 3-레이어 토큰을 Flutter ThemeData로 브릿지해 브랜드 일관성 유지.'
       }
     ],
-    github: gh('hwanseung-jiok'),
+    // 저장소 비공개 → 방문자용 링크는 GitHub 프로필로
+    github: 'https://github.com/toris-dev',
     image: og('hwanseung-jiok'),
     span: 'md'
   },
