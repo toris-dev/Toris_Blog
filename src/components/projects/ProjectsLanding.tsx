@@ -13,6 +13,9 @@ import {
 import { FiArrowRight } from '@react-icons/all-files/fi/FiArrowRight';
 import { FiArrowUpRight } from '@react-icons/all-files/fi/FiArrowUpRight';
 import { FiGithub } from '@react-icons/all-files/fi/FiGithub';
+import { FiHeart } from '@react-icons/all-files/fi/FiHeart';
+import RepositoryAtlas from '@/components/projects/RepositoryAtlas';
+import { githubRepositories } from '@/data/githubRepositories';
 import {
   moreProjects,
   projects,
@@ -25,6 +28,7 @@ import { cn } from '@/utils/style';
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const MARQUEE_ITEMS = [
+  '한붓길 정원',
   '밈캐치',
   'asyncraft',
   'TorisUI',
@@ -196,7 +200,7 @@ function Hero() {
               value: `${projects.length + moreProjects.length}+`,
               label: '프로젝트'
             },
-            { value: '4', label: '플랫폼 (Web · Desktop · Mobile · CLI)' },
+            { value: String(githubRepositories.length), label: '공개 저장소' },
             { value: '5', label: '주력 언어' }
           ].map((stat) => (
             <div key={stat.label} className="text-center">
@@ -267,6 +271,7 @@ const ProjectCard = forwardRef<
   HTMLDivElement,
   { project: Project; index: number }
 >(function ProjectCard({ project, index }, ref) {
+  const [imageFailed, setImageFailed] = useState(false);
   return (
     <motion.div
       ref={ref}
@@ -297,13 +302,45 @@ const ProjectCard = forwardRef<
         />
 
         <div className="relative aspect-[16/9] w-full overflow-hidden">
-          <Image
-            src={project.image}
-            alt={`${project.name} 서비스 화면 목업`}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-          />
+          {imageFailed ? (
+            <div
+              className="absolute inset-0 flex items-center justify-center overflow-hidden"
+              style={{
+                background: `linear-gradient(145deg, ${project.accent.from}22, ${project.accent.to}55), #0b1020`
+              }}
+              role="img"
+              aria-label={`${project.name} 브랜드 그래픽`}
+            >
+              <div
+                aria-hidden
+                className="absolute size-44 rounded-full border border-white/15"
+              >
+                <motion.span
+                  className="absolute left-1/2 top-0 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                  style={{ backgroundColor: project.accent.to }}
+                  animate={{ rotate: 360 }}
+                  transition={{
+                    duration: 12,
+                    repeat: Infinity,
+                    ease: 'linear'
+                  }}
+                />
+              </div>
+              <span className="relative max-w-[80%] break-words text-center font-mono text-xl font-bold tracking-tight text-white/90">
+                {project.name}
+              </span>
+            </div>
+          ) : (
+            <Image
+              src={project.image}
+              alt={`${project.name} 서비스 화면 목업`}
+              fill
+              loading={index === 0 ? 'eager' : 'lazy'}
+              onError={() => setImageFailed(true)}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+            />
+          )}
           <div
             aria-hidden
             className="absolute inset-0"
@@ -576,6 +613,72 @@ function BottomCta() {
   );
 }
 
+/* --------------------------------- Support -------------------------------- */
+
+function SupportSection() {
+  const reduce = useReducedMotion();
+  return (
+    <section className="relative overflow-hidden px-4 py-24 sm:py-32">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        {[12, 28, 47, 68, 84].map((left, index) => (
+          <motion.span
+            key={left}
+            className="absolute bottom-8 size-1.5 rounded-full bg-amber-300 shadow-[0_0_18px_rgba(252,211,77,0.9)]"
+            style={{ left: `${left}%` }}
+            animate={
+              reduce
+                ? undefined
+                : {
+                    y: [0, -110, -210],
+                    x: [0, index % 2 ? 20 : -18, 0],
+                    opacity: [0, 1, 0]
+                  }
+            }
+            transition={{
+              duration: 4.5 + index * 0.4,
+              delay: index * 0.6,
+              repeat: Infinity,
+              ease: 'easeOut'
+            }}
+          />
+        ))}
+      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.75, ease: EASE }}
+        className="relative mx-auto grid max-w-5xl overflow-hidden rounded-[2.5rem] border border-amber-300/20 bg-[#17130d] px-6 py-12 text-white shadow-[0_24px_90px_rgba(120,85,20,0.18)] sm:px-12 sm:py-16 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-12"
+      >
+        <div
+          aria-hidden
+          className="absolute -right-24 -top-24 size-72 rounded-full bg-amber-300/10 blur-[80px]"
+        />
+        <div className="relative">
+          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-amber-200/70">
+            <FiHeart aria-hidden /> Keep the experiments alive
+          </div>
+          <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-5xl">
+            다음 실험의 작은 요정이 되어주세요.
+          </h2>
+          <p className="mt-5 max-w-2xl leading-7 text-amber-50/60">
+            후원은 도메인, 테스트 기기와 오픈소스 유지 비용에 사용됩니다. 작업을
+            유용하게 보셨다면 커피 한 잔으로 다음 프로젝트를 이어갈 수 있습니다.
+          </p>
+        </div>
+        <a
+          href="https://fairy.hada.io/@toris-dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative mt-8 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-amber-300 px-7 text-sm font-bold text-[#211708] shadow-[0_12px_40px_rgba(252,211,77,0.22)] transition hover:-translate-y-0.5 hover:bg-amber-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 lg:mt-0"
+        >
+          <FiHeart aria-hidden /> 후원으로 응원하기
+        </a>
+      </motion.div>
+    </section>
+  );
+}
+
 /* --------------------------------- Export ---------------------------------- */
 
 export default function ProjectsLanding() {
@@ -585,6 +688,8 @@ export default function ProjectsLanding() {
       <TechMarquee />
       <ProjectGallery />
       <MoreProjects />
+      <RepositoryAtlas />
+      <SupportSection />
       <BottomCta />
     </div>
   );

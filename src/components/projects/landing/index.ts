@@ -6,6 +6,7 @@ export type LandingComponent = ComponentType<{ project: Project }>;
 
 /** slug → 서비스 전용 프로덕션 랜딩 컴포넌트 */
 export const LANDINGS: Record<string, LandingComponent> = {
+  'hanbutgil-garden': dynamic(() => import('./HanbutgilGardenLanding')),
   memecatch: dynamic(() => import('./MemeCatchLanding')),
   coursepick: dynamic(() => import('./CoursePickLanding')),
   'instagram-pipeline': dynamic(() => import('./InstaPipelineLanding')),

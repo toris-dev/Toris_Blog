@@ -47,6 +47,49 @@ const gh = (repo: string) => `https://github.com/toris-dev/${repo}`;
 
 export const projects: Project[] = [
   {
+    slug: 'hanbutgil-garden',
+    name: '한붓길 정원',
+    tagline: '한 번의 선으로, 고요한 정원을 완성하세요',
+    description:
+      '정원 타일 위의 모든 길을 한 번씩 이어 출발점과 도착점을 연결하는 온라인 한붓그리기 논리 퍼즐. 돌과 꽃을 피해 경로를 읽고, 손끝으로 초록빛 길을 완성하는 짧고 편안한 두뇌 휴식입니다.',
+    category: '게임 · 논리 퍼즐',
+    platform: 'Web · Touch',
+    year: '2026',
+    status: '개발 중',
+    tags: ['Personal', 'Frontend'],
+    accent: { from: '#5F8F2B', to: '#FF7657', glow: 'rgba(95,143,43,0.32)' },
+    tech: ['Web Game', 'Logic Puzzle', 'Responsive UI'],
+    features: [
+      {
+        icon: 'map',
+        title: '한 번에 잇는 정원 길',
+        description:
+          '출발점에서 도착점까지 끊기지 않는 한 줄로 타일을 잇는 직관적인 규칙.'
+      },
+      {
+        icon: 'layers',
+        title: '돌과 꽃이 만드는 제약',
+        description:
+          '지나갈 수 없는 돌과 정원 오브젝트가 매 스테이지마다 새로운 사고 경로를 만든다.'
+      },
+      {
+        icon: 'smartphone',
+        title: '손끝에 맞춘 조작',
+        description:
+          '마우스와 터치 모두에서 자연스럽게 이어지는 짧고 명확한 퍼즐 플레이.'
+      },
+      {
+        icon: 'heart',
+        title: '고요한 정원 감성',
+        description:
+          '한지빛 바탕, 이끼 낀 돌과 계절 꽃으로 경쟁보다 몰입과 휴식에 집중.'
+      }
+    ],
+    github: gh('hanbutgil_garden'),
+    image: '/images/projects/hanbutgil-garden.png',
+    span: 'lg'
+  },
+  {
     slug: 'memecatch',
     name: '밈캐치',
     tagline: '그 밈, 3초 안에 — 한국 밈 트렌드 사전',
@@ -145,7 +188,14 @@ export const projects: Project[] = [
     status: '운영 중',
     tags: ['Personal', 'Fullstack'],
     accent: { from: '#E1306C', to: '#F77737', glow: 'rgba(225,48,108,0.35)' },
-    tech: ['Python', 'uv', 'Playwright', 'Claude CLI', 'Cloudflare R2', 'Meta API'],
+    tech: [
+      'Python',
+      'uv',
+      'Playwright',
+      'Claude CLI',
+      'Cloudflare R2',
+      'Meta API'
+    ],
     features: [
       {
         icon: 'globe',
