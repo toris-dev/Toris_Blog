@@ -119,6 +119,10 @@ it('grows a seed and unlocks production', async () => {
   expect(screen.getByRole('status')).toHaveTextContent('별가루 0');
   await user.click(grow);
   await user.click(grow);
+
+  expect(screen.getByRole('status')).toHaveTextContent('별가루 2');
+  expect(screen.queryByText('초당 +1')).not.toBeInTheDocument();
+
   await user.click(grow);
 
   expect(screen.getByRole('status')).toHaveTextContent(
