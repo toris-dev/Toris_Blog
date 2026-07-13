@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import CategorySidebar from '@/components/blog/CategorySidebar'
 import { PostHeadingsProvider } from '@/contexts/PostHeadingsContext'
@@ -65,12 +65,29 @@ describe('CategorySidebar', () => {
   })
 
   it('should render loading state initially when posts are not provided', async () => {
+    let resolveFetch!: (response: {
+      ok: boolean
+      json: () => Promise<typeof mockPosts>
+    }) => void
+    ;(global.fetch as jest.Mock).mockReturnValueOnce(
+      new Promise((resolve) => {
+        resolveFetch = resolve
+      })
+    )
+
     renderCategorySidebar()
 
-    await waitFor(() => {
-      const skeleton = document.querySelector('.animate-pulse')
-      expect(skeleton).toBeInTheDocument()
+    expect(document.querySelector('.skeleton-shimmer')).toBeInTheDocument()
+
+    await act(async () => {
+      resolveFetch({
+        ok: true,
+        json: async () => mockPosts,
+      })
     })
+
+    expect(await screen.findByText('토리스')).toBeInTheDocument()
+    expect(screen.getByText('Learning')).toBeInTheDocument()
   })
 
   it('should render posts when provided as props', async () => {
@@ -173,4 +190,3 @@ describe('CategorySidebar', () => {
     })
   })
 })
-
