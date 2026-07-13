@@ -4,6 +4,7 @@ import type { ComponentProps, ReactNode } from 'react';
 import Apps21nLanding from '../21nAppsLanding';
 import BubbleBibleLanding from '../BubbleBibleLanding';
 import { CinematicLanding } from '../cinematic';
+import DongnePaintLanding from '../DongnePaintLanding';
 import SnapMateLanding from '../SnapMateLanding';
 import { getProject, projects } from '@/data/projects';
 
@@ -119,4 +120,34 @@ it('completes a reading and unlocks sharing', async () => {
     '오늘의 읽기 완료 · 7일 연속'
   );
   expect(share).toBeEnabled();
+});
+
+it('closes a trail and captures territory', async () => {
+  const user = userEvent.setup();
+  render(<DongnePaintLanding project={getProject('dongne-paint')!} />);
+
+  const cells = screen.getAllByLabelText(/^(빈|경로|확보한) 타일$/);
+  expect(cells).toHaveLength(25);
+  expect(
+    cells
+      .map((cell, index) =>
+        cell.getAttribute('aria-label') === '경로 타일' ? index : -1
+      )
+      .filter((index) => index >= 0)
+  ).toEqual([6, 7, 8, 11, 13, 16, 17, 18]);
+
+  const capture = screen.getByTestId('territory-capture');
+  expect(capture).toHaveAccessibleName('경로 닫기');
+  await user.click(capture);
+
+  expect(screen.getByRole('status')).toHaveTextContent('영역 9칸 확보');
+  expect(screen.getAllByLabelText('확보한 타일')).toHaveLength(9);
+  expect(capture).toHaveAccessibleName('다시 칠하기');
+
+  await user.click(capture);
+
+  expect(screen.getByRole('status')).toHaveTextContent(
+    '경로를 출발 영역에 연결하세요'
+  );
+  expect(screen.queryAllByLabelText('확보한 타일')).toHaveLength(0);
 });
