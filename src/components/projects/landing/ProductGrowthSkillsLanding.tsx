@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Project } from '@/data/projects';
 import { CinematicLanding, SignatureFrame } from './cinematic';
+import { cinematicThemes } from './themes';
 
 const routes = [
   ['검색 노출 개선', 'seo-geo-optimizer'],
@@ -26,14 +27,7 @@ export default function ProductGrowthSkillsLanding({
       eyebrow="EVIDENCE-DRIVEN AGENTS"
       title="성장 목표를, 검증 가능한 워크플로로"
       thesis="SEO·스토어 등록·모바일 인터랙션·Android 성능 작업을 증거 수집부터 검증까지 안내하는 6개 오픈소스 에이전트 스킬입니다."
-      theme={{
-        background: '#111827',
-        surface: '#1F2937',
-        ink: '#F9FAFB',
-        muted: '#A7B0C0',
-        accent: '#8B5CF6',
-        accent2: '#38BDF8'
-      }}
+      theme={cinematicThemes['product-growth-skills']}
       proof={['6개 전문 워크플로', '검증 가능한 실행', 'Codex와 Claude에 설치']}
       signature={
         <SignatureFrame label="제품 성장 스킬 라우터">

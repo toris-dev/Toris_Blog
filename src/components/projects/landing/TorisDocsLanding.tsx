@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Project } from '@/data/projects';
 import { CinematicLanding, SignatureFrame } from './cinematic';
+import { cinematicThemes } from './themes';
 
 const nodes = ['INBOX', 'PROJECTS', 'WIKI', 'OUTPUT'] as const;
 
@@ -16,14 +17,7 @@ export default function TorisDocsLanding({ project }: { project: Project }) {
       eyebrow="NOTES INTO SYSTEMS"
       title="기록은 쌓이지 않고, 다음 행동으로 연결됩니다"
       thesis="프로젝트 문맥과 개발 지식, 산출물을 연결해 사람과 에이전트가 같은 흐름에서 일하도록 돕는 문서 시스템입니다."
-      theme={{
-        background: '#20242C',
-        surface: '#2B303A',
-        ink: '#F7F3E8',
-        muted: '#B8B3A8',
-        accent: '#22B8CF',
-        accent2: '#7C6EE6'
-      }}
+      theme={cinematicThemes['toris-docs']}
       proof={[
         '프로젝트별 문맥',
         '기록에서 산출물까지',

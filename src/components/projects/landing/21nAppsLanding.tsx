@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Project } from '@/data/projects';
 import { CinematicLanding, SignatureFrame } from './cinematic';
+import { cinematicThemes } from './themes';
 
 const steps = ['계약 초안', '모델 서명', '병원 확인', '체결 완료'] as const;
 
@@ -16,14 +17,7 @@ export default function Apps21nLanding({ project }: { project: Project }) {
       eyebrow="CONTRACT OPERATIONS"
       title="서명은 흐르고, 상태는 남습니다"
       thesis="모델과 병원이 같은 계약 상태를 확인하며 초안부터 체결까지 이어가는 역할 기반 운영 플랫폼입니다."
-      theme={{
-        background: '#172554',
-        surface: '#1E3A5F',
-        ink: '#F8FAFC',
-        muted: '#CBD5E1',
-        accent: '#2563EB',
-        accent2: '#34D399'
-      }}
+      theme={cinematicThemes['21n-apps']}
       proof={['역할별 계약 흐름', '상태가 보이는 운영', '개인정보 없는 데모']}
       signature={
         <SignatureFrame label="전자계약 진행 데모">

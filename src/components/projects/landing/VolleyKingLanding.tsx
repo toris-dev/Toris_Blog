@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Project } from '@/data/projects';
 import { CinematicLanding, SignatureFrame } from './cinematic';
+import { cinematicThemes } from './themes';
 
 const phases = ['리시브', '토스', '스파이크'] as const;
 
@@ -23,14 +24,7 @@ export default function VolleyKingLanding({ project }: { project: Project }) {
       eyebrow="THIRTY SECOND RALLY"
       title="세 번의 타이밍, 30초의 랠리"
       thesis="리시브·토스·스파이크의 순간을 연결해 콤보를 쌓는 짧고 선명한 모바일 배구 아케이드입니다."
-      theme={{
-        background: '#2563EB',
-        surface: '#FFF8E6',
-        ink: '#172033',
-        muted: '#526071',
-        accent: '#EF4444',
-        accent2: '#FACC15'
-      }}
+      theme={cinematicThemes['volley-king-30']}
       proof={['30초에 집중', '세 번의 타이밍', 'Flame과 Blender 파이프라인']}
       gallery={[
         {

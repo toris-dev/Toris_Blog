@@ -342,7 +342,7 @@ const ProjectCard = forwardRef<
           ) : (
             <Image
               src={project.image}
-              alt={`${project.name} 서비스 화면 목업`}
+              alt={project.imageAlt ?? `${project.name} 서비스 화면 목업`}
               fill
               loading={index === 0 ? 'eager' : 'lazy'}
               onError={() => setImageFailed(true)}

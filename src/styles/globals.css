@@ -77,6 +77,15 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-reduced-static {
+    transform: none !important;
+    opacity: 1 !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;

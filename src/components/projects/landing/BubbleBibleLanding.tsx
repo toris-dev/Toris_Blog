@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import type { Project } from '@/data/projects';
 import { CinematicLanding, SignatureFrame } from './cinematic';
+import { cinematicThemes } from './themes';
 
 export default function BubbleBibleLanding({ project }: { project: Project }) {
   const [complete, setComplete] = useState(false);
+  const [shareReady, setShareReady] = useState(false);
 
   return (
     <CinematicLanding
@@ -13,14 +15,7 @@ export default function BubbleBibleLanding({ project }: { project: Project }) {
       eyebrow="READ · REFLECT · SHARE"
       title="오늘의 말씀에서, 함께하는 습관으로"
       thesis="읽기와 묵상 기록을 교회와 소그룹의 나눔으로 잇는 모바일 중심 성경 경험입니다."
-      theme={{
-        background: '#FFF8E7',
-        surface: '#F4E8CC',
-        ink: '#4A3326',
-        muted: '#806B58',
-        accent: '#C99A36',
-        accent2: '#7393B3'
-      }}
+      theme={cinematicThemes['bubble-bible']}
       proof={['매일 이어지는 읽기', '개인 묵상 기록', '교회·소그룹 연결']}
       gallery={[
         {
@@ -48,13 +43,18 @@ export default function BubbleBibleLanding({ project }: { project: Project }) {
             >
               {complete ? '읽기 완료됨' : '읽기 완료'}
             </button>
-            <p role="status" className="mt-4 font-semibold">
-              {complete ? '오늘의 읽기 완료 · 7일 연속' : '읽기 전'}
+            <p role="status" aria-live="polite" className="mt-4 font-semibold">
+              {shareReady
+                ? '소그룹 나눔 카드 준비 완료'
+                : complete
+                  ? '오늘의 읽기 완료 · 7일 연속'
+                  : '읽기 전'}
             </p>
             <button
               type="button"
               disabled={!complete}
               className="mt-3 min-h-11 rounded-full border border-[#7393B3] px-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A3326] disabled:opacity-40"
+              onClick={() => setShareReady(true)}
             >
               소그룹에 나누기
             </button>

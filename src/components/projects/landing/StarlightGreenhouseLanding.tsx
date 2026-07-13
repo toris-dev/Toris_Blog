@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Project } from '@/data/projects';
 import { CinematicLanding, SignatureFrame } from './cinematic';
+import { cinematicThemes } from './themes';
 
 export default function StarlightGreenhouseLanding({
   project
@@ -18,14 +19,7 @@ export default function StarlightGreenhouseLanding({
       eyebrow="IDLE UNDER THE STARS"
       title="별씨앗 하나가, 온실의 밤을 밝힙니다"
       thesis="별가루를 모아 설비를 열고 천천히 생산을 키우는 로컬 저장 기반의 작은 방치형 성장 게임입니다."
-      theme={{
-        background: '#0B1026',
-        surface: '#151B35',
-        ink: '#FFFFFF',
-        muted: '#A5B4CF',
-        accent: '#7C5CFC',
-        accent2: '#74D9E8'
-      }}
+      theme={cinematicThemes['starlight-greenhouse']}
       proof={[
         '탭으로 시작하는 성장',
         '설비로 이어지는 생산',
@@ -69,7 +63,7 @@ export default function StarlightGreenhouseLanding({
           <p role="status" className="mt-4 text-center font-bold">
             {unlocked ? '별가루 3 · 새싹 조명 해금' : `별가루 ${dust}`}
           </p>
-          <div className="mt-2 space-y-1 text-center text-[var(--cinema-muted)]">
+          <div className="mt-2 space-y-1 text-center text-[var(--cinema-page-muted)]">
             {unlocked ? <p>초당 +1</p> : null}
             <p>오프라인 보상 최대 8시간</p>
           </div>

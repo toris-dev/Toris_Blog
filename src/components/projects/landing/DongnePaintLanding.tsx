@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Project } from '@/data/projects';
 import { CinematicLanding, SignatureFrame } from './cinematic';
+import { cinematicThemes } from './themes';
 
 const trail = new Set([6, 7, 8, 13, 18, 17, 16, 11]);
 const territory = new Set([6, 7, 8, 11, 12, 13, 16, 17, 18]);
@@ -16,14 +17,7 @@ export default function DongnePaintLanding({ project }: { project: Project }) {
       eyebrow="CLOSE THE LOOP"
       title="선을 닫으면, 골목이 내 색이 됩니다"
       thesis="출발 영역으로 돌아오는 경로를 만들고 AI 봇보다 더 넓은 동네를 확보하는 짧고 경쟁적인 영역 점령 게임입니다."
-      theme={{
-        background: '#263238',
-        surface: '#FFF3D6',
-        ink: '#FFF3D6',
-        muted: '#66747A',
-        accent: '#18B87A',
-        accent2: '#FF6B4A'
-      }}
+      theme={cinematicThemes['dongne-paint']}
       proof={['닫힌 경로로 점령', 'AI 봇과 경쟁', '기기 안에 저장']}
       gallery={[
         {

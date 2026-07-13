@@ -5,15 +5,7 @@ import Link from 'next/link';
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import type { Project } from '@/data/projects';
 import { AccentButton, GhostButton, Reveal } from './shared';
-
-export interface CinematicTheme {
-  background: string;
-  surface: string;
-  ink: string;
-  muted: string;
-  accent: string;
-  accent2: string;
-}
+import type { CinematicTheme } from './themes';
 
 export interface CinematicLandingProps {
   project: Project;
@@ -57,7 +49,7 @@ export function CinematicGallery({
   );
 }
 
-function SafeProjectImage({
+export function SafeProjectImage({
   src,
   alt,
   portrait = false
@@ -113,10 +105,14 @@ export function CinematicLanding({
   const vars = {
     '--cinema-bg': theme.background,
     '--cinema-surface': theme.surface,
-    '--cinema-ink': theme.ink,
-    '--cinema-muted': theme.muted,
+    '--cinema-page-ink': theme.pageInk,
+    '--cinema-page-muted': theme.pageMuted,
+    '--cinema-surface-ink': theme.surfaceInk,
+    '--cinema-surface-muted': theme.surfaceMuted,
     '--cinema-accent': theme.accent,
-    '--cinema-accent-2': theme.accent2
+    '--cinema-accent-2': theme.accent2,
+    '--cinema-primary-bg': theme.primaryBackground,
+    '--cinema-primary-ink': theme.primaryInk
   } as CSSProperties;
 
   return (
@@ -124,7 +120,7 @@ export function CinematicLanding({
       data-testid="cinematic-project"
       data-cinematic-project={project.slug}
       style={vars}
-      className="min-h-screen overflow-hidden bg-[var(--cinema-bg)] text-[var(--cinema-ink)]"
+      className="min-h-screen overflow-hidden bg-[var(--cinema-bg)] text-[var(--cinema-page-ink)]"
     >
       <header className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-6">
         <Link href="/projects" className="min-h-11 py-3 text-sm">
@@ -144,19 +140,31 @@ export function CinematicLanding({
           <h1 className="mt-5 text-5xl font-black leading-[0.96] -tracking-wider sm:text-7xl">
             {title}
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-8 text-[var(--cinema-muted)]">
+          <p className="mt-6 max-w-xl text-lg leading-8 text-[var(--cinema-page-muted)]">
             {thesis}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <AccentButton
               href={project.github}
-              from={theme.accent}
-              to={theme.accent2}
+              from={theme.primaryBackground}
+              to={theme.primaryBackground}
               glow={project.accent.glow}
+              foreground={theme.primaryInk}
             >
-              프로젝트 보기
+              {project.ctaLabel ?? '프로젝트 보기'}
             </AccentButton>
-            <GhostButton href="#proof">설계 근거</GhostButton>
+            <GhostButton
+              href="#proof"
+              style={{
+                color: 'var(--cinema-page-ink)',
+                borderColor:
+                  'color-mix(in srgb, var(--cinema-page-ink) 35%, transparent)',
+                backgroundColor:
+                  'color-mix(in srgb, var(--cinema-page-ink) 8%, transparent)'
+              }}
+            >
+              설계 근거
+            </GhostButton>
           </div>
         </Reveal>
         <Reveal delay={0.12}>{signature}</Reveal>
@@ -166,7 +174,7 @@ export function CinematicLanding({
         <div className="grid gap-4 md:grid-cols-3">
           {proof.map((item, index) => (
             <Reveal key={item} delay={index * 0.06}>
-              <article className="min-h-40 rounded-3xl bg-[var(--cinema-surface)] p-6">
+              <article className="min-h-40 rounded-3xl bg-[var(--cinema-surface)] p-6 text-[var(--cinema-surface-ink)]">
                 <span className="font-mono text-xs text-[var(--cinema-accent-2)]">
                   0{index + 1}
                 </span>
@@ -188,10 +196,10 @@ export function CinematicLanding({
           {project.features.map((feature) => (
             <article
               key={feature.title}
-              className="rounded-3xl bg-[var(--cinema-surface)] p-6"
+              className="rounded-3xl bg-[var(--cinema-surface)] p-6 text-[var(--cinema-surface-ink)]"
             >
               <h3 className="text-lg font-bold">{feature.title}</h3>
-              <p className="mt-3 leading-7 text-[var(--cinema-muted)]">
+              <p className="mt-3 leading-7 text-[var(--cinema-surface-muted)]">
                 {feature.description}
               </p>
             </article>
@@ -210,7 +218,7 @@ export function CinematicLanding({
       </section>
 
       <footer className="mx-auto flex max-w-7xl flex-col gap-5 border-t border-white/10 px-5 py-12 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-[var(--cinema-muted)]">
+        <p className="text-sm text-[var(--cinema-page-muted)]">
           {project.description}
         </p>
         <Link

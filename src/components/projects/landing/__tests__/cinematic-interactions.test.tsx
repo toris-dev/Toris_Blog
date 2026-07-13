@@ -13,6 +13,8 @@ import VolleyKingLanding from '../VolleyKingLanding';
 import YouthMoneyGuideLanding from '../YouthMoneyGuideLanding';
 import { getProject, projects } from '@/data/projects';
 
+const mockUseReducedMotion = jest.fn(() => false);
+
 jest.mock('next/image', () => ({
   __esModule: true,
   default: ({ fill, ...props }: ComponentProps<'img'> & { fill?: boolean }) => {
@@ -26,14 +28,34 @@ jest.mock('framer-motion', () => ({
   motion: {
     div: ({
       children,
-      className
+      className,
+      initial: _initial,
+      animate: _animate,
+      transition: _transition,
+      whileInView: _whileInView,
+      viewport: _viewport,
+      ...props
     }: {
       children: ReactNode;
       className?: string;
-    }) => <div className={className}>{children}</div>
+      initial?: unknown;
+      animate?: unknown;
+      transition?: unknown;
+      whileInView?: unknown;
+      viewport?: unknown;
+      [key: string]: unknown;
+    }) => (
+      <div className={className} {...props}>
+        {children}
+      </div>
+    )
   },
-  useReducedMotion: () => false
+  useReducedMotion: () => mockUseReducedMotion()
 }));
+
+beforeEach(() => {
+  mockUseReducedMotion.mockReturnValue(false);
+});
 
 it('renders an accessible cinematic shell with CTA and signature', () => {
   render(
@@ -45,10 +67,14 @@ it('renders an accessible cinematic shell with CTA and signature', () => {
       theme={{
         background: '#0B1026',
         surface: '#151B35',
-        ink: '#FFFFFF',
-        muted: '#A5B4CF',
+        pageInk: '#FFFFFF',
+        pageMuted: '#A5B4CF',
+        surfaceInk: '#FFFFFF',
+        surfaceMuted: '#A5B4CF',
         accent: '#7C5CFC',
-        accent2: '#74D9E8'
+        accent2: '#74D9E8',
+        primaryBackground: '#5B3CC4',
+        primaryInk: '#FFFFFF'
       }}
       proof={['검증된 흐름', '접근 가능한 조작']}
       signature={<button type="button">인터랙션 실행</button>}
@@ -75,6 +101,16 @@ it('renders an accessible cinematic shell with CTA and signature', () => {
   expect(screen.getByText(projects[0].features[0].title)).toBeInTheDocument();
   expect(screen.getByText(projects[0].tech[0])).toBeInTheDocument();
 
+  const primary = screen.getByRole('link', { name: /프로젝트 보기/i });
+  primary.focus();
+  expect(primary).toHaveFocus();
+  expect(primary.className).toContain('focus-visible:');
+
+  const proofLink = screen.getByRole('link', { name: '설계 근거' });
+  expect(proofLink).toHaveAttribute('href', '#proof');
+  expect(proofLink).toHaveStyle({ color: 'var(--cinema-page-ink)' });
+  expect(document.getElementById('proof')).toBeInTheDocument();
+
   fireEvent.error(screen.getByRole('img', { name: '검증용 프로젝트 화면' }));
 
   expect(
@@ -88,6 +124,10 @@ it('advances the 21n contract to completion and resets the flow', async () => {
   const user = userEvent.setup();
   render(<Apps21nLanding project={getProject('21n-apps')!} />);
   const advance = screen.getByTestId('contract-advance');
+
+  expect(
+    screen.getByRole('link', { name: 'GitHub 프로필 보기' })
+  ).toHaveAttribute('href', 'https://github.com/toris-dev');
 
   expect(document.querySelectorAll('[aria-current="step"]')).toHaveLength(1);
   await user.click(advance);
@@ -107,9 +147,50 @@ it('advances the 21n contract to completion and resets the flow', async () => {
 it('develops a SnapMate photo into the group gallery', async () => {
   render(<SnapMateLanding project={getProject('snapmate')!} />);
 
+  const signature = screen.getByRole('region', {
+    name: 'SnapMate 촬영 데모'
+  });
+  expect(
+    within(signature).getByRole('img', {
+      name: 'SnapMate 카메라에서 촬영할 순간을 확인하는 화면'
+    })
+  ).toBeInTheDocument();
+
   await userEvent.click(screen.getByTestId('snap-shutter'));
 
-  expect(screen.getByRole('status')).toHaveTextContent('우리 갤러리에 저장됨');
+  expect(screen.getByRole('status').textContent).toBe('우리 갤러리에 저장됨');
+  expect(
+    within(signature).getByRole('img', {
+      name: 'SnapMate에서 현상된 사진을 확인하는 그룹 갤러리 화면'
+    })
+  ).toBeInTheDocument();
+  expect(
+    within(signature).queryByRole('img', {
+      name: 'SnapMate 카메라에서 촬영할 순간을 확인하는 화면'
+    })
+  ).not.toBeInTheDocument();
+
+  fireEvent.error(
+    within(signature).getByRole('img', {
+      name: 'SnapMate에서 현상된 사진을 확인하는 그룹 갤러리 화면'
+    })
+  );
+  expect(
+    within(signature).getByRole('img', {
+      name: 'SnapMate에서 현상된 사진을 확인하는 그룹 갤러리 화면 이미지 대체 그래픽'
+    })
+  ).toBeInTheDocument();
+});
+
+it('keeps the SnapMate photo card static when reduced motion is requested', async () => {
+  mockUseReducedMotion.mockReturnValue(true);
+  render(<SnapMateLanding project={getProject('snapmate')!} />);
+
+  await userEvent.click(screen.getByTestId('snap-shutter'));
+
+  const card = screen.getByTestId('snap-photo-card');
+  expect(card).toHaveAttribute('data-reduced-motion', 'true');
+  expect(card.className).not.toMatch(/translate|rotate/);
 });
 
 it('grows a seed and unlocks production', async () => {
@@ -174,19 +255,26 @@ it('exposes receive, set, and spike in order, then resets the rally', async () =
   expect(status).toHaveTextContent('COMBO 0');
 });
 
-it('completes a reading and unlocks sharing', async () => {
+it('completes a reading and prepares a local small-group share card', async () => {
   const user = userEvent.setup();
   render(<BubbleBibleLanding project={getProject('bubble-bible')!} />);
   const share = screen.getByRole('button', { name: '소그룹에 나누기' });
 
   expect(share).toBeDisabled();
+  expect(screen.getByRole('status').textContent).toBe('읽기 전');
 
   await user.click(screen.getByTestId('bible-complete'));
 
-  expect(screen.getByRole('status')).toHaveTextContent(
+  expect(screen.getByRole('status').textContent).toBe(
     '오늘의 읽기 완료 · 7일 연속'
   );
   expect(share).toBeEnabled();
+
+  await user.click(share);
+
+  expect(screen.getByRole('status').textContent).toBe(
+    '소그룹 나눔 카드 준비 완료'
+  );
 });
 
 it('closes a trail and captures territory', async () => {
@@ -213,13 +301,15 @@ it('closes a trail and captures territory', async () => {
 
   await user.click(capture);
 
-  expect(screen.getByRole('status')).toHaveTextContent(
+  expect(capture).toHaveAccessibleName('경로 닫기');
+  expect(screen.getByRole('status').textContent).toBe(
     '경로를 출발 영역에 연결하세요'
   );
   expect(screen.queryAllByLabelText('확보한 타일')).toHaveLength(0);
+  expect(screen.getAllByLabelText('경로 타일')).toHaveLength(8);
 });
 
-it('scans youth money policy conditions and shows source metadata', async () => {
+it('scans controlled youth policy criteria and shows official source metadata', async () => {
   render(<YouthMoneyGuideLanding project={getProject('youth-money-guide')!} />);
 
   expect(
@@ -238,13 +328,29 @@ it('scans youth money policy conditions and shows source metadata', async () => 
       .map((option) => option.textContent)
   ).toEqual(['주거', '일자리', '생활비']);
 
-  await userEvent.selectOptions(screen.getByLabelText('지역'), '서울');
+  await userEvent.selectOptions(screen.getByLabelText('나이대'), '30–34');
+  await userEvent.selectOptions(screen.getByLabelText('지역'), '경기');
+  await userEvent.selectOptions(screen.getByLabelText('관심사'), '생활비');
   await userEvent.click(screen.getByTestId('policy-scan'));
 
   const result = screen.getByRole('status');
   expect(result).toHaveTextContent('조건에 맞는 정책 카드');
-  expect(within(result).getByText('공식 출처 확인')).toBeInTheDocument();
-  expect(within(result).getByText('검토일 표시')).toBeInTheDocument();
+  expect(result).toHaveTextContent('나이대 30–34');
+  expect(result).toHaveTextContent('지역 경기');
+  expect(result).toHaveTextContent('관심사 생활비');
+  expect(result).toHaveTextContent('검토일 2026.07.13');
+  expect(
+    within(result).getByRole('link', { name: '온통청년 정책 통합검색' })
+  ).toHaveAttribute(
+    'href',
+    'https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch'
+  );
+  expect(
+    within(result).getByRole('link', { name: '온통청년 정책 통합검색' })
+  ).toHaveAttribute('target', '_blank');
+  expect(
+    within(result).getByRole('link', { name: '온통청년 정책 통합검색' })
+  ).toHaveAttribute('rel', 'noopener noreferrer');
   expect(result).toHaveTextContent('실제 신청 전 원문을 확인하세요');
 });
 
@@ -294,7 +400,12 @@ it('routes every growth goal to its verified skill', async () => {
     await user.click(buttons[index]);
 
     expect(buttons[index]).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('status')).toHaveTextContent(skill);
+    expect(
+      buttons.filter((button) => button.getAttribute('aria-pressed') === 'true')
+    ).toHaveLength(1);
+    expect(
+      within(screen.getByRole('status')).getByText(skill)
+    ).toHaveTextContent(new RegExp(`^${skill}$`));
     expect(screen.getByRole('status')).toHaveTextContent(
       '증거 수집 → 실행 → 검증'
     );

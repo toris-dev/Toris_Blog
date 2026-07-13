@@ -37,6 +37,8 @@ export interface Project {
   features: ProjectFeature[];
   github: string;
   image: string;
+  imageAlt?: string;
+  ctaLabel?: string;
   span: 'lg' | 'md' | 'sm';
 }
 
@@ -757,112 +759,343 @@ export const projects: Project[] = [
     span: 'sm'
   },
   {
-    slug: '21n-apps', name: '21n Apps', tagline: taglines['21n-apps'],
-    description: '모델과 병원이 역할별 화면에서 계약 초안, 서명, 확인과 체결 상태를 이어가는 전자계약 운영 모노레포입니다.',
-    category: '전자계약 · 운영 플랫폼', platform: 'Web · Monorepo', year: '2026', status: '개발 중', tags: ['Company', 'Fullstack'],
+    slug: '21n-apps',
+    name: '21n Apps',
+    tagline: taglines['21n-apps'],
+    description:
+      '모델과 병원이 역할별 화면에서 계약 초안, 서명, 확인과 체결 상태를 이어가는 전자계약 운영 모노레포입니다.',
+    category: '전자계약 · 운영 플랫폼',
+    platform: 'Web · Monorepo',
+    year: '2026',
+    status: '개발 중',
+    tags: ['Company', 'Fullstack'],
     accent: { from: '#2563EB', to: '#34D399', glow: 'rgba(37,99,235,0.32)' },
     tech: ['Next.js', 'NestJS', 'TypeScript', 'PostgreSQL'],
     features: [
-      { icon: 'users', title: '역할별 계약 흐름', description: '모델과 병원이 각자의 단계에서 같은 계약 진행 상태를 확인합니다.' },
-      { icon: 'activity', title: '계약 상태 타임라인', description: '초안, 서명, 확인과 체결 완료를 순서와 상태로 추적합니다.' },
-      { icon: 'layers', title: '모노레포 운영 경계', description: '프론트엔드와 API의 책임을 나누면서 하나의 제품 흐름으로 관리합니다.' }
-    ], github: 'https://github.com/toris-dev', image: '/images/projects/21n-apps/cover.svg', span: 'lg'
+      {
+        icon: 'users',
+        title: '역할별 계약 흐름',
+        description:
+          '모델과 병원이 각자의 단계에서 같은 계약 진행 상태를 확인합니다.'
+      },
+      {
+        icon: 'activity',
+        title: '계약 상태 타임라인',
+        description: '초안, 서명, 확인과 체결 완료를 순서와 상태로 추적합니다.'
+      },
+      {
+        icon: 'layers',
+        title: '모노레포 운영 경계',
+        description:
+          '프론트엔드와 API의 책임을 나누면서 하나의 제품 흐름으로 관리합니다.'
+      }
+    ],
+    github: 'https://github.com/toris-dev',
+    image: '/images/projects/21n-apps/cover.svg',
+    imageAlt: '21n Apps 전자계약 상태 흐름 그래픽',
+    ctaLabel: 'GitHub 프로필 보기',
+    span: 'lg'
   },
   {
-    slug: 'snapmate', name: 'SnapMate', tagline: taglines.snapmate,
-    description: '카메라로 남긴 순간을 친구와 가족의 그룹별 갤러리에 바로 모아 보는 따뜻한 모바일 사진 공유 앱입니다.',
-    category: '사진 · 그룹 공유', platform: 'Mobile (iOS · Android)', year: '2026', status: '개발 중', tags: ['Personal', 'Mobile', 'Fullstack'],
+    slug: 'snapmate',
+    name: 'SnapMate',
+    tagline: taglines.snapmate,
+    description:
+      '카메라로 남긴 순간을 친구와 가족의 그룹별 갤러리에 바로 모아 보는 따뜻한 모바일 사진 공유 앱입니다.',
+    category: '사진 · 그룹 공유',
+    platform: 'Mobile (iOS · Android)',
+    year: '2026',
+    status: '개발 중',
+    tags: ['Personal', 'Mobile', 'Fullstack'],
     accent: { from: '#FB923C', to: '#FB7185', glow: 'rgba(251,146,60,0.32)' },
     tech: ['Expo', 'React Native', 'TypeScript', 'Firebase'],
     features: [
-      { icon: 'camera', title: '카메라에서 바로 공유', description: '앱 안에서 촬영한 사진을 선택한 그룹의 흐름으로 바로 연결합니다.' },
-      { icon: 'users', title: '그룹별 순간 보관', description: '커플, 가족과 친구의 사진을 그룹 단위 갤러리로 구분해 봅니다.' },
-      { icon: 'heart', title: '따뜻한 스토어 경험', description: '크림과 피치 톤의 브랜드 자산으로 촬영과 공유의 감정을 일관되게 전합니다.' }
-    ], github: 'https://github.com/toris-dev', image: '/images/projects/snapmate/feature.png', span: 'lg'
+      {
+        icon: 'camera',
+        title: '카메라에서 바로 공유',
+        description:
+          '앱 안에서 촬영한 사진을 선택한 그룹의 흐름으로 바로 연결합니다.'
+      },
+      {
+        icon: 'users',
+        title: '그룹별 순간 보관',
+        description:
+          '커플, 가족과 친구의 사진을 그룹 단위 갤러리로 구분해 봅니다.'
+      },
+      {
+        icon: 'heart',
+        title: '따뜻한 스토어 경험',
+        description:
+          '크림과 피치 톤의 브랜드 자산으로 촬영과 공유의 감정을 일관되게 전합니다.'
+      }
+    ],
+    github: 'https://github.com/toris-dev',
+    image: '/images/projects/snapmate/feature.png',
+    imageAlt: 'SnapMate 그룹 사진 공유 기능 소개 이미지',
+    ctaLabel: 'GitHub 프로필 보기',
+    span: 'lg'
   },
   {
-    slug: 'bubble-bible', name: 'Bubble Bible', tagline: taglines['bubble-bible'],
-    description: '매일 성경을 읽고 묵상을 기록하며 교회와 소그룹에 나누는 흐름을 연결한 모바일 우선 커뮤니티 앱입니다.',
-    category: '성경 · 커뮤니티', platform: 'Mobile · Web', year: '2026', status: '개발 중', tags: ['Personal', 'Mobile', 'Fullstack'],
+    slug: 'bubble-bible',
+    name: 'Bubble Bible',
+    tagline: taglines['bubble-bible'],
+    description:
+      '매일 성경을 읽고 묵상을 기록하며 교회와 소그룹에 나누는 흐름을 연결한 모바일 우선 커뮤니티 앱입니다.',
+    category: '성경 · 커뮤니티',
+    platform: 'Mobile · Web',
+    year: '2026',
+    status: '개발 중',
+    tags: ['Personal', 'Mobile', 'Fullstack'],
     accent: { from: '#C99A36', to: '#7393B3', glow: 'rgba(201,154,54,0.30)' },
     tech: ['Expo', 'React Native', 'TypeScript', 'Supabase'],
     features: [
-      { icon: 'book', title: '오늘의 말씀 읽기', description: '오늘 읽을 말씀과 읽기 흐름을 모바일 화면에서 차분하게 이어갑니다.' },
-      { icon: 'activity', title: '묵상과 연속 기록', description: '읽기 완료와 개인 묵상을 기록해 매일의 습관을 확인합니다.' },
-      { icon: 'users', title: '교회·소그룹 나눔', description: '개인의 읽기 경험을 교회와 소그룹의 나눔으로 연결합니다.' }
-    ], github: gh('bubbleBible-FE'), image: '/images/projects/bubble-bible/feature.png', span: 'md'
+      {
+        icon: 'book',
+        title: '오늘의 말씀 읽기',
+        description:
+          '오늘 읽을 말씀과 읽기 흐름을 모바일 화면에서 차분하게 이어갑니다.'
+      },
+      {
+        icon: 'activity',
+        title: '묵상과 연속 기록',
+        description: '읽기 완료와 개인 묵상을 기록해 매일의 습관을 확인합니다.'
+      },
+      {
+        icon: 'users',
+        title: '교회·소그룹 나눔',
+        description: '개인의 읽기 경험을 교회와 소그룹의 나눔으로 연결합니다.'
+      }
+    ],
+    github: gh('bubbleBible-FE'),
+    image: '/images/projects/bubble-bible/feature.png',
+    imageAlt: 'Bubble Bible 말씀 읽기와 나눔 기능 소개 이미지',
+    span: 'md'
   },
   {
-    slug: 'dongne-paint', name: '동네 칠하기 대작전', tagline: taglines['dongne-paint'],
-    description: '골목 타일 위에 경로를 그리고 출발 영역으로 돌아와 내부를 점령하며 AI 봇과 경쟁하는 모바일 캐주얼 게임입니다.',
-    category: '게임 · 영역 점령', platform: 'Mobile', year: '2026', status: '개발 중', tags: ['Personal', 'Mobile'],
+    slug: 'dongne-paint',
+    name: '동네 칠하기 대작전',
+    tagline: taglines['dongne-paint'],
+    description:
+      '골목 타일 위에 경로를 그리고 출발 영역으로 돌아와 내부를 점령하며 AI 봇과 경쟁하는 모바일 캐주얼 게임입니다.',
+    category: '게임 · 영역 점령',
+    platform: 'Mobile',
+    year: '2026',
+    status: '개발 중',
+    tags: ['Personal', 'Mobile'],
     accent: { from: '#18B87A', to: '#FF6B4A', glow: 'rgba(24,184,122,0.32)' },
     tech: ['Flutter', 'Flame', 'Dart', 'Local Save'],
     features: [
-      { icon: 'map', title: '닫힌 경로로 점령', description: '드래그한 경로가 출발 영역에 닿으면 닫힌 내부 타일을 내 색으로 바꿉니다.' },
-      { icon: 'gamepad', title: 'AI 봇 경쟁', description: '서버 멀티플레이가 아닌 AI 봇과 같은 보드의 영역을 두고 경쟁합니다.' },
-      { icon: 'save', title: '로컬 진행 저장', description: '게임 진행 상태를 기기에 보관해 다음 플레이에 이어갑니다.' }
-    ], github: 'https://github.com/toris-dev', image: '/images/projects/dongne-paint/icon.png', span: 'md'
+      {
+        icon: 'map',
+        title: '닫힌 경로로 점령',
+        description:
+          '드래그한 경로가 출발 영역에 닿으면 닫힌 내부 타일을 내 색으로 바꿉니다.'
+      },
+      {
+        icon: 'gamepad',
+        title: 'AI 봇 경쟁',
+        description:
+          '서버 멀티플레이가 아닌 AI 봇과 같은 보드의 영역을 두고 경쟁합니다.'
+      },
+      {
+        icon: 'save',
+        title: '로컬 진행 저장',
+        description: '게임 진행 상태를 기기에 보관해 다음 플레이에 이어갑니다.'
+      }
+    ],
+    github: 'https://github.com/toris-dev',
+    image: '/images/projects/dongne-paint/cover.svg',
+    imageAlt: '동네 칠하기 대작전 영역 점령 게임 커버',
+    ctaLabel: 'GitHub 프로필 보기',
+    span: 'md'
   },
   {
-    slug: 'youth-money-guide', name: '청년머니가이드', tagline: taglines['youth-money-guide'],
-    description: '청년 정책과 생활 금융 정보를 조건으로 좁히고 공식 출처와 검토 기준을 함께 확인하는 콘텐츠 서비스입니다.',
-    category: '정책 · 생활 금융', platform: 'Web', year: '2026', status: '운영 중', tags: ['Personal', 'Frontend', 'Fullstack'],
+    slug: 'youth-money-guide',
+    name: '청년머니가이드',
+    tagline: taglines['youth-money-guide'],
+    description:
+      '청년 정책과 생활 금융 정보를 조건으로 좁히고 공식 출처와 검토 기준을 함께 확인하는 콘텐츠 서비스입니다.',
+    category: '정책 · 생활 금융',
+    platform: 'Web',
+    year: '2026',
+    status: '운영 중',
+    tags: ['Personal', 'Frontend', 'Fullstack'],
     accent: { from: '#1D4ED8', to: '#10B981', glow: 'rgba(29,78,216,0.30)' },
     tech: ['Next.js', 'TypeScript', 'Content Curation'],
     features: [
-      { icon: 'filter', title: '조건별 정책 탐색', description: '나이, 지역과 관심사를 기준으로 필요한 정책 정보를 좁혀 봅니다.' },
-      { icon: 'shield', title: '공식 출처와 검토일', description: '정보의 원문 출처와 검토 기준을 함께 표시해 재확인 경로를 제공합니다.' },
-      { icon: 'check', title: '정책·제휴 경계 표시', description: '공식 정책 정보와 제휴 콘텐츠의 성격을 구분해 보여줍니다.' }
-    ], github: 'https://github.com/toris-dev', image: '/images/projects/youth-money-guide/cover.png', span: 'md'
+      {
+        icon: 'filter',
+        title: '조건별 정책 탐색',
+        description:
+          '나이, 지역과 관심사를 기준으로 필요한 정책 정보를 좁혀 봅니다.'
+      },
+      {
+        icon: 'shield',
+        title: '공식 출처와 검토일',
+        description:
+          '정보의 원문 출처와 검토 기준을 함께 표시해 재확인 경로를 제공합니다.'
+      },
+      {
+        icon: 'check',
+        title: '정책·제휴 경계 표시',
+        description: '공식 정책 정보와 제휴 콘텐츠의 성격을 구분해 보여줍니다.'
+      }
+    ],
+    github: 'https://github.com/toris-dev',
+    image: '/images/projects/youth-money-guide/cover.png',
+    imageAlt: '청년머니가이드 정책 정보 탐색 대표 이미지',
+    ctaLabel: 'GitHub 프로필 보기',
+    span: 'md'
   },
   {
-    slug: 'starlight-greenhouse', name: '별빛 온실', tagline: taglines['starlight-greenhouse'],
-    description: '별씨앗에서 별가루를 모으고 설비를 열어 생산을 키우며 오프라인 보상으로 돌아오는 모바일 방치형 게임입니다.',
-    category: '게임 · 방치형 성장', platform: 'Mobile', year: '2026', status: '개발 중', tags: ['Personal', 'Mobile'],
+    slug: 'starlight-greenhouse',
+    name: '별빛 온실',
+    tagline: taglines['starlight-greenhouse'],
+    description:
+      '별씨앗에서 별가루를 모으고 설비를 열어 생산을 키우며 오프라인 보상으로 돌아오는 모바일 방치형 게임입니다.',
+    category: '게임 · 방치형 성장',
+    platform: 'Mobile',
+    year: '2026',
+    status: '개발 중',
+    tags: ['Personal', 'Mobile'],
     accent: { from: '#7C5CFC', to: '#74D9E8', glow: 'rgba(124,92,252,0.34)' },
     tech: ['Flutter', 'Dart', 'Local Save'],
     features: [
-      { icon: 'star', title: '별씨앗 수확', description: '별씨앗을 돌보며 첫 자원인 별가루를 모읍니다.' },
-      { icon: 'activity', title: '설비 생산 루프', description: '모은 자원으로 설비를 열어 초당 생산 흐름을 확장합니다.' },
-      { icon: 'clock', title: '최대 8시간 오프라인 보상', description: '앱을 떠난 시간 중 최대 8시간의 생산분을 돌아왔을 때 정산합니다.' }
-    ], github: 'https://github.com/toris-dev', image: '/images/projects/starlight-greenhouse/icon.png', span: 'md'
+      {
+        icon: 'star',
+        title: '별씨앗 수확',
+        description: '별씨앗을 돌보며 첫 자원인 별가루를 모읍니다.'
+      },
+      {
+        icon: 'activity',
+        title: '설비 생산 루프',
+        description: '모은 자원으로 설비를 열어 초당 생산 흐름을 확장합니다.'
+      },
+      {
+        icon: 'clock',
+        title: '최대 8시간 오프라인 보상',
+        description:
+          '앱을 떠난 시간 중 최대 8시간의 생산분을 돌아왔을 때 정산합니다.'
+      }
+    ],
+    github: 'https://github.com/toris-dev',
+    image: '/images/projects/starlight-greenhouse/cover.svg',
+    imageAlt: '별빛 온실 방치형 성장 게임 커버',
+    ctaLabel: 'GitHub 프로필 보기',
+    span: 'md'
   },
   {
-    slug: 'volley-king-30', name: '30초 배구왕', tagline: taglines['volley-king-30'],
-    description: '리시브, 토스와 스파이크의 타이밍을 맞춰 30초 동안 콤보를 이어가는 모바일 스포츠 아케이드 게임입니다.',
-    category: '게임 · 스포츠 아케이드', platform: 'Mobile', year: '2026', status: '개발 중', tags: ['Personal', 'Mobile'],
+    slug: 'volley-king-30',
+    name: '30초 배구왕',
+    tagline: taglines['volley-king-30'],
+    description:
+      '리시브, 토스와 스파이크의 타이밍을 맞춰 30초 동안 콤보를 이어가는 모바일 스포츠 아케이드 게임입니다.',
+    category: '게임 · 스포츠 아케이드',
+    platform: 'Mobile',
+    year: '2026',
+    status: '개발 중',
+    tags: ['Personal', 'Mobile'],
     accent: { from: '#EF4444', to: '#FACC15', glow: 'rgba(239,68,68,0.32)' },
     tech: ['Flutter', 'Flame', 'Dart', 'Blender'],
     features: [
-      { icon: 'clock', title: '30초 랠리', description: '짧은 제한 시간 안에서 타이밍과 콤보에 집중합니다.' },
-      { icon: 'gamepad', title: '리시브·토스·스파이크', description: '세 단계의 입력을 순서대로 연결해 한 번의 공격을 완성합니다.' },
-      { icon: 'zap', title: '콤보와 타이밍 판정', description: '연속으로 맞춘 타이밍을 콤보와 판정 피드백으로 보여줍니다.' }
-    ], github: 'https://github.com/toris-dev', image: '/images/projects/volley-king-30/gameplay.png', span: 'md'
+      {
+        icon: 'clock',
+        title: '30초 랠리',
+        description: '짧은 제한 시간 안에서 타이밍과 콤보에 집중합니다.'
+      },
+      {
+        icon: 'gamepad',
+        title: '리시브·토스·스파이크',
+        description:
+          '세 단계의 입력을 순서대로 연결해 한 번의 공격을 완성합니다.'
+      },
+      {
+        icon: 'zap',
+        title: '콤보와 타이밍 판정',
+        description: '연속으로 맞춘 타이밍을 콤보와 판정 피드백으로 보여줍니다.'
+      }
+    ],
+    github: 'https://github.com/toris-dev',
+    image: '/images/projects/volley-king-30/gameplay.png',
+    imageAlt: '30초 배구왕 리시브·토스·스파이크 경기 화면',
+    ctaLabel: 'GitHub 프로필 보기',
+    span: 'md'
   },
   {
-    slug: 'toris-docs', name: 'toris-docs', tagline: taglines['toris-docs'],
-    description: '프로젝트 문맥, 개발 지식과 산출물을 연결해 기록이 다음 작업으로 이어지도록 구성한 개인 문서 워크플로입니다.',
-    category: '지식 시스템 · 문서', platform: 'Markdown · Obsidian', year: '2026', status: '운영 중', tags: ['Personal', 'Fullstack'],
+    slug: 'toris-docs',
+    name: 'toris-docs',
+    tagline: taglines['toris-docs'],
+    description:
+      '프로젝트 문맥, 개발 지식과 산출물을 연결해 기록이 다음 작업으로 이어지도록 구성한 개인 문서 워크플로입니다.',
+    category: '지식 시스템 · 문서',
+    platform: 'Markdown · Obsidian',
+    year: '2026',
+    status: '운영 중',
+    tags: ['Personal', 'Fullstack'],
     accent: { from: '#22B8CF', to: '#7C6EE6', glow: 'rgba(34,184,207,0.30)' },
     tech: ['Markdown', 'Obsidian', 'Agent Workflow'],
     features: [
-      { icon: 'layers', title: '프로젝트별 지식 연결', description: '프로젝트 단위로 기획, 설계와 개발 문맥을 연결합니다.' },
-      { icon: 'arrow', title: '기록에서 산출물까지', description: '인박스에서 정리한 기록이 위키와 공개 산출물로 이어지는 흐름을 둡니다.' },
-      { icon: 'cpu', title: '에이전트 친화적 구조', description: '사람과 개발 에이전트가 같은 프로젝트 문맥을 찾을 수 있는 폴더 경계를 사용합니다.' }
-    ], github: 'https://github.com/toris-dev', image: '/images/projects/toris-docs/cover.svg', span: 'md'
+      {
+        icon: 'layers',
+        title: '프로젝트별 지식 연결',
+        description: '프로젝트 단위로 기획, 설계와 개발 문맥을 연결합니다.'
+      },
+      {
+        icon: 'arrow',
+        title: '기록에서 산출물까지',
+        description:
+          '인박스에서 정리한 기록이 위키와 공개 산출물로 이어지는 흐름을 둡니다.'
+      },
+      {
+        icon: 'cpu',
+        title: '에이전트 친화적 구조',
+        description:
+          '사람과 개발 에이전트가 같은 프로젝트 문맥을 찾을 수 있는 폴더 경계를 사용합니다.'
+      }
+    ],
+    github: 'https://github.com/toris-dev',
+    image: '/images/projects/toris-docs/cover.svg',
+    imageAlt: 'toris-docs 지식 그래프 흐름 그래픽',
+    ctaLabel: 'GitHub 프로필 보기',
+    span: 'md'
   },
   {
-    slug: 'product-growth-skills', name: 'Product Growth Skills', tagline: taglines['product-growth-skills'],
-    description: 'SEO, 앱 스토어 등록, 모바일 인터랙션과 Android 성능 작업을 증거 기반으로 실행하고 검증하는 6개 오픈소스 에이전트 스킬 모음입니다.',
-    category: 'Agent Skills · 오픈소스', platform: 'Codex · Claude', year: '2026', status: '운영 중', tags: ['Personal', 'Fullstack'],
+    slug: 'product-growth-skills',
+    name: 'Product Growth Skills',
+    tagline: taglines['product-growth-skills'],
+    description:
+      'SEO, 앱 스토어 등록, 모바일 인터랙션과 Android 성능 작업을 증거 기반으로 실행하고 검증하는 6개 오픈소스 에이전트 스킬 모음입니다.',
+    category: 'Agent Skills · 오픈소스',
+    platform: 'Codex · Claude',
+    year: '2026',
+    status: '운영 중',
+    tags: ['Personal', 'Fullstack'],
     accent: { from: '#8B5CF6', to: '#38BDF8', glow: 'rgba(139,92,246,0.34)' },
     tech: ['Agent Skills', 'Markdown', 'Python'],
     features: [
-      { icon: 'layers', title: '6개 전문 워크플로', description: 'SEO, 스토어, Expo·Flutter 인터랙션과 Android 성능 영역을 각각의 스킬로 나눕니다.' },
-      { icon: 'search', title: '증거 기반 실행', description: '추측보다 측정과 현재 상태의 증거를 먼저 수집하도록 작업 순서를 안내합니다.' },
-      { icon: 'check', title: '내장 검증 스크립트', description: '저장소의 검증 스크립트로 스킬 구조와 필수 파일을 확인합니다.' }
-    ], github: gh('product-growth-skills'), image: '/images/projects/product-growth-skills/cover.svg', span: 'lg'
+      {
+        icon: 'layers',
+        title: '6개 전문 워크플로',
+        description:
+          'SEO, 스토어, Expo·Flutter 인터랙션과 Android 성능 영역을 각각의 스킬로 나눕니다.'
+      },
+      {
+        icon: 'search',
+        title: '증거 기반 실행',
+        description:
+          '추측보다 측정과 현재 상태의 증거를 먼저 수집하도록 작업 순서를 안내합니다.'
+      },
+      {
+        icon: 'check',
+        title: '내장 검증 스크립트',
+        description:
+          '저장소의 검증 스크립트로 스킬 구조와 필수 파일을 확인합니다.'
+      }
+    ],
+    github: gh('product-growth-skills'),
+    image: '/images/projects/product-growth-skills/cover.svg',
+    imageAlt: 'Product Growth Skills 워크플로 라우터 그래픽',
+    span: 'lg'
   }
 ];
 

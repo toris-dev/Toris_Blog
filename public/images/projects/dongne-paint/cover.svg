@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title">
+  <title id="title">동네 칠하기 대작전 영역 점령 게임 커버</title>
+  <rect width="1200" height="675" fill="#263238"/>
+  <g fill="#66747A" opacity=".55">
+    <rect x="140" y="110" width="150" height="150" rx="22"/>
+    <rect x="315" y="110" width="150" height="150" rx="22"/>
+    <rect x="490" y="110" width="150" height="150" rx="22"/>
+    <rect x="665" y="110" width="150" height="150" rx="22"/>
+    <rect x="840" y="110" width="150" height="150" rx="22"/>
+    <rect x="140" y="285" width="150" height="150" rx="22"/>
+    <rect x="840" y="285" width="150" height="150" rx="22"/>
+    <rect x="140" y="460" width="150" height="110" rx="22"/>
+    <rect x="315" y="460" width="150" height="110" rx="22"/>
+    <rect x="490" y="460" width="150" height="110" rx="22"/>
+    <rect x="665" y="460" width="150" height="110" rx="22"/>
+    <rect x="840" y="460" width="150" height="110" rx="22"/>
+  </g>
+  <rect x="315" y="285" width="500" height="150" rx="28" fill="#18B87A"/>
+  <path d="M215 185H915V515H215Z" fill="none" stroke="#FF6B4A" stroke-width="24" stroke-linejoin="round"/>
+  <circle cx="215" cy="185" r="30" fill="#FFD447"/>
+  <text x="565" y="352" fill="#FFF3D6" font-family="ui-sans-serif,sans-serif" font-size="48" font-weight="800" text-anchor="middle">CLOSE THE LOOP · 9 TILES</text>
+</svg>

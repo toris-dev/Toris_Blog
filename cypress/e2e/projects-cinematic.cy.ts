@@ -51,6 +51,28 @@ function assertNoConsoleErrors(errors: string[]) {
   cy.then(() => expect(errors).to.deep.equal([]));
 }
 
+function durationToMilliseconds(duration: string) {
+  const value = Number.parseFloat(duration) || 0;
+  return duration.trim().endsWith('ms') ? value : value * 1000;
+}
+
+function assertStaticReducedMotion(element: Element) {
+  const style = element.ownerDocument.defaultView!.getComputedStyle(element);
+  const longestTransition = Math.max(
+    0,
+    ...style.transitionDuration.split(',').map(durationToMilliseconds)
+  );
+  const longestAnimation = Math.max(
+    0,
+    ...style.animationDuration.split(',').map(durationToMilliseconds)
+  );
+
+  expect(style.transform).to.equal('none');
+  expect(style.opacity).to.equal('1');
+  expect(longestTransition).to.be.at.most(1);
+  expect(longestAnimation).to.be.at.most(1);
+}
+
 function assertLoadedImages(rootSelector: string) {
   cy.get(rootSelector).then(($root) => {
     const images = Array.from($root[0].querySelectorAll('img'));
@@ -69,69 +91,170 @@ function assertLoadedImages(rootSelector: string) {
   });
 }
 
+function focusedKeyboardActivation(selector: string, key: '{enter}' | ' ') {
+  cy.get(selector).focus();
+  cy.get(selector)
+    .should('have.focus')
+    .should(($control) => {
+      expect($control.attr('class')).to.contain('focus-visible:');
+    });
+  dispatchFocusedKeyboard(key);
+}
+
+function dispatchFocusedKeyboard(key: '{enter}' | ' ') {
+  const enter = key === '{enter}';
+  const params = {
+    code: enter ? 'Enter' : 'Space',
+    key: enter ? 'Enter' : ' ',
+    nativeVirtualKeyCode: enter ? 13 : 32,
+    text: enter ? '\r' : ' ',
+    unmodifiedText: enter ? '\r' : ' ',
+    windowsVirtualKeyCode: enter ? 13 : 32
+  };
+
+  cy.then(() =>
+    Cypress.automation('remote:debugger:protocol', {
+      command: 'Input.dispatchKeyEvent',
+      params: { ...params, type: 'keyDown' }
+    })
+  );
+  cy.then(() =>
+    Cypress.automation('remote:debugger:protocol', {
+      command: 'Input.dispatchKeyEvent',
+      params: { ...params, text: undefined, type: 'keyUp' }
+    })
+  );
+}
+
+function emulateReducedMotion() {
+  cy.then(() =>
+    Cypress.automation('remote:debugger:protocol', {
+      command: 'Emulation.setEmulatedMedia',
+      params: {
+        features: [{ name: 'prefers-reduced-motion', value: 'reduce' }]
+      }
+    })
+  );
+}
+
+function clearMediaEmulation() {
+  cy.then(() =>
+    Cypress.automation('remote:debugger:protocol', {
+      command: 'Emulation.setEmulatedMedia',
+      params: { features: [] }
+    })
+  );
+}
+
 function exerciseSignature(slug: (typeof projects)[number][0], testId: string) {
   const signature = `[data-testid="${testId}"]`;
   const status = '[data-cinematic-project] [role="status"]';
 
-  if (slug === 'product-growth-skills') {
-    cy.contains('button', '스토어 등록 준비').click();
-    cy.get(status).should('contain.text', 'app-store-listing-creator');
-    cy.get(signature).should('be.visible').click();
-    cy.get(status).should('contain.text', 'seo-geo-optimizer');
-    return;
-  }
-
-  cy.get(signature).should('be.visible').click();
-
   switch (slug) {
     case '21n-apps':
+      focusedKeyboardActivation(signature, '{enter}');
+      focusedKeyboardActivation(signature, '{enter}');
+      focusedKeyboardActivation(signature, '{enter}');
       cy.get('[data-cinematic-project] [aria-current="step"]')
         .should('be.visible')
-        .and('have.text', '모델 서명');
+        .and('have.text', '체결 완료');
       break;
     case 'snapmate':
+      focusedKeyboardActivation(signature, ' ');
       cy.get(status).should('have.text', '우리 갤러리에 저장됨');
+      cy.get('[aria-label="SnapMate 촬영 데모"]')
+        .find('img')
+        .should(
+          'have.attr',
+          'alt',
+          'SnapMate에서 현상된 사진을 확인하는 그룹 갤러리 화면'
+        );
+      cy.get('[aria-label="SnapMate 촬영 데모"]')
+        .find('img[alt="SnapMate 카메라에서 촬영할 순간을 확인하는 화면"]')
+        .should('not.exist');
       break;
     case 'bubble-bible':
-      cy.get(status).should('have.text', '오늘의 읽기 완료 · 7일 연속');
+      cy.contains('button', '소그룹에 나누기').should('be.disabled');
+      focusedKeyboardActivation(signature, '{enter}');
+      cy.contains('button', '소그룹에 나누기').should('be.enabled');
+      cy.contains('button', '소그룹에 나누기').focus();
+      cy.contains('button', '소그룹에 나누기')
+        .should('have.focus')
+        .should(($control) => {
+          expect($control.attr('class')).to.contain('focus-visible:');
+        });
+      dispatchFocusedKeyboard(' ');
+      cy.get(status).should('have.text', '소그룹 나눔 카드 준비 완료');
       break;
     case 'dongne-paint':
+      focusedKeyboardActivation(signature, '{enter}');
       cy.get(status).should('have.text', '영역 9칸 확보');
+      cy.get('[aria-label="확보한 타일"]').should('have.length', 9);
       break;
     case 'youth-money-guide':
+      cy.get('select[aria-label="나이대"]').select('30–34');
+      cy.get('select[aria-label="지역"]').select('경기');
+      cy.get('select[aria-label="관심사"]').select('생활비');
+      focusedKeyboardActivation(signature, '{enter}');
       cy.get(status)
         .should('be.visible')
-        .and('contain.text', '조건에 맞는 정책 카드');
+        .and('contain.text', '나이대 30–34')
+        .and('contain.text', '지역 경기')
+        .and('contain.text', '관심사 생활비')
+        .and('contain.text', '검토일 2026.07.13')
+        .and('contain.text', '실제 신청 전 원문을 확인하세요');
+      cy.get(status)
+        .contains('a', '온통청년 정책 통합검색')
+        .should(
+          'have.attr',
+          'href',
+          'https://www.youthcenter.go.kr/youthPolicy/ythPlcyTotalSearch'
+        )
+        .and('have.attr', 'target', '_blank')
+        .and('have.attr', 'rel', 'noopener noreferrer');
       break;
     case 'starlight-greenhouse':
-      cy.get(status).should('have.text', '별가루 1');
+      focusedKeyboardActivation(signature, '{enter}');
+      focusedKeyboardActivation(signature, '{enter}');
+      focusedKeyboardActivation(signature, '{enter}');
+      cy.get(status).should('have.text', '별가루 3 · 새싹 조명 해금');
+      cy.contains('초당 +1').should('be.visible');
       break;
     case 'volley-king-30':
-      cy.get(status).should('have.text', 'COMBO 1');
-      cy.get(signature).should('contain.text', '토스');
+      focusedKeyboardActivation(signature, '{enter}');
+      focusedKeyboardActivation(signature, '{enter}');
+      focusedKeyboardActivation(signature, '{enter}');
+      cy.get(status).should('have.text', 'NICE SPIKE · COMBO 3');
+      cy.get(signature).should('contain.text', '다시 랠리');
       break;
     case 'toris-docs':
+      focusedKeyboardActivation(signature, '{enter}');
       cy.get(status).should('have.text', 'PROJECTS → WIKI → OUTPUT 연결');
       break;
+    case 'product-growth-skills':
+      cy.contains('button', '스토어 등록 준비').focus();
+      cy.contains('button', '스토어 등록 준비')
+        .should('have.focus')
+        .should(($control) => {
+          expect($control.attr('class')).to.contain('focus-visible:');
+        });
+      dispatchFocusedKeyboard('{enter}');
+      cy.get('[aria-pressed="true"]').should('have.length', 1);
+      cy.get(status).should('contain.text', 'app-store-listing-creator');
+      focusedKeyboardActivation(signature, ' ');
+      cy.get('[aria-pressed="true"]').should('have.length', 1);
+      cy.get(status).should('contain.text', 'seo-geo-optimizer');
+      break;
   }
-}
-
-function reducedMotionMatchMedia(query: string): MediaQueryList {
-  return {
-    matches:
-      query === '(prefers-reduced-motion)' ||
-      query === '(prefers-reduced-motion: reduce)',
-    media: query,
-    onchange: null,
-    addListener: () => undefined,
-    removeListener: () => undefined,
-    addEventListener: () => undefined,
-    removeEventListener: () => undefined,
-    dispatchEvent: () => true
-  };
 }
 
 describe('cinematic project showcase', () => {
+  const viewports = [
+    { label: 'mobile', width: 375, height: 812 },
+    { label: 'tablet', width: 768, height: 1024 },
+    { label: 'desktop', width: 1280, height: 900 }
+  ] as const;
+
   beforeEach(() => {
     cy.intercept('GET', '/api/todos', {
       statusCode: 200,
@@ -139,61 +262,14 @@ describe('cinematic project showcase', () => {
     });
   });
 
-  it('shows every new project card', () => {
+  it('keeps SnapMate and shared reveals static in reduced-motion mode', () => {
     const runtimeErrors: string[] = [];
 
-    cy.visit('/projects', {
+    emulateReducedMotion();
+    cy.viewport(375, 812);
+    cy.visit('/projects/snapmate', {
       onBeforeLoad(win) {
         captureConsoleErrors(win, runtimeErrors);
-      }
-    });
-
-    projects.forEach(([slug, name]) => {
-      const card = `a[href="/projects/${slug}"]`;
-
-      cy.get(card).filter(':visible').should('contain.text', name);
-      assertLoadedImages(card);
-    });
-    assertNoHorizontalDocumentOverflow();
-    assertNoConsoleErrors(runtimeErrors);
-  });
-
-  projects.forEach(([slug, name, testId]) => {
-    it(`${slug} is a dedicated interactive static landing`, () => {
-      const runtimeErrors: string[] = [];
-
-      cy.visit(`/projects/${slug}`, {
-        onBeforeLoad(win) {
-          captureConsoleErrors(win, runtimeErrors);
-        }
-      });
-
-      const landing = `[data-cinematic-project="${slug}"]`;
-
-      cy.get(landing).should('be.visible');
-      cy.get(landing).find('h1').should('be.visible');
-      cy.get(landing)
-        .find('header')
-        .contains(name, { matchCase: false })
-        .should('be.visible');
-      exerciseSignature(slug, testId);
-      assertLoadedImages(landing);
-      assertNoHorizontalDocumentOverflow();
-      assertNoConsoleErrors(runtimeErrors);
-    });
-  });
-
-  it('renders in reduced-motion mode without an animation dependency', () => {
-    const runtimeErrors: string[] = [];
-
-    cy.visit('/projects/starlight-greenhouse', {
-      onBeforeLoad(win) {
-        captureConsoleErrors(win, runtimeErrors);
-        Object.defineProperty(win, 'matchMedia', {
-          configurable: true,
-          value: reducedMotionMatchMedia,
-          writable: true
-        });
       }
     });
 
@@ -203,10 +279,74 @@ describe('cinematic project showcase', () => {
         .true;
       expect(win.matchMedia('(min-width: 768px)').matches).to.be.false;
     });
-    cy.get('[data-testid="seed-grow"]').click();
-    cy.get('[role="status"]').should('have.text', '별가루 1');
-    assertLoadedImages('[data-cinematic-project="starlight-greenhouse"]');
+    focusedKeyboardActivation('[data-testid="snap-shutter"]', ' ');
+    cy.get('[role="status"]').should('have.text', '우리 갤러리에 저장됨');
+    cy.get('[data-testid="snap-photo-card"]')
+      .should('have.class', 'cinematic-reduced-static')
+      .should(($card) => assertStaticReducedMotion($card[0]));
+    cy.get('[data-cinematic-project] .cinematic-reduced-static')
+      .not('[data-testid="snap-photo-card"]')
+      .should(($reveals) => {
+        expect($reveals.length).to.be.greaterThan(2);
+        Array.from($reveals).forEach((reveal) => {
+          assertStaticReducedMotion(reveal);
+        });
+      });
+    assertLoadedImages('[data-cinematic-project="snapmate"]');
     assertNoHorizontalDocumentOverflow();
     assertNoConsoleErrors(runtimeErrors);
+    clearMediaEmulation();
+  });
+
+  viewports.forEach(({ label, width, height }) => {
+    context(`${label} ${width}×${height}`, () => {
+      beforeEach(() => {
+        cy.viewport(width, height);
+      });
+
+      it('shows every new project card', () => {
+        const runtimeErrors: string[] = [];
+
+        cy.visit('/projects', {
+          onBeforeLoad(win) {
+            captureConsoleErrors(win, runtimeErrors);
+          }
+        });
+
+        projects.forEach(([slug, name]) => {
+          const card = `a[href="/projects/${slug}"]`;
+
+          cy.get(card).filter(':visible').should('contain.text', name);
+          assertLoadedImages(card);
+        });
+        assertNoHorizontalDocumentOverflow();
+        assertNoConsoleErrors(runtimeErrors);
+      });
+
+      projects.forEach(([slug, name, testId]) => {
+        it(`${slug} reaches its final keyboard state`, () => {
+          const runtimeErrors: string[] = [];
+
+          cy.visit(`/projects/${slug}`, {
+            onBeforeLoad(win) {
+              captureConsoleErrors(win, runtimeErrors);
+            }
+          });
+
+          const landing = `[data-cinematic-project="${slug}"]`;
+
+          cy.get(landing).should('be.visible');
+          cy.get(landing).find('h1').should('be.visible');
+          cy.get(landing)
+            .find('header')
+            .contains(name, { matchCase: false })
+            .should('be.visible');
+          exerciseSignature(slug, testId);
+          assertLoadedImages(landing);
+          assertNoHorizontalDocumentOverflow();
+          assertNoConsoleErrors(runtimeErrors);
+        });
+      });
+    });
   });
 });
