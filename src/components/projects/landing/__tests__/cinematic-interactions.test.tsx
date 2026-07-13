@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ComponentProps, ReactNode } from 'react';
 import Apps21nLanding from '../21nAppsLanding';
@@ -6,6 +6,7 @@ import BubbleBibleLanding from '../BubbleBibleLanding';
 import { CinematicLanding } from '../cinematic';
 import DongnePaintLanding from '../DongnePaintLanding';
 import SnapMateLanding from '../SnapMateLanding';
+import YouthMoneyGuideLanding from '../YouthMoneyGuideLanding';
 import { getProject, projects } from '@/data/projects';
 
 jest.mock('next/image', () => ({
@@ -150,4 +151,33 @@ it('closes a trail and captures territory', async () => {
     '경로를 출발 영역에 연결하세요'
   );
   expect(screen.queryAllByLabelText('확보한 타일')).toHaveLength(0);
+});
+
+it('scans youth money policy conditions and shows source metadata', async () => {
+  render(<YouthMoneyGuideLanding project={getProject('youth-money-guide')!} />);
+
+  expect(
+    within(screen.getByLabelText('나이대'))
+      .getAllByRole('option')
+      .map((option) => option.textContent)
+  ).toEqual(['19–24', '25–29', '30–34']);
+  expect(
+    within(screen.getByLabelText('지역'))
+      .getAllByRole('option')
+      .map((option) => option.textContent)
+  ).toEqual(['전국', '서울', '경기']);
+  expect(
+    within(screen.getByLabelText('관심사'))
+      .getAllByRole('option')
+      .map((option) => option.textContent)
+  ).toEqual(['주거', '일자리', '생활비']);
+
+  await userEvent.selectOptions(screen.getByLabelText('지역'), '서울');
+  await userEvent.click(screen.getByTestId('policy-scan'));
+
+  const result = screen.getByRole('status');
+  expect(result).toHaveTextContent('조건에 맞는 정책 카드');
+  expect(within(result).getByText('공식 출처 확인')).toBeInTheDocument();
+  expect(within(result).getByText('검토일 표시')).toBeInTheDocument();
+  expect(result).toHaveTextContent('실제 신청 전 원문을 확인하세요');
 });
