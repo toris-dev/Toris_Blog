@@ -6,6 +6,7 @@ import BubbleBibleLanding from '../BubbleBibleLanding';
 import { CinematicLanding } from '../cinematic';
 import DongnePaintLanding from '../DongnePaintLanding';
 import SnapMateLanding from '../SnapMateLanding';
+import StarlightGreenhouseLanding from '../StarlightGreenhouseLanding';
 import YouthMoneyGuideLanding from '../YouthMoneyGuideLanding';
 import { getProject, projects } from '@/data/projects';
 
@@ -106,6 +107,37 @@ it('develops a SnapMate photo into the group gallery', async () => {
   await userEvent.click(screen.getByTestId('snap-shutter'));
 
   expect(screen.getByRole('status')).toHaveTextContent('우리 갤러리에 저장됨');
+});
+
+it('grows a seed and unlocks production', async () => {
+  const user = userEvent.setup();
+  render(
+    <StarlightGreenhouseLanding project={getProject('starlight-greenhouse')!} />
+  );
+  const grow = screen.getByTestId('seed-grow');
+
+  expect(screen.getByRole('status')).toHaveTextContent('별가루 0');
+  await user.click(grow);
+  await user.click(grow);
+  await user.click(grow);
+
+  expect(screen.getByRole('status')).toHaveTextContent(
+    '별가루 3 · 새싹 조명 해금'
+  );
+  expect(screen.getByText('초당 +1')).toBeInTheDocument();
+  expect(screen.getByText('오프라인 보상 최대 8시간')).toBeInTheDocument();
+  expect(
+    screen.getByRole('img', { name: '별빛 온실 앱 아이콘' })
+  ).toBeInTheDocument();
+
+  await user.click(grow);
+  expect(screen.getByRole('status')).toHaveTextContent(
+    '별가루 3 · 새싹 조명 해금'
+  );
+
+  await user.click(screen.getByRole('button', { name: '초기화' }));
+  expect(screen.getByRole('status')).toHaveTextContent('별가루 0');
+  expect(screen.queryByText('초당 +1')).not.toBeInTheDocument();
 });
 
 it('completes a reading and unlocks sharing', async () => {
