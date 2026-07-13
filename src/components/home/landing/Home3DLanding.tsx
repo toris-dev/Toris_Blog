@@ -1,7 +1,7 @@
 'use client';
 
 import type { Home3DLandingData } from './types';
-import CareerArchitectureScene from './scenes/CareerArchitectureScene';
+import DeveloperIdentityScene from './scenes/DeveloperIdentityScene';
 import FinalCtaScene from './scenes/FinalCtaScene';
 import HeroScene from './scenes/HeroScene';
 import KnowledgeStatsScene from './scenes/KnowledgeStatsScene';
@@ -11,7 +11,7 @@ import TechOrbitScene from './scenes/TechOrbitScene';
 /**
  * 스크롤 기반 3D 포트폴리오 랜딩.
  * 테마 토큰(bg-background/text-foreground 등) 기반 캔버스 위에서 히어로 →
- * 지식베이스 → 커리어 → 프로젝트 → 스택 → CTA 순으로 각 씬이 스크롤에 반응해
+ * 지식베이스 → 개발자 정체성 → 프로젝트 → 스택 → CTA 순으로 각 씬이 스크롤에 반응해
  * 전개된다. 라이트/다크/사이버펑크 테마에 모두 대응하고 reduced-motion을 존중한다.
  */
 export default function Home3DLanding({ data }: { data: Home3DLandingData }) {
@@ -41,7 +41,7 @@ export default function Home3DLanding({ data }: { data: Home3DLandingData }) {
         topTags={data.topTags}
         featuredPosts={data.featuredPosts}
       />
-      <CareerArchitectureScene />
+      <DeveloperIdentityScene />
       <ProjectShowcaseScene />
       <TechOrbitScene />
       <FinalCtaScene />

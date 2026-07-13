@@ -1,12 +1,7 @@
-// 3D 랜딩의 정적 콘텐츠 (커리어 스토리 · 기술 스택 설명)
+// 3D 랜딩의 정적 콘텐츠 (개발자 정체성 · 기술 스택 설명)
 // 아이콘은 직렬화가 안 되므로 문자열 key로 두고 컴포넌트에서 매핑한다.
 
 export type IconKey =
-  | 'mobile'
-  | 'api'
-  | 'contract'
-  | 'infra'
-  | 'users'
   | 'nextjs'
   | 'react'
   | 'typescript'

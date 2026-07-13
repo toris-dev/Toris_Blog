@@ -8,27 +8,19 @@ import {
   FaCode,
   FaCodeBranch,
   FaDatabase,
-  FaLock,
   FaNodeJs,
   FaServer,
-  FaUser,
   MdPhoneIphone,
   SiNextDotJs,
   SiReact,
   SiTailwindcss,
-  SiTypescript,
-  TbApi
+  SiTypescript
 } from '@/components/icons';
 import type { IconKey } from './content';
 import { EASE } from './shared';
 
 /** IconKey → SVG 아이콘 컴포넌트 매핑 (이모지 대신 벡터 아이콘 사용) */
 const ICONS: Record<IconKey, React.ComponentType<{ className?: string }>> = {
-  mobile: MdPhoneIphone,
-  api: TbApi,
-  contract: FaLock,
-  infra: FaServer,
-  users: FaUser,
   nextjs: SiNextDotJs,
   react: SiReact,
   typescript: SiTypescript,
@@ -74,7 +66,9 @@ export function Reveal({
       initial={{ opacity: 0, y: reduce ? 0 : y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
-      transition={reduce ? { duration: 0 } : { duration: 0.6, delay, ease: EASE }}
+      transition={
+        reduce ? { duration: 0 } : { duration: 0.6, delay, ease: EASE }
+      }
     >
       {children}
     </motion.div>
