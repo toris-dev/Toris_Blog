@@ -47,3 +47,4 @@ docs/**
 .gstack/
 .claude/
 .worktrees/
+.superpowers/
