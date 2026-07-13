@@ -20,6 +20,7 @@
     "cypress:run:search": "cypress run --spec 'cypress/e2e/search.cy.ts'",
     "cypress:run:portfolio": "cypress run --spec 'cypress/e2e/portfolio.cy.ts'",
     "cypress:run:design-system": "cypress run --spec 'cypress/e2e/design-system.cy.ts'",
+    "cypress:run:cinematic-projects": "cypress run --spec 'cypress/e2e/projects-cinematic.cy.ts'",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
