@@ -7,6 +7,7 @@ import { CinematicLanding } from '../cinematic';
 import DongnePaintLanding from '../DongnePaintLanding';
 import SnapMateLanding from '../SnapMateLanding';
 import StarlightGreenhouseLanding from '../StarlightGreenhouseLanding';
+import TorisDocsLanding from '../TorisDocsLanding';
 import VolleyKingLanding from '../VolleyKingLanding';
 import YouthMoneyGuideLanding from '../YouthMoneyGuideLanding';
 import { getProject, projects } from '@/data/projects';
@@ -244,4 +245,21 @@ it('scans youth money policy conditions and shows source metadata', async () => 
   expect(within(result).getByText('공식 출처 확인')).toBeInTheDocument();
   expect(within(result).getByText('검토일 표시')).toBeInTheDocument();
   expect(result).toHaveTextContent('실제 신청 전 원문을 확인하세요');
+});
+
+it('connects generic knowledge areas without exposing private notes', async () => {
+  render(<TorisDocsLanding project={getProject('toris-docs')!} />);
+
+  expect(
+    screen.getAllByRole('button').map((button) => button.textContent)
+  ).toEqual(['INBOX', 'PROJECTS', 'WIKI', 'OUTPUT']);
+
+  await userEvent.click(screen.getByTestId('knowledge-node-projects'));
+
+  expect(screen.getByRole('status')).toHaveTextContent(
+    'PROJECTS → WIKI → OUTPUT 연결'
+  );
+  expect(document.body.textContent).not.toMatch(
+    /업무 일지|회의록|2026-\d{2}-\d{2}/
+  );
 });
