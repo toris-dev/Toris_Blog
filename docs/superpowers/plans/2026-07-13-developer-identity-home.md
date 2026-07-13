@@ -269,6 +269,9 @@ it('introduces the approved identity with one semantic four-stage pipeline', () 
     })
   ).toBeInTheDocument();
   expect(screen.getByText('Product Full-Stack Developer')).toBeInTheDocument();
+  expect(screen.getByText('HOW I BUILD')).toHaveClass('text-foreground');
+  expect(screen.getByText(/Active stage · 01/)).toHaveClass('text-foreground');
+  expect(screen.getByText('Output')).toHaveClass('text-foreground');
   expect(screen.getByRole('tablist', { name: '제품 개발 단계' })).toBeInTheDocument();
 
   const tabs = screen.getAllByRole('tab');
@@ -442,7 +445,8 @@ export default function DeveloperIdentityScene() {
         <Reveal>
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="[font-family:var(--font-space-grotesk)] text-xs font-semibold tracking-[0.24em] text-primary">
+              <p className="inline-flex items-center gap-2 [font-family:var(--font-space-grotesk)] text-xs font-semibold tracking-[0.24em] text-foreground">
+                <span className="size-1.5 bg-primary" aria-hidden />
                 {developerPipeline.eyebrow}
               </p>
               <h2
@@ -566,7 +570,7 @@ export default function DeveloperIdentityScene() {
               }}
             >
               <div className="border-b border-border p-6 sm:p-8 md:border-b-0 md:border-r">
-                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">
+                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">
                   Active stage · {activeStage.number}
                 </p>
                 <h3 className="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
@@ -588,7 +592,7 @@ export default function DeveloperIdentityScene() {
               </div>
 
               <div className="flex min-h-48 flex-col justify-between bg-foreground/[0.04] p-6 sm:p-8">
-                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
+                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">
                   Output
                 </p>
                 <p
@@ -848,7 +852,7 @@ Expected: all checks PASS and the deletion is recorded in the integration commit
 
 **Interfaces:**
 - Consumes: stable scene test IDs and ARIA contracts from Task 2; production Home route `/`.
-- Produces: `pnpm run cypress:run:home-pipeline` and screenshots `home-product-pipeline-mobile`, `home-product-pipeline-tablet`, and `home-product-pipeline-desktop`.
+- Produces: `pnpm run cypress:run:home-pipeline`; responsive screenshots `home-product-pipeline-mobile`, `home-product-pipeline-tablet`, and `home-product-pipeline-desktop`; theme screenshots for light, dark, and cyberpunk.
 
 - [ ] **Step 1: Add the dedicated Cypress script**
 
@@ -1053,6 +1057,9 @@ describe('Home Product Pipeline', () => {
         expect(style.color).not.to.equal('rgba(0, 0, 0, 0)');
       });
       cy.get('[data-testid="product-workbench"]').should('be.visible');
+      cy.screenshot(`home-product-pipeline-theme-${theme}`, {
+        capture: 'viewport'
+      });
     });
   });
 
@@ -1118,11 +1125,14 @@ pnpm exec prettier --check cypress/e2e/home-product-pipeline.cy.ts package.json
 git diff --check
 ```
 
-Use the image viewer on these generated files and verify the section has no clipped title, overlapping track, unreadable panel, or horizontal overflow:
+Use the image viewer on these generated files and verify the section has no clipped title, overlapping track, unreadable panel, insufficient small-text contrast, or horizontal overflow:
 
 - `cypress/screenshots/home-product-pipeline.cy.ts/home-product-pipeline-mobile.png`
 - `cypress/screenshots/home-product-pipeline.cy.ts/home-product-pipeline-tablet.png`
 - `cypress/screenshots/home-product-pipeline.cy.ts/home-product-pipeline-desktop.png`
+- `cypress/screenshots/home-product-pipeline.cy.ts/home-product-pipeline-theme-light.png`
+- `cypress/screenshots/home-product-pipeline.cy.ts/home-product-pipeline-theme-dark.png`
+- `cypress/screenshots/home-product-pipeline.cy.ts/home-product-pipeline-theme-cyberpunk.png`
 
 Then commit only source and test files, not generated screenshots:
 
