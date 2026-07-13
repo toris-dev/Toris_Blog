@@ -46,3 +46,4 @@ docs/**
 .env*
 .gstack/
 .claude/
+.worktrees/
