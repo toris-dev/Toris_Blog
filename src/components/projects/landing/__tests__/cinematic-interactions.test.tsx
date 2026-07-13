@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ComponentProps, ReactNode } from 'react';
 import Apps21nLanding from '../21nAppsLanding';
+import BubbleBibleLanding from '../BubbleBibleLanding';
 import { CinematicLanding } from '../cinematic';
 import SnapMateLanding from '../SnapMateLanding';
 import { getProject, projects } from '@/data/projects';
@@ -103,4 +104,19 @@ it('develops a SnapMate photo into the group gallery', async () => {
   await userEvent.click(screen.getByTestId('snap-shutter'));
 
   expect(screen.getByRole('status')).toHaveTextContent('우리 갤러리에 저장됨');
+});
+
+it('completes a reading and unlocks sharing', async () => {
+  const user = userEvent.setup();
+  render(<BubbleBibleLanding project={getProject('bubble-bible')!} />);
+  const share = screen.getByRole('button', { name: '소그룹에 나누기' });
+
+  expect(share).toBeDisabled();
+
+  await user.click(screen.getByTestId('bible-complete'));
+
+  expect(screen.getByRole('status')).toHaveTextContent(
+    '오늘의 읽기 완료 · 7일 연속'
+  );
+  expect(share).toBeEnabled();
 });
