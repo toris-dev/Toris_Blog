@@ -93,11 +93,11 @@ export function SceneHeading({
         <span className="size-1.5 rounded-full bg-primary" aria-hidden />
         {eyebrow}
       </span>
-      <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+      <h2 className="mt-4 text-balance break-keep text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
         {title}
       </h2>
       {description && (
-        <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+        <p className="mt-4 text-pretty break-keep text-base leading-relaxed text-muted-foreground sm:text-lg">
           {description}
         </p>
       )}

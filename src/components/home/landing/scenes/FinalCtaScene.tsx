@@ -11,7 +11,12 @@ import { Reveal } from '../ui';
 
 const CTAS = [
   { href: '/posts', label: 'Read Latest Posts', Icon: FaBlog, primary: true },
-  { href: '/projects', label: 'Explore Projects', Icon: FaFolderOpen, primary: false },
+  {
+    href: '/projects',
+    label: 'Explore Projects',
+    Icon: FaFolderOpen,
+    primary: false
+  },
   { href: '/contact', label: 'Contact Me', Icon: FaPaperPlane, primary: false }
 ];
 
@@ -30,7 +35,7 @@ export default function FinalCtaScene() {
           <p className="text-sm font-semibold uppercase tracking-widest text-primary">
             A Living Portfolio
           </p>
-          <h2 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-foreground sm:text-5xl">
+          <h2 className="mt-5 text-balance break-keep text-3xl font-extrabold leading-tight tracking-tight text-foreground sm:text-5xl">
             단순한 블로그가 아닙니다.
             <br />
             <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -43,7 +48,10 @@ export default function FinalCtaScene() {
           </p>
         </Reveal>
 
-        <Reveal delay={0.1} className="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <Reveal
+          delay={0.1}
+          className="mt-10 flex flex-wrap items-center justify-center gap-3"
+        >
           {CTAS.map(({ href, label, Icon, primary }) => (
             <Link
               key={href}
