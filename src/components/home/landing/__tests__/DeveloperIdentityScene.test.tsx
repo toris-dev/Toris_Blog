@@ -22,8 +22,25 @@ jest.mock('framer-motion', () => {
       return React.createElement(tag, props, children as ReactNode);
     };
 
+  function AnimatePresence({ children }: { children: ReactNode }) {
+    const [displayedChild, setDisplayedChild] = React.useState(children);
+
+    React.useEffect(() => {
+      const displayedKey = React.isValidElement(displayedChild)
+        ? displayedChild.key
+        : null;
+      const nextKey = React.isValidElement(children) ? children.key : null;
+      if (displayedKey === nextKey) return;
+
+      const timeout = window.setTimeout(() => setDisplayedChild(children), 320);
+      return () => window.clearTimeout(timeout);
+    }, [children, displayedChild]);
+
+    return displayedChild;
+  }
+
   return {
-    AnimatePresence: ({ children }: { children: ReactNode }) => children,
+    AnimatePresence,
     motion: { div: component('div'), span: component('span') },
     useReducedMotion: () => mockUseReducedMotion()
   };
@@ -68,16 +85,14 @@ it('changes the active workbench only after an explicit click', async () => {
 
   await user.click(screen.getByTestId('pipeline-tab-shape'));
 
-  expect(screen.getByTestId('pipeline-tab-shape')).toHaveAttribute(
-    'aria-selected',
-    'true'
-  );
-  expect(screen.getByRole('tabpanel')).toHaveTextContent(
-    '만지고 이해되는 경험으로'
-  );
-  expect(screen.getByRole('tabpanel')).toHaveTextContent(
-    '설명 없이도 작동하는 인터페이스'
-  );
+  const selectedTab = screen.getByTestId('pipeline-tab-shape');
+  const panels = screen.getAllByRole('tabpanel');
+  expect(selectedTab).toHaveAttribute('aria-selected', 'true');
+  expect(panels).toHaveLength(1);
+  expect(selectedTab).toHaveAttribute('aria-controls', panels[0].id);
+  expect(panels[0]).toHaveAttribute('aria-labelledby', selectedTab.id);
+  expect(panels[0]).toHaveTextContent('만지고 이해되는 경험으로');
+  expect(panels[0]).toHaveTextContent('설명 없이도 작동하는 인터페이스');
   expect(screen.getByText('Interaction')).toBeInTheDocument();
 });
 
@@ -101,9 +116,12 @@ it('uses automatic roving focus for arrows, Home, and End without wrapping', () 
   fireEvent.keyDown(build, { key: 'End' });
   expect(ship).toHaveFocus();
   expect(ship).toHaveAttribute('aria-selected', 'true');
-  expect(screen.getByRole('tabpanel')).toHaveTextContent(
-    '운영 가능한 릴리스와 반복'
-  );
+  const panels = screen.getAllByRole('tabpanel');
+  expect(panels).toHaveLength(1);
+  expect(ship).toHaveAttribute('aria-controls', panels[0].id);
+  expect(panels[0]).toHaveAttribute('aria-labelledby', ship.id);
+  expect(panels[0]).toHaveTextContent('배포 이후까지 운영으로');
+  expect(panels[0]).toHaveTextContent('운영 가능한 릴리스와 반복');
 
   fireEvent.keyDown(ship, { key: 'ArrowRight' });
   expect(ship).toHaveFocus();

@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
   useRef,
   useState,
@@ -168,71 +168,66 @@ export default function DeveloperIdentityScene() {
         </Reveal>
 
         <Reveal className="mt-5" delay={0.14}>
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={activeStage.id}
-              id="product-pipeline-panel"
-              data-testid="product-workbench"
-              data-stage={activeStage.id}
-              data-reduced-motion={reduceMotion ? 'true' : 'false'}
-              role="tabpanel"
-              aria-labelledby={`product-pipeline-tab-${activeStage.id}`}
-              initial={
-                reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }
-              }
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }}
-              transition={
-                reduceMotion ? { duration: 0 } : { duration: 0.32, ease: EASE }
-              }
-              className="home-pipeline-reduced-static relative grid overflow-hidden border border-border bg-card/75 shadow-2xl md:grid-cols-[1.45fr_0.55fr]"
-              style={{
-                clipPath:
-                  'polygon(0 0, calc(100% - 2rem) 0, 100% 2rem, 100% 100%, 0 100%)'
-              }}
-            >
-              <div className="border-b border-border p-6 sm:p-8 md:border-b-0 md:border-r">
-                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">
-                  Active stage · {activeStage.number}
-                </p>
-                <h3 className="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                  {activeStage.title}
-                </h3>
-                <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-                  {activeStage.description}
-                </p>
-                <ul
-                  aria-label="이 단계의 신호"
-                  className="mt-7 flex flex-wrap gap-2"
-                >
-                  {activeStage.signals.map((signal) => (
-                    <li
-                      key={signal}
-                      className="border-l-2 border-secondary bg-foreground/5 px-3 py-2 font-mono text-xs text-foreground"
-                    >
-                      {signal}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <motion.div
+            key={activeStage.id}
+            id="product-pipeline-panel"
+            data-testid="product-workbench"
+            data-stage={activeStage.id}
+            data-reduced-motion={reduceMotion ? 'true' : 'false'}
+            role="tabpanel"
+            aria-labelledby={`product-pipeline-tab-${activeStage.id}`}
+            initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={
+              reduceMotion ? { duration: 0 } : { duration: 0.32, ease: EASE }
+            }
+            className="home-pipeline-reduced-static relative grid overflow-hidden border border-border bg-card/75 shadow-2xl md:grid-cols-[1.45fr_0.55fr]"
+            style={{
+              clipPath:
+                'polygon(0 0, calc(100% - 2rem) 0, 100% 2rem, 100% 100%, 0 100%)'
+            }}
+          >
+            <div className="border-b border-border p-6 sm:p-8 md:border-b-0 md:border-r">
+              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">
+                Active stage · {activeStage.number}
+              </p>
+              <h3 className="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                {activeStage.title}
+              </h3>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+                {activeStage.description}
+              </p>
+              <ul
+                aria-label="이 단계의 신호"
+                className="mt-7 flex flex-wrap gap-2"
+              >
+                {activeStage.signals.map((signal) => (
+                  <li
+                    key={signal}
+                    className="border-l-2 border-secondary bg-foreground/5 px-3 py-2 font-mono text-xs text-foreground"
+                  >
+                    {signal}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-              <div className="flex min-h-48 flex-col justify-between bg-foreground/[0.04] p-6 sm:p-8">
-                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">
-                  Output
-                </p>
-                <p
-                  role="status"
-                  aria-live="polite"
-                  className="my-8 text-xl font-bold leading-snug text-foreground sm:text-2xl"
-                >
-                  {activeStage.outcome}
-                </p>
-                <p className="text-sm font-bold text-muted-foreground [font-family:var(--font-space-grotesk)]">
-                  {activeStage.number} / 04
-                </p>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+            <div className="flex min-h-48 flex-col justify-between bg-foreground/[0.04] p-6 sm:p-8">
+              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">
+                Output
+              </p>
+              <p
+                role="status"
+                aria-live="polite"
+                className="my-8 text-xl font-bold leading-snug text-foreground sm:text-2xl"
+              >
+                {activeStage.outcome}
+              </p>
+              <p className="text-sm font-bold text-muted-foreground [font-family:var(--font-space-grotesk)]">
+                {activeStage.number} / 04
+              </p>
+            </div>
+          </motion.div>
         </Reveal>
 
         <Reveal className="mt-6 border-l border-primary/40 pl-4" delay={0.2}>
