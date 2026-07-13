@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import type { ComponentProps, ReactNode } from 'react';
 import Apps21nLanding from '../21nAppsLanding';
 import { CinematicLanding } from '../cinematic';
+import SnapMateLanding from '../SnapMateLanding';
 import { getProject, projects } from '@/data/projects';
 
 jest.mock('next/image', () => ({
@@ -94,4 +95,12 @@ it('advances the 21n contract to completion and resets the flow', async () => {
 
   expect(screen.getByText('계약 초안')).toHaveAttribute('aria-current', 'step');
   expect(document.querySelectorAll('[aria-current="step"]')).toHaveLength(1);
+});
+
+it('develops a SnapMate photo into the group gallery', async () => {
+  render(<SnapMateLanding project={getProject('snapmate')!} />);
+
+  await userEvent.click(screen.getByTestId('snap-shutter'));
+
+  expect(screen.getByRole('status')).toHaveTextContent('우리 갤러리에 저장됨');
 });
