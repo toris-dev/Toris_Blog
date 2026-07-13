@@ -1,7 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import type { ComponentProps, ReactNode } from 'react';
+import Apps21nLanding from '../21nAppsLanding';
 import { CinematicLanding } from '../cinematic';
-import { projects } from '@/data/projects';
+import { getProject, projects } from '@/data/projects';
 
 jest.mock('next/image', () => ({
   __esModule: true,
@@ -65,13 +67,31 @@ it('renders an accessible cinematic shell with CTA and signature', () => {
   expect(screen.getByText(projects[0].features[0].title)).toBeInTheDocument();
   expect(screen.getByText(projects[0].tech[0])).toBeInTheDocument();
 
-  fireEvent.error(
-    screen.getByRole('img', { name: '검증용 프로젝트 화면' })
-  );
+  fireEvent.error(screen.getByRole('img', { name: '검증용 프로젝트 화면' }));
 
   expect(
     screen.getByRole('img', {
       name: '검증용 프로젝트 화면 이미지 대체 그래픽'
     })
   ).toBeInTheDocument();
+});
+
+it('advances the 21n contract to completion and resets the flow', async () => {
+  const user = userEvent.setup();
+  render(<Apps21nLanding project={getProject('21n-apps')!} />);
+  const advance = screen.getByTestId('contract-advance');
+
+  expect(document.querySelectorAll('[aria-current="step"]')).toHaveLength(1);
+  await user.click(advance);
+  await user.click(advance);
+  await user.click(advance);
+
+  expect(screen.getByText('체결 완료')).toHaveAttribute('aria-current', 'step');
+  expect(document.querySelectorAll('[aria-current="step"]')).toHaveLength(1);
+  expect(advance).toHaveTextContent('계약 흐름 다시 보기');
+
+  await user.click(advance);
+
+  expect(screen.getByText('계약 초안')).toHaveAttribute('aria-current', 'step');
+  expect(document.querySelectorAll('[aria-current="step"]')).toHaveLength(1);
 });
