@@ -51,12 +51,16 @@ beforeEach(() => mockUseReducedMotion.mockReturnValue(false));
 it('introduces the approved identity with one semantic four-stage pipeline', () => {
   render(<DeveloperIdentityScene />);
 
+  const identityTitle = screen.getByRole('heading', {
+    level: 2,
+    name: '제품의 처음과 끝을 연결하는 개발자'
+  });
+  expect(identityTitle).toHaveClass('break-keep', 'text-balance');
   expect(
-    screen.getByRole('heading', {
-      level: 2,
-      name: '제품의 처음과 끝을 연결하는 개발자'
-    })
-  ).toBeInTheDocument();
+    screen.getByText(
+      '문제를 제품의 언어로 정리하고, 화면과 시스템을 함께 설계해, 실제로 운영되는 결과까지 만듭니다.'
+    )
+  ).toHaveClass('break-keep', 'text-pretty');
   expect(screen.getByText('Product Full-Stack Developer')).toBeInTheDocument();
   expect(screen.getByText('HOW I BUILD')).toHaveClass('text-foreground');
   expect(screen.getByText(/Active stage · 01/)).toHaveClass('text-foreground');

@@ -77,12 +77,12 @@ export default function DeveloperIdentityScene() {
               </p>
               <h2
                 id="developer-identity-title"
-                className="mt-4 max-w-3xl text-4xl font-black leading-[1.02] tracking-[-0.04em] text-foreground sm:text-5xl md:text-6xl"
+                className="mt-4 max-w-3xl text-balance break-keep text-4xl font-black leading-[1.02] tracking-[-0.04em] text-foreground sm:text-5xl md:text-6xl"
               >
                 제품의 처음과 끝을{' '}
                 <span className="text-primary">연결하는 개발자</span>
               </h2>
-              <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
+              <p className="mt-5 max-w-2xl text-pretty break-keep text-base leading-8 text-muted-foreground sm:text-lg">
                 {developerPipeline.summary}
               </p>
             </div>
