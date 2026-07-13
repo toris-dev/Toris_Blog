@@ -21,5 +21,14 @@ export const LANDINGS: Record<string, LandingComponent> = {
   devpulse: dynamic(() => import('./DevPulseLanding')),
   loca: dynamic(() => import('./LocaLanding')),
   pepebear: dynamic(() => import('./PepeBearLanding')),
-  yeti: dynamic(() => import('./YetiLanding'))
+  yeti: dynamic(() => import('./YetiLanding')),
+  '21n-apps': dynamic(() => import('./21nAppsLanding')),
+  snapmate: dynamic(() => import('./SnapMateLanding')),
+  'bubble-bible': dynamic(() => import('./BubbleBibleLanding')),
+  'dongne-paint': dynamic(() => import('./DongnePaintLanding')),
+  'youth-money-guide': dynamic(() => import('./YouthMoneyGuideLanding')),
+  'starlight-greenhouse': dynamic(() => import('./StarlightGreenhouseLanding')),
+  'volley-king-30': dynamic(() => import('./VolleyKingLanding')),
+  'toris-docs': dynamic(() => import('./TorisDocsLanding')),
+  'product-growth-skills': dynamic(() => import('./ProductGrowthSkillsLanding'))
 };

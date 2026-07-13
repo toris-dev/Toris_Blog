@@ -4,7 +4,7 @@ import ProjectsLanding from '@/components/projects/ProjectsLanding';
 export const metadata: Metadata = {
   title: '프로젝트 | Toris Blog',
   description:
-    '여행 플랫폼부터 데스크톱 도구, AI 파이프라인, Web3까지 — 토리스의 개인 프로젝트 쇼케이스.',
+    '모바일 제품과 게임부터 AI 자동화, Web3, 지식 시스템과 에이전트 스킬까지 — 토리스의 인터랙티브 프로젝트 쇼케이스.',
   openGraph: {
     title: '프로젝트 | Toris Blog',
     description:

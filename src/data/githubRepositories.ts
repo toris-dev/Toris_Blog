@@ -32,6 +32,12 @@ export const githubRepositories: GitHubRepository[] = [
     'Open source'
   ),
   repository(
+    'product-growth-skills',
+    'SEO·스토어 등록·모바일 인터랙션·Android 성능을 증거 기반으로 실행하는 6개 에이전트 스킬 모음.',
+    'Agent Skills · Python',
+    'Open source'
+  ),
+  repository(
     'TraceDesk',
     '앱 사용과 집중 흐름을 로컬에서 기록하는 프라이버시 중심 데스크톱 도구.',
     'Tauri · Rust',
