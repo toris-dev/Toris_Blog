@@ -5,6 +5,7 @@ import Apps21nLanding from '../21nAppsLanding';
 import BubbleBibleLanding from '../BubbleBibleLanding';
 import { CinematicLanding } from '../cinematic';
 import DongnePaintLanding from '../DongnePaintLanding';
+import ProductGrowthSkillsLanding from '../ProductGrowthSkillsLanding';
 import SnapMateLanding from '../SnapMateLanding';
 import StarlightGreenhouseLanding from '../StarlightGreenhouseLanding';
 import TorisDocsLanding from '../TorisDocsLanding';
@@ -262,4 +263,40 @@ it('connects generic knowledge areas without exposing private notes', async () =
   expect(document.body.textContent).not.toMatch(
     /업무 일지|회의록|2026-\d{2}-\d{2}/
   );
+});
+
+it('routes every growth goal to its verified skill', async () => {
+  const user = userEvent.setup();
+  const routes = [
+    ['검색 노출 개선', 'seo-geo-optimizer'],
+    ['스토어 등록 준비', 'app-store-listing-creator'],
+    ['Expo 인터랙션', 'expo-interactive-design'],
+    ['Flutter 인터랙션', 'flutter-interactive-design'],
+    ['Expo Android 성능', 'expo-android-performance'],
+    ['Flutter Android 성능', 'flutter-android-performance']
+  ] as const;
+
+  render(
+    <ProductGrowthSkillsLanding
+      project={getProject('product-growth-skills')!}
+    />
+  );
+
+  const buttons = routes.map(([goal]) =>
+    screen.getByRole('button', { name: goal })
+  );
+
+  expect(buttons[0]).toHaveAttribute('data-testid', 'skill-goal-search');
+  expect(buttons[0]).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByRole('status')).toHaveTextContent('seo-geo-optimizer');
+
+  for (const [index, [, skill]] of routes.entries()) {
+    await user.click(buttons[index]);
+
+    expect(buttons[index]).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('status')).toHaveTextContent(skill);
+    expect(screen.getByRole('status')).toHaveTextContent(
+      '증거 수집 → 실행 → 검증'
+    );
+  }
 });
