@@ -2,13 +2,15 @@
 
 ## Status
 
-COMPLETE — reviewer findings 1–8 are implemented. Focused/full Jest, changed-file lint/format, webpack production build, static route artifacts, asset integrity, and all 31 Cypress production-server cases pass.
+COMPLETE — reviewer findings 1–8 and the two final re-review findings are implemented. Focused/full Jest, changed-file lint/format, webpack production build, static route artifacts, asset integrity, and all 31 Cypress production-server cases pass.
 
 ## Finding mapping
 
 1. **Theme accessibility**
    - Centralized all nine themes in `src/components/projects/landing/themes.ts`.
-   - Split page, surface, and solid CTA color tokens and verified five WCAG contrast pairs per theme at 4.5:1 or higher.
+   - Split page, surface, solid CTA, page accent text, and surface accent text color tokens.
+   - The page eyebrow uses `pageAccentText`; proof-card numbers use `surfaceAccentText` instead of sharing decorative `accent2`.
+   - Verified seven WCAG text pairs per theme at 4.5:1 or higher, including both new 12px accent-text contexts across all nine themes.
    - All nine landings consume the centralized contract; the cinematic secondary CTA uses page tokens without changing unrelated consumers.
 
 2. **SnapMate asset and state**
@@ -27,7 +29,8 @@ COMPLETE — reviewer findings 1–8 are implemented. Focused/full Jest, changed
 
 5. **E2E proof**
    - Covers 375×812, 768×1024, and 1280×900.
-   - Uses trusted CDP Enter/Space events after focus and verifies final interaction states, card presence, image natural width, console errors, overflow, and scoped naming.
+   - Uses trusted CDP Tab navigation to reach controls, observes a real `keydown` with `isTrusted === true`, and verifies the active element, `:focus-visible`, and a computed visible outline/box-shadow.
+   - Uses trusted CDP Enter/Space activation and verifies final interaction states, card presence, image natural width, console errors, overflow, and scoped naming.
    - Uses Chromium `Emulation.setEmulatedMedia` for native `prefers-reduced-motion: reduce` proof and asserts actual computed transform, opacity, transition duration, and animation duration on Snap and shared Reveal elements.
 
 6. **Asset/card minors**
@@ -55,6 +58,18 @@ COMPLETE — reviewer findings 1–8 are implemented. Focused/full Jest, changed
 - Reduced-motion GREEN:
   - Added the narrowly scoped `.cinematic-reduced-static` class and native CSS media query.
   - Dedicated Cypress test PASS: 1/1; Snap and multiple shared Reveals compute to `transform: none`, `opacity: 1`, and motion durations no greater than 1 ms.
+- Final re-review theme RED:
+  - `themes.test.ts` failed all nine parameterized cases because `pageAccentText` and `surfaceAccentText` did not exist.
+  - The cinematic shell test then failed because the new CSS variables and separate eyebrow/proof usages were absent.
+- Final re-review theme GREEN:
+  - Theme contract PASS: 10/10 with page/surface accent contrast at 4.5:1 or higher for all nine themes.
+  - Cinematic usage plus theme suites PASS: 21/21.
+- Final re-review focus RED:
+  - Computed focus-indicator checks alone passed under programmatic `.focus()` and therefore did not prove keyboard navigation.
+  - Adding the required trusted Tab observation failed the dedicated Cypress case 0/1 with `expected false to be true`.
+- Final re-review focus GREEN:
+  - Replaced programmatic focus with bounded CDP Tab traversal and verified trusted Tab, actual focus ownership, `:focus-visible`, and a computed outline/box-shadow before activation.
+  - Dedicated Cypress case PASS: 1/1; full production-server suite PASS: 31/31.
 - Final focused Jest:
   - PASS: 4 suites, 46 tests.
 - Final full Jest:
@@ -70,6 +85,7 @@ COMPLETE — reviewer findings 1–8 are implemented. Focused/full Jest, changed
   - One dedicated native reduced-motion case.
   - Nine final-state cases at each of three viewports.
   - Three project-card presence cases.
+  - Every signature activation uses trusted Tab navigation and a computed visible focus indicator; Bubble share and Product Growth secondary selection use the same proof path.
   - Zero screenshots, video disabled, server stopped after the run.
 - Assets:
   - Snap source/copy SHA-256: `ad89b8b982ba92dfa3446d3d4c7dad6ef9630416f23d7e02dde46bc2011fac38`.

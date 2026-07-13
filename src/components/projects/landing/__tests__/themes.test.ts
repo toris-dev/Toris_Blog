@@ -41,11 +41,17 @@ describe('cinematic theme accessibility contract', () => {
 
   it.each(expectedSlugs)('%s keeps every text pair at WCAG AA', (slug) => {
     const theme = cinematicThemes[slug];
+
+    expect(theme.pageAccentText).toMatch(/^#[0-9A-F]{6}$/i);
+    expect(theme.surfaceAccentText).toMatch(/^#[0-9A-F]{6}$/i);
+
     const pairs = [
       [theme.pageInk, theme.background, 'page ink'],
       [theme.pageMuted, theme.background, 'page muted'],
+      [theme.pageAccentText, theme.background, 'page accent text'],
       [theme.surfaceInk, theme.surface, 'surface ink'],
       [theme.surfaceMuted, theme.surface, 'surface muted'],
+      [theme.surfaceAccentText, theme.surface, 'surface accent text'],
       [theme.primaryInk, theme.primaryBackground, 'primary CTA']
     ] as const;
 

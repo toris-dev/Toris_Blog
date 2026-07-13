@@ -73,6 +73,8 @@ it('renders an accessible cinematic shell with CTA and signature', () => {
         surfaceMuted: '#A5B4CF',
         accent: '#7C5CFC',
         accent2: '#74D9E8',
+        pageAccentText: '#74D9E8',
+        surfaceAccentText: '#A5F3FC',
         primaryBackground: '#5B3CC4',
         primaryInk: '#FFFFFF'
       }}
@@ -88,6 +90,16 @@ it('renders an accessible cinematic shell with CTA and signature', () => {
   );
 
   expect(screen.getByTestId('cinematic-project')).toBeInTheDocument();
+  expect(screen.getByTestId('cinematic-project')).toHaveStyle({
+    '--cinema-page-accent-text': '#74D9E8',
+    '--cinema-surface-accent-text': '#A5F3FC'
+  });
+  expect(screen.getByText('TEST LAB')).toHaveClass(
+    'text-[var(--cinema-page-accent-text)]'
+  );
+  expect(screen.getByText('01')).toHaveClass(
+    'text-[var(--cinema-surface-accent-text)]'
+  );
   expect(
     screen.getByRole('heading', { level: 1, name: '대표 행동' })
   ).toBeInTheDocument();

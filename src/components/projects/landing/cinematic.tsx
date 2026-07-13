@@ -111,6 +111,8 @@ export function CinematicLanding({
     '--cinema-surface-muted': theme.surfaceMuted,
     '--cinema-accent': theme.accent,
     '--cinema-accent-2': theme.accent2,
+    '--cinema-page-accent-text': theme.pageAccentText,
+    '--cinema-surface-accent-text': theme.surfaceAccentText,
     '--cinema-primary-bg': theme.primaryBackground,
     '--cinema-primary-ink': theme.primaryInk
   } as CSSProperties;
@@ -134,7 +136,7 @@ export function CinematicLanding({
 
       <section className="mx-auto grid min-h-[78dvh] max-w-7xl items-center gap-10 px-5 py-14 lg:grid-cols-[0.8fr_1.2fr]">
         <Reveal>
-          <p className="font-mono text-xs tracking-[0.24em] text-[var(--cinema-accent-2)]">
+          <p className="font-mono text-xs tracking-[0.24em] text-[var(--cinema-page-accent-text)]">
             {eyebrow}
           </p>
           <h1 className="mt-5 text-5xl font-black leading-[0.96] -tracking-wider sm:text-7xl">
@@ -175,7 +177,7 @@ export function CinematicLanding({
           {proof.map((item, index) => (
             <Reveal key={item} delay={index * 0.06}>
               <article className="min-h-40 rounded-3xl bg-[var(--cinema-surface)] p-6 text-[var(--cinema-surface-ink)]">
-                <span className="font-mono text-xs text-[var(--cinema-accent-2)]">
+                <span className="font-mono text-xs text-[var(--cinema-surface-accent-text)]">
                   0{index + 1}
                 </span>
                 <h2 className="mt-4 text-xl font-bold">{item}</h2>

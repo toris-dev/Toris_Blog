@@ -51,6 +51,19 @@ function assertNoConsoleErrors(errors: string[]) {
   cy.then(() => expect(errors).to.deep.equal([]));
 }
 
+function assertVisibleFocusIndicator(element: HTMLElement) {
+  const style = element.ownerDocument.defaultView!.getComputedStyle(element);
+  const outlineWidth = Number.parseFloat(style.outlineWidth) || 0;
+  const hasOutline =
+    style.outlineStyle !== 'none' &&
+    outlineWidth >= 2 &&
+    style.outlineColor !== 'rgba(0, 0, 0, 0)';
+  const hasBoxShadow = style.boxShadow !== 'none';
+
+  expect(element.matches(':focus-visible')).to.be.true;
+  expect(hasOutline || hasBoxShadow).to.be.true;
+}
+
 function durationToMilliseconds(duration: string) {
   const value = Number.parseFloat(duration) || 0;
   return duration.trim().endsWith('ms') ? value : value * 1000;
@@ -92,13 +105,68 @@ function assertLoadedImages(rootSelector: string) {
 }
 
 function focusedKeyboardActivation(selector: string, key: '{enter}' | ' ') {
-  cy.get(selector).focus();
-  cy.get(selector)
-    .should('have.focus')
-    .should(($control) => {
-      expect($control.attr('class')).to.contain('focus-visible:');
-    });
+  cy.get(selector).scrollIntoView();
+  cy.get(selector).then(($control) => {
+    return focusControlWithTrustedTab($control[0] as HTMLElement);
+  });
   dispatchFocusedKeyboard(key);
+}
+
+function focusControlWithTrustedTab(control: HTMLElement) {
+  const document = control.ownerDocument;
+  let trustedTabSeen = false;
+  const observeTrustedTab = (event: KeyboardEvent) => {
+    if (event.key === 'Tab' && event.isTrusted) trustedTabSeen = true;
+  };
+
+  document.addEventListener('keydown', observeTrustedTab, true);
+
+  return tabToControl(control).then(() => {
+    document.removeEventListener('keydown', observeTrustedTab, true);
+    expect(trustedTabSeen).to.be.true;
+    expect(document.activeElement).to.equal(control);
+    expect(control.className).to.contain('focus-visible:');
+    assertVisibleFocusIndicator(control);
+  });
+}
+
+function dispatchTrustedTab() {
+  const params = {
+    code: 'Tab',
+    key: 'Tab',
+    nativeVirtualKeyCode: 9,
+    windowsVirtualKeyCode: 9
+  };
+
+  return cy
+    .then(() =>
+      Cypress.automation('remote:debugger:protocol', {
+        command: 'Input.dispatchKeyEvent',
+        params: { ...params, type: 'keyDown' }
+      })
+    )
+    .then(() =>
+      Cypress.automation('remote:debugger:protocol', {
+        command: 'Input.dispatchKeyEvent',
+        params: { ...params, type: 'keyUp' }
+      })
+    );
+}
+
+function tabToControl(
+  control: HTMLElement,
+  remainingTabs = 80
+): Cypress.Chainable<unknown> {
+  if (remainingTabs === 0) {
+    throw new Error(
+      `Trusted Tab navigation could not reach ${control.outerHTML}`
+    );
+  }
+
+  return dispatchTrustedTab().then(() => {
+    if (control.ownerDocument.activeElement === control) return;
+    return tabToControl(control, remainingTabs - 1);
+  });
 }
 
 function dispatchFocusedKeyboard(key: '{enter}' | ' ') {
@@ -177,12 +245,10 @@ function exerciseSignature(slug: (typeof projects)[number][0], testId: string) {
       cy.contains('button', '소그룹에 나누기').should('be.disabled');
       focusedKeyboardActivation(signature, '{enter}');
       cy.contains('button', '소그룹에 나누기').should('be.enabled');
-      cy.contains('button', '소그룹에 나누기').focus();
-      cy.contains('button', '소그룹에 나누기')
-        .should('have.focus')
-        .should(($control) => {
-          expect($control.attr('class')).to.contain('focus-visible:');
-        });
+      cy.contains('button', '소그룹에 나누기').scrollIntoView();
+      cy.contains('button', '소그룹에 나누기').then(($control) => {
+        return focusControlWithTrustedTab($control[0] as HTMLElement);
+      });
       dispatchFocusedKeyboard(' ');
       cy.get(status).should('have.text', '소그룹 나눔 카드 준비 완료');
       break;
@@ -232,12 +298,10 @@ function exerciseSignature(slug: (typeof projects)[number][0], testId: string) {
       cy.get(status).should('have.text', 'PROJECTS → WIKI → OUTPUT 연결');
       break;
     case 'product-growth-skills':
-      cy.contains('button', '스토어 등록 준비').focus();
-      cy.contains('button', '스토어 등록 준비')
-        .should('have.focus')
-        .should(($control) => {
-          expect($control.attr('class')).to.contain('focus-visible:');
-        });
+      cy.contains('button', '스토어 등록 준비').scrollIntoView();
+      cy.contains('button', '스토어 등록 준비').then(($control) => {
+        return focusControlWithTrustedTab($control[0] as HTMLElement);
+      });
       dispatchFocusedKeyboard('{enter}');
       cy.get('[aria-pressed="true"]').should('have.length', 1);
       cy.get(status).should('contain.text', 'app-store-listing-creator');

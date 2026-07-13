@@ -7,6 +7,8 @@ export interface CinematicTheme {
   surfaceMuted: string;
   accent: string;
   accent2: string;
+  pageAccentText: string;
+  surfaceAccentText: string;
   primaryBackground: string;
   primaryInk: string;
 }
@@ -21,6 +23,8 @@ export const cinematicThemes = {
     surfaceMuted: '#CBD5E1',
     accent: '#2563EB',
     accent2: '#34D399',
+    pageAccentText: '#6EE7B7',
+    surfaceAccentText: '#6EE7B7',
     primaryBackground: '#1D4ED8',
     primaryInk: '#FFFFFF'
   },
@@ -33,6 +37,8 @@ export const cinematicThemes = {
     surfaceMuted: '#79574B',
     accent: '#FB923C',
     accent2: '#FB7185',
+    pageAccentText: '#9F1239',
+    surfaceAccentText: '#9F1239',
     primaryBackground: '#C2410C',
     primaryInk: '#FFFFFF'
   },
@@ -45,6 +51,8 @@ export const cinematicThemes = {
     surfaceMuted: '#6B5542',
     accent: '#C99A36',
     accent2: '#7393B3',
+    pageAccentText: '#365A78',
+    surfaceAccentText: '#365A78',
     primaryBackground: '#7C5A12',
     primaryInk: '#FFFFFF'
   },
@@ -57,6 +65,8 @@ export const cinematicThemes = {
     surfaceMuted: '#4E5C61',
     accent: '#18B87A',
     accent2: '#FF6B4A',
+    pageAccentText: '#FF9A83',
+    surfaceAccentText: '#9F2D16',
     primaryBackground: '#0B6B4A',
     primaryInk: '#FFFFFF'
   },
@@ -69,6 +79,8 @@ export const cinematicThemes = {
     surfaceMuted: '#64748B',
     accent: '#1D4ED8',
     accent2: '#10B981',
+    pageAccentText: '#047857',
+    surfaceAccentText: '#047857',
     primaryBackground: '#1D4ED8',
     primaryInk: '#FFFFFF'
   },
@@ -81,6 +93,8 @@ export const cinematicThemes = {
     surfaceMuted: '#A5B4CF',
     accent: '#7C5CFC',
     accent2: '#74D9E8',
+    pageAccentText: '#74D9E8',
+    surfaceAccentText: '#74D9E8',
     primaryBackground: '#5B3CC4',
     primaryInk: '#FFFFFF'
   },
@@ -93,6 +107,8 @@ export const cinematicThemes = {
     surfaceMuted: '#526071',
     accent: '#EF4444',
     accent2: '#FACC15',
+    pageAccentText: '#FFFFFF',
+    surfaceAccentText: '#765000',
     primaryBackground: '#B91C1C',
     primaryInk: '#FFFFFF'
   },
@@ -105,6 +121,8 @@ export const cinematicThemes = {
     surfaceMuted: '#C8C2B4',
     accent: '#22B8CF',
     accent2: '#7C6EE6',
+    pageAccentText: '#B8AEFF',
+    surfaceAccentText: '#B8AEFF',
     primaryBackground: '#0E7490',
     primaryInk: '#FFFFFF'
   },
@@ -117,6 +135,8 @@ export const cinematicThemes = {
     surfaceMuted: '#C0C7D3',
     accent: '#8B5CF6',
     accent2: '#38BDF8',
+    pageAccentText: '#38BDF8',
+    surfaceAccentText: '#38BDF8',
     primaryBackground: '#6D28D9',
     primaryInk: '#FFFFFF'
   }
