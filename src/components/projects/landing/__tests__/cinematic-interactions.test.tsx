@@ -7,6 +7,7 @@ import { CinematicLanding } from '../cinematic';
 import DongnePaintLanding from '../DongnePaintLanding';
 import SnapMateLanding from '../SnapMateLanding';
 import StarlightGreenhouseLanding from '../StarlightGreenhouseLanding';
+import VolleyKingLanding from '../VolleyKingLanding';
 import YouthMoneyGuideLanding from '../YouthMoneyGuideLanding';
 import { getProject, projects } from '@/data/projects';
 
@@ -142,6 +143,33 @@ it('grows a seed and unlocks production', async () => {
   await user.click(screen.getByRole('button', { name: '초기화' }));
   expect(screen.getByRole('status')).toHaveTextContent('별가루 0');
   expect(screen.queryByText('초당 +1')).not.toBeInTheDocument();
+});
+
+it('exposes receive, set, and spike in order, then resets the rally', async () => {
+  const user = userEvent.setup();
+  render(<VolleyKingLanding project={getProject('volley-king-30')!} />);
+  const hit = screen.getByTestId('volley-hit');
+  const status = screen.getByRole('status');
+
+  expect(screen.getByText('00:30')).toBeInTheDocument();
+  expect(hit).toHaveTextContent('리시브');
+  expect(status).toHaveTextContent('COMBO 0');
+
+  await user.click(hit);
+  expect(hit).toHaveTextContent('토스');
+  expect(status).toHaveTextContent('COMBO 1');
+
+  await user.click(hit);
+  expect(hit).toHaveTextContent('스파이크');
+  expect(status).toHaveTextContent('COMBO 2');
+
+  await user.click(hit);
+  expect(hit).toHaveTextContent('다시 랠리');
+  expect(status).toHaveTextContent('NICE SPIKE · COMBO 3');
+
+  await user.click(hit);
+  expect(hit).toHaveTextContent('리시브');
+  expect(status).toHaveTextContent('COMBO 0');
 });
 
 it('completes a reading and unlocks sharing', async () => {
