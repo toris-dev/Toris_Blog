@@ -9,9 +9,9 @@ import { Metadata } from 'next';
 // ISR Writes 절감: 7일 (온디맨드 /api/revalidate 우선)
 export const revalidate = 604800;
 
-const PAGE_TITLE = 'Toris Blog - 웹 개발자의 기술 블로그';
+const PAGE_TITLE = 'TORIS — 아이디어를 작동하게, 끝까지';
 const PAGE_DESCRIPTION =
-  '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript로 만드는 모던 웹 개발 이야기';
+  '문제를 제품의 언어로 정리하고, 앱·웹·데스크톱 화면과 시스템을 함께 설계해 실제로 운영되는 결과까지 만듭니다.';
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -23,10 +23,10 @@ export const metadata: Metadata = {
     url: '/',
     images: [
       {
-        url: getDefaultOGImageUrl('Toris Blog', '웹 개발자의 기술 블로그'),
+        url: getDefaultOGImageUrl('TORIS', '아이디어를 작동하게, 끝까지'),
         width: 1200,
         height: 630,
-        alt: 'Toris Blog'
+        alt: 'TORIS 제품 개발 스튜디오'
       }
     ]
   },
@@ -34,37 +34,15 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    images: [getDefaultOGImageUrl('Toris Blog', '웹 개발자의 기술 블로그')]
+    images: [getDefaultOGImageUrl('TORIS', '아이디어를 작동하게, 끝까지')]
   }
 };
 
-const FEATURED_POSTS_COUNT = 6;
-const TOP_TAGS_COUNT = 18;
+const FEATURED_POSTS_COUNT = 3;
 
 export default function Home() {
   const posts = getPostData();
   const featuredPosts = posts.slice(0, FEATURED_POSTS_COUNT);
-
-  // 카테고리별 포스트 수 (많은 순)
-  const categoryMap = new Map<string, number>();
-  posts.forEach((post) => {
-    categoryMap.set(post.category, (categoryMap.get(post.category) || 0) + 1);
-  });
-  const categories = [...categoryMap.entries()]
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count);
-
-  // 태그별 포스트 수 (많은 순 상위 N개)
-  const tagMap = new Map<string, number>();
-  posts.forEach((post) => {
-    (Array.isArray(post.tags) ? post.tags : []).forEach((tag) => {
-      tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
-    });
-  });
-  const topTags = [...tagMap.entries()]
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, TOP_TAGS_COUNT);
 
   // 클라이언트 랜딩으로 넘길 직렬화 가능한 최소 payload
   const landingPosts: LandingPost[] = featuredPosts.map((post) => ({
@@ -88,12 +66,12 @@ export default function Home() {
       <Home3DLanding
         data={{
           postCount: posts.length,
-          categoryCount: categories.length,
-          tagCount: tagMap.size,
+          categoryCount: 0,
+          tagCount: 0,
           projectCount: projects.length + moreProjects.length,
           featuredPosts: landingPosts,
-          categories,
-          topTags
+          categories: [],
+          topTags: []
         }}
       />
     </>

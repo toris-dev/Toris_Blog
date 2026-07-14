@@ -469,7 +469,10 @@ function WorkVisual({ work }: { work: StudioCaseStudy }) {
     return (
       <div
         className="relative aspect-[16/9] overflow-hidden border-b border-border bg-foreground/5 xl:border-b-0 xl:border-r"
-        style={{ backgroundColor: `${work.accent}14` }}
+        style={{
+          backgroundColor:
+            'color-mix(in srgb, var(--toris-system) 8%, var(--toris-surface))'
+        }}
       >
         <Image
           src={work.image}

@@ -42,7 +42,9 @@ function SidebarPanel({
       )}
 
       <Suspense
-        fallback={<motion.div className="text-muted-foreground">로딩 중...</motion.div>}
+        fallback={
+          <motion.div className="text-muted-foreground">로딩 중...</motion.div>
+        }
       >
         <CategorySidebar posts={posts} />
       </Suspense>
@@ -99,8 +101,11 @@ export default function Sidebar({ posts }: SidebarProps) {
   // 풀블리드 랜딩은 블로그 사이드바 제외:
   // - 프로덕션 서비스 랜딩(/projects)
   // - 몰입형 3D 홈(/)
-  const isProjectRoute = pathname?.startsWith('/projects') ?? false;
-  const isHomeRoute = pathname === '/';
+  const isFullBleedRoute =
+    pathname === '/' ||
+    ['/projects', '/services', '/work', '/process', '/contact', '/about'].some(
+      (route) => pathname?.startsWith(route)
+    );
 
   // ESC로 닫기
   useEffect(() => {
@@ -114,7 +119,7 @@ export default function Sidebar({ posts }: SidebarProps) {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [isOpen, close]);
 
-  if (isProjectRoute || isHomeRoute) {
+  if (isFullBleedRoute) {
     return null;
   }
 

@@ -5,6 +5,10 @@ import { revalidatePath } from 'next/cache';
 export interface ContactFormData {
   name: string;
   email: string;
+  projectType: string;
+  budgetRange: string;
+  timeline: string;
+  requiredFeatures: string;
   message: string;
 }
 
@@ -20,11 +24,26 @@ export async function submitContactForm(
 ): Promise<ContactActionResult> {
   try {
     // 입력 검증
-    if (!formData.name || !formData.email || !formData.message) {
+    if (
+      !formData.name?.trim() ||
+      !formData.email?.trim() ||
+      !formData.projectType?.trim() ||
+      !formData.budgetRange?.trim() ||
+      !formData.timeline?.trim() ||
+      !formData.requiredFeatures?.trim()
+    ) {
       return {
         success: false,
-        message: '이름, 이메일, 메시지는 필수 항목입니다.',
+        message: '필수 상담 정보를 모두 입력해 주세요.',
         error: 'Validation error'
+      };
+    }
+
+    if (!/^\S+@\S+\.\S+$/.test(formData.email.trim())) {
+      return {
+        success: false,
+        message: '회신 가능한 이메일 주소를 입력해 주세요.',
+        error: 'Invalid email'
       };
     }
 
@@ -44,15 +63,22 @@ export async function submitContactForm(
     }
 
     // 댓글 내용 포맷팅
-    const commentBody = `## 새로운 문의
+    const commentBody = `## 새로운 프로젝트 상담
 
-**이름:** ${formData.name}  
-**이메일:** ${formData.email}  
-**메시지:**  
-${formData.message}
+**이름:** ${formData.name}
+**이메일:** ${formData.email}
+**개발 유형:** ${formData.projectType}
+**예산 범위:** ${formData.budgetRange}
+**희망 일정:** ${formData.timeline}
+
+### 필요한 기능
+${formData.requiredFeatures}
+
+### 현재 상황과 참고 사항
+${formData.message || '별도 참고 사항 없음'}
 
 ---
-*이 댓글은 블로그 /contact 페이지를 통해 사용자가 직접 생성한 문의 내용입니다.*`;
+*이 댓글은 TORIS /contact 프로젝트 상담 양식을 통해 생성되었습니다.*`;
 
     // GitHub API 호출 (캐싱 없음 - POST 요청이므로)
     const response = await fetch(
@@ -90,7 +116,7 @@ ${formData.message}
 
     return {
       success: true,
-      message: '메시지가 성공적으로 전송되었습니다!',
+      message: '상담 요청을 받았습니다. 영업일 기준 1–2일 내 회신드리겠습니다.',
       commentUrl: result.html_url
     };
   } catch (error) {

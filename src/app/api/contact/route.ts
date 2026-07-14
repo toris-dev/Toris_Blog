@@ -2,12 +2,27 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, message } = await request.json();
+    const {
+      name,
+      email,
+      projectType,
+      budgetRange,
+      timeline,
+      requiredFeatures,
+      message
+    } = await request.json();
 
     // 입력 검증
-    if (!name || !email || !message) {
+    if (
+      !name ||
+      !email ||
+      !projectType ||
+      !budgetRange ||
+      !timeline ||
+      !requiredFeatures
+    ) {
       return NextResponse.json(
-        { error: 'Name, email, and message are required' },
+        { error: 'Required project inquiry fields are missing' },
         { status: 400 }
       );
     }
@@ -27,15 +42,22 @@ export async function POST(request: NextRequest) {
     }
 
     // 댓글 내용 포맷팅
-    const commentBody = `## 새로운 문의
+    const commentBody = `## 새로운 프로젝트 상담
 
-**이름:** ${name}  
-**이메일:** ${email}  
-**메시지:**  
-${message}
+**이름:** ${name}
+**이메일:** ${email}
+**개발 유형:** ${projectType}
+**예산 범위:** ${budgetRange}
+**희망 일정:** ${timeline}
+
+### 필요한 기능
+${requiredFeatures}
+
+### 현재 상황과 참고 사항
+${message || '별도 참고 사항 없음'}
 
 ---
-*이 댓글은 블로그 연락 폼을 통해 자동으로 생성되었습니다.*`;
+*이 댓글은 TORIS 프로젝트 상담 양식을 통해 자동으로 생성되었습니다.*`;
 
     // GitHub API 호출
     const response = await fetch(

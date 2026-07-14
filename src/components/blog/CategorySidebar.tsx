@@ -5,14 +5,13 @@ import {
   AiOutlineMail,
   FaCalendarAlt,
   FaUserCircle,
-  FaListAlt,
   IoIosArrowDown
 } from '@/components/icons';
 import { Post } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { cn } from '@/utils/style';
@@ -64,7 +63,6 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
   const [localPosts, setLocalPosts] = useState<Post[]>([]);
   const [fetchLoading, setFetchLoading] = useState(!propPosts);
   const [mounted, setMounted] = useState(false);
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const currentCategory =
@@ -192,21 +190,6 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
         </div>
       </div>
 
-      <div className="my-4 border-b border-border px-6 pb-4">
-        <Link
-          href="/todos"
-          className={cn(
-            'flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors',
-            pathname === '/todos'
-              ? 'bg-primary/10 text-primary'
-              : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-          )}
-        >
-          <FaListAlt className="size-4" />
-          <span>Toris 할일 관리</span>
-        </Link>
-      </div>
-
       {/* Navigation Section */}
       <div className="p-6">
         <h3 className="mb-4 flex items-center text-lg font-bold text-foreground">
@@ -216,15 +199,15 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
 
         {/* All Posts Link */}
         <div className="mb-3">
-        <Link
-          href="/posts"
-          className={cn(
-            'block rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-background/80',
-            !currentCategory
-              ? 'bg-primary/10 text-primary'
-              : 'text-foreground/80 hover:text-foreground'
-          )}
-        >
+          <Link
+            href="/blog"
+            className={cn(
+              'block rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-background/80',
+              !currentCategory
+                ? 'bg-primary/10 text-primary'
+                : 'text-foreground/80 hover:text-foreground'
+            )}
+          >
             <span className="flex items-center justify-between">
               <span>All Posts</span>
               <span className="text-xs text-muted-foreground">

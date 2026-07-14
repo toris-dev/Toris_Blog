@@ -6,30 +6,30 @@ const baseUrl =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
 
 export const metadata: Metadata = {
-  title: '문의하기 - Toris Dev Blog',
+  title: '프로젝트 상담 - TORIS',
   description:
-    '블로그에 관한 피드백이나 협업 제안은 언제든지 환영합니다. 문의사항을 남겨주세요.',
+    '웹·앱·데스크톱·MVP 개발 유형, 예산과 일정, 필요한 기능을 남기고 프로젝트 범위를 상담하세요.',
   openGraph: {
-    title: '문의하기 - Toris Dev Blog',
+    title: '프로젝트 상담 - TORIS',
     description:
-      '블로그에 관한 피드백이나 협업 제안은 언제든지 환영합니다. 문의사항을 남겨주세요.',
+      '웹·앱·데스크톱·MVP 개발 유형, 예산과 일정, 필요한 기능을 남기고 프로젝트 범위를 상담하세요.',
     type: 'website',
     url: `${baseUrl}/contact`,
     images: [
       {
-        url: getDefaultOGImageUrl('문의하기', 'Toris Dev Blog'),
+        url: getDefaultOGImageUrl('프로젝트 상담', 'TORIS 제품 개발 스튜디오'),
         width: 1200,
         height: 630,
-        alt: 'Toris Dev Blog 문의하기'
+        alt: 'TORIS 프로젝트 상담'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: '문의하기 - Toris Dev Blog',
+    title: '프로젝트 상담 - TORIS',
     description:
-      '블로그에 관한 피드백이나 협업 제안은 언제든지 환영합니다. 문의사항을 남겨주세요.',
-    images: [getDefaultOGImageUrl('문의하기', 'Toris Dev Blog')]
+      '웹·앱·데스크톱·MVP 개발 유형, 예산과 일정, 필요한 기능을 남기고 프로젝트 범위를 상담하세요.',
+    images: [getDefaultOGImageUrl('프로젝트 상담', 'TORIS 제품 개발 스튜디오')]
   },
   alternates: {
     canonical: `${baseUrl}/contact`
@@ -47,13 +47,13 @@ export default function ContactLayout({
         page="contact"
         data={{
           url: `${baseUrl}/contact`,
-          name: '문의하기 - Toris Dev Blog',
+          name: '프로젝트 상담 - TORIS',
           description:
-            '블로그에 관한 피드백이나 협업 제안은 언제든지 환영합니다. 문의사항을 남겨주세요.'
+            '웹·앱·데스크톱·MVP 개발 유형, 예산과 일정, 필요한 기능을 남기고 프로젝트 범위를 상담하세요.'
         }}
         breadcrumb={[
           { name: '홈', url: '/' },
-          { name: '문의하기', url: '/contact' }
+          { name: '프로젝트 상담', url: '/contact' }
         ]}
       />
       {children}
