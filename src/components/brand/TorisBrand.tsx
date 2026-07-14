@@ -9,7 +9,7 @@ export type TorisBrandProps = {
   priority?: boolean;
 };
 
-const TORIS_MARK_SRC = '/brand/toris-mark-v2.png';
+const TORIS_MARK_SRC = '/brand/toris-mark-v2.svg';
 
 export function TorisBrand({
   variant = 'lockup',

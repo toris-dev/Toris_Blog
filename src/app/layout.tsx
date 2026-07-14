@@ -36,14 +36,27 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app'
   ),
   title: {
-    default: 'Toris Blog - 웹 개발자의 기술 블로그',
-    template: '%s | Toris Blog'
+    default: 'TORIS - 앱·웹·데스크톱 제품 개발 스튜디오',
+    template: '%s | TORIS'
   },
   description:
-    '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript, Node.js 등 웹 개발 기술과 프로젝트 경험을 공유합니다.',
+    '아이디어 검증부터 출시와 운영까지, 앱·웹·데스크톱 제품의 처음과 끝을 함께 설계하고 개발합니다.',
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      {
+        url: '/brand/toris-mark-v2.svg',
+        sizes: 'any',
+        type: 'image/svg+xml'
+      }
+    ],
+    shortcut: '/brand/toris-mark-v2.svg',
+    apple: [{ url: '/apple-icon', sizes: '180x180', type: 'image/png' }]
+  },
   keywords: [
     '토리스',
-    'Toris Blog',
+    'TORIS',
+    'Toris Studio',
     '웹 개발',
     '프론트엔드',
     '백엔드',
@@ -69,7 +82,7 @@ export const metadata: Metadata = {
     telephone: false
   },
   category: 'technology',
-  classification: 'Technology Blog',
+  classification: 'Product Development Studio',
   referrer: 'origin-when-cross-origin',
   robots: {
     index: true,
@@ -88,16 +101,16 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ko_KR',
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app',
-    siteName: 'Toris Blog',
-    title: 'Toris Blog - 웹 개발자의 기술 블로그',
+    siteName: 'TORIS',
+    title: 'TORIS - 앱·웹·데스크톱 제품 개발 스튜디오',
     description:
-      '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript, Node.js 등 웹 개발 기술과 프로젝트 경험을 공유합니다.'
+      '아이디어 검증부터 출시와 운영까지, 앱·웹·데스크톱 제품의 처음과 끝을 함께 설계하고 개발합니다.'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Toris Blog - 웹 개발자의 기술 블로그',
+    title: 'TORIS - 앱·웹·데스크톱 제품 개발 스튜디오',
     description:
-      '풀스택 웹 개발자 토리스의 기술 블로그입니다. React, Next.js, TypeScript, Node.js 등 웹 개발 기술과 프로젝트 경험을 공유합니다.',
+      '아이디어 검증부터 출시와 운영까지, 앱·웹·데스크톱 제품의 처음과 끝을 함께 설계하고 개발합니다.',
     creator: '@toris_dev'
   },
   ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
@@ -157,25 +170,26 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <meta
           name="theme-color"
-          content="#ffffff"
+          content="#F5F7FA"
           media="(prefers-color-scheme: light)"
         />
         <meta
           name="theme-color"
-          content="#0f172a"
+          content="#0E0F12"
           media="(prefers-color-scheme: dark)"
         />
         <link
           rel="icon"
-          href="/images/favicon.svg"
+          href="/brand/toris-mark-v2.svg"
           sizes="any"
           type="image/svg+xml"
         />
         <link
           rel="alternate icon"
-          href="/images/favicon.svg"
+          href="/brand/toris-mark-v2.svg"
           type="image/svg+xml"
         />
+        <link rel="apple-touch-icon" href="/apple-icon" sizes="180x180" />
         <link
           rel="alternate"
           type="application/rss+xml"
@@ -183,7 +197,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           href={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://toris-blog.vercel.app'}/feed.xml`}
         />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="author" href="/llms.txt" type="text/plain" title="LLMs content guide" />
+        <link
+          rel="author"
+          href="/llms.txt"
+          type="text/plain"
+          title="LLMs content guide"
+        />
 
         {/* Google AdSense - 쿠키 동의 후에만 로드 */}
         {process.env.NEXT_PUBLIC_ADSENSE_ID && (

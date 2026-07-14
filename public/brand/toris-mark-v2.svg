@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+  <title id="title">TORIS symbol</title>
+  <g fill="none" stroke="#0E0F12" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48 42H208V78H154V126C154 142 164 152 180 152C198 152 208 162 208 178C208 194 198 204 180 204H128V220"/>
+    <path d="M48 42V78H102V126H72"/>
+  </g>
+  <circle cx="72" cy="126" r="22" fill="#0E0F12"/>
+  <circle cx="72" cy="126" r="9" fill="#2B8FFF"/>
+  <circle cx="128" cy="220" r="22" fill="#0E0F12"/>
+  <circle cx="128" cy="220" r="9" fill="#10A37F"/>
+</svg>

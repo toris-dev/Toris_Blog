@@ -7,7 +7,7 @@ describe('TorisBrand', () => {
 
     expect(screen.getByRole('img', { name: 'TORIS 로고' })).toHaveAttribute(
       'src',
-      expect.stringContaining('toris-mark-v2.png')
+      expect.stringContaining('toris-mark-v2.svg')
     );
     expect(
       container.querySelector('[data-brand-variant="mark"]')

@@ -40,14 +40,14 @@ export default function Footer() {
                 href="https://github.com/toris-dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex size-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-150 hover:border-primary/40 hover:text-primary"
+                className="flex size-11 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-150 hover:border-primary/40 hover:text-primary"
                 aria-label="TORIS GitHub"
               >
                 <AiFillGithub className="size-4" />
               </a>
               <a
                 href={`mailto:${studioBusiness.email}`}
-                className="flex size-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-150 hover:border-primary/40 hover:text-primary"
+                className="flex size-11 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-150 hover:border-primary/40 hover:text-primary"
                 aria-label="TORIS 이메일"
               >
                 <AiOutlineMail className="size-4" />
@@ -64,7 +64,7 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-muted-foreground transition-colors duration-150 hover:text-primary"
+                  className="flex min-h-11 items-center text-sm text-muted-foreground transition-colors duration-150 hover:text-primary"
                 >
                   {link.label}
                 </Link>

@@ -7,14 +7,14 @@ export const contentType = 'image/png';
 
 export default async function Icon() {
   const mark = await readFile(
-    path.join(process.cwd(), 'public/brand/toris-mark-v2.png'),
-    'base64'
+    path.join(process.cwd(), 'public/brand/toris-mark-v2.svg'),
+    'utf8'
   );
 
   return new ImageResponse(
     (
       <img
-        src={`data:image/png;base64,${mark}`}
+        src={`data:image/svg+xml;base64,${Buffer.from(mark).toString('base64')}`}
         alt=""
         width={size.width}
         height={size.height}

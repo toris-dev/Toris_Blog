@@ -59,7 +59,7 @@ describe('Header', () => {
     ).toBeInTheDocument();
     expect(homeLink.querySelector('img')).toHaveAttribute(
       'src',
-      expect.stringContaining('toris-mark-v2.png')
+      expect.stringContaining('toris-mark-v2.svg')
     );
   });
 

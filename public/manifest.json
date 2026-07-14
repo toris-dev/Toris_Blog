@@ -9,15 +9,15 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/brand/toris-app-icon-v2.png",
-      "sizes": "1254x1254",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "/brand/toris-app-icon-v2.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
     {
-      "src": "/brand/toris-mark-v2.png",
-      "sizes": "1254x1254",
-      "type": "image/png",
+      "src": "/brand/toris-mark-v2.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
       "purpose": "any"
     }
   ],
