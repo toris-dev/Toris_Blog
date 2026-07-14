@@ -2,28 +2,52 @@
 
 import {
   FaBlog,
-  FaHome,
+  FaCodeBranch,
   FaPaperPlane,
   FaSearch,
-  FaUser,
+  FaTools,
   AiOutlineFolderOpen
 } from '@/components/icons';
+import { TorisBrand } from '@/components/brand/TorisBrand';
 import { cn } from '@/utils/style';
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import {
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll
+} from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FC, useState, useRef, useMemo, useEffect } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import SearchModal from './SearchModal';
 import ThemeToggle from './ThemeToggle';
 
 // 모바일 하단 네비게이션 아이템 (컴포넌트 외부 상수로 이동)
 const mobileNavItems = [
-  { href: '/', icon: FaHome, label: '홈' },
-  { href: '/posts', icon: FaBlog, label: '블로그' },
-  { href: '/projects', icon: AiOutlineFolderOpen, label: '프로젝트' },
-  { href: '/about', icon: FaUser, label: '소개' },
+  { href: '/services', icon: FaTools, label: '서비스' },
+  { href: '/work', icon: AiOutlineFolderOpen, label: '작업 사례' },
+  { href: '/process', icon: FaCodeBranch, label: '진행 방식' },
+  { href: '/blog', icon: FaBlog, label: '블로그' },
   { href: '/contact', icon: FaPaperPlane, label: '문의' }
 ];
+
+const TOP_VISIBILITY_THRESHOLD = 72;
+const DIRECTION_CHANGE_THRESHOLD = 6;
+
+export function getHeaderVisibility(
+  previousScrollY: number,
+  currentScrollY: number,
+  currentVisibility: boolean
+) {
+  if (currentScrollY <= TOP_VISIBILITY_THRESHOLD) return true;
+
+  const scrollDelta = currentScrollY - previousScrollY;
+  if (Math.abs(scrollDelta) < DIRECTION_CHANGE_THRESHOLD) {
+    return currentVisibility;
+  }
+
+  return scrollDelta < 0;
+}
 
 const Header: FC = () => {
   const pathname = usePathname();
@@ -31,57 +55,53 @@ const Header: FC = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [mounted, setMounted] = useState(false);
   const { scrollY } = useScroll();
+  const reduceMotion = useReducedMotion();
   const lastScrollY = useRef(0);
-  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
-    // 기존 timeout 제거
-    if (debounceTimeoutRef.current) {
-      clearTimeout(debounceTimeoutRef.current);
+    const previousScrollY = lastScrollY.current;
+
+    if (latest <= TOP_VISIBILITY_THRESHOLD) {
+      lastScrollY.current = latest;
+      setIsVisible(true);
+      return;
     }
 
-    // 마지막 스크롤 위치 저장
-    const previousScrollY = lastScrollY.current;
+    if (Math.abs(latest - previousScrollY) < DIRECTION_CHANGE_THRESHOLD) return;
+
     lastScrollY.current = latest;
-
-    // debounce 적용 (100ms 후 실행)
-    debounceTimeoutRef.current = setTimeout(() => {
-      if (latest > previousScrollY && latest > 100) {
-        setIsVisible(false);
-      } else if (latest < previousScrollY) {
-        setIsVisible(true);
-      }
-    }, 100);
+    setIsVisible((currentVisibility) =>
+      getHeaderVisibility(previousScrollY, latest, currentVisibility)
+    );
   });
-
-  // 컴포넌트 언마운트 시 timeout 정리
-  useEffect(() => {
-    return () => {
-      if (debounceTimeoutRef.current) {
-        clearTimeout(debounceTimeoutRef.current);
-      }
-    };
-  }, []);
 
   const navItems = useMemo(
     () => [
-      { href: '/', label: '홈', isActive: pathname === '/' },
       {
-        href: '/posts',
+        href: '/services',
+        label: '서비스',
+        isActive: pathname.startsWith('/services')
+      },
+      {
+        href: '/work',
+        label: '작업 사례',
+        isActive:
+          pathname.startsWith('/work') || pathname.startsWith('/projects')
+      },
+      {
+        href: '/process',
+        label: '진행 방식',
+        isActive: pathname.startsWith('/process')
+      },
+      {
+        href: '/blog',
         label: '블로그',
-        isActive: pathname.startsWith('/posts')
+        isActive: pathname.startsWith('/blog') || pathname.startsWith('/posts')
       },
-      {
-        href: '/projects',
-        label: '프로젝트',
-        isActive: pathname.startsWith('/projects')
-      },
-      { href: '/todos', label: '할일 관리', isActive: pathname === '/todos' },
-      { href: '/about', label: '소개', isActive: pathname === '/about' },
       { href: '/contact', label: '문의', isActive: pathname === '/contact' }
     ],
     [pathname]
@@ -90,45 +110,30 @@ const Header: FC = () => {
   return (
     <>
       {/* Desktop Header */}
-      <header
-        className={cn(
-          'shadow-soft fixed inset-x-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60',
-          !isVisible && 'hide'
-        )}
+      <motion.header
+        initial={false}
+        animate={{ y: mounted && !isVisible ? '-100%' : '0%' }}
+        transition={
+          reduceMotion
+            ? { duration: 0 }
+            : {
+                duration: isVisible ? 0.24 : 0.18,
+                ease: isVisible ? [0.23, 1, 0.32, 1] : [0.4, 0, 1, 1]
+              }
+        }
+        onFocusCapture={() => setIsVisible(true)}
+        className="shadow-soft fixed inset-x-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60"
         suppressHydrationWarning
       >
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           {/* Logo */}
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link href="/" className="flex items-center gap-2 font-bold">
-              <motion.div
-                className="shadow-soft flex size-8 items-center justify-center"
-                whileHover={{
-                  rotate: 360,
-                  transition: { duration: 0.6, ease: 'easeInOut' }
-                }}
-              >
-                <svg
-                  viewBox="0 0 128 128"
-                  className="size-8"
-                  role="img"
-                  aria-label="Toris Blog 로고"
-                >
-                  <defs>
-                    <linearGradient id="toris-logo-g" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#6366F1" />
-                      <stop offset="100%" stopColor="#EC4899" />
-                    </linearGradient>
-                  </defs>
-                  <rect width="128" height="128" rx="28" fill="url(#toris-logo-g)" />
-                  <rect x="30" y="34" width="68" height="15" rx="7.5" fill="#FFFFFF" />
-                  <rect x="56.5" y="34" width="15" height="60" rx="7.5" fill="#FFFFFF" />
-                  <rect x="76" y="80" width="14" height="14" rx="3.5" fill="#34D399" />
-                </svg>
-              </motion.div>
-              <span className="text-xl font-bold text-foreground">
-                Toris Blog
-              </span>
+          <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
+            <Link href="/" className="flex min-h-11 items-center font-bold">
+              <TorisBrand
+                priority
+                markClassName="size-8"
+                wordmarkClassName="text-lg tracking-[0.1em]"
+              />
             </Link>
           </motion.div>
 
@@ -182,16 +187,18 @@ const Header: FC = () => {
             <ThemeToggle />
           </div>
         </div>
-      </header>
+      </motion.header>
 
-      {/* Mobile Bottom Navigation - 스크롤 다운 시 숨김, 스크롤 업 시 표시 (데스크톱 헤더와 동일한 isVisible + 디바운스 적용) */}
+      {/* Mobile Bottom Navigation - 데스크톱 헤더와 같은 스크롤 방향을 따릅니다. */}
       <motion.div
         className="shadow-soft fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 md:hidden"
         initial={false}
-        animate={
-          mounted ? (isVisible ? { y: 0 } : { y: 100 }) : { y: 100 }
+        animate={mounted ? (isVisible ? { y: 0 } : { y: 100 }) : { y: 100 }}
+        transition={
+          reduceMotion
+            ? { duration: 0 }
+            : { duration: isVisible ? 0.24 : 0.18, ease: 'easeInOut' }
         }
-        transition={{ duration: 0.3, ease: 'easeInOut' }}
       >
         <div className="grid min-w-0 grid-cols-5 gap-0 px-1 py-1.5">
           {mobileNavItems.map(({ href, icon: Icon, label }) => (
@@ -205,7 +212,15 @@ const Header: FC = () => {
                 href={href}
                 className={cn(
                   'flex flex-col items-center justify-center gap-0.5 rounded-md px-1 py-1.5 text-[10px] transition-colors sm:text-xs',
-                  pathname === href
+                  (
+                    href === '/blog'
+                      ? pathname.startsWith('/blog') ||
+                        pathname.startsWith('/posts')
+                      : href === '/work'
+                        ? pathname.startsWith('/work') ||
+                          pathname.startsWith('/projects')
+                        : pathname.startsWith(href)
+                  )
                     ? 'bg-primary/10 text-primary'
                     : 'text-muted-foreground hover:bg-accent hover:text-foreground'
                 )}
