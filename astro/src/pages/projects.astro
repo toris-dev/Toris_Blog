@@ -11,6 +11,12 @@ const compactGroups = [
   { label: '개발 중', items: building, badge: 'bg-gold/10 text-gold' },
   { label: '출시', items: shipped, badge: 'bg-night text-sand' }
 ].filter((g) => g.items.length > 0);
+
+// 서비스 링크(웹사이트·스토어·릴리스 다운로드)만 클릭 허용.
+// GitHub 리포/프로필 루트로만 가는 항목은 카드 링크를 제거한다.
+const isServiceLink = (url: string) =>
+  !url.startsWith('https://github.com/') || /\/releases\/?$/.test(url);
+
 ---
 
 <Base
@@ -50,11 +56,11 @@ const compactGroups = [
           운영 중
         </h2>
         <div class="mt-8 grid gap-6 sm:grid-cols-2">
-          {live.map((p, i) => (
-            <a
-              href={p.github}
-              target="_blank"
-              rel="noopener noreferrer"
+          {live.map((p, i) => { const Tag = isServiceLink(p.github) ? 'a' : 'div'; return (
+            <Tag
+              href={isServiceLink(p.github) ? p.github : undefined}
+              target={isServiceLink(p.github) ? '_blank' : undefined}
+              rel={isServiceLink(p.github) ? 'noopener noreferrer' : undefined}
               class="reveal group relative overflow-hidden rounded-2xl border border-line bg-coal p-7 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30 focus-visible:outline-2 focus-visible:outline-gold"
               style={`transition-delay: ${i * 70}ms`}
             >
@@ -81,8 +87,8 @@ const compactGroups = [
                   </span>
                 ))}
               </p>
-            </a>
-          ))}
+            </Tag>
+          ); })}
         </div>
       </section>
     )
@@ -106,11 +112,11 @@ const compactGroups = [
           {group.label}
         </h2>
         <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {group.items.map((p, i) => (
-            <a
-              href={p.github}
-              target="_blank"
-              rel="noopener noreferrer"
+          {group.items.map((p, i) => { const Tag = isServiceLink(p.github) ? 'a' : 'div'; return (
+            <Tag
+              href={isServiceLink(p.github) ? p.github : undefined}
+              target={isServiceLink(p.github) ? '_blank' : undefined}
+              rel={isServiceLink(p.github) ? 'noopener noreferrer' : undefined}
               class="reveal group relative overflow-hidden rounded-2xl border border-line bg-coal p-6 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30 focus-visible:outline-2 focus-visible:outline-gold"
               style={`transition-delay: ${i * 60}ms`}
             >
@@ -142,8 +148,8 @@ const compactGroups = [
                   </span>
                 ))}
               </p>
-            </a>
-          ))}
+            </Tag>
+          ); })}
         </div>
       </section>
     ))

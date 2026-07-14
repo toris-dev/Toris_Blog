@@ -62,3 +62,10 @@ export function formatDate(date: string | null | undefined): string {
     day: 'numeric'
   });
 }
+
+/** 어떤 형태의 날짜든 ISO 8601로 정규화(JSON-LD/메타용). 실패 시 undefined */
+export function toISO(date: string | null | undefined): string | undefined {
+  if (!date) return undefined;
+  const d = new Date(date);
+  return Number.isNaN(d.getTime()) ? undefined : d.toISOString();
+}

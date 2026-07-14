@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import { fileBaseName, formatDate, toPlainExcerpt } from '../../lib/slug';
+import { fileBaseName, formatDate, toISO, toPlainExcerpt } from '../../lib/slug';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -31,7 +31,7 @@ const tags = Array.isArray(post.data.tags)
     ? post.data.tags.split(',').map((t) => t.trim()).filter(Boolean)
     : [category];
 
-const date = post.data.date || undefined;
+const date = toISO(post.data.date);
 const wordCount = (post.body || '').split(/\s+/).filter(Boolean).length;
 ---
 
@@ -40,7 +40,7 @@ const wordCount = (post.body || '').split(/\s+/).filter(Boolean).length;
   description={description}
   path={`/posts/${post.id}`}
   ogType="article"
-  article={{ publishedAt: date, tags, category, wordCount }}
+  article={{ headline: title, publishedAt: date, tags, category, wordCount }}
 >
   <article class="mx-auto max-w-3xl px-5 py-14">
     <header class="reveal">

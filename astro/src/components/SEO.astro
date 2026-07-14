@@ -6,6 +6,7 @@
 import { COMPANY, SITE_URL, absoluteUrl } from '../lib/site';
 
 interface Article {
+  headline?: string;
   publishedAt?: string;
   modifiedAt?: string;
   tags?: string[];
@@ -28,7 +29,7 @@ const {
   description,
   path,
   ogType = 'website',
-  image = '/og-default.svg',
+  image = '/og-default.png',
   article,
   noindex = false
 } = Astro.props;
@@ -51,6 +52,8 @@ const personNode = {
   url: SITE_URL,
   image: 'https://github.com/toris-dev.png',
   jobTitle: 'Founder · Full Stack Developer',
+  worksFor: { '@id': ids.organization },
+  knowsAbout: ['Full Stack Development', 'Next.js', 'Astro', 'Flutter', 'AI Coding Agents'],
   sameAs: [
     'https://github.com/toris-dev',
     'https://www.linkedin.com/in/joohwan-yu',
@@ -64,11 +67,27 @@ const organizationNode = {
   name: COMPANY.nameEn,
   alternateName: COMPANY.nameKo,
   url: SITE_URL,
-  logo: { '@type': 'ImageObject', url: absoluteUrl('/og-default.svg') },
+  logo: {
+    '@type': 'ImageObject',
+    url: absoluteUrl('/og-default.png'),
+    width: 1200,
+    height: 630
+  },
   founder: { '@id': ids.person },
   taxID: COMPANY.bizNumber,
   email: COMPANY.email,
-  sameAs: [COMPANY.github]
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    email: COMPANY.email,
+    availableLanguage: ['ko', 'en']
+  },
+  knowsAbout: ['웹 개발', '모바일 앱 개발', '업무 자동화', 'LLM 워크플로'],
+  sameAs: [
+    COMPANY.github,
+    'https://www.linkedin.com/in/joohwan-yu',
+    'https://x.com/TorisDev'
+  ]
 };
 
 const websiteNode = {
@@ -100,7 +119,7 @@ if (article) {
   graph.push({
     '@type': 'BlogPosting',
     '@id': `${canonical}#article`,
-    headline: title,
+    headline: article.headline ?? title,
     description,
     image: ogImage,
     datePublished: article.publishedAt,
@@ -114,7 +133,11 @@ if (article) {
     ...(article.tags?.length ? { keywords: article.tags.join(', ') } : {}),
     ...(article.category ? { articleSection: article.category } : {}),
     ...(article.wordCount ? { wordCount: article.wordCount } : {}),
-    isAccessibleForFree: true
+    isAccessibleForFree: true,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', 'article .prose-post > p:first-of-type']
+    }
   });
 }
 

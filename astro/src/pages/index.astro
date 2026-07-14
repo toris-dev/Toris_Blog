@@ -48,6 +48,12 @@ const steps = [
   { n: '04', t: '개발 · 검증', d: '주 단위로 동작하는 결과물을 공유합니다.' },
   { n: '05', t: '출시 · 운영', d: '배포 후에도 지표와 함께 개선을 잇습니다.' }
 ];
+
+// 서비스 링크(웹사이트·스토어·릴리스 다운로드)만 클릭 허용.
+// GitHub 리포/프로필 루트로만 가는 항목은 카드 링크를 제거한다.
+const isServiceLink = (url: string) =>
+  !url.startsWith('https://github.com/') || /\/releases\/?$/.test(url);
+
 ---
 
 <Base
@@ -120,19 +126,19 @@ const steps = [
       >
         <div>
           <dd class="font-display text-4xl text-ivory sm:text-5xl">
-            <span data-count={String(projects.length)}>0</span><span class="text-gold">+</span>
+            <span data-count={String(projects.length)}>{projects.length}</span><span class="text-gold">+</span>
           </dd>
           <dt class="mt-1 text-xs tracking-wider text-sand">출시·운영 제품</dt>
         </div>
         <div>
           <dd class="font-display text-4xl text-ivory sm:text-5xl">
-            <span data-count={String(entries.length)}>0</span>
+            <span data-count={String(entries.length)}>{entries.length}</span>
           </dd>
           <dt class="mt-1 text-xs tracking-wider text-sand">기술 기록</dt>
         </div>
         <div>
           <dd class="font-display text-4xl text-ivory sm:text-5xl">
-            <span data-count="4">0</span>
+            <span data-count="4">4</span>
           </dd>
           <dt class="mt-1 text-xs tracking-wider text-sand">플랫폼</dt>
         </div>
@@ -238,11 +244,11 @@ const steps = [
     <!-- 위계: 첫 제품 크게, 나머지 3개 컴팩트 -->
     <div class="mt-14 grid gap-4 md:grid-cols-3">
       {
-        featured.map((p, i) => (
-          <a
-            href={p.github}
-            target="_blank"
-            rel="noopener noreferrer"
+        featured.map((p, i) => { const Tag = isServiceLink(p.github) ? 'a' : 'div'; return (
+          <Tag
+            href={isServiceLink(p.github) ? p.github : undefined}
+            target={isServiceLink(p.github) ? '_blank' : undefined}
+            rel={isServiceLink(p.github) ? 'noopener noreferrer' : undefined}
             class:list={[
               'reveal group relative overflow-hidden border border-line bg-coal transition-all duration-300 hover:-translate-y-1 hover:border-gold-deep focus-visible:outline-2 focus-visible:outline-gold',
               i === 0 ? 'p-8 md:col-span-2 md:row-span-2 md:p-12' : 'p-7'
@@ -285,8 +291,8 @@ const steps = [
               class="absolute -bottom-px left-0 h-px w-0 bg-gold transition-all duration-500 group-hover:w-full"
               aria-hidden="true"
             />
-          </a>
-        ))
+          </Tag>
+          ); })
       }
     </div>
   </section>
@@ -443,6 +449,7 @@ const steps = [
       el.textContent = String(target);
       return;
     }
+    el.textContent = '0';
     const t0 = performance.now();
     const dur = 1400;
     const tick = (now: number) => {

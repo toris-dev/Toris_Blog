@@ -13,7 +13,7 @@ export const GET: APIRoute = async () => {
     .map((p) => ({
       slug: p.id,
       title: p.data.title || fileBaseName(p.filePath) || p.id,
-      description: p.data.description || toPlainExcerpt(p.body || '', 90),
+      description: p.data.description || toPlainExcerpt(p.body || '', 90) || '기술 노트',
       date: p.data.date || ''
     }))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
