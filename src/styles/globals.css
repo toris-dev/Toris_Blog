@@ -1,3 +1,4 @@
+@import './brand-tokens.css';
 @import './variables.css';
 @import './animations.css';
 
@@ -7,73 +8,71 @@
 
 @layer base {
   :root {
-    /* 라이트 모드 (2D 아트 스타일) - 기본 테마 */
-    --background: 0 0% 100%; /* #FFFFFF */
-    --foreground: 222 47% 11%; /* #111827 */
-    --card: 0 0% 100%; /* #FFFFFF */
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 239 84% 67%; /* #6366F1 인디고 */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 330 81% 60%; /* #EC4899 핑크 */
-    --secondary-foreground: 0 0% 100%;
-    --muted: 220 14% 96%; /* #F3F4F6 */
-    --muted-foreground: 215 16% 47%; /* #6B7280 */
-    --accent: 142 76% 36%; /* #10B981 에메랄드 그린 */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%; /* #EF4444 */
+    --background: var(--toris-hsl-canvas);
+    --foreground: var(--toris-hsl-ink);
+    --card: var(--toris-hsl-surface);
+    --card-foreground: var(--toris-hsl-ink);
+    --popover: var(--toris-hsl-surface-elevated);
+    --popover-foreground: var(--toris-hsl-ink);
+    --primary: var(--toris-hsl-signal);
+    --primary-foreground: var(--toris-hsl-inverse);
+    --secondary: var(--toris-hsl-system);
+    --secondary-foreground: var(--toris-hsl-inverse);
+    --muted: 220 14% 94%;
+    --muted-foreground: var(--toris-hsl-ink-muted);
+    --accent: var(--toris-hsl-system);
+    --accent-foreground: var(--toris-hsl-inverse);
+    --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 91%; /* #E5E7EB */
-    --input: 220 14% 96%; /* #F9FAFB */
-    --ring: 239 84% 67%;
+    --border: var(--toris-hsl-border);
+    --input: var(--toris-hsl-surface);
+    --ring: var(--toris-hsl-system);
     --radius: 0.75rem;
   }
 
   .dark {
-    /* 다크 모드 (2D 아트 스타일) */
-    --background: 222 47% 11%; /* #0F172A 슬레이트 다크 */
-    --foreground: 210 40% 98%; /* #F1F5F9 */
-    --card: 217 33% 17%; /* #1E293B */
-    --card-foreground: 210 40% 98%;
-    --popover: 217 33% 17%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 239 84% 67%; /* #818CF8 라벤더 */
-    --primary-foreground: 222 47% 11%;
-    --secondary: 330 81% 60%; /* #F472B6 핑크 */
-    --secondary-foreground: 222 47% 11%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 28% 69%; /* #94A3B8 */
-    --accent: 142 76% 50%; /* #34D399 민트 */
-    --accent-foreground: 222 47% 11%;
-    --destructive: 0 72% 51%; /* #F87171 */
-    --destructive-foreground: 222 47% 11%;
-    --border: 217 33% 17%; /* #334155 */
-    --input: 217 33% 17%;
-    --ring: 239 84% 67%;
+    --background: var(--toris-hsl-canvas);
+    --foreground: var(--toris-hsl-ink);
+    --card: var(--toris-hsl-surface);
+    --card-foreground: var(--toris-hsl-ink);
+    --popover: var(--toris-hsl-surface-elevated);
+    --popover-foreground: var(--toris-hsl-ink);
+    --primary: var(--toris-hsl-signal);
+    --primary-foreground: var(--toris-hsl-inverse);
+    --secondary: var(--toris-hsl-system);
+    --secondary-foreground: var(--toris-hsl-inverse);
+    --muted: var(--toris-hsl-surface);
+    --muted-foreground: var(--toris-hsl-ink-muted);
+    --accent: var(--toris-hsl-system);
+    --accent-foreground: var(--toris-hsl-inverse);
+    --destructive: 0 72% 51%;
+    --destructive-foreground: var(--toris-hsl-inverse);
+    --border: var(--toris-hsl-border);
+    --input: var(--toris-hsl-surface-elevated);
+    --ring: var(--toris-hsl-system);
   }
 
   .cyberpunk {
-    /* 사이버펑크 테마 (보존용) */
-    --background: 240 30% 5%; /* #0a0a0f */
-    --foreground: 195 100% 85%; /* 밝은 네온 블루 */
-    --card: 240 30% 8%; /* #1a1a2e */
-    --card-foreground: 195 100% 85%;
-    --popover: 240 30% 8%;
-    --popover-foreground: 195 100% 85%;
-    --primary: 195 100% 50%; /* 네온 블루 #00f0ff */
-    --primary-foreground: 240 30% 5%;
-    --secondary: 270 91% 65%; /* 네온 퍼플 #a855f7 */
-    --secondary-foreground: 240 30% 5%;
-    --muted: 240 20% 15%;
-    --muted-foreground: 195 100% 65%;
-    --accent: 270 91% 65%;
-    --accent-foreground: 240 30% 5%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 195 100% 50% / 0.3;
-    --input: 195 100% 50% / 0.2;
-    --ring: 195 100% 50%;
+    /* Legacy selector retained, but aligned to the TORIS dark system. */
+    --background: 225 13% 6%;
+    --foreground: 216 33% 97%;
+    --card: 220 5% 13%;
+    --card-foreground: 216 33% 97%;
+    --popover: 225 6% 17%;
+    --popover-foreground: 216 33% 97%;
+    --primary: 165 82% 35%;
+    --primary-foreground: 225 13% 6%;
+    --secondary: 214 100% 58%;
+    --secondary-foreground: 225 13% 6%;
+    --muted: 220 5% 13%;
+    --muted-foreground: 225 7% 64%;
+    --accent: 214 100% 58%;
+    --accent-foreground: 225 13% 6%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 225 13% 6%;
+    --border: 225 7% 64% / 0.24;
+    --input: 225 6% 17%;
+    --ring: 214 100% 58%;
   }
 }
 
@@ -84,6 +83,15 @@
     opacity: 1 !important;
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+  }
+
+  .toris-studio *,
+  .toris-studio *::before,
+  .toris-studio *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
 
@@ -105,31 +113,10 @@
     font-feature-settings:
       'rlig' 1,
       'calt' 1;
-    transition:
-      background-color 0.3s ease,
-      color 0.3s ease;
     /* overflow-x는 html에서 clip으로 처리 — body에 두면 sticky가 깨짐 */
     max-width: 100vw;
     width: 100%;
     position: relative;
-  }
-
-  /* 2D 아트 배경 패턴 */
-  body {
-    background-image: radial-gradient(
-      circle,
-      rgba(0, 0, 0, 0.05) 1px,
-      transparent 1px
-    );
-    background-size: 20px 20px;
-  }
-
-  .dark body {
-    background-image: radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.1) 1px,
-      transparent 1px
-    );
   }
 
   ::selection {
@@ -407,15 +394,5 @@
       padding: 8px !important;
       font-size: 12px !important;
     }
-  }
-
-  /* Header hide 클래스 */
-  header.hide {
-    transform: translateY(-100%);
-  }
-
-  /* Header transition */
-  header {
-    transition: transform 0.3s ease-in-out;
   }
 }

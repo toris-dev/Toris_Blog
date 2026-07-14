@@ -1,0 +1,67 @@
+/*
+ * TORIS semantic color contract.
+ * Components should consume semantic tokens; canonical colors stay here as the
+ * single source of truth for brand output and Tailwind compatibility aliases.
+ */
+:root {
+  color-scheme: light;
+
+  --toris-color-ink: #0E0F12;
+  --toris-color-graphite: #202123;
+  --toris-color-mist: #F5F7FA;
+  --toris-color-steel: #9EA1AA;
+  --toris-color-signal-green: #10A37F;
+  --toris-color-system-blue: #2B8FFF;
+
+  --toris-canvas: var(--toris-color-mist);
+  --toris-surface: #FFFFFF;
+  --toris-surface-elevated: #FFFFFF;
+  --toris-ink: var(--toris-color-ink);
+  --toris-ink-muted: #555962;
+  --toris-border: #D9DCE2;
+  --toris-signal: var(--toris-color-signal-green);
+  --toris-system: var(--toris-color-system-blue);
+  --toris-inverse: #FFFFFF;
+  --toris-focus: var(--toris-color-system-blue);
+  --toris-shadow-sm: 0 1px 2px rgba(14, 15, 18, 0.06);
+  --toris-shadow-md: 0 8px 24px rgba(14, 15, 18, 0.08);
+
+  /* HSL channels consumed by the existing Tailwind theme. */
+  --toris-hsl-canvas: 216 33% 97%;
+  --toris-hsl-surface: 0 0% 100%;
+  --toris-hsl-surface-elevated: 0 0% 100%;
+  --toris-hsl-ink: 225 13% 6%;
+  --toris-hsl-ink-muted: 221 7% 36%;
+  --toris-hsl-border: 220 14% 87%;
+  --toris-hsl-signal: 165 82% 35%;
+  --toris-hsl-system: 214 100% 58%;
+  --toris-hsl-inverse: 0 0% 100%;
+}
+
+.dark,
+[data-toris-theme='dark'] {
+  color-scheme: dark;
+
+  --toris-canvas: var(--toris-color-ink);
+  --toris-surface: var(--toris-color-graphite);
+  --toris-surface-elevated: #292A2E;
+  --toris-ink: var(--toris-color-mist);
+  --toris-ink-muted: var(--toris-color-steel);
+  --toris-border: rgba(158, 161, 170, 0.24);
+  --toris-signal: var(--toris-color-signal-green);
+  --toris-system: var(--toris-color-system-blue);
+  --toris-inverse: var(--toris-color-ink);
+  --toris-focus: var(--toris-color-system-blue);
+  --toris-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --toris-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.24);
+
+  --toris-hsl-canvas: 225 13% 6%;
+  --toris-hsl-surface: 220 5% 13%;
+  --toris-hsl-surface-elevated: 225 6% 17%;
+  --toris-hsl-ink: 216 33% 97%;
+  --toris-hsl-ink-muted: 225 7% 64%;
+  --toris-hsl-border: 225 7% 64% / 0.24;
+  --toris-hsl-signal: 165 82% 35%;
+  --toris-hsl-system: 214 100% 58%;
+  --toris-hsl-inverse: 225 13% 6%;
+}
