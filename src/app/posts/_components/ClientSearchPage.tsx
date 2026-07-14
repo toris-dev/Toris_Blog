@@ -7,7 +7,7 @@ import {
   FaTags,
   IoClose
 } from '@/components/icons';
-import { Button } from '@/components/ui/Button';
+import { StudioSection, StudioStage } from '@/components/studio/StudioShell';
 import { Post } from '@/types';
 import { cn } from '@/utils/style';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -15,7 +15,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
-import { saveSearchHistory, filterByDateRange, sortPosts, SearchFilters } from '@/utils/search';
+import {
+  saveSearchHistory,
+  filterByDateRange,
+  sortPosts,
+  SearchFilters
+} from '@/utils/search';
 import { SearchHistory } from '@/components/search/SearchHistory';
 import { HighlightText } from '@/components/search/HighlightText';
 import { debounce } from '@/utils/debounce';
@@ -259,20 +264,12 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
     setShowSearchHistory(false);
   }, []);
 
-  // 카테고리별 색상 매핑 - useCallback으로 메모이제이션
+  // 카테고리는 TORIS 시스템/신호 역할 안에서만 구분한다.
   const getCategoryColor = useCallback((category: string) => {
-    const colors = {
-      Technology: 'from-blue-500/20 to-cyan-500/20 border-blue-500/30',
-      Programming: 'from-green-500/20 to-emerald-500/20 border-green-500/30',
-      Design: 'from-purple-500/20 to-pink-500/20 border-purple-500/30',
-      Life: 'from-orange-500/20 to-yellow-500/20 border-orange-500/30',
-      Review: 'from-red-500/20 to-rose-500/20 border-red-500/30',
-      Tutorial: 'from-indigo-500/20 to-violet-500/20 border-indigo-500/30'
-    };
-    return (
-      colors[category as keyof typeof colors] ||
-      'from-primary/20 to-accent/20 border-primary/30'
-    );
+    const systemCategories = ['Technology', 'Design', 'Tutorial'];
+    return systemCategories.includes(category)
+      ? 'border-[var(--toris-system)] bg-[var(--toris-canvas)] text-[var(--toris-system-text)]'
+      : 'border-[var(--toris-signal)] bg-[var(--toris-canvas)] text-[var(--toris-signal-text)]';
   }, []);
 
   // highlightText 함수를 useCallback으로 메모이제이션
@@ -308,8 +305,11 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
           {/* 검색 결과 개수 표시 */}
           <div className="mb-4 flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              총 <span className="font-semibold text-foreground">{posts.length}</span>개의
-              결과를 찾았습니다
+              총{' '}
+              <span className="font-semibold text-foreground">
+                {posts.length}
+              </span>
+              개의 결과를 찾았습니다
             </p>
           </div>
 
@@ -330,127 +330,138 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
               </p>
             </motion.div>
           ) : (
-        <div className="space-y-6">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-medium text-foreground">
-              {posts.length}개의 검색 결과
-              {searchTerm && ` - "${searchTerm}"`}
-            </h2>
-          </div>
+            <div className="space-y-6">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-xl font-medium text-foreground">
+                  {posts.length}개의 검색 결과
+                  {searchTerm && ` - "${searchTerm}"`}
+                </h2>
+              </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <AnimatePresence initial={false}>
-              {posts.map((post) => {
-                // post.id는 파일 경로 기반 해시이므로 항상 고유함
-                // index를 사용하지 않아 배열 순서 변경 시에도 안정적인 키 유지
-                const uniqueKey = `post-${post.id}`;
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <AnimatePresence initial={false}>
+                  {posts.map((post) => {
+                    // post.id는 파일 경로 기반 해시이므로 항상 고유함
+                    // index를 사용하지 않아 배열 순서 변경 시에도 안정적인 키 유지
+                    const uniqueKey = `post-${post.id}`;
 
-                return (
-                  <motion.div
-                    key={uniqueKey}
-                    initial={false}
-                    animate={
-                      isMounted && !isFiltering ? { opacity: 1, y: 0 } : false
-                    }
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.15, ease: 'easeOut' }}
-                    className="group overflow-hidden rounded-xl border border-primary/30 shadow-sm transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
-                    suppressHydrationWarning
-                  >
-                    <Link href={`/posts/${encodeURIComponent(post.slug)}`}>
-                      <div className="relative h-48 w-full overflow-hidden bg-primary/10">
-                        {post.preview_image_url ? (
-                          <Image
-                            src={post.preview_image_url}
-                            alt={post.title}
-                            fill
-                            className="object-cover transition-all group-hover:scale-105"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          />
-                        ) : (
-                          <div className="flex size-full items-center justify-center">
-                            <FaBlog className="text-6xl text-muted-foreground/20" />
-                          </div>
-                        )}
-                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/90 via-background/70 to-transparent p-4">
-                          <span
-                            className={`rounded-full ${getCategoryColor(post.category)} shadow-soft border px-3 py-1 text-xs font-medium text-foreground backdrop-blur-sm`}
-                          >
-                            {post.category}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="p-5">
-                        <h3 className="mb-2 line-clamp-2 text-lg font-bold text-foreground group-hover:text-primary">
-                          {searchTerm ? (
-                            <HighlightText text={post.title} searchTerm={searchTerm} />
-                          ) : (
-                            post.title
-                          )}
-                        </h3>
-
-                        <p className="mb-4 line-clamp-3 text-sm text-muted-foreground">
-                          {searchTerm ? (
-                            <>
-                              <HighlightText
-                                text={post.content
-                                  .replace(/[#*`_]/g, '')
-                                  .substring(0, 150)}
-                                searchTerm={searchTerm}
+                    return (
+                      <motion.div
+                        key={uniqueKey}
+                        initial={false}
+                        animate={
+                          isMounted && !isFiltering
+                            ? { opacity: 1, y: 0 }
+                            : false
+                        }
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.15, ease: 'easeOut' }}
+                        className="group overflow-hidden rounded-2xl border border-[var(--toris-border)] bg-[var(--toris-surface)] shadow-[var(--toris-shadow-sm)] transition-[border-color,transform] duration-200 focus-within:border-[var(--toris-system)] hover:-translate-y-0.5 hover:border-[var(--toris-system)]"
+                        suppressHydrationWarning
+                      >
+                        <Link href={`/posts/${encodeURIComponent(post.slug)}`}>
+                          <div className="relative h-48 w-full overflow-hidden bg-primary/10">
+                            {post.preview_image_url ? (
+                              <Image
+                                src={post.preview_image_url}
+                                alt={post.title}
+                                fill
+                                className="object-cover transition-all group-hover:scale-105"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                               />
-                              ...
-                            </>
-                          ) : (
-                            <>
-                              {post.content.replace(/[#*`_]/g, '').substring(0, 150)}...
-                            </>
-                          )}
-                        </p>
-
-                        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                          <span className="whitespace-nowrap text-xs text-muted-foreground">
-                            {new Date(post.date).toLocaleDateString('ko-KR', {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric'
-                            })}
-                          </span>
-
-                          <div className="flex flex-wrap items-center gap-1">
-                            {(typeof post.tags === 'string'
-                              ? post.tags
-                                  .split(',')
-                                  .map((tag) => tag.trim())
-                                  .slice(0, 2)
-                              : post.tags.slice(0, 2)
-                            ).map((tag) => (
-                              <span
-                                key={`${post.id}-${tag}`}
-                                className="whitespace-nowrap rounded-full bg-background px-2 py-0.5 text-xs text-muted-foreground"
-                              >
-                                #{tag}
-                              </span>
-                            ))}
-                            {(typeof post.tags === 'string'
-                              ? post.tags.split(',').length
-                              : post.tags.length) > 2 && (
-                              <span className="whitespace-nowrap rounded-full bg-background px-2 py-0.5 text-xs text-muted-foreground">
-                                +
-                                {typeof post.tags === 'string'
-                                  ? post.tags.split(',').length - 2
-                                  : post.tags.length - 2}
-                              </span>
+                            ) : (
+                              <div className="flex size-full items-center justify-center">
+                                <FaBlog className="text-6xl text-muted-foreground/20" />
+                              </div>
                             )}
+                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/90 via-background/70 to-transparent p-4">
+                              <span
+                                className={`rounded-full ${getCategoryColor(post.category)} border px-3 py-1 text-xs font-semibold`}
+                              >
+                                {post.category}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
-          </div>
+
+                          <div className="p-5">
+                            <h3 className="mb-2 line-clamp-2 text-lg font-bold text-foreground group-hover:text-primary">
+                              {searchTerm ? (
+                                <HighlightText
+                                  text={post.title}
+                                  searchTerm={searchTerm}
+                                />
+                              ) : (
+                                post.title
+                              )}
+                            </h3>
+
+                            <p className="mb-4 line-clamp-3 text-sm text-muted-foreground">
+                              {searchTerm ? (
+                                <>
+                                  <HighlightText
+                                    text={post.content
+                                      .replace(/[#*`_]/g, '')
+                                      .substring(0, 150)}
+                                    searchTerm={searchTerm}
+                                  />
+                                  ...
+                                </>
+                              ) : (
+                                <>
+                                  {post.content
+                                    .replace(/[#*`_]/g, '')
+                                    .substring(0, 150)}
+                                  ...
+                                </>
+                              )}
+                            </p>
+
+                            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                              <span className="whitespace-nowrap text-xs text-muted-foreground">
+                                {new Date(post.date).toLocaleDateString(
+                                  'ko-KR',
+                                  {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric'
+                                  }
+                                )}
+                              </span>
+
+                              <div className="flex flex-wrap items-center gap-1">
+                                {(typeof post.tags === 'string'
+                                  ? post.tags
+                                      .split(',')
+                                      .map((tag) => tag.trim())
+                                      .slice(0, 2)
+                                  : post.tags.slice(0, 2)
+                                ).map((tag) => (
+                                  <span
+                                    key={`${post.id}-${tag}`}
+                                    className="whitespace-nowrap rounded-full bg-background px-2 py-0.5 text-xs text-muted-foreground"
+                                  >
+                                    #{tag}
+                                  </span>
+                                ))}
+                                {(typeof post.tags === 'string'
+                                  ? post.tags.split(',').length
+                                  : post.tags.length) > 2 && (
+                                  <span className="whitespace-nowrap rounded-full bg-background px-2 py-0.5 text-xs text-muted-foreground">
+                                    +
+                                    {typeof post.tags === 'string'
+                                      ? post.tags.split(',').length - 2
+                                      : post.tags.length - 2}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
+              </div>
             </div>
           )}
         </div>
@@ -494,30 +505,27 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
   SearchResults.displayName = 'SearchResults';
 
   return (
-    <div className="min-h-screen px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl">
+    <StudioStage className="min-h-screen py-20 sm:py-24">
+      <StudioSection className="max-w-6xl">
         {/* Main Content */}
         <div className="flex-1">
           <motion.div
             initial={false}
             animate={isMounted ? { opacity: 1, y: 0 } : false}
             transition={{ duration: 0.5 }}
-            className="mb-12 text-center"
+            className="mb-10 max-w-3xl"
             suppressHydrationWarning
           >
-            <h1 className="text-4xl font-bold tracking-tight text-primary">
-              <span className="relative">
-                블로그 검색
-                <span className="absolute -bottom-1 left-0 h-1 w-full bg-primary"></span>
-              </span>
-            </h1>
-            <p className="mt-4 text-muted-foreground">
+            <h2 className="break-keep text-3xl font-black tracking-[-0.04em] text-[var(--toris-ink)] sm:text-4xl">
+              필요한 개발 판단을 찾아보세요.
+            </h2>
+            <p className="mt-4 break-keep text-[var(--toris-ink-muted)]">
               원하는 키워드로 블로그 포스트를 검색해보세요.
             </p>
           </motion.div>
 
           {/* 검색 인터페이스 */}
-          <div className="shadow-medium mb-8 rounded-2xl border border-border bg-card p-6">
+          <div className="mb-8 rounded-2xl border border-[var(--toris-border)] bg-[var(--toris-surface)] p-4 shadow-[var(--toris-shadow-sm)] sm:p-6">
             <div className="relative">
               <div className="group relative mb-6">
                 <div className="relative flex items-center">
@@ -529,12 +537,12 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="검색어를 입력하세요..."
-                    className="w-full rounded-xl border-2 border-border bg-background/80 px-12 py-4 text-foreground shadow-sm outline-none backdrop-blur-sm transition-all duration-200 placeholder:text-muted-foreground/60 hover:border-primary/50 hover:bg-background hover:shadow-md focus:border-primary focus:bg-background focus:shadow-lg focus:ring-2 focus:ring-primary/20"
+                    className="min-h-12 w-full rounded-xl border border-[var(--toris-control-border)] bg-[var(--toris-canvas)] px-12 py-3 text-[var(--toris-ink)] outline-none transition-colors placeholder:text-[var(--toris-ink-muted)] hover:border-[var(--toris-system)] focus-visible:border-[var(--toris-system)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--toris-focus)]"
                   />
                   {searchTerm && (
                     <button
                       onClick={() => setSearchTerm('')}
-                      className="absolute right-4 z-10 flex items-center justify-center rounded-full p-1.5 text-muted-foreground transition-all hover:bg-muted hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      className="absolute right-2 z-10 flex size-11 items-center justify-center rounded-full text-[var(--toris-ink-muted)] transition-colors hover:bg-[var(--toris-canvas)] hover:text-[var(--toris-system-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--toris-focus)]"
                       aria-label="검색어 지우기"
                     >
                       <IoClose size={18} />
@@ -556,17 +564,18 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                           : { scale: 1, opacity: 1 }
                       }
                       exit={{ scale: 0.8, opacity: 0 }}
-                      className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
+                      className="inline-flex min-h-11 items-center rounded-full border border-[var(--toris-signal)] bg-[var(--toris-canvas)] pl-3 text-sm text-[var(--toris-signal-text)]"
                       suppressHydrationWarning
                     >
                       <FaFolder className="mr-1" />
                       {category}
-                      <Button
+                      <button
                         onClick={() => toggleCategoryFilter(category)}
-                        className="ml-1 rounded-full p-0.5 hover:bg-primary/20"
+                        className="ml-1 flex size-11 items-center justify-center rounded-full hover:bg-[var(--toris-surface-elevated)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--toris-focus)]"
+                        aria-label={`${category} 카테고리 필터 제거`}
                       >
                         <IoClose size={14} />
-                      </Button>
+                      </button>
                     </motion.span>
                   ))}
 
@@ -580,14 +589,15 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                           : { scale: 1, opacity: 1 }
                       }
                       exit={{ scale: 0.8, opacity: 0 }}
-                      className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-sm text-accent"
+                      className="inline-flex min-h-11 items-center rounded-full border border-[var(--toris-system)] bg-[var(--toris-canvas)] px-3 py-1 text-sm text-[var(--toris-system-text)]"
                       suppressHydrationWarning
                     >
                       <FaTags className="mr-1" />
                       {tag}
                       <button
                         onClick={() => toggleTagFilter(tag)}
-                        className="ml-1 rounded-full p-0.5 hover:bg-accent/20"
+                        className="ml-1 flex size-11 items-center justify-center rounded-full hover:bg-[var(--toris-surface-elevated)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--toris-focus)]"
+                        aria-label={`${tag} 태그 필터 제거`}
                       >
                         <IoClose size={14} />
                       </button>
@@ -605,7 +615,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                       }
                       exit={{ scale: 0.8, opacity: 0 }}
                       onClick={clearFilters}
-                      className="inline-flex items-center rounded-full bg-foreground/10 px-3 py-1 text-sm text-foreground hover:bg-foreground/20"
+                      className="inline-flex min-h-11 items-center rounded-full border border-[var(--toris-control-border)] px-3 py-1 text-sm text-[var(--toris-ink)] hover:border-[var(--toris-system)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--toris-focus)]"
                       suppressHydrationWarning
                     >
                       모든 필터 지우기
@@ -615,7 +625,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
 
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className="rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:bg-primary/10"
+                  className="min-h-11 shrink-0 rounded-full border border-[var(--toris-control-border)] px-4 py-2 text-sm font-semibold text-[var(--toris-ink)] transition-colors hover:border-[var(--toris-system)] hover:text-[var(--toris-system-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--toris-focus)]"
                 >
                   {showFilters ? '필터 숨기기' : '필터 보기'}
                 </button>
@@ -633,13 +643,15 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                     }
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="shadow-soft overflow-hidden rounded-lg border border-border bg-card p-4"
+                    className="overflow-hidden rounded-xl border border-[var(--toris-border)] bg-[var(--toris-canvas)] p-4"
                     suppressHydrationWarning
                   >
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       {/* 날짜 필터 */}
                       <div>
-                        <h3 className="mb-2 font-medium text-foreground">날짜 범위</h3>
+                        <h3 className="mb-2 font-medium text-foreground">
+                          날짜 범위
+                        </h3>
                         <div className="flex flex-wrap gap-2">
                           {[
                             { value: 'all', label: '전체' },
@@ -654,14 +666,15 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                               onClick={() =>
                                 setActiveFilters((prev) => ({
                                   ...prev,
-                                  dateRange: option.value as SearchFilters['dateRange']
+                                  dateRange:
+                                    option.value as SearchFilters['dateRange']
                                 }))
                               }
                               className={cn(
-                                'rounded-full px-3 py-1 text-sm transition-all',
+                                'min-h-11 rounded-full border px-3 py-1 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--toris-focus)]',
                                 uniqueActiveFilters.dateRange === option.value
-                                  ? 'border-primary bg-primary/20 text-primary'
-                                  : 'border border-border text-muted-foreground hover:border-primary hover:bg-primary/10'
+                                  ? 'border-[var(--toris-system)] bg-[var(--toris-system)] text-[var(--toris-on-system)]'
+                                  : 'border-[var(--toris-control-border)] text-[var(--toris-ink-muted)] hover:border-[var(--toris-system)]'
                               )}
                             >
                               {option.label}
@@ -672,7 +685,9 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
 
                       {/* 정렬 옵션 */}
                       <div>
-                        <h3 className="mb-2 font-medium text-foreground">정렬</h3>
+                        <h3 className="mb-2 font-medium text-foreground">
+                          정렬
+                        </h3>
                         <div className="flex flex-wrap gap-2">
                           {[
                             { value: 'newest', label: '최신순' },
@@ -683,14 +698,15 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                               onClick={() =>
                                 setActiveFilters((prev) => ({
                                   ...prev,
-                                  sortBy: option.value as SearchFilters['sortBy']
+                                  sortBy:
+                                    option.value as SearchFilters['sortBy']
                                 }))
                               }
                               className={cn(
-                                'rounded-full px-3 py-1 text-sm transition-all',
+                                'min-h-11 rounded-full border px-3 py-1 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--toris-focus)]',
                                 uniqueActiveFilters.sortBy === option.value
-                                  ? 'border-primary bg-primary/20 text-primary'
-                                  : 'border border-border text-muted-foreground hover:border-primary hover:bg-primary/10'
+                                  ? 'border-[var(--toris-system)] bg-[var(--toris-system)] text-[var(--toris-on-system)]'
+                                  : 'border-[var(--toris-control-border)] text-[var(--toris-ink-muted)] hover:border-[var(--toris-system)]'
                               )}
                             >
                               {option.label}
@@ -710,12 +726,12 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                                 key={`category-filter-${category}-${index}`}
                                 onClick={() => toggleCategoryFilter(category)}
                                 className={cn(
-                                  'rounded-full px-3 py-1 text-sm transition-all',
+                                  'min-h-11 rounded-full border px-3 py-1 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--toris-focus)]',
                                   uniqueActiveFilters.categories.includes(
                                     category
                                   )
-                                    ? 'border-primary/50 bg-primary/20 text-primary'
-                                    : 'border border-primary/30 text-muted-foreground hover:border-primary hover:bg-primary/10'
+                                    ? 'border-[var(--toris-signal)] bg-[var(--toris-signal)] text-[var(--toris-on-signal)]'
+                                    : 'border-[var(--toris-control-border)] text-[var(--toris-ink-muted)] hover:border-[var(--toris-signal)]'
                                 )}
                               >
                                 {category}
@@ -735,10 +751,10 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                               key={`tag-filter-${tag}-${index}`}
                               onClick={() => toggleTagFilter(tag)}
                               className={cn(
-                                'rounded-full px-3 py-1 text-sm transition-all',
+                                'min-h-11 rounded-full border px-3 py-1 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--toris-focus)]',
                                 uniqueActiveFilters.tags.includes(tag)
-                                  ? 'border-secondary/50 bg-secondary/20 text-secondary'
-                                  : 'border border-primary/30 text-muted-foreground hover:border-secondary hover:bg-secondary/10'
+                                  ? 'border-[var(--toris-system)] bg-[var(--toris-system)] text-[var(--toris-on-system)]'
+                                  : 'border-[var(--toris-control-border)] text-[var(--toris-ink-muted)] hover:border-[var(--toris-system)]'
                               )}
                             >
                               {tag}
@@ -764,8 +780,8 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
             />
           </div>
         </div>
-      </div>
-    </div>
+      </StudioSection>
+    </StudioStage>
   );
 };
 
