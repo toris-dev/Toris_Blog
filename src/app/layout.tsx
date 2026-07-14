@@ -45,12 +45,12 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/brand/toris-mark-v3.svg',
+        url: '/brand/icon_toris-reactor_favicon_20260714_v4.svg',
         sizes: 'any',
         type: 'image/svg+xml'
       }
     ],
-    shortcut: '/brand/toris-mark-v3.svg',
+    shortcut: '/brand/icon_toris-reactor_favicon_20260714_v4.svg',
     apple: [{ url: '/apple-icon', sizes: '180x180', type: 'image/png' }]
   },
   keywords: [
@@ -181,13 +181,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
         <link
           rel="icon"
-          href="/brand/toris-mark-v3.svg"
+          href="/brand/icon_toris-reactor_favicon_20260714_v4.svg"
           sizes="any"
           type="image/svg+xml"
         />
         <link
           rel="alternate icon"
-          href="/brand/toris-mark-v3.svg"
+          href="/brand/icon_toris-reactor_favicon_20260714_v4.svg"
           type="image/svg+xml"
         />
         <link rel="apple-touch-icon" href="/apple-icon" sizes="180x180" />

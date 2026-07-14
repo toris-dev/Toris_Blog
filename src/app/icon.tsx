@@ -7,7 +7,10 @@ export const contentType = 'image/png';
 
 export default async function Icon() {
   const mark = await readFile(
-    path.join(process.cwd(), 'public/brand/toris-mark-v3.svg'),
+    path.join(
+      process.cwd(),
+      'public/brand/icon_toris-reactor_favicon_20260714_v4.svg'
+    ),
     'utf8'
   );
 

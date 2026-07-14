@@ -13,7 +13,11 @@ describe('TORIS production brand assets', () => {
       'toris-app-icon-imagegen-source-v2.png',
       'toris-reactor-imagegen-source-v3.png'
     ];
-    const productionAssets = ['toris-mark-v3.svg', 'toris-app-icon-v3.svg'];
+    const productionAssets = [
+      'toris-mark-v3.svg',
+      'toris-app-icon-v3.svg',
+      'icon_toris-reactor_favicon_20260714_v4.svg'
+    ];
 
     sourceAssets.forEach((asset) => {
       expect(existsSync(path.join(brandDir, asset))).toBe(true);
@@ -22,7 +26,7 @@ describe('TORIS production brand assets', () => {
     productionAssets.forEach((asset) => {
       const svg = readFileSync(path.join(brandDir, asset), 'utf8');
 
-      expect(svg).toContain('viewBox="0 0 256 256"');
+      expect(svg).toMatch(/viewBox="0 0 (?:64|256) (?:64|256)"/);
       expect(svg).toContain('#5CEBFF');
       expect(svg).toContain('#C99A3D');
       expect(svg).toContain('#B72E2C');
@@ -54,15 +58,21 @@ describe('TORIS production brand assets', () => {
         purpose: 'any'
       })
     ]);
-    expect(iconRoute).toContain('public/brand/toris-mark-v3.svg');
+    expect(iconRoute).toContain(
+      'public/brand/icon_toris-reactor_favicon_20260714_v4.svg'
+    );
     expect(appleIconRoute).toContain('public/brand/toris-app-icon-v3.svg');
   });
 
   it('uses the TORIS icon and palette in root metadata without legacy overrides', () => {
     const layout = readFileSync(path.join(root, 'src/app/layout.tsx'), 'utf8');
 
-    expect(layout).toContain("url: '/brand/toris-mark-v3.svg'");
-    expect(layout).toContain('href="/brand/toris-mark-v3.svg"');
+    expect(layout).toContain(
+      "url: '/brand/icon_toris-reactor_favicon_20260714_v4.svg'"
+    );
+    expect(layout).toContain(
+      'href="/brand/icon_toris-reactor_favicon_20260714_v4.svg"'
+    );
     expect(layout).toContain('content="#F4F1E8"');
     expect(layout).toContain('content="#080A0D"');
     expect(layout).not.toContain('/images/favicon.svg');
