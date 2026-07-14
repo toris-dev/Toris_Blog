@@ -10,7 +10,7 @@ import {
 import { StudioSection, StudioStage } from '@/components/studio/StudioShell';
 import { Post } from '@/types';
 import { cn } from '@/utils/style';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -41,6 +41,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isFiltering, setIsFiltering] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const reduceMotion = Boolean(useReducedMotion());
 
   // 클라이언트에서만 마운트되었는지 확인 (SSR hydration 오류 방지)
   useEffect(() => {
@@ -272,39 +273,27 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
       : 'border-[var(--toris-signal)] bg-[var(--toris-canvas)] text-[var(--toris-signal-text)]';
   }, []);
 
-  // highlightText 함수를 useCallback으로 메모이제이션
-  // 각 포스트마다 별도로 호출되므로 index만으로도 충분
-  const highlightText = useCallback((text: string, highlight: string) => {
-    if (!highlight.trim()) return text;
-
-    const regex = new RegExp(`(${highlight})`, 'gi');
-    return text.split(regex).map((part, index) =>
-      regex.test(part) ? (
-        <span key={`highlight-${index}`} className="bg-primary/20 text-primary">
-          {part}
-        </span>
-      ) : (
-        part
-      )
-    );
-  }, []);
-
   // 검색 결과 컴포넌트 - React.memo로 메모이제이션하여 불필요한 재렌더링 방지
   const SearchResults: React.FC<
-    SearchResultProps & { isFiltering?: boolean; isMounted?: boolean }
+    SearchResultProps & {
+      isFiltering?: boolean;
+      isMounted?: boolean;
+      reduceMotion?: boolean;
+    }
   > = memo(
     ({
       posts,
       searchTerm,
       getCategoryColor,
       isFiltering = false,
-      isMounted = false
+      isMounted = false,
+      reduceMotion = false
     }) => {
       return (
         <div>
           {/* 검색 결과 개수 표시 */}
           <div className="mb-4 flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground" aria-live="polite">
               총{' '}
               <span className="font-semibold text-foreground">
                 {posts.length}
@@ -348,14 +337,22 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                     return (
                       <motion.div
                         key={uniqueKey}
+                        data-testid={`blog-result-${post.id}`}
                         initial={false}
                         animate={
                           isMounted && !isFiltering
                             ? { opacity: 1, y: 0 }
                             : false
                         }
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.15, ease: 'easeOut' }}
+                        exit={
+                          reduceMotion
+                            ? { opacity: 0 }
+                            : { opacity: 0, scale: 0.95 }
+                        }
+                        transition={{
+                          duration: reduceMotion ? 0 : 0.15,
+                          ease: 'easeOut'
+                        }}
                         className="group overflow-hidden rounded-2xl border border-[var(--toris-border)] bg-[var(--toris-surface)] shadow-[var(--toris-shadow-sm)] transition-[border-color,transform] duration-200 focus-within:border-[var(--toris-system)] hover:-translate-y-0.5 hover:border-[var(--toris-system)]"
                         suppressHydrationWarning
                       >
@@ -495,6 +492,10 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
         return false; // 리렌더링 필요
       }
 
+      if (prevProps.reduceMotion !== nextProps.reduceMotion) {
+        return false;
+      }
+
       // getCategoryColor는 useCallback으로 메모이제이션되어 있으므로 참조 비교만 하면 됨
       // 모든 props가 동일하면 리렌더링 불필요
       return true;
@@ -510,9 +511,16 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
         {/* Main Content */}
         <div className="flex-1">
           <motion.div
-            initial={false}
-            animate={isMounted ? { opacity: 1, y: 0 } : false}
-            transition={{ duration: 0.5 }}
+            data-testid="blog-search-entry"
+            initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+            animate={
+              isMounted
+                ? reduceMotion
+                  ? { opacity: 1 }
+                  : { opacity: 1, y: 0 }
+                : false
+            }
+            transition={{ duration: reduceMotion ? 0 : 0.5 }}
             className="mb-10 max-w-3xl"
             suppressHydrationWarning
           >
@@ -533,14 +541,17 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                     <FaSearch className="text-lg text-muted-foreground transition-colors group-focus-within:text-primary" />
                   </div>
                   <input
+                    id="blog-search-input"
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="검색어를 입력하세요..."
+                    aria-label="블로그 검색어"
                     className="min-h-12 w-full rounded-xl border border-[var(--toris-control-border)] bg-[var(--toris-canvas)] px-12 py-3 text-[var(--toris-ink)] outline-none transition-colors placeholder:text-[var(--toris-ink-muted)] hover:border-[var(--toris-system)] focus-visible:border-[var(--toris-system)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--toris-focus)]"
                   />
                   {searchTerm && (
                     <button
+                      type="button"
                       onClick={() => setSearchTerm('')}
                       className="absolute right-2 z-10 flex size-11 items-center justify-center rounded-full text-[var(--toris-ink-muted)] transition-colors hover:bg-[var(--toris-canvas)] hover:text-[var(--toris-system-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--toris-focus)]"
                       aria-label="검색어 지우기"
@@ -570,6 +581,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                       <FaFolder className="mr-1" />
                       {category}
                       <button
+                        type="button"
                         onClick={() => toggleCategoryFilter(category)}
                         className="ml-1 flex size-11 items-center justify-center rounded-full hover:bg-[var(--toris-surface-elevated)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--toris-focus)]"
                         aria-label={`${category} 카테고리 필터 제거`}
@@ -595,6 +607,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                       <FaTags className="mr-1" />
                       {tag}
                       <button
+                        type="button"
                         onClick={() => toggleTagFilter(tag)}
                         className="ml-1 flex size-11 items-center justify-center rounded-full hover:bg-[var(--toris-surface-elevated)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--toris-focus)]"
                         aria-label={`${tag} 태그 필터 제거`}
@@ -607,6 +620,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                   {(uniqueActiveFilters.categories.length > 0 ||
                     uniqueActiveFilters.tags.length > 0) && (
                     <motion.button
+                      type="button"
                       initial={{ scale: 1, opacity: 1 }}
                       animate={
                         isMounted
@@ -624,7 +638,10 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                 </div>
 
                 <button
+                  type="button"
                   onClick={() => setShowFilters(!showFilters)}
+                  aria-expanded={showFilters}
+                  aria-controls="blog-search-filters"
                   className="min-h-11 shrink-0 rounded-full border border-[var(--toris-control-border)] px-4 py-2 text-sm font-semibold text-[var(--toris-ink)] transition-colors hover:border-[var(--toris-system)] hover:text-[var(--toris-system-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--toris-focus)]"
                 >
                   {showFilters ? '필터 숨기기' : '필터 보기'}
@@ -635,21 +652,35 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
               <AnimatePresence>
                 {showFilters && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
+                    id="blog-search-filters"
+                    data-testid="blog-filter-panel"
+                    role="region"
+                    aria-label="블로그 검색 필터"
+                    initial={reduceMotion ? false : { height: 0, opacity: 0 }}
                     animate={
-                      showFilters
-                        ? { height: 'auto', opacity: 1 }
-                        : { height: 0, opacity: 0 }
+                      reduceMotion
+                        ? { opacity: 1 }
+                        : showFilters
+                          ? { height: 'auto', opacity: 1 }
+                          : { height: 0, opacity: 0 }
                     }
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                    exit={
+                      reduceMotion ? { opacity: 1 } : { height: 0, opacity: 0 }
+                    }
+                    transition={{ duration: reduceMotion ? 0 : 0.3 }}
                     className="overflow-hidden rounded-xl border border-[var(--toris-border)] bg-[var(--toris-canvas)] p-4"
                     suppressHydrationWarning
                   >
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       {/* 날짜 필터 */}
-                      <div>
-                        <h3 className="mb-2 font-medium text-foreground">
+                      <div
+                        role="group"
+                        aria-labelledby="blog-date-filter-label"
+                      >
+                        <h3
+                          id="blog-date-filter-label"
+                          className="mb-2 font-medium text-foreground"
+                        >
                           날짜 범위
                         </h3>
                         <div className="flex flex-wrap gap-2">
@@ -662,6 +693,10 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                             { value: 'year', label: '최근 1년' }
                           ].map((option) => (
                             <button
+                              type="button"
+                              aria-pressed={
+                                uniqueActiveFilters.dateRange === option.value
+                              }
                               key={option.value}
                               onClick={() =>
                                 setActiveFilters((prev) => ({
@@ -684,8 +719,14 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                       </div>
 
                       {/* 정렬 옵션 */}
-                      <div>
-                        <h3 className="mb-2 font-medium text-foreground">
+                      <div
+                        role="group"
+                        aria-labelledby="blog-sort-filter-label"
+                      >
+                        <h3
+                          id="blog-sort-filter-label"
+                          className="mb-2 font-medium text-foreground"
+                        >
                           정렬
                         </h3>
                         <div className="flex flex-wrap gap-2">
@@ -694,6 +735,10 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                             { value: 'oldest', label: '오래된순' }
                           ].map((option) => (
                             <button
+                              type="button"
+                              aria-pressed={
+                                uniqueActiveFilters.sortBy === option.value
+                              }
                               key={option.value}
                               onClick={() =>
                                 setActiveFilters((prev) => ({
@@ -715,14 +760,24 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                         </div>
                       </div>
 
-                      <div>
-                        <h3 className="mb-2 font-medium text-foreground">
+                      <div
+                        role="group"
+                        aria-labelledby="blog-category-filter-label"
+                      >
+                        <h3
+                          id="blog-category-filter-label"
+                          className="mb-2 font-medium text-foreground"
+                        >
                           카테고리
                         </h3>
                         <div className="flex flex-wrap gap-2">
                           {availableFilters.categories.map(
                             (category, index) => (
                               <button
+                                type="button"
+                                aria-pressed={uniqueActiveFilters.categories.includes(
+                                  category
+                                )}
                                 key={`category-filter-${category}-${index}`}
                                 onClick={() => toggleCategoryFilter(category)}
                                 className={cn(
@@ -741,13 +796,20 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
                         </div>
                       </div>
 
-                      <div>
-                        <h3 className="mb-2 font-medium text-foreground">
+                      <div role="group" aria-labelledby="blog-tag-filter-label">
+                        <h3
+                          id="blog-tag-filter-label"
+                          className="mb-2 font-medium text-foreground"
+                        >
                           태그
                         </h3>
                         <div className="flex flex-wrap gap-2">
                           {availableFilters.tags.map((tag, index) => (
                             <button
+                              type="button"
+                              aria-pressed={uniqueActiveFilters.tags.includes(
+                                tag
+                              )}
                               key={`tag-filter-${tag}-${index}`}
                               onClick={() => toggleTagFilter(tag)}
                               className={cn(
@@ -777,6 +839,7 @@ const ClientSearchPage = ({ initialPosts }: ClientSearchPageProps) => {
               getCategoryColor={getCategoryColor}
               isFiltering={isFiltering}
               isMounted={isMounted}
+              reduceMotion={reduceMotion}
             />
           </div>
         </div>

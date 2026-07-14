@@ -17,7 +17,7 @@ export function HighlightText({ text, searchTerm }: HighlightTextProps) {
           return (
             <mark
               key={index}
-              className="rounded bg-yellow-200 px-0.5 dark:bg-yellow-900/50"
+              className="rounded-sm bg-[var(--toris-system)] px-1 text-[var(--toris-on-system)]"
             >
               {part.text}
             </mark>

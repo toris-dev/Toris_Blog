@@ -104,19 +104,66 @@ describe('TORIS marketing routes', () => {
     ).toHaveAttribute('data-toris-theme', 'dark');
   });
 
-  it.each([
-    ['success', '상담 요청을 받았습니다.'],
-    ['error', '상담 요청 전송에 실패했습니다.']
-  ])('keeps %s consultation feedback visible', async (status, message) => {
+  it('submits the consultation payload, shows success, and resets fields', async () => {
+    const payload = {
+      name: '토리스 상사',
+      email: 'owner@example.com',
+      projectType: '기존 제품 개선',
+      budgetRange: '1,000만–3,000만원',
+      timeline: '1–3개월',
+      requiredFeatures: '관리자 화면과 결제 흐름 개선',
+      message: '기존 서비스 운영 중입니다.'
+    };
     (submitContactForm as jest.Mock).mockResolvedValueOnce({
-      success: status === 'success',
-      message
+      success: true,
+      message: '상담 요청을 받았습니다.'
+    });
+    render(<ContactPage />);
+
+    fireEvent.change(screen.getByLabelText('이름 또는 회사명'), {
+      target: { value: payload.name }
+    });
+    fireEvent.change(screen.getByLabelText('회신 이메일'), {
+      target: { value: payload.email }
+    });
+    fireEvent.change(screen.getByLabelText('개발 유형'), {
+      target: { value: payload.projectType }
+    });
+    fireEvent.change(screen.getByLabelText('예산 범위'), {
+      target: { value: payload.budgetRange }
+    });
+    fireEvent.change(screen.getByLabelText('희망 일정'), {
+      target: { value: payload.timeline }
+    });
+    fireEvent.change(screen.getByLabelText('필요한 기능'), {
+      target: { value: payload.requiredFeatures }
+    });
+    fireEvent.change(screen.getByLabelText('현재 상황과 참고 사항 (선택)'), {
+      target: { value: payload.message }
+    });
+    fireEvent.submit(screen.getByRole('form', { name: '프로젝트 상담 양식' }));
+
+    expect(submitContactForm).toHaveBeenCalledWith(payload);
+    expect(await screen.findByRole('status')).toHaveTextContent(
+      '상담 요청을 받았습니다.'
+    );
+    expect(screen.getByLabelText('이름 또는 회사명')).toHaveValue('');
+    expect(screen.getByLabelText('개발 유형')).toHaveValue('');
+    expect(screen.getByLabelText('필요한 기능')).toHaveValue('');
+  });
+
+  it('keeps consultation error feedback visible', async () => {
+    (submitContactForm as jest.Mock).mockResolvedValueOnce({
+      success: false,
+      message: '상담 요청 전송에 실패했습니다.'
     });
     render(<ContactPage />);
 
     fireEvent.submit(screen.getByRole('form', { name: '프로젝트 상담 양식' }));
 
-    expect(await screen.findByRole('status')).toHaveTextContent(message);
+    expect(await screen.findByRole('status')).toHaveTextContent(
+      '상담 요청 전송에 실패했습니다.'
+    );
   });
 
   it('frames the blog entry with the same studio canvas', async () => {
