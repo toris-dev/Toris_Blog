@@ -81,11 +81,11 @@ const faqs = [
   <!-- ============================== Hero ============================== -->
   <section class="mx-auto max-w-6xl px-5 pb-20 pt-24 sm:pt-32">
     <div class="reveal max-w-3xl">
-      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-700">Process</p>
-      <h1 class="mt-3 text-4xl font-extrabold leading-[1.12] tracking-tight text-ink-900 sm:text-5xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Process</p>
+      <h1 class="mt-3 text-4xl font-extrabold leading-[1.12] tracking-tight text-ivory sm:text-5xl">
         이렇게 진행합니다
       </h1>
-      <p class="mt-6 text-lg leading-relaxed text-ink-500">
+      <p class="mt-6 text-lg leading-relaxed text-sand">
         문의부터 출시, 운영까지 다섯 단계로 진행합니다. 각 단계의 산출물과
         완료 기준을 미리 정해두기 때문에, 지금 어디까지 왔고 다음에 무엇이
         오는지 항상 투명하게 아실 수 있습니다.
@@ -94,7 +94,7 @@ const faqs = [
   </section>
 
   <!-- ============================ Timeline ============================ -->
-  <section class="border-t border-line bg-white">
+  <section class="border-t border-line bg-coal">
     <div class="mx-auto max-w-6xl px-5 py-24">
       <ol class="relative max-w-3xl">
         <!-- 세로 라인 -->
@@ -109,20 +109,20 @@ const faqs = [
             >
               <!-- 노드 -->
               <span
-                class="absolute left-0 top-0 flex size-12 items-center justify-center rounded-full border-2 border-teal-200 bg-paper"
+                class="absolute left-0 top-0 flex size-12 items-center justify-center rounded-full border-2 border-gold-deep/60 bg-night"
                 aria-hidden="true"
               >
-                <span class="size-2.5 rounded-full bg-teal-600" />
+                <span class="size-2.5 rounded-full bg-gold" />
               </span>
-              <p class="text-sm font-extrabold tabular-nums text-amber-600">{s.n}</p>
-              <h2 class="mt-1 text-2xl font-extrabold tracking-tight text-ink-900">{s.title}</h2>
-              <p class="mt-3 max-w-xl text-[15px] leading-relaxed text-ink-500">{s.body}</p>
+              <p class="text-sm font-extrabold tabular-nums text-gold">{s.n}</p>
+              <h2 class="mt-1 text-2xl font-display text-ivory">{s.title}</h2>
+              <p class="mt-3 max-w-xl text-[15px] leading-relaxed text-sand">{s.body}</p>
               <ul class="mt-5 space-y-2">
                 {s.outputs.map((o) => (
-                  <li class="flex items-center gap-2.5 text-sm font-medium text-ink-700">
+                  <li class="flex items-center gap-2.5 text-sm font-medium text-ivory-dim">
                     <svg
                       viewBox="0 0 24 24"
-                      class="size-4 shrink-0 text-teal-600"
+                      class="size-4 shrink-0 text-gold"
                       fill="none"
                       stroke="currentColor"
                       stroke-width="2.4"
@@ -144,11 +144,11 @@ const faqs = [
   </section>
 
   <!-- =========================== Principles =========================== -->
-  <section class="border-t border-line bg-paper-warm">
+  <section class="border-t border-line bg-coal">
     <div class="mx-auto max-w-6xl px-5 py-24">
       <div class="reveal max-w-2xl">
-        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-700">Principles</p>
-        <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Principles</p>
+        <h2 class="mt-3 text-3xl font-display text-ivory sm:text-4xl">
           함께 일하는 원칙
         </h2>
       </div>
@@ -156,16 +156,16 @@ const faqs = [
         {
           principles.map((p, i) => (
             <article
-              class="reveal group rounded-2xl border border-line bg-white p-7 transition-all hover:-translate-y-1 hover:border-teal-300 hover:shadow-xl hover:shadow-teal-900/5"
+              class="reveal group rounded-2xl border border-line bg-coal p-7 transition-all hover:-translate-y-1 hover:border-gold-deep hover:shadow-xl hover:shadow-black/30"
               style={`transition-delay: ${i * 80}ms`}
             >
-              <span class="flex size-12 items-center justify-center rounded-xl bg-teal-50 text-teal-700 transition-colors group-hover:bg-teal-700 group-hover:text-white">
+              <span class="flex size-12 items-center justify-center rounded-xl bg-gold/10 text-gold transition-colors group-hover:bg-gold group-hover:text-night">
                 <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d={p.icon} />
                 </svg>
               </span>
-              <h3 class="mt-5 text-lg font-bold text-ink-900">{p.title}</h3>
-              <p class="mt-2.5 text-[15px] leading-relaxed text-ink-500">{p.body}</p>
+              <h3 class="mt-5 text-lg font-bold text-ivory">{p.title}</h3>
+              <p class="mt-2.5 text-[15px] leading-relaxed text-sand">{p.body}</p>
             </article>
           ))
         }
@@ -174,11 +174,11 @@ const faqs = [
   </section>
 
   <!-- =============================== FAQ =============================== -->
-  <section class="border-t border-line bg-white">
+  <section class="border-t border-line bg-coal">
     <div class="mx-auto max-w-6xl px-5 py-24">
       <div class="reveal max-w-2xl">
-        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-700">FAQ</p>
-        <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gold">FAQ</p>
+        <h2 class="mt-3 text-3xl font-display text-ivory sm:text-4xl">
           자주 묻는 질문
         </h2>
       </div>
@@ -186,14 +186,14 @@ const faqs = [
         {
           faqs.map((f, i) => (
             <details
-              class="faq-item reveal group rounded-2xl border border-line bg-paper transition-colors open:border-teal-300"
+              class="faq-item reveal group rounded-2xl border border-line bg-night transition-colors open:border-gold-deep"
               style={`transition-delay: ${i * 60}ms`}
             >
-              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl px-7 py-5 text-[15px] font-bold text-ink-900 focus-visible:outline-2 focus-visible:outline-teal-600">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl px-7 py-5 text-[15px] font-bold text-ivory focus-visible:outline-2 focus-visible:outline-gold">
                 {f.q}
                 <svg
                   viewBox="0 0 24 24"
-                  class="size-5 shrink-0 text-teal-700 transition-transform group-open:rotate-45"
+                  class="size-5 shrink-0 text-gold transition-transform group-open:rotate-45"
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2"
@@ -203,7 +203,7 @@ const faqs = [
                   <path d="M12 5v14M5 12h14" />
                 </svg>
               </summary>
-              <p class="px-7 pb-6 text-[15px] leading-relaxed text-ink-500">{f.a}</p>
+              <p class="px-7 pb-6 text-[15px] leading-relaxed text-sand">{f.a}</p>
             </details>
           ))
         }
@@ -213,16 +213,16 @@ const faqs = [
 
   <!-- =============================== CTA =============================== -->
   <section class="mx-auto max-w-6xl px-5 py-24">
-    <div class="reveal rounded-3xl bg-teal-800 px-8 py-14 text-center sm:px-16">
-      <h2 class="text-3xl font-extrabold tracking-tight text-white">
+    <div class="reveal rounded-3xl bg-coal-2 px-8 py-14 text-center sm:px-16">
+      <h2 class="text-3xl font-display text-white">
         첫 단계는 문의입니다
       </h2>
-      <p class="mx-auto mt-4 max-w-xl text-teal-100">
+      <p class="mx-auto mt-4 max-w-xl text-ivory-dim">
         무엇을, 왜 만들고 싶은지 들려주세요 — 24시간 안에 답장드립니다.
       </p>
       <a
         href="/contact"
-        class="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-amber-500 px-8 text-[15px] font-bold text-ink-900 transition-all hover:-translate-y-0.5 hover:bg-amber-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white active:translate-y-0"
+        class="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-gold px-8 text-[15px] font-bold text-ivory transition-all hover:-translate-y-0.5 hover:bg-gold-bright focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white active:translate-y-0"
       >
         프로젝트 문의하기
       </a>

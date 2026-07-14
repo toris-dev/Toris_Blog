@@ -1,47 +1,39 @@
 @import 'tailwindcss';
 
 /* ================================================================
-   Toris Inc. 브랜드 토큰 — 거북이(꾸준함·신뢰)에서 출발한 딥 틸,
-   따뜻한 앰버 액센트, 웜 페이퍼 배경. 기존 블로그의 인디고 다크
-   테크 무드와 의도적으로 결별한 라이트 퍼스트 팔레트.
+   Toris Inc. — Dark Luxury "Gilded Shell"
+   웜 흑요석 바탕 위 샴페인 골드. 거북이 등껍질(육각)의 금박 문양이
+   시그니처. 세리프(고운바탕) 헤드라인 + Pretendard 본문.
+   모든 색은 아래 토큰만 사용한다(즉흥 hex 금지).
    ================================================================ */
 @theme {
   --font-sans: 'Pretendard Variable', Pretendard, -apple-system,
-    BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto, 'Noto Sans KR',
-    sans-serif;
+    BlinkMacSystemFont, system-ui, 'Noto Sans KR', sans-serif;
+  --font-serif: 'Gowun Batang', 'Noto Serif KR', Georgia, serif;
 
-  /* Primary — Deep Teal */
-  --color-teal-50: #f0fbf9;
-  --color-teal-100: #d3f4ee;
-  --color-teal-200: #a8e8de;
-  --color-teal-300: #71d5c8;
-  --color-teal-400: #3cbcae;
-  --color-teal-500: #17a394;
-  --color-teal-600: #0d8578;
-  --color-teal-700: #0f6a62;
-  --color-teal-800: #11554f;
-  --color-teal-900: #124642;
+  /* 바탕 — 따뜻한 흑요석(블루블랙 금지) */
+  --color-night: #0e0d0b;
+  --color-coal: #17150f;
+  --color-coal-2: #1f1c14;
+  --color-line: #2b2820;
 
-  /* Accent — Warm Amber */
-  --color-amber-400: #fbbf24;
-  --color-amber-500: #f59e0b;
-  --color-amber-600: #d97706;
+  /* 글 — 아이보리 계열 */
+  --color-ivory: #ede6d8;
+  --color-ivory-dim: #cbc2af;
+  --color-sand: #9c937f;
 
-  /* Neutrals — Warm Ink & Paper */
-  --color-ink-900: #16211f;
-  --color-ink-700: #33413e;
-  --color-ink-500: #5b6a66;
-  --color-ink-400: #7d8b87;
-  --color-ink-300: #aeb9b5;
-  --color-paper: #fafaf7;
-  --color-paper-warm: #f4f2ea;
-  --color-line: #e5e5dd;
+  /* 액센트 — 샴페인 골드 */
+  --color-gold: #c9a96a;
+  --color-gold-bright: #e3c98f;
+  --color-gold-deep: #8f7440;
+
+  /* 상태 */
+  --color-live: #9db98a;
 }
 
 html {
   scroll-behavior: smooth;
 }
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -49,25 +41,32 @@ html {
 }
 
 body {
-  background-color: var(--color-paper);
-  color: var(--color-ink-900);
+  background-color: var(--color-night);
+  color: var(--color-ivory);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: var(--color-teal-200);
-  color: var(--color-ink-900);
+  background: var(--color-gold);
+  color: var(--color-night);
 }
 
-/* ---------- 스크롤 리빌(IntersectionObserver가 .is-visible 토글) ---------- */
+/* 세리프 헤드라인 유틸 */
+.font-display {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+/* ---------- 스크롤 리빌 ---------- */
 .reveal {
   opacity: 0;
   transform: translateY(24px);
   transition:
-    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal.is-visible {
   opacity: 1;
@@ -81,17 +80,29 @@ body {
   }
 }
 
-/* ---------- 블로그 본문 타이포그래피 (기존 마크다운 렌더 대응) ---------- */
+/* ---------- 골드 헤어라인(시그니처 구조 장치) ---------- */
+.rule-gold {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--color-gold) 0%,
+    var(--color-gold-deep) 55%,
+    transparent 100%
+  );
+}
+
+/* ---------- 블로그 본문 (다크) ---------- */
 .prose-post {
-  line-height: 1.8;
+  line-height: 1.85;
   font-size: 1.0625rem;
-  color: var(--color-ink-700);
+  color: var(--color-ivory-dim);
 }
 .prose-post h1,
 .prose-post h2,
 .prose-post h3,
 .prose-post h4 {
-  color: var(--color-ink-900);
+  font-family: var(--font-serif);
+  color: var(--color-ivory);
   font-weight: 700;
   letter-spacing: -0.01em;
   margin-top: 2.2em;
@@ -103,7 +114,7 @@ body {
 }
 .prose-post h2 {
   font-size: 1.5rem;
-  padding-bottom: 0.35em;
+  padding-bottom: 0.4em;
   border-bottom: 1px solid var(--color-line);
 }
 .prose-post h3 {
@@ -113,12 +124,12 @@ body {
   margin: 1.1em 0;
 }
 .prose-post a {
-  color: var(--color-teal-600);
+  color: var(--color-gold);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 .prose-post a:hover {
-  color: var(--color-teal-700);
+  color: var(--color-gold-bright);
 }
 .prose-post ul,
 .prose-post ol {
@@ -135,24 +146,27 @@ body {
   margin: 0.4em 0;
 }
 .prose-post blockquote {
-  border-left: 3px solid var(--color-teal-400);
-  background: var(--color-paper-warm);
-  padding: 0.7em 1.1em;
+  border-left: 2px solid var(--color-gold);
+  background: var(--color-coal);
+  padding: 0.8em 1.2em;
   border-radius: 0 0.5rem 0.5rem 0;
   margin: 1.4em 0;
-  color: var(--color-ink-700);
+  color: var(--color-ivory-dim);
+  font-family: var(--font-serif);
 }
 .prose-post code {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.9em;
-  background: var(--color-paper-warm);
+  background: var(--color-coal-2);
   border: 1px solid var(--color-line);
   border-radius: 0.3rem;
   padding: 0.12em 0.4em;
+  color: var(--color-gold-bright);
 }
 .prose-post pre {
-  background: #101b19;
-  color: #e6efed;
+  background: #080807;
+  border: 1px solid var(--color-line);
+  color: var(--color-ivory-dim);
   border-radius: 0.75rem;
   padding: 1.1em 1.3em;
   overflow-x: auto;
@@ -188,11 +202,17 @@ body {
   text-align: left;
 }
 .prose-post th {
-  background: var(--color-paper-warm);
+  background: var(--color-coal);
   font-weight: 600;
+  color: var(--color-ivory);
 }
 .prose-post hr {
   border: 0;
   border-top: 1px solid var(--color-line);
   margin: 2.4em 0;
+}
+
+/* 한글 줄바꿈 — 단어 중간 분리 방지 */
+h1, h2, h3, blockquote p {
+  word-break: keep-all;
 }

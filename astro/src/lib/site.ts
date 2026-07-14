@@ -5,7 +5,8 @@ export const COMPANY = {
   nameEn: 'Toris Inc.',
   bizNumber: '424-04-03521',
   ceo: '유주환',
-  email: 'ironjustlikethat@gmail.com',
+  // Cloudflare Email Routing — 개인 수신함으로 전달됨(개인 주소 비노출)
+  email: 'korea@toris.kr',
   github: 'https://github.com/toris-dev',
   tagline: '꾸준함이 완성하는 소프트웨어',
   description:
