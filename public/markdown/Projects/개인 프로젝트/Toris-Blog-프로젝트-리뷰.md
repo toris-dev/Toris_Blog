@@ -1,5 +1,5 @@
 ---
-title: [개인 프로젝트 리뷰] Toris Blog - 나만의 기술 블로그 만들기
+title: '[개인 프로젝트 리뷰] Toris Blog - 나만의 기술 블로그 만들기'
 date: 2025-12-22T10:15:00.000Z
 slug: Toris-Blog-프로젝트-리뷰
 category: Projects

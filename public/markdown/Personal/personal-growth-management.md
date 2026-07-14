@@ -1,5 +1,5 @@
 ---
-title: [Dev] 개발자 성장 및 커리어 관리
+title: '[Dev] 개발자 성장 및 커리어 관리'
 date: 2025-07-09T16:55:19.919Z
 slug: personal-growth-management
 category: Dev

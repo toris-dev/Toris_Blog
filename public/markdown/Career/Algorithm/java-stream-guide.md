@@ -1,5 +1,5 @@
 ---
-title: [Career] Java Stream 완전 정리
+title: '[Career] Java Stream 완전 정리'
 date: 2025-07-09T16:55:19.886Z
 slug: java-stream-guide
 category: Career

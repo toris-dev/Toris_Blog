@@ -1,5 +1,5 @@
 ---
-title: [개인 프로젝트 리뷰] PEPEBear - Solana 블록체인 기반 Web3 프로젝트
+title: '[개인 프로젝트 리뷰] PEPEBear - Solana 블록체인 기반 Web3 프로젝트'
 date: 2025-12-22T11:00:00.000Z
 slug: PEPEBear-프로젝트-리뷰
 category: Projects

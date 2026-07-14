@@ -1,0 +1,198 @@
+@import 'tailwindcss';
+
+/* ================================================================
+   Toris Inc. 브랜드 토큰 — 거북이(꾸준함·신뢰)에서 출발한 딥 틸,
+   따뜻한 앰버 액센트, 웜 페이퍼 배경. 기존 블로그의 인디고 다크
+   테크 무드와 의도적으로 결별한 라이트 퍼스트 팔레트.
+   ================================================================ */
+@theme {
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto, 'Noto Sans KR',
+    sans-serif;
+
+  /* Primary — Deep Teal */
+  --color-teal-50: #f0fbf9;
+  --color-teal-100: #d3f4ee;
+  --color-teal-200: #a8e8de;
+  --color-teal-300: #71d5c8;
+  --color-teal-400: #3cbcae;
+  --color-teal-500: #17a394;
+  --color-teal-600: #0d8578;
+  --color-teal-700: #0f6a62;
+  --color-teal-800: #11554f;
+  --color-teal-900: #124642;
+
+  /* Accent — Warm Amber */
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+
+  /* Neutrals — Warm Ink & Paper */
+  --color-ink-900: #16211f;
+  --color-ink-700: #33413e;
+  --color-ink-500: #5b6a66;
+  --color-ink-400: #7d8b87;
+  --color-ink-300: #aeb9b5;
+  --color-paper: #fafaf7;
+  --color-paper-warm: #f4f2ea;
+  --color-line: #e5e5dd;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-teal-200);
+  color: var(--color-ink-900);
+}
+
+/* ---------- 스크롤 리빌(IntersectionObserver가 .is-visible 토글) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---------- 블로그 본문 타이포그래피 (기존 마크다운 렌더 대응) ---------- */
+.prose-post {
+  line-height: 1.8;
+  font-size: 1.0625rem;
+  color: var(--color-ink-700);
+}
+.prose-post h1,
+.prose-post h2,
+.prose-post h3,
+.prose-post h4 {
+  color: var(--color-ink-900);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-top: 2.2em;
+  margin-bottom: 0.7em;
+  scroll-margin-top: 6rem;
+}
+.prose-post h1 {
+  font-size: 1.9rem;
+}
+.prose-post h2 {
+  font-size: 1.5rem;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--color-line);
+}
+.prose-post h3 {
+  font-size: 1.2rem;
+}
+.prose-post p {
+  margin: 1.1em 0;
+}
+.prose-post a {
+  color: var(--color-teal-600);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-post a:hover {
+  color: var(--color-teal-700);
+}
+.prose-post ul,
+.prose-post ol {
+  padding-left: 1.4em;
+  margin: 1.1em 0;
+}
+.prose-post ul {
+  list-style: disc;
+}
+.prose-post ol {
+  list-style: decimal;
+}
+.prose-post li {
+  margin: 0.4em 0;
+}
+.prose-post blockquote {
+  border-left: 3px solid var(--color-teal-400);
+  background: var(--color-paper-warm);
+  padding: 0.7em 1.1em;
+  border-radius: 0 0.5rem 0.5rem 0;
+  margin: 1.4em 0;
+  color: var(--color-ink-700);
+}
+.prose-post code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--color-paper-warm);
+  border: 1px solid var(--color-line);
+  border-radius: 0.3rem;
+  padding: 0.12em 0.4em;
+}
+.prose-post pre {
+  background: #101b19;
+  color: #e6efed;
+  border-radius: 0.75rem;
+  padding: 1.1em 1.3em;
+  overflow-x: auto;
+  margin: 1.4em 0;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+.prose-post pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: inherit;
+}
+.prose-post img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin: 1.6em auto;
+  border: 1px solid var(--color-line);
+}
+.prose-post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.6em 0;
+  font-size: 0.95rem;
+  display: block;
+  overflow-x: auto;
+}
+.prose-post th,
+.prose-post td {
+  border: 1px solid var(--color-line);
+  padding: 0.55em 0.9em;
+  text-align: left;
+}
+.prose-post th {
+  background: var(--color-paper-warm);
+  font-weight: 600;
+}
+.prose-post hr {
+  border: 0;
+  border-top: 1px solid var(--color-line);
+  margin: 2.4em 0;
+}

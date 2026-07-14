@@ -1,5 +1,5 @@
 ---
-title: [개인 프로젝트 리뷰] CryptoTrade.gg - 암호화폐 트레이드 전적 조회 서비스
+title: '[개인 프로젝트 리뷰] CryptoTrade.gg - 암호화폐 트레이드 전적 조회 서비스'
 date: 2025-12-22T11:30:00.000Z
 slug: CryptoTrade-gg-프로젝트-리뷰
 category: Projects

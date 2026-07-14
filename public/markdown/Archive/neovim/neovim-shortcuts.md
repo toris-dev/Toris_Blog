@@ -1,5 +1,5 @@
 ---
-title: [Archive] NeoVim 단축키 정리
+title: '[Archive] NeoVim 단축키 정리'
 date: 2025-07-09T16:55:19.881Z
 slug: neovim-shortcuts
 category: Archive

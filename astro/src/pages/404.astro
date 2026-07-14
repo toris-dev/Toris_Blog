@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="페이지를 찾을 수 없어요 | 토리스"
+  description="요청하신 페이지가 없습니다. 홈, 블로그, 문의하기로 돌아가세요."
+  path="/404"
+  noindex={true}
+>
+  <section
+    class="mx-auto flex min-h-[calc(100dvh-4rem)] max-w-6xl flex-col items-center justify-center px-5 py-24 text-center"
+  >
+    <p
+      class="reveal inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/70 px-4 py-1.5 text-xs font-semibold tracking-widest text-teal-800"
+    >
+      <span class="size-1.5 rounded-full bg-amber-500" aria-hidden="true"></span>
+      404 NOT FOUND
+    </p>
+
+    <p
+      class="reveal mt-8 text-[7rem] font-extrabold leading-none tracking-tight text-teal-700/15 sm:text-[11rem]"
+      aria-hidden="true"
+      style="transition-delay: 60ms"
+    >
+      404
+    </p>
+
+    <h1
+      class="reveal -mt-4 text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl"
+      style="transition-delay: 120ms"
+    >
+      길을 잘못 들었네요 — 거북이도 가끔 그럽니다
+    </h1>
+
+    <p
+      class="reveal mt-5 max-w-md text-lg leading-relaxed text-ink-500"
+      style="transition-delay: 180ms"
+    >
+      찾으시던 페이지가 없거나 주소가 바뀌었어요. 천천히, 원래 가시던 길로
+      안내해드릴게요.
+    </p>
+
+    <div class="reveal mt-10 flex flex-wrap justify-center gap-3" style="transition-delay: 240ms">
+      <a
+        href="/"
+        class="inline-flex h-12 items-center gap-2 rounded-full bg-teal-700 px-7 text-[15px] font-semibold text-white shadow-lg shadow-teal-700/20 transition-all hover:-translate-y-0.5 hover:bg-teal-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 active:translate-y-0"
+      >
+        홈으로 가기
+      </a>
+      <a
+        href="/blog"
+        class="inline-flex h-12 items-center rounded-full border border-ink-300/60 bg-white px-7 text-[15px] font-semibold text-ink-700 transition-all hover:-translate-y-0.5 hover:border-teal-400 hover:text-teal-800 focus-visible:outline-2 focus-visible:outline-teal-600 active:translate-y-0"
+      >
+        블로그 보기
+      </a>
+      <a
+        href="/contact"
+        class="inline-flex h-12 items-center rounded-full border border-ink-300/60 bg-white px-7 text-[15px] font-semibold text-ink-700 transition-all hover:-translate-y-0.5 hover:border-teal-400 hover:text-teal-800 focus-visible:outline-2 focus-visible:outline-teal-600 active:translate-y-0"
+      >
+        문의하기
+      </a>
+    </div>
+  </section>
+</Base>

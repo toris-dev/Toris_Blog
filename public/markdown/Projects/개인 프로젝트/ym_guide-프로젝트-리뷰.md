@@ -1,5 +1,5 @@
 ---
-title: [개인 프로젝트 리뷰] ym_guide - 청년들을 위한 혜택 큐레이션 플랫폼
+title: '[개인 프로젝트 리뷰] ym_guide - 청년들을 위한 혜택 큐레이션 플랫폼'
 date: 2025-12-22T10:30:00.000Z
 slug: ym_guide-프로젝트-리뷰
 category: Projects

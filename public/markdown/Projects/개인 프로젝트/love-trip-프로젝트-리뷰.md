@@ -1,5 +1,5 @@
 ---
-title: [개인 프로젝트 리뷰] love-trip - 커플 맞춤 여행 서비스 개발기
+title: '[개인 프로젝트 리뷰] love-trip - 커플 맞춤 여행 서비스 개발기'
 date: 2025-12-22T10:45:00.000Z
 slug: love-trip-프로젝트-리뷰
 category: Projects

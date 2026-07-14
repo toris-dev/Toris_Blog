@@ -4,7 +4,6 @@ date: 2026-07-06T09:40:00.000Z
 slug: ai-coding-agents-2026-overview
 category: AI
 tags:
-  ['AI', 'Coding Agent', 'Claude Code', 'Codex', 'Harness Engineering', '2026']
 ---
 
 # 2026 AI 코딩 에이전트 지형도 — 하네스, Claude Code, Codex 한눈에
