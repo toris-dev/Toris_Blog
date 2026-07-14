@@ -291,7 +291,7 @@ const CategorySidebar: FC<CategorySidebarProps> = ({
                         ))}
                         {categoryPosts.length > 5 && (
                           <Link
-                            href={`/posts?category=${category}`}
+                            href={`/blog?category=${encodeURIComponent(category)}`}
                             className="block rounded px-3 py-2 text-xs text-primary/80 transition-all hover:bg-primary/10 hover:text-primary"
                           >
                             + {categoryPosts.length - 5}개 더 보기

@@ -24,6 +24,8 @@ interface RateLimitEntry {
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1_000;
 const RATE_LIMIT_MAX_REQUESTS = 3;
 const RATE_LIMIT_MAX_CLIENTS = 500;
+// Bounded, best-effort process-local soft guard for serverless instances.
+// Durable shared rate limiting needs a separately approved external service setup.
 const inquiryRateLimits = new Map<string, RateLimitEntry>();
 
 function consumeRateLimit(clientId: string, now = Date.now()): boolean {
