@@ -1,5 +1,5 @@
 ---
-title: [Dev] 기술 아카이브 보관소
+title: '[Dev] 기술 아카이브 보관소'
 date: 2025-07-09T16:55:19.883Z
 slug: tech-archive
 category: Dev

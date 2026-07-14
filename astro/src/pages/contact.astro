@@ -1,0 +1,268 @@
+---
+import Base from '../layouts/Base.astro';
+import { COMPANY } from '../lib/site';
+
+// 정적 페이지 + 분리 API 설계: 엔드포인트는 빌드 시 환경변수로 주입.
+// 미설정이면 클라이언트에서 mailto: 폴백으로 동작한다.
+const CONTACT_API_URL: string = import.meta.env.PUBLIC_CONTACT_API_URL ?? '';
+
+const welcomeTopics = [
+  '신규 웹·모바일 제품 개발',
+  '아이디어 검증을 위한 MVP 제작',
+  '반복 업무 · AI 자동화 구축',
+  '기술 스택 · 아키텍처 자문'
+];
+
+const inputClass =
+  'mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-[15px] text-ink-900 placeholder:text-ink-400 transition-colors focus:border-teal-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-teal-600';
+---
+
+<Base
+  title="문의하기 | 토리스"
+  description="만들고 싶은 제품, 자동화하고 싶은 업무를 들려주세요. 하루 안에 회신드립니다."
+  path="/contact"
+>
+  <!-- ============================== Hero ============================== -->
+  <section class="mx-auto max-w-6xl px-5 pb-6 pt-20 sm:pt-28">
+    <p class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-teal-700">
+      Contact
+    </p>
+    <h1
+      class="reveal mt-3 text-4xl font-extrabold tracking-tight text-ink-900 sm:text-5xl"
+      style="transition-delay: 60ms"
+    >
+      프로젝트를 들려주세요
+    </h1>
+    <p
+      class="reveal mt-5 max-w-xl text-lg leading-relaxed text-ink-500"
+      style="transition-delay: 120ms"
+    >
+      아이디어 단계여도 괜찮습니다. 무엇을, 왜 만들고 싶은지 보내주시면
+      하루 안에 회신드립니다.
+    </p>
+  </section>
+
+  <!-- ========================= 2컬럼 본문 ========================= -->
+  <section class="mx-auto max-w-6xl px-5 py-14">
+    <div class="grid gap-10 lg:grid-cols-[5fr_7fr]">
+      <!-- 왼쪽: 연락 카드 + 환영 문의 -->
+      <div class="space-y-6">
+        <div
+          class="reveal rounded-2xl border border-line bg-white p-7 transition-all hover:-translate-y-1 hover:border-teal-300 hover:shadow-xl hover:shadow-teal-900/5"
+        >
+          <h2 class="text-lg font-bold text-ink-900">이메일로 바로 보내기</h2>
+          <p class="mt-2 text-sm leading-relaxed text-ink-500">
+            폼이 번거로우시면 메일로 직접 보내주셔도 됩니다.
+          </p>
+          <a
+            href={`mailto:${COMPANY.email}`}
+            class="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-teal-700 px-6 text-[15px] font-semibold text-white shadow-lg shadow-teal-700/20 transition-all hover:-translate-y-0.5 hover:bg-teal-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 active:translate-y-0"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="size-4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 6h16v12H4V6Zm0 1 8 6 8-6"></path>
+            </svg>
+            {COMPANY.email}
+          </a>
+        </div>
+
+        <div
+          class="reveal rounded-2xl border border-line bg-white p-7 transition-all hover:-translate-y-1 hover:border-teal-300 hover:shadow-xl hover:shadow-teal-900/5"
+          style="transition-delay: 70ms"
+        >
+          <h2 class="text-lg font-bold text-ink-900">GitHub</h2>
+          <p class="mt-2 text-sm leading-relaxed text-ink-500">
+            만들어 온 코드와 프로젝트를 먼저 살펴보세요.
+          </p>
+          <a
+            href={COMPANY.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-5 inline-flex h-12 w-full items-center justify-center rounded-full border border-ink-300/60 bg-white px-6 text-[15px] font-semibold text-ink-700 transition-all hover:-translate-y-0.5 hover:border-teal-400 hover:text-teal-800 focus-visible:outline-2 focus-visible:outline-teal-600 active:translate-y-0"
+          >
+            github.com/toris-dev
+          </a>
+        </div>
+
+        <div
+          class="reveal rounded-2xl border border-line bg-paper-warm p-7"
+          style="transition-delay: 140ms"
+        >
+          <h2 class="text-lg font-bold text-ink-900">이런 문의를 환영해요</h2>
+          <ul class="mt-4 space-y-2.5">
+            {
+              welcomeTopics.map((topic) => (
+                <li class="flex items-start gap-2.5 text-[15px] leading-relaxed text-ink-600">
+                  <svg
+                    viewBox="0 0 24 24"
+                    class="mt-1 size-4 shrink-0 text-teal-600"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m5 13 4 4L19 7" />
+                  </svg>
+                  {topic}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <!-- 오른쪽: 문의 폼 -->
+      <form
+        id="contact-form"
+        class="reveal rounded-2xl border border-line bg-white p-7 sm:p-9"
+        style="transition-delay: 100ms"
+        data-api={CONTACT_API_URL}
+        data-email={COMPANY.email}
+      >
+        <h2 class="text-lg font-bold text-ink-900">문의 폼</h2>
+        <p class="mt-2 text-sm leading-relaxed text-ink-500">
+          모든 항목은 필수입니다. 남겨주신 이메일로만 회신드립니다.
+        </p>
+
+        <div class="mt-6">
+          <label for="contact-name" class="block text-sm font-semibold text-ink-700">
+            이름
+          </label>
+          <input
+            id="contact-name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            placeholder="홍길동"
+            class={inputClass}
+          />
+        </div>
+
+        <div class="mt-5">
+          <label for="contact-email" class="block text-sm font-semibold text-ink-700">
+            이메일
+          </label>
+          <input
+            id="contact-email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder="you@example.com"
+            class={inputClass}
+          />
+        </div>
+
+        <div class="mt-5">
+          <label for="contact-message" class="block text-sm font-semibold text-ink-700">
+            문의 내용
+          </label>
+          <textarea
+            id="contact-message"
+            name="message"
+            required
+            rows="7"
+            placeholder="만들고 싶은 것, 해결하고 싶은 문제, 일정과 예산 감을 편하게 적어주세요."
+            class={inputClass + ' resize-y'}></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="mt-7 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-teal-700 px-7 text-[15px] font-semibold text-white shadow-lg shadow-teal-700/20 transition-all hover:-translate-y-0.5 hover:bg-teal-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          문의 보내기
+        </button>
+
+        <p
+          id="form-status"
+          role="status"
+          aria-live="polite"
+          class="mt-4 min-h-5 text-sm font-medium text-ink-600"
+        >
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ========================= 사업자 정보 ========================= -->
+  <section class="mx-auto max-w-6xl px-5 pb-24">
+    <p class="reveal border-t border-line pt-6 text-xs leading-relaxed text-ink-400">
+      {COMPANY.nameKo}({COMPANY.nameEn}) · 대표 {COMPANY.ceo} · 사업자등록번호
+      {COMPANY.bizNumber} · {COMPANY.email}
+    </p>
+  </section>
+</Base>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const statusEl = document.getElementById('form-status');
+
+  if (form && statusEl) {
+    const api = form.dataset.api ?? '';
+    const fallbackEmail = form.dataset.email ?? '';
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+    const setStatus = (message: string, ok: boolean) => {
+      statusEl.textContent = message;
+      statusEl.classList.toggle('text-teal-700', ok);
+      statusEl.classList.toggle('text-red-600', !ok);
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const data = new FormData(form);
+      const name = String(data.get('name') ?? '').trim();
+      const email = String(data.get('email') ?? '').trim();
+      const message = String(data.get('message') ?? '').trim();
+
+      if (!name || !email || !message) {
+        setStatus('이름, 이메일, 문의 내용을 모두 입력해주세요.', false);
+        return;
+      }
+
+      // API 미설정 시 mailto: 폴백 — 정적 페이지 단독으로도 동작
+      if (!api) {
+        const subject = encodeURIComponent(`[토리스 문의] ${name}님의 프로젝트 문의`);
+        const body = encodeURIComponent(
+          `이름: ${name}\n이메일: ${email}\n\n${message}`
+        );
+        setStatus('메일 앱으로 연결합니다. 전송 버튼까지 눌러주세요.', true);
+        window.location.href = `mailto:${fallbackEmail}?subject=${subject}&body=${body}`;
+        return;
+      }
+
+      if (submitBtn) submitBtn.disabled = true;
+      setStatus('전송 중입니다…', true);
+
+      try {
+        const res = await fetch(api, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message })
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        form.reset();
+        setStatus('문의가 접수되었습니다. 하루 안에 회신드릴게요.', true);
+      } catch {
+        setStatus(
+          '전송에 실패했습니다. 잠시 후 다시 시도하시거나 이메일로 보내주세요.',
+          false
+        );
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  }
+</script>

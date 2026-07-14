@@ -1,5 +1,5 @@
 ---
-title: [Career] 알고리즘 학습 로드맵
+title: '[Career] 알고리즘 학습 로드맵'
 date: 2025-07-09T16:55:19.890Z
 slug: algorithm-roadmap
 category: Career

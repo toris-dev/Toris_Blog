@@ -1,5 +1,5 @@
 ---
-title: [Projects] 프로젝트 개인 블로그 챗봇 Open API
+title: '[Projects] 프로젝트 개인 블로그 챗봇 Open API'
 date: 2025-07-09T16:55:19.923Z
 slug: 프로젝트-개인-블로그-챗봇-open-api
 category: Projects

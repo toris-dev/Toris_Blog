@@ -1,5 +1,5 @@
 ---
-title: [개인 프로젝트 리뷰] bubbleBible-FE - 모바일 우선 성경 플랫폼 개발기
+title: '[개인 프로젝트 리뷰] bubbleBible-FE - 모바일 우선 성경 플랫폼 개발기'
 date: 2025-12-22T11:15:00.000Z
 slug: bubbleBible-FE-프로젝트-리뷰
 category: Projects

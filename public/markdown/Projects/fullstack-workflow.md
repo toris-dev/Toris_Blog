@@ -1,5 +1,5 @@
 ---
-title: [Dev] 풀스택 개발자 워크플로우
+title: '[Dev] 풀스택 개발자 워크플로우'
 date: 2025-07-09T16:55:19.933Z
 slug: fullstack-workflow
 category: Dev

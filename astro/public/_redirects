@@ -1,0 +1,13 @@
+# Cloudflare Workers Static Assets _redirects
+# 근거/감사 문서: docs/redirects-audit.md
+# 참고: /posts → /blog 는 astro.config.mjs redirects에서 처리됨(정적 HTML meta refresh + canonical).
+
+/categories/* /blog 301
+/tags/* /blog 301
+/services /process 301
+/work /projects 301
+/guestbook /contact 301
+/todos / 301
+/ask /blog 301
+/bookmarks /blog 301
+/offline / 301

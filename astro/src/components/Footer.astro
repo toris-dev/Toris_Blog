@@ -1,0 +1,79 @@
+---
+import { COMPANY, NAV } from '../lib/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line bg-paper-warm">
+  <div class="mx-auto max-w-6xl px-5 py-12">
+    <div class="flex flex-col gap-10 md:flex-row md:justify-between">
+      <div class="max-w-sm">
+        <p class="text-lg font-extrabold text-ink-900">
+          토리스 <span class="font-semibold text-teal-700">TORIS Inc.</span>
+        </p>
+        <p class="mt-3 text-sm leading-relaxed text-ink-500">
+          {COMPANY.description}
+        </p>
+        <div class="mt-5 flex gap-2">
+          <a
+            href={COMPANY.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+            class="flex size-10 items-center justify-center rounded-lg border border-line text-ink-500 transition-colors hover:border-teal-400 hover:text-teal-700 focus-visible:outline-2 focus-visible:outline-teal-600"
+          >
+            <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true">
+              <path
+                d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.84 9.67.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.49-1.11-1.49-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5.02 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.79-4.58 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.82 0 .27.18.59.69.49A10.02 10.02 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z"
+              ></path>
+            </svg>
+          </a>
+          <a
+            href={`mailto:${COMPANY.email}`}
+            aria-label="이메일"
+            class="flex size-10 items-center justify-center rounded-lg border border-line text-ink-500 transition-colors hover:border-teal-400 hover:text-teal-700 focus-visible:outline-2 focus-visible:outline-teal-600"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="size-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              aria-hidden="true"
+            >
+              <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+              <path d="m3 7 9 6 9-6"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <nav aria-label="푸터 메뉴" class="grid grid-cols-2 gap-x-12 gap-y-2.5">
+        {
+          NAV.map((item) => (
+            <a
+              href={item.href}
+              class="text-sm text-ink-500 transition-colors hover:text-teal-700"
+            >
+              {item.label}
+            </a>
+          ))
+        }
+        <a href="/posts" class="text-sm text-ink-500 transition-colors hover:text-teal-700">
+          전체 글
+        </a>
+      </nav>
+    </div>
+
+    <!-- 사업자 정보 (전자상거래 표기) -->
+    <div class="mt-10 border-t border-line pt-6 text-xs leading-relaxed text-ink-400">
+      <p>
+        상호: {COMPANY.nameKo}({COMPANY.nameEn}) · 대표: {COMPANY.ceo} ·
+        사업자등록번호: {COMPANY.bizNumber}
+      </p>
+      <p class="mt-1">
+        문의: <a href={`mailto:${COMPANY.email}`} class="underline underline-offset-2 hover:text-teal-700">{COMPANY.email}</a>
+      </p>
+      <p class="mt-3">© {year} {COMPANY.nameEn} All rights reserved.</p>
+    </div>
+  </div>
+</footer>

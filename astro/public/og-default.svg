@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#fafaf7"/>
+  <g opacity="0.12" stroke="#0f6a62" stroke-width="2" fill="none">
+    <path d="M900 80 1010 143v126L900 332 790 269V143L900 80Z"/>
+    <path d="M1010 269 1120 332v126l-110 63-110-63V332l110-63Z"/>
+    <path d="M790 269 900 332v126l-110 63-110-63V332l110-63Z"/>
+  </g>
+  <path d="M120 120 176 152v64l-56 32-56-32v-64l56-32Z" fill="#0f6a62"/>
+  <path d="M120 152 148 168v32l-28 16-28-16v-32l28-16Z" fill="#fbbf24"/>
+  <text x="120" y="330" font-family="Pretendard, sans-serif" font-size="88" font-weight="800" fill="#16211f">토리스 TORIS</text>
+  <text x="122" y="400" font-family="Pretendard, sans-serif" font-size="36" font-weight="500" fill="#5b6a66">꾸준함이 완성하는 소프트웨어</text>
+  <text x="122" y="520" font-family="Pretendard, sans-serif" font-size="24" fill="#7d8b87">Toris Inc. · 웹 · 모바일 · 자동화 제품 스튜디오</text>
+</svg>

@@ -1,5 +1,5 @@
 ---
-title: [Dev] 기술 학습 자료실
+title: '[Dev] 기술 학습 자료실'
 date: 2025-07-09T16:55:19.915Z
 slug: tech-learning-hub
 category: Dev

@@ -1,0 +1,148 @@
+---
+/**
+ * 페이지 공통 SEO — 기존 Next generateMetadata의 title/description/
+ * canonical/OG/Twitter/JSON-LD 출력을 보존한다. (요구사항)
+ */
+import { COMPANY, SITE_URL, absoluteUrl } from '../lib/site';
+
+interface Article {
+  publishedAt?: string;
+  modifiedAt?: string;
+  tags?: string[];
+  category?: string;
+  wordCount?: number;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  path: string; // '/', '/posts/slug' 등 — canonical 계산에 사용
+  ogType?: 'website' | 'article';
+  image?: string;
+  article?: Article;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  path,
+  ogType = 'website',
+  image = '/og-default.svg',
+  article,
+  noindex = false
+} = Astro.props;
+
+const canonical = absoluteUrl(path);
+const ogImage = image.startsWith('http') ? image : absoluteUrl(image);
+
+/* ---------- JSON-LD @graph (Next의 buildGlobalGraph/buildArticleGraph 포팅) ---------- */
+const ids = {
+  person: `${SITE_URL}/#person`,
+  organization: `${SITE_URL}/#organization`,
+  website: `${SITE_URL}/#website`
+};
+
+const personNode = {
+  '@type': 'Person',
+  '@id': ids.person,
+  name: '토리스',
+  alternateName: 'Toris',
+  url: SITE_URL,
+  image: 'https://github.com/toris-dev.png',
+  jobTitle: 'Founder · Full Stack Developer',
+  sameAs: [
+    'https://github.com/toris-dev',
+    'https://www.linkedin.com/in/joohwan-yu',
+    'https://x.com/TorisDev'
+  ]
+};
+
+const organizationNode = {
+  '@type': 'Organization',
+  '@id': ids.organization,
+  name: COMPANY.nameEn,
+  alternateName: COMPANY.nameKo,
+  url: SITE_URL,
+  logo: { '@type': 'ImageObject', url: absoluteUrl('/og-default.svg') },
+  founder: { '@id': ids.person },
+  taxID: COMPANY.bizNumber,
+  email: COMPANY.email,
+  sameAs: [COMPANY.github]
+};
+
+const websiteNode = {
+  '@type': 'WebSite',
+  '@id': ids.website,
+  url: SITE_URL,
+  name: COMPANY.nameKo,
+  description: COMPANY.description,
+  inLanguage: 'ko-KR',
+  publisher: { '@id': ids.organization }
+};
+
+const graph: Record<string, unknown>[] = [
+  personNode,
+  organizationNode,
+  websiteNode,
+  {
+    '@type': 'WebPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: title,
+    description,
+    isPartOf: { '@id': ids.website },
+    inLanguage: 'ko-KR'
+  }
+];
+
+if (article) {
+  graph.push({
+    '@type': 'BlogPosting',
+    '@id': `${canonical}#article`,
+    headline: title,
+    description,
+    image: ogImage,
+    datePublished: article.publishedAt,
+    dateModified: article.modifiedAt ?? article.publishedAt,
+    author: { '@id': ids.person },
+    publisher: { '@id': ids.organization },
+    mainEntityOfPage: { '@id': `${canonical}#webpage` },
+    url: canonical,
+    inLanguage: 'ko-KR',
+    license: 'https://creativecommons.org/licenses/by/4.0/',
+    ...(article.tags?.length ? { keywords: article.tags.join(', ') } : {}),
+    ...(article.category ? { articleSection: article.category } : {}),
+    ...(article.wordCount ? { wordCount: article.wordCount } : {}),
+    isAccessibleForFree: true
+  });
+}
+
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content={COMPANY.nameKo} />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:image" content={ogImage} />
+{
+  article?.publishedAt && (
+    <meta property="article:published_time" content={article.publishedAt} />
+  )
+}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:creator" content="@toris_dev" />
+
+<script type="application/ld+json" set:html={jsonLd} />

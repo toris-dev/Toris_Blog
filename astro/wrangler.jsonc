@@ -1,0 +1,17 @@
+{
+  // Cloudflare Workers Static Assets 배포 설정
+  // 배포: astro/에서 `pnpm build && wrangler deploy`
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "toris-site",
+  "compatibility_date": "2026-07-01",
+  "assets": {
+    // Astro static 빌드 산출물을 그대로 정적 자산으로 서빙
+    "directory": "./dist",
+    // SPA 아님 — 존재하지 않는 경로는 404.html
+    "not_found_handling": "404-page"
+    // 참고: public/_redirects, public/_headers 파일이 함께 배포되어
+    // Workers Static Assets의 리다이렉트/헤더 규칙으로 적용된다.
+  }
+  // API(문의/조회수 등)는 이 Worker에 두지 않는다 — workers/contact-api 참조.
+  // 정적 사이트와 API의 배포 주기를 분리하기 위한 설계(요구사항).
+}

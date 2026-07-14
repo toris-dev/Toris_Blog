@@ -1,0 +1,12 @@
+{
+  // 배포 전 시크릿 등록 필요:
+  //   npx wrangler secret put GITHUB_TOKEN
+  //   (repo issues 쓰기 권한이 있는 GitHub PAT)
+  "name": "toris-contact-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-01",
+  "vars": {
+    // 정적 사이트 오리진. 커스텀 도메인 전환 시 함께 갱신.
+    "ALLOWED_ORIGIN": "https://toris-blog.vercel.app"
+  }
+}

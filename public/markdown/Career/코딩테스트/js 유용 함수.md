@@ -1,5 +1,5 @@
 ---
-title: [Career] JavaScript 코딩테스트 유용 함수 정리
+title: '[Career] JavaScript 코딩테스트 유용 함수 정리'
 date: 2025-07-09T16:55:19.898Z
 slug: js-유용-함수
 category: Career

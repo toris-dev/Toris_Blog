@@ -1,5 +1,5 @@
 ---
-title: [Learning] CSS Grid 완전 정리
+title: '[Learning] CSS Grid 완전 정리'
 date: 2025-07-09T16:55:19.906Z
 slug: grid
 category: Learning
