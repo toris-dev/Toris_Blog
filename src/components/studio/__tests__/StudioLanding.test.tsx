@@ -106,7 +106,15 @@ it('presents a service business before the blog archive', () => {
   expect(screen.getAllByText('상담과 문제 정의').length).toBeGreaterThan(0);
   expect(screen.getByText('운영 가능한 제품을 만드는 법')).toBeInTheDocument();
   expect(screen.queryByText('Toris Dev Universe')).not.toBeInTheDocument();
-  expect(screen.getByTestId('product-flow-signal')).toBeInTheDocument();
+  expect(
+    screen.getByText('TORIS · Product Engineering Lab')
+  ).toBeInTheDocument();
+  expect(screen.getByText('Build slot · Available')).toBeInTheDocument();
+  expect(screen.getByTestId('product-flow-signal')).toHaveAttribute(
+    'data-brand-signature',
+    't-reactor'
+  );
+  expect(screen.getByTestId('toris-reactor-core')).toBeInTheDocument();
 
   const desktopService = screen.getByRole('button', {
     name: /데스크톱·로컬 앱/

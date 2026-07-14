@@ -29,12 +29,13 @@ describe('TORIS brand tokens', () => {
   const source = readStyle('brand-tokens.css');
 
   it.each([
-    ['ink', '#0E0F12'],
-    ['graphite', '#202123'],
-    ['mist', '#F5F7FA'],
-    ['steel', '#9EA1AA'],
-    ['signal-green', '#10A37F'],
-    ['system-blue', '#2B8FFF']
+    ['ink', '#080A0D'],
+    ['graphite', '#171A20'],
+    ['mist', '#F4F1E8'],
+    ['steel', '#7E8794'],
+    ['signal-green', '#5CEBFF'],
+    ['system-blue', '#C99A3D'],
+    ['forge-red', '#B72E2C']
   ])('keeps the canonical %s value', (token, value) => {
     expect(source).toMatch(
       new RegExp(`--toris-color-${token}:\\s*${value};`, 'i')
@@ -76,7 +77,7 @@ describe('TORIS brand tokens', () => {
   it('uses Ink on saturated brand actions and a strong control border', () => {
     expect(source).toContain('--toris-on-signal: var(--toris-color-ink);');
     expect(source).toContain('--toris-on-system: var(--toris-color-ink);');
-    expect(source).toMatch(/--toris-control-border:\s*#6B707A;/i);
+    expect(source).toMatch(/--toris-control-border:\s*#69717B;/i);
 
     const darkContext = source.match(
       /\.dark,\s*\.cyberpunk,\s*\[data-toris-theme=['"]dark['"]\]\s*{([\s\S]*?)\n}/
@@ -87,42 +88,50 @@ describe('TORIS brand tokens', () => {
   });
 
   it('meets WCAG contrast for action copy and interactive boundaries', () => {
-    expect(contrastRatio('#0E0F12', '#10A37F')).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#0E0F12', '#2B8FFF')).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#6B707A', '#F5F7FA')).toBeGreaterThanOrEqual(3);
-    expect(contrastRatio('#9EA1AA', '#202123')).toBeGreaterThanOrEqual(3);
+    expect(contrastRatio('#080A0D', '#5CEBFF')).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#080A0D', '#C99A3D')).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#69717B', '#F4F1E8')).toBeGreaterThanOrEqual(3);
+    expect(contrastRatio('#7E8794', '#171A20')).toBeGreaterThanOrEqual(3);
   });
 
   it('uses contrast-safe accent text roles on light and dark surfaces', () => {
-    expect(source).toMatch(/--toris-signal-text:\s*#08725B;/i);
-    expect(source).toMatch(/--toris-system-text:\s*#0B5CAD;/i);
-    expect(source).toMatch(/--toris-signal-text:\s*#5CD6B5;/i);
-    expect(source).toMatch(/--toris-system-text:\s*#65B1FF;/i);
+    expect(source).toMatch(/--toris-signal-text:\s*#006877;/i);
+    expect(source).toMatch(/--toris-system-text:\s*#745000;/i);
+    expect(source).toMatch(/--toris-signal-text:\s*#5CEBFF;/i);
+    expect(source).toMatch(/--toris-system-text:\s*#E7C46D;/i);
 
-    expect(contrastRatio('#08725B', '#F5F7FA')).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#0B5CAD', '#FFFFFF')).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#5CD6B5', '#202123')).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#65B1FF', '#0E0F12')).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#006877', '#F4F1E8')).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#745000', '#FFFFFF')).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#5CEBFF', '#171A20')).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#E7C46D', '#080A0D')).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('uses the surface-safe reactor text role for visible focus', () => {
+    expect(source).toContain('--toris-focus: var(--toris-signal-text);');
+    expect(contrastRatio('#006877', '#F4F1E8')).toBeGreaterThanOrEqual(3);
+    expect(contrastRatio('#5CEBFF', '#080A0D')).toBeGreaterThanOrEqual(3);
   });
 
   it('keeps destructive surfaces and text readable in both contexts', () => {
-    expect(source).toMatch(/--toris-destructive:\s*#B42318;/i);
+    expect(source).toContain(
+      '--toris-destructive: var(--toris-color-forge-red);'
+    );
     expect(source).toMatch(/--toris-on-destructive:\s*#FFFFFF;/i);
-    expect(source).toMatch(/--toris-destructive-text:\s*#B42318;/i);
+    expect(source).toMatch(/--toris-destructive-text:\s*#9E2320;/i);
 
     const darkContext = source.match(
       /\.dark,\s*\.cyberpunk,\s*\[data-toris-theme=['"]dark['"]\]\s*{([\s\S]*?)\n}/
     )?.[1];
-    expect(darkContext).toMatch(/--toris-destructive:\s*#F97066;/i);
+    expect(darkContext).toMatch(/--toris-destructive:\s*#FF716D;/i);
     expect(darkContext).toContain(
       '--toris-on-destructive: var(--toris-color-ink);'
     );
-    expect(darkContext).toMatch(/--toris-destructive-text:\s*#F97066;/i);
+    expect(darkContext).toMatch(/--toris-destructive-text:\s*#FF8B87;/i);
 
-    expect(contrastRatio('#B42318', '#FFFFFF')).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#B42318', '#F5F7FA')).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#F97066', '#202123')).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio('#0E0F12', '#F97066')).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#B72E2C', '#FFFFFF')).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#9E2320', '#F4F1E8')).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#FF8B87', '#171A20')).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio('#080A0D', '#FF716D')).toBeGreaterThanOrEqual(4.5);
   });
 
   it('loads brand tokens before legacy variables and removes the body dot grid', () => {

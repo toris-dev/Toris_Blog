@@ -7,7 +7,7 @@ export const contentType = 'image/png';
 
 export default async function AppleIcon() {
   const appIcon = await readFile(
-    path.join(process.cwd(), 'public/brand/toris-app-icon-v2.svg'),
+    path.join(process.cwd(), 'public/brand/toris-app-icon-v3.svg'),
     'utf8'
   );
 

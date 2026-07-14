@@ -20,7 +20,7 @@ const reelProjects = [
     kind: 'B2B2C 전자계약 플랫폼',
     image: '/images/projects/21n-apps/graphic.png',
     imageFit: 'contain',
-    background: '#9675EE'
+    background: 'var(--toris-color-graphite)'
   },
   {
     number: '02',
@@ -120,12 +120,12 @@ export default function ProductShowreel() {
       >
         <div className="absolute inset-x-0 top-0 z-20 flex h-11 items-center justify-between border-b border-[var(--toris-border)] bg-[var(--toris-color-ink)] px-4 text-[var(--toris-color-mist)]">
           <div className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-rose-400" />
-            <span className="size-2 rounded-full bg-amber-300" />
+            <span className="size-2 rounded-full bg-[var(--toris-color-forge-red)]" />
+            <span className="size-2 rounded-full bg-[var(--toris-system)]" />
             <span className="size-2 rounded-full bg-[var(--toris-signal)]" />
           </div>
           <p className="font-mono text-[11px] font-bold tracking-widest text-white/70">
-            TORIS / Product signal
+            TORIS LAB / SHIPPED SYSTEMS
           </p>
         </div>
 
@@ -196,7 +196,7 @@ export default function ProductShowreel() {
 
         <div className="absolute left-4 top-16 z-20 flex items-center gap-2 rounded-full border border-white/20 bg-[var(--toris-color-ink)] px-3 py-1.5 font-mono text-[11px] font-bold tracking-widest text-white/80">
           <span className="size-1.5 rounded-full bg-[var(--toris-signal)]" />
-          Built & shipped
+          Build verified
         </div>
 
         <div className="absolute right-4 top-16 z-20 font-mono text-[11px] font-bold tracking-widest text-white/75">

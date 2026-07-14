@@ -1,29 +1,29 @@
 # TORIS Brand Guidelines
 
-TORIS is an independent product-engineering studio for small and medium-sized businesses improving an existing service. This guide is the source of truth for customer-facing product, portfolio, and consultation experiences.
+TORIS is an independent product-engineering lab for small and medium-sized businesses improving an existing service. The name began with the inventive confidence of Tony Stark, but the brand is expressed through an original engineering identity—not character, armor, or entertainment imagery.
 
 ## Brand foundation
 
 - **Audience:** decision-makers who need to modernize, stabilize, or extend a web, app, or desktop service without adding delivery risk.
 - **Promise:** **아이디어를 작동하게, 끝까지.** TORIS connects interface, system, launch, and operation instead of stopping at screens or prototypes.
-- **Personality:** clear, persistent, trustworthy. Calm competence is more credible than spectacle.
+- **Personality:** inventive, exact, accountable. Confident engineering is more credible than spectacle.
 - **Proof:** shipped products, full-stack ownership, deployment records, and technical writing. Never imply metrics, clients, or outcomes that cannot be verified.
 
 ### Core Attributes
 
 | Attribute | Meaning |
 | --- | --- |
-| **Clear** | 문제, 범위, 다음 행동을 모호하지 않게 설명합니다. |
-| **Persistent** | 화면 구현에서 멈추지 않고 배포와 운영까지 연결합니다. |
-| **Trustworthy** | 검증 가능한 작업과 기록으로 판단 근거를 제공합니다. |
+| **Inventive** | 익숙한 문제도 더 나은 작동 방식으로 다시 설계합니다. |
+| **Exact** | 화면, 시스템, 배포 경계를 정확히 정의합니다. |
+| **Accountable** | 시연에서 멈추지 않고 실제 운영 결과까지 책임집니다. |
 
 ### Brand Personality
 
 | Trait | Expression |
 | --- | --- |
-| **Clear** | Direct, structured, and calm |
-| **Persistent** | Delivery-minded and operational |
-| **Trustworthy** | Evidence-led and precise |
+| **Inventive** | Bold hypotheses, practical prototypes |
+| **Exact** | Structured, legible, engineered |
+| **Accountable** | Delivery-minded and evidence-led |
 
 ## Voice
 
@@ -37,37 +37,37 @@ Avoid inflated claims, trend-heavy jargon, anonymous agency language, and treati
 
 | Color | Value | Role |
 | --- | --- | --- |
-| Signal Green | `#10A37F` | Delivery, completion, and primary action state |
-| System Blue | `#2B8FFF` | Navigation, focus, links, and system flow |
+| Reactor Cyan | `#5CEBFF` | Core action, active energy, and product state |
+| Alloy Gold | `#C99A3D` | System structure, navigation, and craft |
 
 ### Secondary Colors
 
 | Color | Value | Role |
 | --- | --- | --- |
-| Destructive Light | `#B42318` | Errors and destructive action on light surfaces |
-| Destructive Dark | `#F97066` | Errors and destructive action on dark surfaces |
+| Forge Red | `#B72E2C` | Alerts, constraints, and critical state |
+| Reactor Cyan Dark | `#5CEBFF` | Active product signal on Carbon |
 
 ### Neutral Colors
 
 | Role | Value | Use |
 | --- | --- | --- |
-| Ink | `#0E0F12` | Primary copy and dark stage canvas |
-| Graphite | `#202123` | Dark surfaces and structural depth |
-| Mist | `#F5F7FA` | Default light canvas |
-| Steel | `#9EA1AA` | Secondary copy on dark surfaces only |
+| Carbon | `#080A0D` | Primary copy and dark laboratory stage |
+| Graphite | `#171A20` | Instrument panels and structural depth |
+| Ceramic | `#F4F1E8` | Technical drawing canvas |
+| Titanium | `#7E8794` | Secondary copy and hardware detail |
 
 ### Semantic Colors
 
 | Role | Source |
 | --- | --- |
-| Signal Text Light | `#08725B` on light canvas |
-| Signal Text Dark | `#5CD6B5` on dark canvas |
-| System Text Light | `#0B5CAD` on light canvas |
-| System Text Dark | `#65B1FF` on dark canvas |
-| Control Border Light | `#6B707A` interactive boundary |
-| Focus | `#2B8FFF` |
+| Reactor Text Light | `#006877` on Ceramic |
+| Reactor Text Dark | `#5CEBFF` on Carbon |
+| Alloy Text Light | `#745000` on Ceramic |
+| Alloy Text Dark | `#E7C46D` on Carbon |
+| Control Border Light | `#69717B` interactive boundary |
+| Focus | Reactor Text for the active surface: `#006877` light / `#5CEBFF` dark |
 
-Use semantic tokens from `src/styles/brand-tokens.css`; do not scatter canonical hex values through components. On light surfaces, use the darker `--toris-ink-muted` token instead of Steel for body copy so contrast remains readable. Use Ink through `--toris-on-signal` and `--toris-on-system` for copy on saturated brand actions. Use `--toris-destructive-text` for inline errors and pair destructive surfaces with `--toris-on-destructive`; both roles change by theme to retain normal-text contrast. Decorative borders may stay quiet; inputs and interactive boundaries must use the stronger `--toris-control-border`. Green communicates delivery/status. Blue communicates systems/navigation. Neither is decoration.
+Use semantic tokens from `src/styles/brand-tokens.css`; do not scatter canonical hex values through components. Reactor Cyan means energy is active. Alloy Gold means a system boundary or crafted structure. Forge Red marks constraint or risk. Only the reactor motif may carry a restrained emitted-light effect; the rest of the interface stays materially flat and precise.
 
 ### Typography
 
@@ -83,22 +83,55 @@ Use Space Grotesk for concise display headings and Inter for Korean body copy an
 
 ### Surfaces and shape
 
-Move deliberately between a dark product stage and a Mist work canvas. Use white or Graphite surfaces, 12–16px card corners, thin semantic borders, and restrained shadows. Depth should communicate grouping, not make every element float. Buttons may use full pill corners when their shape improves recognition.
+Move deliberately between a Carbon product lab and a Ceramic technical-drawing canvas. Use Graphite instrument surfaces, clipped or 12px corners, thin Titanium rules, and restrained depth. The signature element is the T-Reactor: one core, three product paths, one visible operating state.
 
 ### Motion
 
 Motion should reveal navigation direction, product handoff, or state change. Prefer short transforms and opacity changes over perpetual ambient effects. Every non-essential animation must stop or simplify under `prefers-reduced-motion`; content and controls must remain fully usable without motion.
 
+## Image style
+
+### Base Prompt Template
+
+```
+Original TORIS product-engineering laboratory visual, precise industrial geometry, Carbon and Ceramic materials, one Reactor Cyan energy core, restrained Alloy Gold and Forge Red hardware signals, asymmetric editorial composition, premium but practical, no readable text, no people, no entertainment IP, no superhero armor or helmet
+```
+
+### Style Keywords
+
+| Category | Keywords |
+| --- | --- |
+| **Form** | precision-machined, modular, structural, engineered |
+| **Material** | matte carbon, ceramic surface, titanium detail |
+| **Light** | restrained cyan emission, controlled studio light |
+| **Composition** | asymmetric, editorial, product-focused, spacious |
+
+### Visual Mood Descriptors
+
+- Inventive without becoming fictional
+- Exact enough to feel buildable
+- Confident, calm, and accountable
+
+### Visual Don'ts
+
+| Avoid | Reason |
+| --- | --- |
+| Superhero suits, helmets, chest armor, or cinematic character poses | Copies entertainment shorthand instead of building TORIS equity |
+| Dense HUD overlays, sci-fi dashboards, or decorative code | Adds spectacle without explaining the product |
+| Purple neon, rainbow gradients, or large blurred glow fields | Breaks the material Carbon/Ceramic system |
+| AI-generated lettering inside artwork | Wordmarks and labels must remain accessible real text |
+
 ### Accessibility
 
-Meet WCAG AA contrast for text and controls. Keep visible System Blue focus indicators, meaningful image alternative text, semantic heading order, keyboard access, and at least 44×44px interactive targets. Never encode status by color alone.
+Meet WCAG AA contrast for text and controls. Keep visible surface-safe Reactor focus indicators, meaningful image alternative text, semantic heading order, keyboard access, and at least 44×44px interactive targets. Never encode status by color alone.
 
 ### Prohibited
 
 | Avoid | Reason |
 | --- | --- |
 | Gradient text or gradient logo marks | Weakens the precise operational identity |
-| Decorative dot/grid backgrounds, neon, large glows, or blurred orbs | Creates spectacle without product meaning |
+| Decorative HUD grids, superhero imagery, armor or helmet silhouettes | Confuses the original TORIS engineering identity with entertainment IP |
+| Large neon glows or blurred orbs | Creates spectacle without product meaning |
 | Repeated glass cards or border-plus-wide-shadow cards | Flattens information hierarchy |
 | Unverified metrics, client claims, awards, or outcomes | Breaks evidence-led trust |
 | AI-generated text baked into the logo | The TORIS wordmark must remain real text |

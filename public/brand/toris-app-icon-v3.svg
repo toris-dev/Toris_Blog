@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+  <title id="title">TORIS T-Reactor app icon</title>
+  <rect width="256" height="256" rx="48" fill="#080A0D"/>
+  <path d="M42 40H214L198 72H146V112A50 50 0 0 1 174 146H202" fill="none" stroke="#F4F1E8" stroke-width="24" stroke-linecap="square" stroke-linejoin="round"/>
+  <path d="M110 112V72H58L42 40" fill="none" stroke="#F4F1E8" stroke-width="24" stroke-linecap="square" stroke-linejoin="round"/>
+  <path d="M82 146H54M128 196V220" fill="none" stroke="#F4F1E8" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="128" cy="146" r="42" fill="#F4F1E8"/>
+  <circle cx="128" cy="146" r="24" fill="#5CEBFF"/>
+  <circle cx="54" cy="146" r="17" fill="#F4F1E8"/>
+  <circle cx="54" cy="146" r="7" fill="#C99A3D"/>
+  <circle cx="202" cy="146" r="17" fill="#F4F1E8"/>
+  <circle cx="202" cy="146" r="7" fill="#B72E2C"/>
+  <circle cx="128" cy="220" r="17" fill="#F4F1E8"/>
+  <circle cx="128" cy="220" r="7" fill="#5CEBFF"/>
+</svg>

@@ -4,18 +4,18 @@
   "description": "앱·웹·데스크톱 제품을 아이디어 검증부터 출시와 운영까지 설계하고 개발합니다.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0E0F12",
-  "theme_color": "#0E0F12",
+  "background_color": "#080A0D",
+  "theme_color": "#080A0D",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/brand/toris-app-icon-v2.svg",
+      "src": "/brand/toris-app-icon-v3.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "/brand/toris-mark-v2.svg",
+      "src": "/brand/toris-mark-v3.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"

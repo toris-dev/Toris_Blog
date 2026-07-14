@@ -40,23 +40,24 @@ export const metadata: Metadata = {
     template: '%s | TORIS'
   },
   description:
-    '아이디어 검증부터 출시와 운영까지, 앱·웹·데스크톱 제품의 처음과 끝을 함께 설계하고 개발합니다.',
+    '발명가의 관점으로 가능성을 찾고 운영자의 책임으로 완성하는 앱·웹·데스크톱 제품 엔지니어링 스튜디오입니다.',
   manifest: '/manifest.json',
   icons: {
     icon: [
       {
-        url: '/brand/toris-mark-v2.svg',
+        url: '/brand/toris-mark-v3.svg',
         sizes: 'any',
         type: 'image/svg+xml'
       }
     ],
-    shortcut: '/brand/toris-mark-v2.svg',
+    shortcut: '/brand/toris-mark-v3.svg',
     apple: [{ url: '/apple-icon', sizes: '180x180', type: 'image/png' }]
   },
   keywords: [
     '토리스',
     'TORIS',
     'Toris Studio',
+    '제품 엔지니어링',
     '웹 개발',
     '프론트엔드',
     '백엔드',
@@ -104,13 +105,13 @@ export const metadata: Metadata = {
     siteName: 'TORIS',
     title: 'TORIS - 앱·웹·데스크톱 제품 개발 스튜디오',
     description:
-      '아이디어 검증부터 출시와 운영까지, 앱·웹·데스크톱 제품의 처음과 끝을 함께 설계하고 개발합니다.'
+      '발명가의 관점으로 가능성을 찾고 운영자의 책임으로 완성하는 앱·웹·데스크톱 제품 엔지니어링 스튜디오입니다.'
   },
   twitter: {
     card: 'summary_large_image',
     title: 'TORIS - 앱·웹·데스크톱 제품 개발 스튜디오',
     description:
-      '아이디어 검증부터 출시와 운영까지, 앱·웹·데스크톱 제품의 처음과 끝을 함께 설계하고 개발합니다.',
+      '발명가의 관점으로 가능성을 찾고 운영자의 책임으로 완성하는 앱·웹·데스크톱 제품 엔지니어링 스튜디오입니다.',
     creator: '@toris_dev'
   },
   ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
@@ -170,23 +171,23 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <meta
           name="theme-color"
-          content="#F5F7FA"
+          content="#F4F1E8"
           media="(prefers-color-scheme: light)"
         />
         <meta
           name="theme-color"
-          content="#0E0F12"
+          content="#080A0D"
           media="(prefers-color-scheme: dark)"
         />
         <link
           rel="icon"
-          href="/brand/toris-mark-v2.svg"
+          href="/brand/toris-mark-v3.svg"
           sizes="any"
           type="image/svg+xml"
         />
         <link
           rel="alternate icon"
-          href="/brand/toris-mark-v2.svg"
+          href="/brand/toris-mark-v3.svg"
           type="image/svg+xml"
         />
         <link rel="apple-touch-icon" href="/apple-icon" sizes="180x180" />

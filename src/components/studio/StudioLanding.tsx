@@ -136,13 +136,9 @@ function StudioHero({ projectCount }: { projectCount: number }) {
   const reduceMotion = useReducedMotion();
   const pointerX = useMotionValue(58);
   const signalX = useSpring(pointerX, { stiffness: 180, damping: 28 });
-  const signalY = useTransform(
-    signalX,
-    [0, 25, 50, 75, 100],
-    [74, 52, 64, 38, 24]
-  );
-  const signalLeft = useMotionTemplate`${signalX}%`;
-  const signalTop = useMotionTemplate`${signalY}%`;
+  const reactorAngle = useTransform(signalX, [0, 100], [-7, 7]);
+  const reactorShift = useTransform(signalX, [0, 100], [-10, 10]);
+  const reactorTransform = useMotionTemplate`translateX(${reactorShift}px) rotate(${reactorAngle}deg)`;
 
   const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
     if (reduceMotion) return;
@@ -159,38 +155,73 @@ function StudioHero({ projectCount }: { projectCount: number }) {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-12 -z-10 h-[52%] opacity-45"
+        className="pointer-events-none absolute -right-32 top-14 -z-10 size-[34rem] opacity-55 sm:-right-24 sm:size-[44rem] lg:right-[2%] lg:top-4 lg:size-[52rem] lg:opacity-65"
         data-testid="product-flow-signal"
+        data-brand-signature="t-reactor"
       >
-        <svg
+        <motion.div
           className="size-full"
-          viewBox="0 0 1000 400"
-          preserveAspectRatio="none"
+          style={{ transform: reactorTransform }}
         >
-          <path
-            d="M 0 296 C 140 296 170 208 250 208 S 400 256 500 256 S 650 152 750 152 S 900 96 1000 96"
-            fill="none"
-            stroke="var(--toris-system)"
-            strokeWidth="2"
-            vectorEffect="non-scaling-stroke"
-          />
-          {[250, 500, 750].map((cx, index) => (
+          <svg className="size-full" viewBox="0 0 640 640">
             <circle
-              key={cx}
-              cx={cx}
-              cy={[208, 256, 152][index]}
-              r="5"
-              fill="var(--toris-canvas)"
-              stroke="var(--toris-system)"
-              strokeWidth="2"
-              vectorEffect="non-scaling-stroke"
+              cx="320"
+              cy="320"
+              r="246"
+              fill="none"
+              stroke="var(--toris-border)"
+              strokeWidth="1"
             />
-          ))}
-        </svg>
-        <motion.span
-          className="absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--toris-canvas)] bg-[var(--toris-signal)]"
-          style={{ left: signalLeft, top: signalTop }}
-        />
+            <circle
+              cx="320"
+              cy="320"
+              r="205"
+              fill="none"
+              stroke="var(--toris-system)"
+              strokeDasharray="4 12"
+              strokeWidth="2"
+            />
+            <path
+              d="M164 210H476M320 210V430"
+              fill="none"
+              stroke="var(--toris-ink)"
+              strokeLinecap="round"
+              strokeWidth="38"
+            />
+            <path
+              d="M150 210H112M490 210H528M320 444V486"
+              fill="none"
+              stroke="var(--toris-ink)"
+              strokeLinecap="round"
+              strokeWidth="10"
+            />
+            <circle cx="96" cy="210" r="18" fill="var(--toris-system)" />
+            <circle
+              cx="544"
+              cy="210"
+              r="18"
+              fill="var(--toris-color-forge-red)"
+            />
+            <circle cx="320" cy="502" r="18" fill="var(--toris-signal)" />
+            <circle
+              cx="320"
+              cy="320"
+              r="74"
+              fill="var(--toris-canvas)"
+              stroke="var(--toris-ink)"
+              strokeWidth="18"
+            />
+            <circle
+              data-testid="toris-reactor-core"
+              cx="320"
+              cy="320"
+              r="46"
+              fill="var(--toris-signal)"
+              className="drop-shadow-[0_0_20px_color-mix(in_srgb,var(--toris-signal)_45%,transparent)]"
+            />
+            <circle cx="320" cy="320" r="14" fill="var(--toris-canvas)" />
+          </svg>
+        </motion.div>
       </div>
 
       <StudioSection>
@@ -200,13 +231,13 @@ function StudioHero({ projectCount }: { projectCount: number }) {
           animate={{ opacity: 1 }}
           transition={{ duration: reduceMotion ? 0 : 0.45, ease: ENTER_EASE }}
         >
-          <StudioEyebrow>TORIS · Independent Product Engineer</StudioEyebrow>
+          <StudioEyebrow>TORIS · Product Engineering Lab</StudioEyebrow>
           <div className="flex items-center gap-3 text-xs font-semibold text-[var(--toris-ink-muted)]">
             <span className="relative flex size-2" aria-hidden>
               <span className="absolute -inset-1 rounded-full border border-primary/35" />
               <span className="relative inline-flex size-2 rounded-full bg-primary" />
             </span>
-            New project · Available
+            Build slot · Available
           </div>
         </motion.div>
 
@@ -217,7 +248,7 @@ function StudioHero({ projectCount }: { projectCount: number }) {
             transition={{ duration: reduceMotion ? 0 : 0.7, ease: ENTER_EASE }}
           >
             <p className="text-sm font-semibold text-[var(--toris-ink-muted)]">
-              From first sketch to last deploy
+              Invent · Integrate · Ship
             </p>
             <h1 className="mt-5 text-balance break-keep text-[clamp(3.25rem,7vw,6rem)] font-black leading-[0.9] tracking-[-0.04em] text-[var(--toris-ink)]">
               아이디어를
@@ -227,8 +258,8 @@ function StudioHero({ projectCount }: { projectCount: number }) {
               <span className="mt-2 block">끝까지.</span>
             </h1>
             <p className="mt-8 max-w-xl text-pretty break-keep text-base leading-8 text-[var(--toris-ink-muted)] sm:text-lg">
-              문제를 제품의 언어로 정리하고, 화면과 시스템을 함께 설계해 실제로
-              운영되는 결과까지 만듭니다.
+              발명가의 관점으로 가능성을 찾고, 운영자의 책임으로 완성합니다.
+              화면부터 시스템과 배포까지 연결해 실제로 쓰이는 제품을 만듭니다.
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -266,10 +297,10 @@ function StudioHero({ projectCount }: { projectCount: number }) {
         <div className="mt-20 border-t border-[var(--toris-border)] pt-5 lg:mt-28">
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              ['DISCOVER', '문제와 우선순위'],
-              ['SHAPE', '흐름과 인터페이스'],
-              ['BUILD', '앱과 시스템'],
-              ['SHIP', '배포와 운영']
+              ['DIAGNOSE', '문제와 우선순위'],
+              ['DESIGN', '흐름과 인터페이스'],
+              ['ENGINEER', '앱과 시스템'],
+              ['DEPLOY', '배포와 운영']
             ].map(([label, detail], index) => (
               <motion.div
                 key={label}
@@ -297,7 +328,7 @@ function StudioHero({ projectCount }: { projectCount: number }) {
             ))}
           </div>
           <p className="mt-6 text-right font-mono text-[11px] tracking-widest text-[var(--toris-ink-muted)]">
-            {projectCount}+ products built · Seoul / Remote
+            {projectCount}+ products built · One accountable partner
           </p>
         </div>
       </StudioSection>

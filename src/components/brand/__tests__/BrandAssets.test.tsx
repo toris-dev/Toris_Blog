@@ -10,9 +10,10 @@ describe('TORIS production brand assets', () => {
   it('keeps imagegen concepts separate from flat production vectors', () => {
     const sourceAssets = [
       'toris-mark-imagegen-source-v2.png',
-      'toris-app-icon-imagegen-source-v2.png'
+      'toris-app-icon-imagegen-source-v2.png',
+      'toris-reactor-imagegen-source-v3.png'
     ];
-    const productionAssets = ['toris-mark-v2.svg', 'toris-app-icon-v2.svg'];
+    const productionAssets = ['toris-mark-v3.svg', 'toris-app-icon-v3.svg'];
 
     sourceAssets.forEach((asset) => {
       expect(existsSync(path.join(brandDir, asset))).toBe(true);
@@ -22,8 +23,9 @@ describe('TORIS production brand assets', () => {
       const svg = readFileSync(path.join(brandDir, asset), 'utf8');
 
       expect(svg).toContain('viewBox="0 0 256 256"');
-      expect(svg).toContain('#10A37F');
-      expect(svg).toContain('#2B8FFF');
+      expect(svg).toContain('#5CEBFF');
+      expect(svg).toContain('#C99A3D');
+      expect(svg).toContain('#B72E2C');
       expect(svg).not.toMatch(/gradient|filter|shadow|texture/i);
     });
   });
@@ -40,29 +42,29 @@ describe('TORIS production brand assets', () => {
 
     expect(manifest.icons).toEqual([
       expect.objectContaining({
-        src: '/brand/toris-app-icon-v2.svg',
+        src: '/brand/toris-app-icon-v3.svg',
         sizes: 'any',
         type: 'image/svg+xml',
         purpose: 'any'
       }),
       expect.objectContaining({
-        src: '/brand/toris-mark-v2.svg',
+        src: '/brand/toris-mark-v3.svg',
         sizes: 'any',
         type: 'image/svg+xml',
         purpose: 'any'
       })
     ]);
-    expect(iconRoute).toContain('public/brand/toris-mark-v2.svg');
-    expect(appleIconRoute).toContain('public/brand/toris-app-icon-v2.svg');
+    expect(iconRoute).toContain('public/brand/toris-mark-v3.svg');
+    expect(appleIconRoute).toContain('public/brand/toris-app-icon-v3.svg');
   });
 
   it('uses the TORIS icon and palette in root metadata without legacy overrides', () => {
     const layout = readFileSync(path.join(root, 'src/app/layout.tsx'), 'utf8');
 
-    expect(layout).toContain("url: '/brand/toris-mark-v2.svg'");
-    expect(layout).toContain('href="/brand/toris-mark-v2.svg"');
-    expect(layout).toContain('content="#F5F7FA"');
-    expect(layout).toContain('content="#0E0F12"');
+    expect(layout).toContain("url: '/brand/toris-mark-v3.svg'");
+    expect(layout).toContain('href="/brand/toris-mark-v3.svg"');
+    expect(layout).toContain('content="#F4F1E8"');
+    expect(layout).toContain('content="#080A0D"');
     expect(layout).not.toContain('/images/favicon.svg');
     expect(layout).not.toContain('#0f172a');
   });
