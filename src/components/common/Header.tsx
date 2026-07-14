@@ -128,7 +128,10 @@ const Header: FC = () => {
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           {/* Logo */}
           <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
-            <Link href="/" className="flex min-h-11 items-center font-bold">
+            <Link
+              href="/"
+              className="flex min-h-11 items-center rounded-xl bg-[var(--toris-color-mist)] px-2 font-bold text-[var(--toris-color-ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--toris-focus)]"
+            >
               <TorisBrand
                 priority
                 markClassName="size-8"
@@ -149,16 +152,16 @@ const Header: FC = () => {
                 <Link
                   href={href}
                   className={cn(
-                    'relative text-sm font-medium transition-colors hover:text-primary',
+                    'relative text-sm font-medium transition-colors hover:text-[var(--toris-system-text)]',
                     isActive
-                      ? 'font-semibold text-primary'
+                      ? 'font-semibold text-[var(--toris-system-text)]'
                       : 'text-muted-foreground'
                   )}
                 >
                   {label}
                   {isActive && (
                     <motion.div
-                      className="absolute inset-x-0 -bottom-1 h-0.5 rounded-full bg-primary"
+                      className="absolute inset-x-0 -bottom-1 h-0.5 rounded-full bg-[var(--toris-system)]"
                       layoutId="activeIndicator"
                       initial={false}
                       transition={{
@@ -211,7 +214,7 @@ const Header: FC = () => {
               <Link
                 href={href}
                 className={cn(
-                  'flex flex-col items-center justify-center gap-0.5 rounded-md px-1 py-1.5 text-[10px] transition-colors sm:text-xs',
+                  'flex flex-col items-center justify-center gap-0.5 rounded-md px-1 py-1.5 text-xs transition-colors',
                   (
                     href === '/blog'
                       ? pathname.startsWith('/blog') ||
@@ -221,7 +224,7 @@ const Header: FC = () => {
                           pathname.startsWith('/projects')
                         : pathname.startsWith(href)
                   )
-                    ? 'bg-primary/10 text-primary'
+                    ? 'bg-secondary/10 text-[var(--toris-system-text)]'
                     : 'text-muted-foreground hover:bg-accent hover:text-foreground'
                 )}
               >

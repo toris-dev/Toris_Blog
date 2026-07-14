@@ -3,31 +3,34 @@
  * Components should consume semantic tokens; canonical colors stay here as the
  * single source of truth for brand output and Tailwind compatibility aliases.
  */
-:root {
+:root,
+[data-toris-theme='light'] {
   color-scheme: light;
 
-  --toris-color-ink: #0E0F12;
+  --toris-color-ink: #0e0f12;
   --toris-color-graphite: #202123;
-  --toris-color-mist: #F5F7FA;
-  --toris-color-steel: #9EA1AA;
-  --toris-color-signal-green: #10A37F;
-  --toris-color-system-blue: #2B8FFF;
+  --toris-color-mist: #f5f7fa;
+  --toris-color-steel: #9ea1aa;
+  --toris-color-signal-green: #10a37f;
+  --toris-color-system-blue: #2b8fff;
 
   --toris-canvas: var(--toris-color-mist);
-  --toris-surface: #FFFFFF;
-  --toris-surface-elevated: #FFFFFF;
+  --toris-surface: #ffffff;
+  --toris-surface-elevated: #ffffff;
   --toris-ink: var(--toris-color-ink);
   --toris-ink-muted: #555962;
-  --toris-border: #D9DCE2;
-  --toris-control-border: #6B707A;
+  --toris-border: #d9dce2;
+  --toris-control-border: #6b707a;
   --toris-signal: var(--toris-color-signal-green);
   --toris-system: var(--toris-color-system-blue);
+  --toris-signal-text: #08725b;
+  --toris-system-text: #0b5cad;
   --toris-on-signal: var(--toris-color-ink);
   --toris-on-system: var(--toris-color-ink);
-  --toris-destructive: #B42318;
-  --toris-on-destructive: #FFFFFF;
-  --toris-destructive-text: #B42318;
-  --toris-inverse: #FFFFFF;
+  --toris-destructive: #b42318;
+  --toris-on-destructive: #ffffff;
+  --toris-destructive-text: #b42318;
+  --toris-inverse: #ffffff;
   --toris-focus: var(--toris-color-system-blue);
   --toris-shadow-sm: 0 1px 2px rgba(14, 15, 18, 0.06);
   --toris-shadow-md: 0 8px 24px rgba(14, 15, 18, 0.08);
@@ -57,18 +60,20 @@
 
   --toris-canvas: var(--toris-color-ink);
   --toris-surface: var(--toris-color-graphite);
-  --toris-surface-elevated: #292A2E;
+  --toris-surface-elevated: #292a2e;
   --toris-ink: var(--toris-color-mist);
   --toris-ink-muted: var(--toris-color-steel);
   --toris-border: rgba(158, 161, 170, 0.24);
   --toris-control-border: var(--toris-color-steel);
   --toris-signal: var(--toris-color-signal-green);
   --toris-system: var(--toris-color-system-blue);
+  --toris-signal-text: #5cd6b5;
+  --toris-system-text: #65b1ff;
   --toris-on-signal: var(--toris-color-ink);
   --toris-on-system: var(--toris-color-ink);
-  --toris-destructive: #F97066;
+  --toris-destructive: #f97066;
   --toris-on-destructive: var(--toris-color-ink);
-  --toris-destructive-text: #F97066;
+  --toris-destructive-text: #f97066;
   --toris-inverse: var(--toris-color-ink);
   --toris-focus: var(--toris-color-system-blue);
   --toris-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);

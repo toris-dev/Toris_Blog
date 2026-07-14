@@ -36,10 +36,7 @@ export function TorisBrand({
         height={40}
         sizes="40px"
         fetchPriority={priority ? 'high' : undefined}
-        className={cn(
-          'size-9 shrink-0 object-contain dark:brightness-0 dark:invert',
-          markClassName
-        )}
+        className={cn('size-9 shrink-0 object-contain', markClassName)}
       />
       {!isMarkOnly ? (
         <span

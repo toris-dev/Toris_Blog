@@ -34,9 +34,24 @@ jest.mock('framer-motion', () => {
       span: createMotionComponent('span')
     },
     useMotionValue: motionValue,
-    useReducedMotion: () => false,
+    useReducedMotion: () =>
+      Boolean(
+        (
+          globalThis as typeof globalThis & {
+            __productShowreelReducedMotion?: boolean;
+          }
+        ).__productShowreelReducedMotion
+      ),
     useSpring: (value: unknown) => value
   };
+});
+
+beforeEach(() => {
+  (
+    globalThis as typeof globalThis & {
+      __productShowreelReducedMotion?: boolean;
+    }
+  ).__productShowreelReducedMotion = false;
 });
 
 it('switches the visible product when a project tab is selected', () => {
@@ -59,4 +74,21 @@ it('switches the visible product when a project tab is selected', () => {
   expect(
     screen.getByRole('link', { name: 'SnapMate 프로젝트 보기' })
   ).toHaveAttribute('href', '/projects/snapmate');
+});
+
+it('renders the active indicator statically when reduced motion is requested', () => {
+  (
+    globalThis as typeof globalThis & {
+      __productShowreelReducedMotion?: boolean;
+    }
+  ).__productShowreelReducedMotion = true;
+
+  const { container } = render(<ProductShowreel />);
+
+  expect(
+    container.querySelector('[data-reduced-motion="true"]')
+  ).toBeInTheDocument();
+  expect(
+    container.querySelector('[data-reduced-motion="false"]')
+  ).not.toBeInTheDocument();
 });

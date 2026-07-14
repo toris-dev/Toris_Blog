@@ -280,11 +280,11 @@ function StudioHero({ projectCount }: { projectCount: number }) {
                 }}
                 className="group flex items-center gap-4"
               >
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-[var(--toris-border)] font-mono text-[9px] text-[var(--toris-ink-muted)] transition-colors duration-200 group-hover:border-[var(--toris-signal)] group-hover:text-[var(--toris-signal)]">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-[var(--toris-border)] font-mono text-[11px] text-[var(--toris-ink-muted)] transition-colors duration-200 group-hover:border-[var(--toris-signal)] group-hover:text-[var(--toris-signal-text)]">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <span>
-                  <span className="block font-mono text-[9px] font-bold tracking-[0.12em] text-[var(--toris-ink)]">
+                  <span className="block font-mono text-[11px] font-bold tracking-widest text-[var(--toris-ink)]">
                     {label}
                   </span>
                   <span className="mt-1 block text-xs text-[var(--toris-ink-muted)]">
@@ -294,7 +294,7 @@ function StudioHero({ projectCount }: { projectCount: number }) {
               </motion.div>
             ))}
           </div>
-          <p className="mt-6 text-right font-mono text-[9px] tracking-[0.12em] text-[var(--toris-ink-muted)]">
+          <p className="mt-6 text-right font-mono text-[11px] tracking-widest text-[var(--toris-ink-muted)]">
             {projectCount}+ products built · Seoul / Remote
           </p>
         </div>
@@ -347,7 +347,7 @@ export function ServicesSection() {
                     className="group grid min-h-24 w-full cursor-pointer grid-cols-[2.5rem_1fr_auto] items-center gap-3 border-b border-[var(--toris-border)] py-5 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)] sm:grid-cols-[3rem_1fr_auto]"
                   >
                     <span
-                      className={`font-mono text-[10px] font-bold transition-colors duration-200 ${isActive ? 'text-primary' : 'text-muted-foreground'}`}
+                      className={`font-mono text-[11px] font-bold transition-colors duration-200 ${isActive ? 'text-[var(--toris-signal-text)]' : 'text-muted-foreground'}`}
                     >
                       {String(index + 1).padStart(2, '0')}
                     </span>
@@ -379,7 +379,7 @@ export function ServicesSection() {
           <div className="overflow-hidden rounded-2xl border border-[var(--toris-border)] bg-[var(--toris-surface)] p-5 shadow-[var(--toris-shadow-sm)] sm:p-8 lg:sticky lg:top-24">
             <div className="flex items-center justify-between border-b border-[var(--toris-border)] pb-4 text-xs font-semibold text-[var(--toris-ink-muted)]">
               <span>Product signal / {activeService.label}</span>
-              <span className="flex items-center gap-2 text-[var(--toris-signal)]">
+              <span className="flex items-center gap-2 text-[var(--toris-signal-text)]">
                 <span className="size-1.5 rounded-full bg-[var(--toris-signal)]" />{' '}
                 Live
               </span>
@@ -417,7 +417,7 @@ export function ServicesSection() {
                 >
                   <div className="flex items-start justify-between gap-5">
                     <div>
-                      <p className="text-xs font-semibold text-[var(--toris-system)]">
+                      <p className="text-xs font-semibold text-[var(--toris-system-text)]">
                         Selected capability
                       </p>
                       <h3 className="mt-3 break-keep text-3xl font-black tracking-[-0.04em] text-[var(--toris-ink)] sm:text-4xl">
@@ -439,7 +439,7 @@ export function ServicesSection() {
                         key={item}
                         className="bg-[var(--toris-canvas)] p-3.5 sm:p-4"
                       >
-                        <span className="font-mono text-[8px] text-[var(--toris-ink-muted)]">
+                        <span className="font-mono text-[11px] text-[var(--toris-ink-muted)]">
                           LAYER {String(index + 1).padStart(2, '0')}
                         </span>
                         <p className="mt-2 break-keep text-xs font-bold text-[var(--toris-ink)] sm:text-sm">
@@ -452,7 +452,7 @@ export function ServicesSection() {
               </AnimatePresence>
             </div>
 
-            <p className="mt-5 font-mono text-[10px] leading-6 text-[var(--toris-ink-muted)]">
+            <p className="mt-5 font-mono text-[11px] leading-6 text-[var(--toris-ink-muted)]">
               {activeService.stack.join(' / ')}
             </p>
           </div>
@@ -485,7 +485,7 @@ function WorkVisual({ work }: { work: StudioCaseStudy }) {
               'linear-gradient(to top, color-mix(in srgb, var(--toris-color-ink) 64%, transparent), transparent 58%)'
           }}
         />
-        <span className="absolute bottom-4 left-4 rounded-full border border-white/30 bg-[var(--toris-color-ink)] px-3 py-1.5 font-mono text-[9px] font-bold tracking-[0.12em] text-white">
+        <span className="absolute bottom-4 left-4 rounded-full border border-white/30 bg-[var(--toris-color-ink)] px-3 py-1.5 font-mono text-[11px] font-bold tracking-widest text-white">
           Product interface
         </span>
       </div>
@@ -495,14 +495,14 @@ function WorkVisual({ work }: { work: StudioCaseStudy }) {
   if (work.slug === 'tracedesk') {
     return (
       <div className="relative aspect-[16/9] overflow-hidden border-b border-[var(--toris-border)] bg-[var(--toris-color-ink)] p-5 text-[var(--toris-color-mist)] sm:p-7 xl:border-b-0 xl:border-r">
-        <div className="flex items-center justify-between border-b border-white/15 pb-3 font-mono text-[9px] tracking-[0.12em] text-white/55">
+        <div className="flex items-center justify-between border-b border-white/15 pb-3 font-mono text-[11px] tracking-widest text-white/70">
           <span>TraceDesk / Local timeline</span>
-          <span className="flex items-center gap-2 text-[var(--toris-system)]">
+          <span className="flex items-center gap-2 text-[var(--toris-system-text)]">
             <span className="size-1.5 rounded-full bg-[var(--toris-system)]" />{' '}
             Local only
           </span>
         </div>
-        <div className="mt-5 grid grid-cols-[5rem_1fr] gap-x-4 gap-y-3 font-mono text-[10px] sm:grid-cols-[7rem_1fr] sm:text-xs">
+        <div className="mt-5 grid grid-cols-[5rem_1fr] gap-x-4 gap-y-3 font-mono text-[11px] sm:grid-cols-[7rem_1fr] sm:text-xs">
           {[
             ['09:12', 'VS Code · Product build', '82%'],
             ['10:04', 'Browser · QA session', '56%'],
@@ -528,18 +528,18 @@ function WorkVisual({ work }: { work: StudioCaseStudy }) {
 
   return (
     <div className="relative aspect-[16/9] overflow-hidden border-b border-[var(--toris-border)] bg-[var(--toris-color-graphite)] p-5 font-mono text-[var(--toris-color-mist)] sm:p-7 xl:border-b-0 xl:border-r">
-      <div className="flex items-center gap-2 border-b border-white/15 pb-3 text-[9px] tracking-[0.12em] text-white/55">
+      <div className="flex items-center gap-2 border-b border-white/15 pb-3 text-[11px] tracking-widest text-white/70">
         <span className="size-1.5 rounded-full bg-[var(--toris-signal)]" />{' '}
         devpulse — daily run
       </div>
-      <div className="mt-5 space-y-3 text-[10px] sm:text-xs">
+      <div className="mt-5 space-y-3 text-[11px] sm:text-xs">
         <p>
-          <span className="text-[var(--toris-signal)]">$</span> collect --source
-          dev-news
+          <span className="text-[var(--toris-signal-text)]">$</span> collect
+          --source dev-news
         </p>
         <p className="text-white/55">✓ 48 stories indexed</p>
         <p>
-          <span className="text-[var(--toris-signal)]">$</span> summarize
+          <span className="text-[var(--toris-signal-text)]">$</span> summarize
           --model local
         </p>
         <p className="text-white/55">✓ cards · captions · video ready</p>
@@ -589,7 +589,7 @@ export function WorkSection() {
               className="group inline-flex min-h-11 cursor-pointer items-center gap-3 text-sm font-bold text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
             >
               전체 프로젝트 보기
-              <span className="flex size-9 items-center justify-center rounded-full border border-foreground/20 transition duration-200 group-hover:border-primary group-hover:bg-primary group-hover:text-white">
+              <span className="flex size-9 items-center justify-center rounded-full border border-foreground/20 transition duration-200 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
                 <FaArrowRight className="size-3 transition-transform duration-200 group-hover:translate-x-0.5" />
               </span>
             </Link>
@@ -607,14 +607,14 @@ export function WorkSection() {
                 <div className="flex flex-col p-6 sm:p-8 xl:p-9">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="text-xs font-semibold text-[var(--toris-signal)]">
+                      <p className="text-xs font-semibold text-[var(--toris-signal-text)]">
                         Case {work.number} · {work.kind}
                       </p>
                       <h3 className="mt-3 break-keep text-3xl font-black tracking-[-0.04em] text-[var(--toris-ink)] sm:text-4xl">
                         {work.name}
                       </h3>
                     </div>
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-foreground/15 text-muted-foreground transition duration-200 group-hover:border-primary group-hover:bg-primary group-hover:text-white">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-foreground/15 text-muted-foreground transition duration-200 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
                       <FaArrowRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                     </span>
                   </div>
@@ -629,7 +629,7 @@ export function WorkSection() {
                         key={label}
                         className="grid gap-2 border-t border-border pt-3.5 sm:grid-cols-[3.5rem_1fr]"
                       >
-                        <dt className="font-mono text-[10px] font-bold text-foreground">
+                        <dt className="font-mono text-[11px] font-bold text-foreground">
                           {label}
                         </dt>
                         <dd className="text-pretty break-keep text-[13px] leading-6 text-muted-foreground">
@@ -640,7 +640,7 @@ export function WorkSection() {
                   </dl>
 
                   <div className="mt-auto border-t border-border pt-5 xl:mt-7">
-                    <p className="font-mono text-[10px] font-bold text-foreground">
+                    <p className="font-mono text-[11px] font-bold text-foreground">
                       담당 범위
                     </p>
                     <div className="mt-3 flex flex-wrap gap-2">
@@ -663,7 +663,7 @@ export function WorkSection() {
         <StudioReveal className="flex justify-center lg:hidden">
           <Link
             href="/projects"
-            className="group inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border border-foreground/20 px-5 text-sm font-bold text-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+            className="group inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border border-foreground/20 px-5 text-sm font-bold text-foreground transition-colors hover:border-primary hover:text-[var(--toris-signal-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
           >
             전체 25개 프로젝트 아카이브 보기
             <FaArrowRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-1" />
@@ -721,7 +721,7 @@ export function ProcessSection() {
                     ease: ENTER_EASE
                   }}
                 >
-                  <p className="text-xs font-semibold text-[var(--toris-system)]">
+                  <p className="text-xs font-semibold text-[var(--toris-system-text)]">
                     Output / {activeStep.number}
                   </p>
                   <h3 className="mt-4 break-keep text-3xl font-black tracking-[-0.04em] text-[var(--toris-ink)]">
@@ -730,7 +730,7 @@ export function ProcessSection() {
                   <p className="mt-5 max-w-lg text-pretty break-keep text-sm leading-7 text-[var(--toris-ink-muted)] sm:text-base">
                     {activeStep.description}
                   </p>
-                  <p className="mt-7 inline-flex rounded-full border border-[var(--toris-signal)] bg-[var(--toris-surface)] px-4 py-2 text-xs font-bold text-[var(--toris-signal)]">
+                  <p className="mt-7 inline-flex rounded-full border border-[var(--toris-signal)] bg-[var(--toris-surface)] px-4 py-2 text-xs font-bold text-[var(--toris-signal-text)]">
                     {activeStep.output}
                   </p>
                 </motion.div>
@@ -753,7 +753,7 @@ export function ProcessSection() {
                     className="group grid min-h-32 w-full cursor-pointer grid-cols-[3rem_1fr_auto] items-center gap-3 border-b border-[var(--toris-border)] py-5 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)] sm:grid-cols-[4rem_1fr_auto]"
                   >
                     <span
-                      className={`font-mono text-[10px] font-bold transition-colors duration-200 ${isActive ? 'text-[var(--toris-signal)]' : 'text-[var(--toris-ink-muted)]'}`}
+                      className={`font-mono text-[11px] font-bold transition-colors duration-200 ${isActive ? 'text-[var(--toris-signal-text)]' : 'text-[var(--toris-ink-muted)]'}`}
                     >
                       {step.number}
                     </span>
@@ -799,7 +799,7 @@ export function LatestProofSection({ posts }: { posts: LandingPost[] }) {
           />
           <Link
             href="/blog"
-            className="group inline-flex shrink-0 items-center gap-2 text-sm font-bold text-foreground transition-colors hover:text-primary"
+            className="group inline-flex min-h-11 shrink-0 items-center gap-2 text-sm font-bold text-foreground transition-colors hover:text-[var(--toris-system-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
           >
             기술 블로그 보기
             <FaArrowRight className="size-3.5 transition-transform duration-150 group-hover:translate-x-1" />
@@ -813,11 +813,13 @@ export function LatestProofSection({ posts }: { posts: LandingPost[] }) {
                 href={`/posts/${post.slug}`}
                 className="group flex h-full min-h-64 flex-col rounded-2xl border border-[var(--toris-border)] bg-[var(--toris-surface)] p-6 shadow-[var(--toris-shadow-sm)] transition duration-200 ease-out hover:-translate-y-1 hover:border-[var(--toris-signal)] hover:shadow-[var(--toris-shadow-md)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
               >
-                <div className="flex items-center justify-between gap-3 font-mono text-[10px] font-bold tracking-[0.12em] text-[var(--toris-ink-muted)]">
-                  <span className="text-primary">{post.category}</span>
+                <div className="flex items-center justify-between gap-3 font-mono text-[11px] font-bold tracking-widest text-[var(--toris-ink-muted)]">
+                  <span className="text-[var(--toris-signal-text)]">
+                    {post.category}
+                  </span>
                   <time>{post.date}</time>
                 </div>
-                <h3 className="mt-7 text-balance break-keep text-xl font-black leading-snug tracking-tight text-foreground group-hover:text-primary">
+                <h3 className="mt-7 text-balance break-keep text-xl font-black leading-snug tracking-tight text-foreground group-hover:text-[var(--toris-signal-text)]">
                   {post.title}
                 </h3>
                 {post.description ? (
@@ -847,7 +849,7 @@ function StudioContactCta() {
       >
         <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
-            <p className="text-sm font-semibold text-[var(--toris-system)]">
+            <p className="text-sm font-semibold text-[var(--toris-system-text)]">
               Start a project
             </p>
             <h2 className="mt-5 max-w-3xl text-balance break-keep text-4xl font-black leading-[1.02] tracking-[-0.04em] sm:text-5xl md:text-6xl">

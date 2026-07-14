@@ -10,10 +10,10 @@ import {
 describe('StudioShell', () => {
   it('provides explicit semantic stage and canvas surfaces', () => {
     render(
-      <>
+      <div className="dark">
         <StudioStage aria-label="dark product stage">Stage</StudioStage>
         <StudioCanvas aria-label="light work canvas">Canvas</StudioCanvas>
-      </>
+      </div>
     );
 
     expect(screen.getByLabelText('dark product stage')).toHaveAttribute(
@@ -26,6 +26,14 @@ describe('StudioShell', () => {
     expect(screen.getByLabelText('light work canvas')).toHaveAttribute(
       'data-toris-surface',
       'canvas'
+    );
+    expect(screen.getByLabelText('light work canvas')).toHaveAttribute(
+      'data-toris-theme',
+      'light'
+    );
+    expect(screen.getByLabelText('light work canvas')).toHaveClass(
+      'bg-[var(--toris-canvas)]',
+      'text-[var(--toris-ink)]'
     );
   });
 
@@ -40,6 +48,9 @@ describe('StudioShell', () => {
       'max-w-[86rem]'
     );
     expect(screen.getByText('제품 개발 스튜디오')).toHaveClass('break-keep');
+    expect(screen.getByText('제품 개발 스튜디오')).toHaveClass(
+      'text-[var(--toris-system-text)]'
+    );
   });
 
   it('exports action styles with accessible focus and target sizing', () => {

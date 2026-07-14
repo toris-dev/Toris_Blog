@@ -27,6 +27,7 @@ export function StudioStage({ children, className, ...props }: SurfaceProps) {
 export function StudioCanvas({ children, className, ...props }: SurfaceProps) {
   return (
     <section
+      data-toris-theme="light"
       data-toris-surface="canvas"
       className={cn(
         'relative bg-[var(--toris-canvas)] text-[var(--toris-ink)]',
@@ -65,7 +66,7 @@ export function StudioEyebrow({
   return (
     <p
       className={cn(
-        'flex items-center gap-3 break-keep text-sm font-semibold text-[var(--toris-system)] [font-family:var(--font-space-grotesk)]',
+        'flex items-center gap-3 break-keep text-sm font-semibold text-[var(--toris-system-text)] [font-family:var(--font-space-grotesk)]',
         className
       )}
       {...props}
@@ -91,7 +92,7 @@ export const studioActionStyles = cva(
         inverse:
           'bg-[var(--toris-ink)] text-[var(--toris-inverse)] hover:bg-[var(--toris-signal)] hover:text-[var(--toris-on-signal)]',
         outline:
-          'border border-[var(--toris-control-border)] text-[var(--toris-ink)] hover:border-[var(--toris-system)] hover:text-[var(--toris-system)]'
+          'border border-[var(--toris-control-border)] text-[var(--toris-ink)] hover:border-[var(--toris-system)] hover:text-[var(--toris-system-text)]'
       }
     },
     defaultVariants: { intent: 'signal' }

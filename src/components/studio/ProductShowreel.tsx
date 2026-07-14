@@ -115,7 +115,7 @@ export default function ProductShowreel() {
             <span className="size-2 rounded-full bg-amber-300" />
             <span className="size-2 rounded-full bg-[var(--toris-signal)]" />
           </div>
-          <p className="font-mono text-[9px] font-bold tracking-[0.12em] text-white/55">
+          <p className="font-mono text-[11px] font-bold tracking-widest text-white/70">
             TORIS / Product signal
           </p>
         </div>
@@ -161,7 +161,7 @@ export default function ProductShowreel() {
 
               <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-5 p-5 text-white sm:p-7">
                 <div>
-                  <p className="font-mono text-[9px] font-bold tracking-[0.12em] text-white/60">
+                  <p className="font-mono text-[11px] font-bold tracking-widest text-white/75">
                     {project.kind}
                   </p>
                   <p className="mt-2 text-2xl font-black tracking-[-0.035em] sm:text-3xl">
@@ -181,12 +181,12 @@ export default function ProductShowreel() {
           );
         })}
 
-        <div className="absolute left-4 top-16 z-20 flex items-center gap-2 rounded-full border border-white/20 bg-[var(--toris-color-ink)] px-3 py-1.5 font-mono text-[9px] font-bold tracking-[0.12em] text-white/75">
+        <div className="absolute left-4 top-16 z-20 flex items-center gap-2 rounded-full border border-white/20 bg-[var(--toris-color-ink)] px-3 py-1.5 font-mono text-[11px] font-bold tracking-widest text-white/80">
           <span className="size-1.5 rounded-full bg-[var(--toris-signal)]" />
           Built & shipped
         </div>
 
-        <div className="absolute right-4 top-16 z-20 font-mono text-[9px] font-bold tracking-[0.18em] text-white/60">
+        <div className="absolute right-4 top-16 z-20 font-mono text-[11px] font-bold tracking-widest text-white/75">
           {String(activeIndex + 1).padStart(2, '0')} /{' '}
           {String(availableProjects.length).padStart(2, '0')}
         </div>
@@ -212,13 +212,21 @@ export default function ProductShowreel() {
               className="relative min-h-16 cursor-pointer overflow-hidden rounded-xl border border-[var(--toris-border)] bg-[var(--toris-surface)] p-3 text-left transition-colors duration-200 hover:border-[var(--toris-system)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--toris-focus)]"
             >
               {isActive ? (
-                <motion.span
-                  layoutId="showreel-active"
-                  className="absolute inset-x-0 bottom-0 h-0.5 bg-[var(--toris-signal)]"
-                  transition={{ type: 'spring', stiffness: 400, damping: 32 }}
-                />
+                reduceMotion ? (
+                  <span
+                    data-reduced-motion="true"
+                    className="absolute inset-x-0 bottom-0 h-0.5 bg-[var(--toris-signal)]"
+                  />
+                ) : (
+                  <motion.span
+                    layoutId="showreel-active"
+                    data-reduced-motion="false"
+                    className="absolute inset-x-0 bottom-0 h-0.5 bg-[var(--toris-signal)]"
+                    transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                  />
+                )
               ) : null}
-              <span className="block font-mono text-[8px] font-bold tracking-[0.12em] text-[var(--toris-ink-muted)]">
+              <span className="block font-mono text-[11px] font-bold tracking-widest text-[var(--toris-ink-muted)]">
                 Work {project.number}
               </span>
               <span className="mt-1 block truncate text-xs font-bold text-[var(--toris-ink)]">

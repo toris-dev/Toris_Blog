@@ -27,10 +27,10 @@ export default function Footer() {
           <div>
             <Link
               href="/"
-              className="inline-flex min-h-11 items-center text-[var(--toris-ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
+              className="inline-flex min-h-11 items-center rounded-xl bg-[var(--toris-color-mist)] px-3 text-[var(--toris-color-ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
             >
               <TorisBrand
-                markClassName="size-10 brightness-0 invert"
+                markClassName="size-10"
                 wordmarkClassName="text-xl tracking-[0.1em]"
               />
             </Link>
@@ -43,14 +43,14 @@ export default function Footer() {
                 href="https://github.com/toris-dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex size-11 items-center justify-center rounded-full border border-[var(--toris-control-border)] text-[var(--toris-ink-muted)] transition-colors duration-150 hover:border-[var(--toris-system)] hover:text-[var(--toris-system)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
+                className="flex size-11 items-center justify-center rounded-full border border-[var(--toris-control-border)] text-[var(--toris-ink-muted)] transition-colors duration-150 hover:border-[var(--toris-system)] hover:text-[var(--toris-system-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
                 aria-label="TORIS GitHub"
               >
                 <AiFillGithub className="size-4" />
               </a>
               <a
                 href={`mailto:${studioBusiness.email}`}
-                className="flex size-11 items-center justify-center rounded-full border border-[var(--toris-control-border)] text-[var(--toris-ink-muted)] transition-colors duration-150 hover:border-[var(--toris-system)] hover:text-[var(--toris-system)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
+                className="flex size-11 items-center justify-center rounded-full border border-[var(--toris-control-border)] text-[var(--toris-ink-muted)] transition-colors duration-150 hover:border-[var(--toris-system)] hover:text-[var(--toris-system-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
                 aria-label="TORIS 이메일"
               >
                 <AiOutlineMail className="size-4" />
@@ -65,7 +65,7 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="flex min-h-11 items-center text-sm text-[var(--toris-ink-muted)] transition-colors duration-150 hover:text-[var(--toris-system)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
+                  className="flex min-h-11 items-center text-sm text-[var(--toris-ink-muted)] transition-colors duration-150 hover:text-[var(--toris-system-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
                 >
                   {link.label}
                 </Link>
@@ -103,7 +103,7 @@ export default function Footer() {
                 <dd>
                   <a
                     href={`mailto:${studioBusiness.email}`}
-                    className="break-all font-semibold text-[var(--toris-ink)] underline decoration-[var(--toris-border)] underline-offset-4 hover:text-[var(--toris-system)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
+                    className="break-all font-semibold text-[var(--toris-ink)] underline decoration-[var(--toris-border)] underline-offset-4 hover:text-[var(--toris-system-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)]"
                   >
                     {studioBusiness.email}
                   </a>

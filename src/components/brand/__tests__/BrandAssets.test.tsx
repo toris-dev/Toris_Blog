@@ -79,4 +79,14 @@ describe('Footer target sizing', () => {
       .getAllByRole('link')
       .forEach((link) => expect(link).toHaveClass('min-h-11'));
   });
+
+  it('keeps the official mark unchanged on a light contrast backing', () => {
+    render(<Footer />);
+
+    const homeLink = screen.getByRole('link', { name: 'TORIS' });
+    const mark = homeLink.querySelector('img');
+
+    expect(homeLink).toHaveClass('bg-[var(--toris-color-mist)]');
+    expect(mark?.className).not.toMatch(/brightness|invert|filter/);
+  });
 });
