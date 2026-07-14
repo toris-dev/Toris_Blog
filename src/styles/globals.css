@@ -15,22 +15,23 @@
     --popover: var(--toris-hsl-surface-elevated);
     --popover-foreground: var(--toris-hsl-ink);
     --primary: var(--toris-hsl-signal);
-    --primary-foreground: var(--toris-hsl-inverse);
+    --primary-foreground: var(--toris-hsl-on-signal);
     --secondary: var(--toris-hsl-system);
-    --secondary-foreground: var(--toris-hsl-inverse);
+    --secondary-foreground: var(--toris-hsl-on-system);
     --muted: 220 14% 94%;
     --muted-foreground: var(--toris-hsl-ink-muted);
     --accent: var(--toris-hsl-system);
-    --accent-foreground: var(--toris-hsl-inverse);
+    --accent-foreground: var(--toris-hsl-on-system);
     --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 100%;
     --border: var(--toris-hsl-border);
-    --input: var(--toris-hsl-surface);
+    --input: var(--toris-hsl-control-border);
     --ring: var(--toris-hsl-system);
     --radius: 0.75rem;
   }
 
-  .dark {
+  .dark,
+  .cyberpunk {
     --background: var(--toris-hsl-canvas);
     --foreground: var(--toris-hsl-ink);
     --card: var(--toris-hsl-surface);
@@ -38,41 +39,18 @@
     --popover: var(--toris-hsl-surface-elevated);
     --popover-foreground: var(--toris-hsl-ink);
     --primary: var(--toris-hsl-signal);
-    --primary-foreground: var(--toris-hsl-inverse);
+    --primary-foreground: var(--toris-hsl-on-signal);
     --secondary: var(--toris-hsl-system);
-    --secondary-foreground: var(--toris-hsl-inverse);
+    --secondary-foreground: var(--toris-hsl-on-system);
     --muted: var(--toris-hsl-surface);
     --muted-foreground: var(--toris-hsl-ink-muted);
     --accent: var(--toris-hsl-system);
-    --accent-foreground: var(--toris-hsl-inverse);
+    --accent-foreground: var(--toris-hsl-on-system);
     --destructive: 0 72% 51%;
     --destructive-foreground: var(--toris-hsl-inverse);
     --border: var(--toris-hsl-border);
-    --input: var(--toris-hsl-surface-elevated);
+    --input: var(--toris-hsl-control-border);
     --ring: var(--toris-hsl-system);
-  }
-
-  .cyberpunk {
-    /* Legacy selector retained, but aligned to the TORIS dark system. */
-    --background: 225 13% 6%;
-    --foreground: 216 33% 97%;
-    --card: 220 5% 13%;
-    --card-foreground: 216 33% 97%;
-    --popover: 225 6% 17%;
-    --popover-foreground: 216 33% 97%;
-    --primary: 165 82% 35%;
-    --primary-foreground: 225 13% 6%;
-    --secondary: 214 100% 58%;
-    --secondary-foreground: 225 13% 6%;
-    --muted: 220 5% 13%;
-    --muted-foreground: 225 7% 64%;
-    --accent: 214 100% 58%;
-    --accent-foreground: 225 13% 6%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 225 13% 6%;
-    --border: 225 7% 64% / 0.24;
-    --input: 225 6% 17%;
-    --ring: 214 100% 58%;
   }
 }
 

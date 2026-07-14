@@ -19,8 +19,11 @@
   --toris-ink: var(--toris-color-ink);
   --toris-ink-muted: #555962;
   --toris-border: #D9DCE2;
+  --toris-control-border: #6B707A;
   --toris-signal: var(--toris-color-signal-green);
   --toris-system: var(--toris-color-system-blue);
+  --toris-on-signal: var(--toris-color-ink);
+  --toris-on-system: var(--toris-color-ink);
   --toris-inverse: #FFFFFF;
   --toris-focus: var(--toris-color-system-blue);
   --toris-shadow-sm: 0 1px 2px rgba(14, 15, 18, 0.06);
@@ -33,12 +36,16 @@
   --toris-hsl-ink: 225 13% 6%;
   --toris-hsl-ink-muted: 221 7% 36%;
   --toris-hsl-border: 220 14% 87%;
+  --toris-hsl-control-border: 220 7% 45%;
   --toris-hsl-signal: 165 82% 35%;
   --toris-hsl-system: 214 100% 58%;
+  --toris-hsl-on-signal: 225 13% 6%;
+  --toris-hsl-on-system: 225 13% 6%;
   --toris-hsl-inverse: 0 0% 100%;
 }
 
 .dark,
+.cyberpunk,
 [data-toris-theme='dark'] {
   color-scheme: dark;
 
@@ -48,8 +55,11 @@
   --toris-ink: var(--toris-color-mist);
   --toris-ink-muted: var(--toris-color-steel);
   --toris-border: rgba(158, 161, 170, 0.24);
+  --toris-control-border: var(--toris-color-steel);
   --toris-signal: var(--toris-color-signal-green);
   --toris-system: var(--toris-color-system-blue);
+  --toris-on-signal: var(--toris-color-ink);
+  --toris-on-system: var(--toris-color-ink);
   --toris-inverse: var(--toris-color-ink);
   --toris-focus: var(--toris-color-system-blue);
   --toris-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -61,6 +71,7 @@
   --toris-hsl-ink: 216 33% 97%;
   --toris-hsl-ink-muted: 225 7% 64%;
   --toris-hsl-border: 225 7% 64% / 0.24;
+  --toris-hsl-control-border: 225 7% 64%;
   --toris-hsl-signal: 165 82% 35%;
   --toris-hsl-system: 214 100% 58%;
   --toris-hsl-inverse: 225 13% 6%;

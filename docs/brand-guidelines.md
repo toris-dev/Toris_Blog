@@ -28,7 +28,7 @@ Avoid inflated claims, trend-heavy jargon, anonymous agency language, and treati
 | Signal Green | `#10A37F` | Delivery, completion, and primary action state |
 | System Blue | `#2B8FFF` | Navigation, focus, links, and system flow |
 
-Use semantic tokens from `src/styles/brand-tokens.css`; do not scatter canonical hex values through components. On light surfaces, use the darker `--toris-ink-muted` token instead of Steel for body copy so contrast remains readable. Green communicates delivery/status. Blue communicates systems/navigation. Neither is decoration.
+Use semantic tokens from `src/styles/brand-tokens.css`; do not scatter canonical hex values through components. On light surfaces, use the darker `--toris-ink-muted` token instead of Steel for body copy so contrast remains readable. Use Ink through `--toris-on-signal` and `--toris-on-system` for copy on saturated brand actions. Decorative borders may stay quiet; inputs and interactive boundaries must use the stronger `--toris-control-border`. Green communicates delivery/status. Blue communicates systems/navigation. Neither is decoration.
 
 ### Typography
 
