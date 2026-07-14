@@ -41,6 +41,9 @@ const nextConfig: NextConfig = {
   // },
   // Next.js 16에 최적화된 Turbopack 설정
   turbopack: {
+    // 홈 디렉터리의 package-lock.json을 워크스페이스 루트로 오인하면
+    // 다른 프로젝트까지 파일 감시/캐시 검증 범위에 포함되어 dev 메모리가 급증한다.
+    root: process.cwd(),
     resolveExtensions: ['.tsx', '.ts', '.jsx', '.js', '.json', '.mdx'],
     rules: {
       '*.api.*': ['server-only']
@@ -56,6 +59,12 @@ const nextConfig: NextConfig = {
 
   // 캐싱 및 최적화 설정
   experimental: {
+    // 블로그의 많은 정적 라우트를 dev 시작 시 한꺼번에 메모리에 올리지 않는다.
+    // 방문한 라우트만 필요할 때 컴파일한다.
+    preloadEntriesOnStart: false,
+    // Next 16.1이 기본으로 복원하는 Turbopack SST 캐시가 이 프로젝트에서
+    // 수백 MB까지 커지며 시작 시 RSS/파일 디스크립터를 급격히 늘린다.
+    turbopackFileSystemCacheForDev: false,
     staleTimes: {
       dynamic: 30,
       static: 180 // 정적 페이지 캐시 3분
