@@ -122,7 +122,7 @@ const Header: FC = () => {
               }
         }
         onFocusCapture={() => setIsVisible(true)}
-        className="shadow-soft fixed inset-x-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60"
+        className="fixed inset-x-0 top-0 z-50 border-b border-[var(--toris-border)] bg-[var(--toris-surface)] text-[var(--toris-ink)] shadow-[var(--toris-shadow-sm)]"
         suppressHydrationWarning
       >
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -191,7 +191,7 @@ const Header: FC = () => {
 
       {/* Mobile Bottom Navigation - 데스크톱 헤더와 같은 스크롤 방향을 따릅니다. */}
       <motion.div
-        className="shadow-soft fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 md:hidden"
+        className="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--toris-border)] bg-[var(--toris-surface)] text-[var(--toris-ink)] shadow-[var(--toris-shadow-sm)] md:hidden"
         initial={false}
         animate={mounted ? (isVisible ? { y: 0 } : { y: 100 }) : { y: 100 }}
         transition={
