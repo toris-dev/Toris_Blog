@@ -4,6 +4,12 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "toris-site",
   "compatibility_date": "2026-07-01",
+  // 커스텀 도메인 — 존(toris.kr)이 이 Cloudflare 계정에 있어야 하며,
+  // deploy 시 DNS 레코드·인증서가 자동 생성된다.
+  "routes": [
+    { "pattern": "toris.kr", "custom_domain": true },
+    { "pattern": "www.toris.kr", "custom_domain": true }
+  ],
   "assets": {
     // Astro static 빌드 산출물을 그대로 정적 자산으로 서빙
     "directory": "./dist",
