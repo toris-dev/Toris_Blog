@@ -23,7 +23,9 @@ const initialForm: ContactFormData = {
   budgetRange: '',
   timeline: '',
   requiredFeatures: '',
-  message: ''
+  message: '',
+  privacyConsent: false,
+  website: ''
 };
 
 const selectClassName =
@@ -36,7 +38,10 @@ export default function ContactPage() {
   const [isPending, startTransition] = useTransition();
   const reduceMotion = useReducedMotion();
 
-  const updateField = (field: keyof ContactFormData, value: string) => {
+  const updateField = <Field extends keyof ContactFormData>(
+    field: Field,
+    value: ContactFormData[Field]
+  ) => {
     setForm((current) => ({ ...current, [field]: value }));
   };
 
@@ -121,6 +126,7 @@ export default function ContactPage() {
                   value={form.name}
                   onChange={(event) => updateField('name', event.target.value)}
                   placeholder="어떻게 불러드리면 될까요?"
+                  maxLength={120}
                   required
                   className={selectClassName}
                 />
@@ -132,6 +138,7 @@ export default function ContactPage() {
                   value={form.email}
                   onChange={(event) => updateField('email', event.target.value)}
                   placeholder="name@company.com"
+                  maxLength={254}
                   required
                   className={selectClassName}
                 />
@@ -203,6 +210,7 @@ export default function ContactPage() {
                     updateField('requiredFeatures', event.target.value)
                   }
                   placeholder="예: 회원가입, 결제, 관리자 화면, 실시간 알림이 필요합니다."
+                  maxLength={4000}
                   required
                   className={`${selectClassName} resize-y`}
                 />
@@ -216,9 +224,57 @@ export default function ContactPage() {
                     updateField('message', event.target.value)
                   }
                   placeholder="기획서나 디자인 유무, 참고 서비스, 가장 걱정되는 점을 알려주세요."
+                  maxLength={4000}
                   className={`${selectClassName} resize-y`}
                 />
               </Field>
+            </div>
+
+            <div
+              className="absolute left-[-10000px] top-auto size-px overflow-hidden"
+              aria-hidden="true"
+            >
+              <label htmlFor="website">웹사이트</label>
+              <input
+                id="website"
+                name="website"
+                type="text"
+                value={form.website}
+                onChange={(event) => updateField('website', event.target.value)}
+                maxLength={240}
+                autoComplete="off"
+                tabIndex={-1}
+              />
+            </div>
+
+            <div className="mt-6 rounded-xl border border-[var(--toris-border)] bg-[var(--toris-canvas)] p-4">
+              <label className="flex cursor-pointer items-start gap-3 text-sm leading-6 text-[var(--toris-ink)]">
+                <input
+                  type="checkbox"
+                  checked={form.privacyConsent}
+                  onChange={(event) =>
+                    updateField('privacyConsent', event.target.checked)
+                  }
+                  required
+                  aria-describedby="consultation-data-notice"
+                  className="mt-1 size-4 shrink-0 rounded border-[var(--toris-control-border)] text-[var(--toris-signal)] focus:ring-[var(--toris-focus)]"
+                />
+                <span>상담 정보 처리 안내를 확인했으며 이에 동의합니다.</span>
+              </label>
+              <p
+                id="consultation-data-notice"
+                className="mt-2 pl-7 text-xs leading-5 text-[var(--toris-ink-muted)]"
+              >
+                보내주신 정보는 프로젝트 상담과 회신을 위해서만 사용하며, 필요한
+                기간 동안만 보관합니다. 삭제 요청은{' '}
+                <a
+                  href={`mailto:${studioBusiness.email}`}
+                  className="font-semibold text-[var(--toris-system-text)] underline underline-offset-2"
+                >
+                  {studioBusiness.email}
+                </a>
+                로 보내주세요.
+              </p>
             </div>
 
             <Button
@@ -249,10 +305,6 @@ export default function ContactPage() {
                 </motion.p>
               ) : null}
             </AnimatePresence>
-
-            <p className="mt-5 text-center text-xs leading-5 text-[var(--toris-ink-muted)]">
-              보내주신 내용은 상담 회신과 프로젝트 범위 검토에만 사용합니다.
-            </p>
           </form>
         </StudioSection>
       </StudioStage>

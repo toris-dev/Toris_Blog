@@ -195,6 +195,7 @@ const Header: FC = () => {
       {/* Mobile Bottom Navigation - 데스크톱 헤더와 같은 스크롤 방향을 따릅니다. */}
       <motion.div
         className="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--toris-border)] bg-[var(--toris-surface)] text-[var(--toris-ink)] shadow-[var(--toris-shadow-sm)] md:hidden"
+        onFocusCapture={() => setIsVisible(true)}
         initial={false}
         animate={mounted ? (isVisible ? { y: 0 } : { y: 100 }) : { y: 100 }}
         transition={

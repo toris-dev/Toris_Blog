@@ -103,8 +103,16 @@ export default function Sidebar({ posts }: SidebarProps) {
   // - 몰입형 3D 홈(/)
   const isFullBleedRoute =
     pathname === '/' ||
-    ['/projects', '/services', '/work', '/process', '/contact', '/about'].some(
-      (route) => pathname?.startsWith(route)
+    [
+      '/projects',
+      '/services',
+      '/work',
+      '/process',
+      '/contact',
+      '/about',
+      '/blog'
+    ].some(
+      (route) => pathname === route || pathname?.startsWith(`${route}/`)
     );
 
   // ESC로 닫기

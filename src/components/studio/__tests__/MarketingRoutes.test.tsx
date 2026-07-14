@@ -97,6 +97,10 @@ describe('TORIS marketing routes', () => {
     expect(screen.getByLabelText('희망 일정')).toBeRequired();
     expect(screen.getByLabelText('필요한 기능')).toBeRequired();
     expect(
+      screen.getByLabelText('상담 정보 처리 안내를 확인했으며 이에 동의합니다.')
+    ).toBeRequired();
+    expect(screen.getByText(/필요한 기간 동안만 보관/)).toBeVisible();
+    expect(
       screen.getByRole('button', { name: '프로젝트 상담 요청하기' })
     ).toHaveClass('min-h-12');
     expect(
@@ -112,7 +116,9 @@ describe('TORIS marketing routes', () => {
       budgetRange: '1,000만–3,000만원',
       timeline: '1–3개월',
       requiredFeatures: '관리자 화면과 결제 흐름 개선',
-      message: '기존 서비스 운영 중입니다.'
+      message: '기존 서비스 운영 중입니다.',
+      privacyConsent: true,
+      website: ''
     };
     (submitContactForm as jest.Mock).mockResolvedValueOnce({
       success: true,
@@ -141,6 +147,9 @@ describe('TORIS marketing routes', () => {
     fireEvent.change(screen.getByLabelText('현재 상황과 참고 사항 (선택)'), {
       target: { value: payload.message }
     });
+    fireEvent.click(
+      screen.getByLabelText('상담 정보 처리 안내를 확인했으며 이에 동의합니다.')
+    );
     fireEvent.submit(screen.getByRole('form', { name: '프로젝트 상담 양식' }));
 
     expect(submitContactForm).toHaveBeenCalledWith(payload);

@@ -53,6 +53,7 @@
   --toris-hsl-inverse: 0 0% 100%;
 }
 
+[data-theme='dark'],
 .dark,
 .cyberpunk,
 [data-toris-theme='dark'] {

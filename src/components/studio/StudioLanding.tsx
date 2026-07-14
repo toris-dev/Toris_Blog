@@ -35,6 +35,7 @@ import {
   useSpring,
   useTransform
 } from 'framer-motion';
+import type { HTMLMotionProps } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -59,16 +60,17 @@ const SERVICE_ICONS: Record<
 function StudioReveal({
   children,
   className,
-  delay = 0
-}: {
-  children: ReactNode;
-  className?: string;
+  delay = 0,
+  ...htmlProps
+}: HTMLMotionProps<'div'> & {
   delay?: number;
+  'data-theme'?: 'dark' | 'light';
 }) {
   const reduceMotion = useReducedMotion();
 
   return (
     <motion.div
+      {...htmlProps}
       className={className}
       initial={{ opacity: 0, y: reduceMotion ? 0 : 26 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -603,7 +605,15 @@ export function WorkSection() {
 
         <div className="grid gap-8">
           {studioCaseStudies.map((work, index) => (
-            <StudioReveal key={work.slug} delay={Math.min(index * 0.03, 0.12)}>
+            <StudioReveal
+              key={work.slug}
+              delay={Math.min(index * 0.03, 0.12)}
+              data-theme={
+                work.slug === 'tracedesk' || work.slug === 'devpulse'
+                  ? 'dark'
+                  : undefined
+              }
+            >
               <Link
                 href={`/projects/${work.slug}`}
                 className="group grid cursor-pointer overflow-hidden rounded-2xl border border-[var(--toris-border)] bg-[var(--toris-surface)] shadow-[var(--toris-shadow-sm)] transition duration-300 ease-out hover:-translate-y-1 hover:border-[var(--toris-signal)] hover:shadow-[var(--toris-shadow-md)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)] active:scale-[0.995] xl:grid-cols-[minmax(0,1.12fr)_minmax(20rem,0.88fr)]"

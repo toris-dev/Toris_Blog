@@ -42,9 +42,9 @@ export const SITE = {
   organization: {
     name: 'TORIS',
     alternateName: 'Toris Studio',
-    logoPath: '/images/og-image.png',
-    logoWidth: 1200,
-    logoHeight: 630,
+    logoPath: '/brand/toris-app-icon-v2.svg',
+    logoWidth: 256,
+    logoHeight: 256,
     sameAs: ['https://github.com/toris-dev', 'https://x.com/TorisDev']
   },
   blog: {

@@ -97,6 +97,12 @@ it('presents a service business before the blog archive', () => {
   expect(screen.getAllByText('문제')).toHaveLength(6);
   expect(screen.getByText('예쁜계약')).toBeInTheDocument();
   expect(screen.getByText('TraceDesk')).toBeInTheDocument();
+  expect(
+    screen.getByText('TraceDesk').closest('[data-theme="dark"]')
+  ).not.toBeNull();
+  expect(
+    screen.getByText('devPulse').closest('[data-theme="dark"]')
+  ).not.toBeNull();
   expect(screen.getAllByText('상담과 문제 정의').length).toBeGreaterThan(0);
   expect(screen.getByText('운영 가능한 제품을 만드는 법')).toBeInTheDocument();
   expect(screen.queryByText('Toris Dev Universe')).not.toBeInTheDocument();

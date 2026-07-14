@@ -574,7 +574,10 @@ function MiniFooter({ project }: { project: Project }) {
 export default function DevPulseLanding({ project }: { project: Project }) {
   const reduce = useReducedMotion() ?? false;
   return (
-    <div className="overflow-x-clip bg-slate-50 pt-24 text-slate-900 dark:bg-[#050810] dark:text-white">
+    <div
+      data-theme="dark"
+      className="dark overflow-x-clip bg-[#050810] pt-24 text-white"
+    >
       <Hero project={project} reduce={reduce} />
       <ProblemSection reduce={reduce} />
       <PipelineSection reduce={reduce} />

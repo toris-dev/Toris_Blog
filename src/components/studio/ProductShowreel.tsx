@@ -82,12 +82,21 @@ export default function ProductShowreel() {
     event: KeyboardEvent<HTMLButtonElement>,
     index: number
   ) => {
-    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    let nextIndex: number | null = null;
 
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      nextIndex = (index + 1) % availableProjects.length;
+    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      nextIndex =
+        (index - 1 + availableProjects.length) % availableProjects.length;
+    } else if (event.key === 'Home') {
+      nextIndex = 0;
+    } else if (event.key === 'End') {
+      nextIndex = availableProjects.length - 1;
+    }
+
+    if (nextIndex === null) return;
     event.preventDefault();
-    const direction = event.key === 'ArrowRight' ? 1 : -1;
-    const nextIndex =
-      (index + direction + availableProjects.length) % availableProjects.length;
     setActiveIndex(nextIndex);
     event.currentTarget.parentElement
       ?.querySelectorAll<HTMLButtonElement>('[role="tab"]')
@@ -126,6 +135,9 @@ export default function ProductShowreel() {
           return (
             <motion.div
               key={project.slug}
+              id={`showreel-panel-${project.slug}`}
+              role="tabpanel"
+              aria-labelledby={`showreel-tab-${project.slug}`}
               initial={false}
               animate={{
                 opacity: isActive ? 1 : 0,
@@ -136,6 +148,7 @@ export default function ProductShowreel() {
                 ease: ENTER_EASE
               }}
               aria-hidden={!isActive}
+              hidden={!isActive}
               className={`absolute inset-0 pt-11 ${isActive ? 'pointer-events-auto' : 'pointer-events-none'}`}
               style={{ backgroundColor: project.background }}
             >
@@ -196,15 +209,19 @@ export default function ProductShowreel() {
         className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4"
         role="tablist"
         aria-label="대표 프로젝트 선택"
+        aria-orientation="horizontal"
       >
         {availableProjects.map((project, index) => {
           const isActive = index === activeIndex;
           return (
             <button
               key={project.slug}
+              id={`showreel-tab-${project.slug}`}
               type="button"
               role="tab"
               aria-selected={isActive}
+              aria-controls={`showreel-panel-${project.slug}`}
+              tabIndex={isActive ? 0 : -1}
               onClick={() => setActiveIndex(index)}
               onMouseEnter={() => setActiveIndex(index)}
               onFocus={() => setActiveIndex(index)}
