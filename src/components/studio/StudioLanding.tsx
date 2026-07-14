@@ -578,7 +578,9 @@ export function WorkSection() {
             title={
               <>
                 기술보다 먼저,{' '}
-                <span className="text-primary">달라진 결과를.</span>
+                <span className="text-[var(--toris-signal-text)]">
+                  달라진 결과를.
+                </span>
               </>
             }
             description="외주 역량을 가장 잘 보여주는 여섯 작업을 문제, 구현, 결과와 담당 범위로 정리했습니다."
@@ -792,7 +794,9 @@ export function LatestProofSection({ posts }: { posts: LandingPost[] }) {
             title={
               <>
                 기술 글은{' '}
-                <span className="text-primary">실행의 증거입니다.</span>
+                <span className="text-[var(--toris-signal-text)]">
+                  실행의 증거입니다.
+                </span>
               </>
             }
             description="공부한 내용만이 아니라 만들고, 실패하고, 운영하며 얻은 판단을 기록합니다."

@@ -33,7 +33,11 @@ describe('StudioShell', () => {
     );
     expect(screen.getByLabelText('light work canvas')).toHaveClass(
       'bg-[var(--toris-canvas)]',
-      'text-[var(--toris-ink)]'
+      'text-[var(--toris-ink)]',
+      '[--background:var(--toris-hsl-canvas)]',
+      '[--foreground:var(--toris-hsl-ink)]',
+      '[--muted-foreground:var(--toris-hsl-ink-muted)]',
+      '[--border:var(--toris-hsl-border)]'
     );
   });
 

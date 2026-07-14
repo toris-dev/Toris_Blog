@@ -30,6 +30,7 @@ export function StudioCanvas({ children, className, ...props }: SurfaceProps) {
       data-toris-theme="light"
       data-toris-surface="canvas"
       className={cn(
+        studioThemeBridge,
         'relative bg-[var(--toris-canvas)] text-[var(--toris-ink)]',
         className
       )}
