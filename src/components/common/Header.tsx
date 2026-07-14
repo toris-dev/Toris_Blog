@@ -33,6 +33,8 @@ const mobileNavItems = [
 
 const TOP_VISIBILITY_THRESHOLD = 72;
 const DIRECTION_CHANGE_THRESHOLD = 6;
+const HEADER_MARK_SRC =
+  '/brand/mark_toris-header_indexed-energy_20260715_v1.png';
 
 export function getHeaderVisibility(
   previousScrollY: number,
@@ -134,7 +136,8 @@ const Header: FC = () => {
             >
               <TorisBrand
                 priority
-                markClassName="size-8"
+                markSrc={HEADER_MARK_SRC}
+                markClassName="size-9"
                 wordmarkClassName="text-lg tracking-[0.1em]"
               />
             </Link>

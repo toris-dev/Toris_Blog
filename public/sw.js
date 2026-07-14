@@ -1,8 +1,8 @@
 // Service Worker for PWA
 // 캐싱 전략: Network First with Cache Fallback
 
-const CACHE_NAME = 'toris-blog-v1';
-const RUNTIME_CACHE = 'toris-blog-runtime-v1';
+const CACHE_NAME = 'toris-blog-v2';
+const RUNTIME_CACHE = 'toris-blog-runtime-v2';
 
 // 캐시할 정적 리소스
 const STATIC_ASSETS = [
@@ -10,8 +10,9 @@ const STATIC_ASSETS = [
   '/about',
   '/contact',
   '/offline',
-  '/images/favicon.svg',
-  '/images/icon.svg',
+  '/favicon.ico',
+  '/brand/mark_toris-header_indexed-energy_20260715_v1.png',
+  '/brand/icon_toris-reactor_favicon_20260714_v4.svg',
   '/manifest.json'
 ];
 
@@ -71,7 +72,8 @@ self.addEventListener('fetch', (event) => {
     url.pathname.endsWith('.svg') ||
     url.pathname.endsWith('.png') ||
     url.pathname.endsWith('.jpg') ||
-    url.pathname.endsWith('.webp')
+    url.pathname.endsWith('.webp') ||
+    url.pathname.endsWith('.ico')
   ) {
     event.respondWith(cacheFirstStrategy(request));
     return;

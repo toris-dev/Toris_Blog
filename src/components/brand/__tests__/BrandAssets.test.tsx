@@ -67,6 +67,9 @@ describe('TORIS production brand assets', () => {
   it('uses the TORIS icon and palette in root metadata without legacy overrides', () => {
     const layout = readFileSync(path.join(root, 'src/app/layout.tsx'), 'utf8');
 
+    expect(layout).toContain("url: '/favicon.ico'");
+    expect(layout).toContain('href="/favicon.ico"');
+    expect(layout).toContain("type: 'image/x-icon'");
     expect(layout).toContain(
       "url: '/brand/icon_toris-reactor_favicon_20260714_v4.svg'"
     );
@@ -77,6 +80,31 @@ describe('TORIS production brand assets', () => {
     expect(layout).toContain('content="#080A0D"');
     expect(layout).not.toContain('/images/favicon.svg');
     expect(layout).not.toContain('#0f172a');
+  });
+
+  it('ships a transparent header mark and a multi-resolution ICO favicon', () => {
+    const headerMark = readFileSync(
+      path.join(brandDir, 'mark_toris-header_indexed-energy_20260715_v1.png')
+    );
+    const faviconSource = readFileSync(
+      path.join(brandDir, 'icon_toris-reactor_favicon_20260715_v5.png')
+    );
+    const favicon = readFileSync(path.join(root, 'public/favicon.ico'));
+    const serviceWorker = readFileSync(path.join(root, 'public/sw.js'), 'utf8');
+
+    expect(headerMark.subarray(1, 4).toString()).toBe('PNG');
+    expect(headerMark.readUInt32BE(16)).toBe(512);
+    expect(headerMark.readUInt32BE(20)).toBe(512);
+    expect(headerMark[25]).toBe(6);
+    expect(faviconSource.subarray(1, 4).toString()).toBe('PNG');
+    expect(faviconSource.readUInt32BE(16)).toBe(512);
+    expect(faviconSource.readUInt32BE(20)).toBe(512);
+    expect(favicon.readUInt16LE(0)).toBe(0);
+    expect(favicon.readUInt16LE(2)).toBe(1);
+    expect(favicon.readUInt16LE(4)).toBe(6);
+    expect(serviceWorker).toContain("'/favicon.ico'");
+    expect(serviceWorker).toContain("url.pathname.endsWith('.ico')");
+    expect(serviceWorker).not.toContain('/images/favicon.svg');
   });
 });
 

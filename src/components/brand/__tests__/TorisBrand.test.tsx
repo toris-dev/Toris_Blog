@@ -39,4 +39,16 @@ describe('TorisBrand', () => {
     expect(container.querySelector('img')).toHaveClass('brand-mark');
     expect(screen.getByText('TORIS')).toHaveClass('brand-wordmark');
   });
+
+  it('accepts a context-specific mark while keeping the wordmark as text', () => {
+    const { container } = render(
+      <TorisBrand markSrc="/brand/header-mark.png" />
+    );
+
+    expect(container.querySelector('img')).toHaveAttribute(
+      'src',
+      expect.stringContaining('header-mark.png')
+    );
+    expect(screen.getByText('TORIS')).toBeInTheDocument();
+  });
 });

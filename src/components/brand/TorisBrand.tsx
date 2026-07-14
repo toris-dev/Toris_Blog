@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 export type TorisBrandProps = {
   variant?: 'mark' | 'lockup';
+  markSrc?: string;
   className?: string;
   markClassName?: string;
   wordmarkClassName?: string;
@@ -13,6 +14,7 @@ const TORIS_MARK_SRC = '/brand/toris-mark-v3.svg';
 
 export function TorisBrand({
   variant = 'lockup',
+  markSrc = TORIS_MARK_SRC,
   className,
   markClassName,
   wordmarkClassName,
@@ -30,7 +32,7 @@ export function TorisBrand({
       data-brand-variant={variant}
     >
       <Image
-        src={TORIS_MARK_SRC}
+        src={markSrc}
         alt={isMarkOnly ? 'TORIS 로고' : ''}
         width={40}
         height={40}

@@ -59,7 +59,9 @@ describe('Header', () => {
     ).toBeInTheDocument();
     expect(homeLink.querySelector('img')).toHaveAttribute(
       'src',
-      expect.stringContaining('toris-mark-v3.svg')
+      expect.stringContaining(
+        'mark_toris-header_indexed-energy_20260715_v1.png'
+      )
     );
   });
 
