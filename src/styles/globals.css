@@ -22,8 +22,8 @@
     --muted-foreground: var(--toris-hsl-ink-muted);
     --accent: var(--toris-hsl-system);
     --accent-foreground: var(--toris-hsl-on-system);
-    --destructive: 0 72% 45%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: var(--toris-hsl-destructive);
+    --destructive-foreground: var(--toris-hsl-on-destructive);
     --border: var(--toris-hsl-border);
     --input: var(--toris-hsl-control-border);
     --ring: var(--toris-hsl-system);
@@ -46,8 +46,8 @@
     --muted-foreground: var(--toris-hsl-ink-muted);
     --accent: var(--toris-hsl-system);
     --accent-foreground: var(--toris-hsl-on-system);
-    --destructive: 0 72% 51%;
-    --destructive-foreground: var(--toris-hsl-inverse);
+    --destructive: var(--toris-hsl-destructive);
+    --destructive-foreground: var(--toris-hsl-on-destructive);
     --border: var(--toris-hsl-border);
     --input: var(--toris-hsl-control-border);
     --ring: var(--toris-hsl-system);

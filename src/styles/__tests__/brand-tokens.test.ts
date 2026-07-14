@@ -55,6 +55,9 @@ describe('TORIS brand tokens', () => {
     'inverse',
     'focus',
     'control-border',
+    'destructive',
+    'on-destructive',
+    'destructive-text',
     'shadow-sm',
     'shadow-md'
   ])('defines the --toris-%s semantic token', token => {
@@ -92,6 +95,26 @@ describe('TORIS brand tokens', () => {
     expect(contrastRatio('#9EA1AA', '#202123')).toBeGreaterThanOrEqual(3)
   })
 
+  it('keeps destructive surfaces and text readable in both contexts', () => {
+    expect(source).toContain('--toris-destructive: #B42318;')
+    expect(source).toContain('--toris-on-destructive: #FFFFFF;')
+    expect(source).toContain('--toris-destructive-text: #B42318;')
+
+    const darkContext = source.match(
+      /\.dark,\s*\.cyberpunk,\s*\[data-toris-theme=['"]dark['"]\]\s*{([\s\S]*?)\n}/
+    )?.[1]
+    expect(darkContext).toContain('--toris-destructive: #F97066;')
+    expect(darkContext).toContain(
+      '--toris-on-destructive: var(--toris-color-ink);'
+    )
+    expect(darkContext).toContain('--toris-destructive-text: #F97066;')
+
+    expect(contrastRatio('#B42318', '#FFFFFF')).toBeGreaterThanOrEqual(4.5)
+    expect(contrastRatio('#B42318', '#F5F7FA')).toBeGreaterThanOrEqual(4.5)
+    expect(contrastRatio('#F97066', '#202123')).toBeGreaterThanOrEqual(4.5)
+    expect(contrastRatio('#0E0F12', '#F97066')).toBeGreaterThanOrEqual(4.5)
+  })
+
   it('loads brand tokens before legacy variables and removes the body dot grid', () => {
     const globals = readStyle('globals.css')
     const brandImport = globals.indexOf("@import './brand-tokens.css';")
@@ -104,6 +127,10 @@ describe('TORIS brand tokens', () => {
     expect(globals).toContain('--primary-foreground: var(--toris-hsl-on-signal);')
     expect(globals).toContain('--secondary-foreground: var(--toris-hsl-on-system);')
     expect(globals).toContain('--input: var(--toris-hsl-control-border);')
+    expect(globals).toContain('--destructive: var(--toris-hsl-destructive);')
+    expect(globals).toContain(
+      '--destructive-foreground: var(--toris-hsl-on-destructive);'
+    )
     expect(globals).toMatch(/\.dark,\s*\.cyberpunk\s*{/)
   })
 })

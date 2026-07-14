@@ -27,8 +27,9 @@ Avoid inflated claims, trend-heavy jargon, anonymous agency language, and treati
 | Steel | `#9EA1AA` | Secondary copy on dark surfaces only |
 | Signal Green | `#10A37F` | Delivery, completion, and primary action state |
 | System Blue | `#2B8FFF` | Navigation, focus, links, and system flow |
+| Destructive | `#B42318` light / `#F97066` dark | Errors, destructive action surfaces, and error text |
 
-Use semantic tokens from `src/styles/brand-tokens.css`; do not scatter canonical hex values through components. On light surfaces, use the darker `--toris-ink-muted` token instead of Steel for body copy so contrast remains readable. Use Ink through `--toris-on-signal` and `--toris-on-system` for copy on saturated brand actions. Decorative borders may stay quiet; inputs and interactive boundaries must use the stronger `--toris-control-border`. Green communicates delivery/status. Blue communicates systems/navigation. Neither is decoration.
+Use semantic tokens from `src/styles/brand-tokens.css`; do not scatter canonical hex values through components. On light surfaces, use the darker `--toris-ink-muted` token instead of Steel for body copy so contrast remains readable. Use Ink through `--toris-on-signal` and `--toris-on-system` for copy on saturated brand actions. Use `--toris-destructive-text` for inline errors and pair destructive surfaces with `--toris-on-destructive`; both roles change by theme to retain normal-text contrast. Decorative borders may stay quiet; inputs and interactive boundaries must use the stronger `--toris-control-border`. Green communicates delivery/status. Blue communicates systems/navigation. Neither is decoration.
 
 ### Typography
 
