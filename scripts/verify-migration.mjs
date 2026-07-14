@@ -193,12 +193,22 @@ function extractPageMeta(html) {
 function scanBuiltPosts() {
   const actual = new Map(); // slug -> pageMeta
   for (const entry of fs.readdirSync(DIST_POSTS_DIR, { withFileTypes: true })) {
-    if (!entry.isDirectory()) continue;
-    const htmlPath = path.join(DIST_POSTS_DIR, entry.name, 'index.html');
-    if (!fs.existsSync(htmlPath)) continue;
+    // build.format 양쪽 지원:
+    //  - 'directory': dist/posts/<slug>/index.html
+    //  - 'file'     : dist/posts/<slug>.html
+    let slug = null;
+    let htmlPath = null;
+    if (entry.isDirectory()) {
+      slug = entry.name;
+      htmlPath = path.join(DIST_POSTS_DIR, entry.name, 'index.html');
+    } else if (entry.isFile() && entry.name.endsWith('.html')) {
+      slug = entry.name.replace(/\.html$/, '');
+      htmlPath = path.join(DIST_POSTS_DIR, entry.name);
+    }
+    if (!slug || !htmlPath || !fs.existsSync(htmlPath)) continue;
     const html = fs.readFileSync(htmlPath, 'utf8');
-    // 파일시스템 디렉토리명 = slug (한글은 유니코드 그대로). NFC 정규화로 대조.
-    actual.set(entry.name.normalize('NFC'), extractPageMeta(html));
+    // 파일시스템 이름 = slug (한글은 유니코드 그대로). NFC 정규화로 대조.
+    actual.set(slug.normalize('NFC'), extractPageMeta(html));
   }
   return actual;
 }
@@ -326,8 +336,9 @@ function checkExtras(expectedCount) {
   console.log('\n[추가 산출물 검증]');
 
   check(
-    fs.existsSync(path.join(DIST_DIR, 'blog', 'index.html')),
-    '목록 페이지 존재 (astro/dist/blog/index.html)'
+    fs.existsSync(path.join(DIST_DIR, 'blog', 'index.html')) ||
+      fs.existsSync(path.join(DIST_DIR, 'blog.html')),
+    '목록 페이지 존재 (astro/dist/blog[.html|/index.html])'
   );
 
   const sitemapIndexPath = path.join(DIST_DIR, 'sitemap-index.xml');

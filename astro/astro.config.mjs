@@ -17,6 +17,9 @@ export default defineConfig({
   // 요구사항: Astro 기본 output(static) — Cloudflare Workers Static Assets로 서빙
   output: 'static',
   trailingSlash: 'ignore',
+  // 페이지를 <경로>.html로 생성 — Workers Static Assets가 /about, /posts/slug를
+  // 트레일링 슬래시 307 없이 바로 200으로 서빙(기존 Next URL과 정확 일치)
+  build: { format: 'file' },
   integrations: [mdx(), react(), sitemap()],
   // 구 URL 보존: 목록 개편(/posts → /blog)만 redirect, 글 상세는 그대로 유지
   redirects: {
