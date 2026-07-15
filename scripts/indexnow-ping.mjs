@@ -19,7 +19,8 @@ if (!key) {
   process.exit(1);
 }
 
-const xml = await (await fetch(SITEMAP)).text();
+// 엣지 캐시 우회(배포 직후 구버전 방지)
+const xml = await (await fetch(SITEMAP + `?v=${Date.now()}`)).text();
 const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 if (urls.length === 0) {
   console.error('sitemap에서 URL을 찾지 못했습니다:', SITEMAP);
