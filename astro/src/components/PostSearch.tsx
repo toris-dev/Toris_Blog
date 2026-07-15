@@ -42,7 +42,7 @@ export default function PostSearch({ posts }: { posts: PostItem[] }) {
           <svg
             viewBox="0 0 24 24"
             aria-hidden="true"
-            className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-sand"
+            className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted"
             fill="none"
             stroke="currentColor"
             strokeWidth={2}
@@ -55,10 +55,10 @@ export default function PostSearch({ posts }: { posts: PostItem[] }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="제목·내용 검색"
-            className="h-11 w-full rounded-full border border-line bg-coal pl-10 pr-4 text-sm text-ivory outline-none transition-colors placeholder:text-sand focus:border-gold"
+            className="h-11 w-full rounded-full border border-line bg-card pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-mint"
           />
         </label>
-        <p className="text-sm tabular-nums text-sand">
+        <p className="text-sm tabular-nums text-muted">
           {visible.length} / {posts.length}개의 글
         </p>
       </div>
@@ -78,10 +78,10 @@ export default function PostSearch({ posts }: { posts: PostItem[] }) {
               aria-selected={selected}
               onClick={() => setCategory(c)}
               className={
-                'rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ' +
+                'rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint ' +
                 (selected
-                  ? 'border-gold bg-gold text-night'
-                  : 'border-line bg-coal text-sand hover:border-gold-deep hover:text-gold-bright')
+                  ? 'border-mint bg-mint text-ink'
+                  : 'border-line bg-card text-muted hover:border-mint-deep hover:text-mint-bright')
               }
             >
               {c}
@@ -95,25 +95,25 @@ export default function PostSearch({ posts }: { posts: PostItem[] }) {
           <li key={p.slug}>
             <a
               href={`/posts/${encodeURIComponent(p.slug)}`}
-              className="group block rounded-xl px-3 py-5 transition-colors hover:bg-coal-2 focus-visible:outline-2 focus-visible:outline-gold"
+              className="group block rounded-xl px-3 py-5 transition-colors hover:bg-paper-2 focus-visible:outline-2 focus-visible:outline-mint"
             >
               <div className="flex items-center gap-2 text-xs">
-                <span className="rounded-full bg-gold/10 px-2 py-0.5 font-semibold text-gold">
+                <span className="rounded-full bg-mint/10 px-2 py-0.5 font-semibold text-mint">
                   {p.category}
                 </span>
-                {p.dateLabel && <time dateTime={p.date} className="text-sand">{p.dateLabel}</time>}
+                {p.dateLabel && <time dateTime={p.date} className="text-muted">{p.dateLabel}</time>}
               </div>
-              <h3 className="mt-2 text-lg font-bold text-ivory group-hover:text-gold-bright">
+              <h3 className="mt-2 text-lg font-bold text-ink group-hover:text-mint-bright">
                 {p.title}
               </h3>
-              <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-sand">
+              <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted">
                 {p.description}
               </p>
             </a>
           </li>
         ))}
         {visible.length === 0 && (
-          <li className="py-16 text-center text-sm text-sand">
+          <li className="py-16 text-center text-sm text-muted">
             조건에 맞는 글이 없습니다.
           </li>
         )}

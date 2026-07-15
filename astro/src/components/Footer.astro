@@ -4,18 +4,18 @@ import { COMPANY, NAV } from '../lib/site';
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-line bg-coal">
+<footer class="border-t border-line bg-card">
   <div class="mx-auto max-w-6xl px-5 py-16">
     <div class="flex flex-col gap-12 md:flex-row md:justify-between">
       <div class="max-w-sm">
         <div class="flex items-center gap-3">
           <LogoMark class="size-9" />
           <span class="flex items-baseline gap-2">
-            <span class="font-display text-xl text-ivory">토리스</span>
-            <span class="text-[11px] font-semibold tracking-[0.3em] text-gold">TORIS INC.</span>
+            <span class="font-display text-xl text-ink">토리스</span>
+            <span class="text-[11px] font-semibold tracking-[0.3em] text-mint">TORIS INC.</span>
           </span>
         </div>
-        <p class="mt-4 text-sm leading-relaxed text-sand">
+        <p class="mt-4 text-sm leading-relaxed text-muted">
           {COMPANY.description}
         </p>
         <div class="mt-6 flex gap-2">
@@ -24,7 +24,7 @@ const year = new Date().getFullYear();
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
-            class="flex size-11 items-center justify-center rounded-lg border border-line text-sand transition-colors hover:border-gold-deep hover:text-gold focus-visible:outline-2 focus-visible:outline-gold"
+            class="flex size-11 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-mint-deep hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
           >
             <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true">
               <path
@@ -35,7 +35,7 @@ const year = new Date().getFullYear();
           <a
             href={`mailto:${COMPANY.email}`}
             aria-label="이메일"
-            class="flex size-11 items-center justify-center rounded-lg border border-line text-sand transition-colors hover:border-gold-deep hover:text-gold focus-visible:outline-2 focus-visible:outline-gold"
+            class="flex size-11 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-mint-deep hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
           >
             <svg
               viewBox="0 0 24 24"
@@ -57,32 +57,32 @@ const year = new Date().getFullYear();
           NAV.map((item) => (
             <a
               href={item.href}
-              class="text-sm text-sand transition-colors hover:text-gold"
+              class="text-sm text-muted transition-colors hover:text-mint"
             >
               {item.label}
             </a>
           ))
         }
-        <a href="/posts" class="text-sm text-sand transition-colors hover:text-gold">
+        <a href="/posts" class="text-sm text-muted transition-colors hover:text-mint">
           전체 글
         </a>
       </nav>
     </div>
 
-    <div class="rule-gold mt-12"></div>
+    <div class="rule-accent mt-12"></div>
 
     <!-- 사업자 정보 -->
-    <div class="mt-6 text-xs leading-relaxed text-sand/80">
+    <div class="mt-6 text-xs leading-relaxed text-muted/80">
       <p>
         상호: {COMPANY.nameKo}({COMPANY.nameEn}) · 대표: {COMPANY.ceo} ·
         사업자등록번호: {COMPANY.bizNumber}
       </p>
       <p class="mt-1">
-        문의: <a href={`mailto:${COMPANY.email}`} class="underline underline-offset-2 hover:text-gold">{COMPANY.email}</a>
+        문의: <a href={`mailto:${COMPANY.email}`} class="underline underline-offset-2 hover:text-mint">{COMPANY.email}</a>
         <span class="mx-2" aria-hidden="true">·</span>
-        <a href="/privacy" class="underline underline-offset-2 hover:text-gold">개인정보처리방침</a>
+        <a href="/privacy" class="underline underline-offset-2 hover:text-mint">개인정보처리방침</a>
         <span class="mx-2" aria-hidden="true">·</span>
-        <a href="/terms" class="underline underline-offset-2 hover:text-gold">이용약관</a>
+        <a href="/terms" class="underline underline-offset-2 hover:text-mint">이용약관</a>
       </p>
       <p class="mt-4">© {year} {COMPANY.nameEn} All rights reserved.</p>
     </div>

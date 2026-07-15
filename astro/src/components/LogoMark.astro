@@ -13,28 +13,28 @@ const uid = Math.random().toString(36).slice(2, 8);
 
 <svg viewBox="0 0 48 48" fill="none" class={className} aria-hidden="true">
   <defs>
-    <linearGradient id={`gold-${uid}`} x1="8" y1="6" x2="40" y2="44">
-      <stop stop-color="#e3c98f"></stop>
-      <stop offset="0.55" stop-color="#c9a96a"></stop>
-      <stop offset="1" stop-color="#8f7440"></stop>
+    <linearGradient id={`mint-${uid}`} x1="8" y1="6" x2="40" y2="44">
+      <stop stop-color="#5ce4b8"></stop>
+      <stop offset="0.55" stop-color="#10c98f"></stop>
+      <stop offset="1" stop-color="#0a8a66"></stop>
     </linearGradient>
   </defs>
   <!-- 바깥 육각 쉘 -->
   <path
     d="M24 3.5 41.5 13.6v20.8L24 44.5 6.5 34.4V13.6L24 3.5Z"
-    stroke={`url(#gold-${uid})`}
+    stroke={`url(#mint-${uid})`}
     stroke-width="2"
     stroke-linejoin="round"></path>
   <!-- 인갑 3조각: 중앙 상단 + 좌우 하단 -->
   <path
     d="M24 12.5 31 16.6v8.2l-7 4.1-7-4.1v-8.2l7-4.1Z"
-    stroke={`url(#gold-${uid})`}
+    stroke={`url(#mint-${uid})`}
     stroke-width="1.6"
     stroke-linejoin="round"></path>
   <path
     d="M15.5 27.4 22 31.2v6.2l-6.5-3.7v-6.3ZM32.5 27.4 26 31.2v6.2l6.5-3.7v-6.3Z"
-    fill={`url(#gold-${uid})`}
+    fill={`url(#mint-${uid})`}
     fill-opacity="0.85"></path>
   <!-- 중앙 정점 -->
-  <circle cx="24" cy="20.7" r="1.6" fill="#e3c98f"></circle>
+  <circle cx="24" cy="20.7" r="1.6" fill="#5ce4b8"></circle>
 </svg>

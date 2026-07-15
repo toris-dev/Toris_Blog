@@ -15,7 +15,7 @@ const welcomeTopics = [
 ];
 
 const inputClass =
-  'mt-2 w-full rounded-xl border border-line bg-coal px-4 py-3 text-[15px] text-ivory placeholder:text-sand transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-gold';
+  'mt-2 w-full rounded-xl border border-line bg-card px-4 py-3 text-[15px] text-ink placeholder:text-muted transition-colors focus:border-mint focus:outline-none focus-visible:outline-2 focus-visible:outline-mint';
 ---
 
 <Base
@@ -27,17 +27,17 @@ const inputClass =
 >
   <!-- ============================== Hero ============================== -->
   <section class="mx-auto max-w-6xl px-5 pb-6 pt-20 sm:pt-28">
-    <p class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-gold">
+    <p class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-mint">
       Contact
     </p>
     <h1
-      class="reveal mt-3 text-4xl font-display text-ivory sm:text-5xl"
+      class="reveal mt-3 text-4xl font-display text-ink sm:text-5xl"
       style="transition-delay: 60ms"
     >
       프로젝트를 들려주세요
     </h1>
     <p
-      class="reveal mt-5 max-w-xl text-lg leading-relaxed text-sand"
+      class="reveal mt-5 max-w-xl text-lg leading-relaxed text-muted"
       style="transition-delay: 120ms"
     >
       아이디어 단계여도 괜찮습니다. 무엇을, 왜 만들고 싶은지 보내주시면
@@ -51,15 +51,15 @@ const inputClass =
       <!-- 왼쪽: 연락 카드 + 환영 문의 -->
       <div class="space-y-6">
         <div
-          class="reveal card-3d relative overflow-hidden border border-line bg-coal p-7 transition-[border-color] duration-300 hover:border-gold-deep"
+          class="reveal card-3d relative overflow-hidden border border-line bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep"
         >
-          <h2 class="text-lg font-bold text-ivory">이메일로 바로 보내기</h2>
-          <p class="mt-2 text-sm leading-relaxed text-sand">
+          <h2 class="text-lg font-bold text-ink">이메일로 바로 보내기</h2>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
             폼이 번거로우시면 메일로 직접 보내주셔도 됩니다.
           </p>
           <a
             href={`mailto:${COMPANY.email}`}
-            class="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 bg-gold px-6 text-[15px] font-semibold text-night shadow-lg shadow-gold/20 transition-all hover:-translate-y-0.5 hover:bg-gold-bright focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold active:translate-y-0"
+            class="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 bg-mint px-6 text-[15px] font-semibold text-ink shadow-lg shadow-mint/20 transition-all hover:-translate-y-0.5 hover:bg-mint-bright focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint active:translate-y-0"
           >
             <svg
               viewBox="0 0 24 24"
@@ -79,11 +79,11 @@ const inputClass =
             type="button"
             id="copy-email"
             data-email={COMPANY.email}
-            class="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 border border-line px-6 text-sm font-medium text-ivory-dim transition-colors hover:border-gold-deep hover:text-gold-bright focus-visible:outline-2 focus-visible:outline-gold"
+            class="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 border border-line px-6 text-sm font-medium text-ink-dim transition-colors hover:border-mint-deep hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint"
           >
             주소 복사
           </button>
-          <p id="copy-status" class="mt-2 min-h-4 text-center text-xs text-gold" aria-live="polite"></p>
+          <p id="copy-status" class="mt-2 min-h-4 text-center text-xs text-mint" aria-live="polite"></p>
         </div>
         <script>
           const btn = document.getElementById('copy-email');
@@ -100,35 +100,35 @@ const inputClass =
         </script>
 
         <div
-          class="reveal card-3d relative overflow-hidden border border-line bg-coal p-7 transition-[border-color] duration-300 hover:border-gold-deep"
+          class="reveal card-3d relative overflow-hidden border border-line bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep"
           style="transition-delay: 70ms"
         >
-          <h2 class="text-lg font-bold text-ivory">GitHub</h2>
-          <p class="mt-2 text-sm leading-relaxed text-sand">
+          <h2 class="text-lg font-bold text-ink">GitHub</h2>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
             만들어 온 코드와 프로젝트를 먼저 살펴보세요.
           </p>
           <a
             href={COMPANY.github}
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-5 inline-flex h-12 w-full items-center justify-center border border-line bg-coal px-6 text-[15px] font-semibold text-ivory-dim transition-all hover:-translate-y-0.5 hover:border-gold-deep hover:text-gold-bright focus-visible:outline-2 focus-visible:outline-gold active:translate-y-0"
+            class="mt-5 inline-flex h-12 w-full items-center justify-center border border-line bg-card px-6 text-[15px] font-semibold text-ink-dim transition-all hover:-translate-y-0.5 hover:border-mint-deep hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint active:translate-y-0"
           >
             github.com/toris-dev
           </a>
         </div>
 
         <div
-          class="card-3d relative overflow-hidden border border-line reveal bg-coal p-7 transition-[border-color] duration-300 hover:border-gold-deep"
+          class="card-3d relative overflow-hidden border border-line reveal bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep"
           style="transition-delay: 140ms"
         >
-          <h2 class="text-lg font-bold text-ivory">이런 문의를 환영해요</h2>
+          <h2 class="text-lg font-bold text-ink">이런 문의를 환영해요</h2>
           <ul class="mt-4 space-y-2.5">
             {
               welcomeTopics.map((topic) => (
-                <li class="flex items-start gap-2.5 text-[15px] leading-relaxed text-sand">
+                <li class="flex items-start gap-2.5 text-[15px] leading-relaxed text-muted">
                   <svg
                     viewBox="0 0 24 24"
-                    class="mt-1 size-4 shrink-0 text-gold"
+                    class="mt-1 size-4 shrink-0 text-mint"
                     fill="none"
                     stroke="currentColor"
                     stroke-width="2.2"
@@ -149,18 +149,18 @@ const inputClass =
       <!-- 오른쪽: 문의 폼 -->
       <form
         id="contact-form"
-        class="reveal border border-line bg-coal p-7 sm:p-9"
+        class="reveal border border-line bg-card p-7 sm:p-9"
         style="transition-delay: 100ms"
         data-api={CONTACT_API_URL}
         data-email={COMPANY.email}
       >
-        <h2 class="text-lg font-bold text-ivory">문의 폼</h2>
-        <p class="mt-2 text-sm leading-relaxed text-sand">
+        <h2 class="text-lg font-bold text-ink">문의 폼</h2>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
           모든 항목은 필수입니다. 남겨주신 이메일로만 회신드립니다.
         </p>
 
         <div class="mt-6">
-          <label for="contact-name" class="block text-sm font-semibold text-ivory-dim">
+          <label for="contact-name" class="block text-sm font-semibold text-ink-dim">
             이름
           </label>
           <input
@@ -175,7 +175,7 @@ const inputClass =
         </div>
 
         <div class="mt-5">
-          <label for="contact-email" class="block text-sm font-semibold text-ivory-dim">
+          <label for="contact-email" class="block text-sm font-semibold text-ink-dim">
             이메일
           </label>
           <input
@@ -190,7 +190,7 @@ const inputClass =
         </div>
 
         <div class="mt-5">
-          <label for="contact-message" class="block text-sm font-semibold text-ivory-dim">
+          <label for="contact-message" class="block text-sm font-semibold text-ink-dim">
             문의 내용
           </label>
           <textarea
@@ -204,7 +204,7 @@ const inputClass =
 
         <button
           type="submit"
-          class="mt-7 inline-flex h-12 w-full items-center justify-center gap-2 bg-gold px-7 text-[15px] font-semibold text-night shadow-lg shadow-gold/20 transition-all hover:-translate-y-0.5 hover:bg-gold-bright focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
+          class="mt-7 inline-flex h-12 w-full items-center justify-center gap-2 bg-mint px-7 text-[15px] font-semibold text-ink shadow-lg shadow-mint/20 transition-all hover:-translate-y-0.5 hover:bg-mint-bright focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
         >
           문의 보내기
         </button>
@@ -213,7 +213,7 @@ const inputClass =
           id="form-status"
           role="status"
           aria-live="polite"
-          class="mt-4 min-h-5 text-sm font-medium text-sand"
+          class="mt-4 min-h-5 text-sm font-medium text-muted"
         >
         </p>
       </form>
@@ -222,7 +222,7 @@ const inputClass =
 
   <!-- ========================= 사업자 정보 ========================= -->
   <section class="mx-auto max-w-6xl px-5 pb-24">
-    <p class="reveal border-t border-line pt-6 text-xs leading-relaxed text-sand">
+    <p class="reveal border-t border-line pt-6 text-xs leading-relaxed text-muted">
       {COMPANY.nameKo}({COMPANY.nameEn}) · 대표 {COMPANY.ceo} · 사업자등록번호
       {COMPANY.bizNumber} · {COMPANY.email}
     </p>
@@ -241,7 +241,7 @@ const inputClass =
 
     const setStatus = (message: string, ok: boolean) => {
       statusEl.textContent = message;
-      statusEl.classList.toggle('text-gold', ok);
+      statusEl.classList.toggle('text-mint', ok);
       statusEl.classList.toggle('text-red-600', !ok);
     };
 

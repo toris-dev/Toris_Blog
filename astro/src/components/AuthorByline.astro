@@ -26,13 +26,13 @@ const AVATAR = 'https://github.com/toris-dev.png';
         class="size-10 rounded-full border border-line"
       />
       <div class="text-sm">
-        <p class="font-semibold text-ivory">
+        <p class="font-semibold text-ink">
           {COMPANY.ceo}
-          <span class="ml-1.5 font-normal text-sand">
+          <span class="ml-1.5 font-normal text-muted">
             · Founder, Full Stack Developer
           </span>
         </p>
-        <p class="text-xs text-sand">
+        <p class="text-xs text-muted">
           {COMPANY.nameKo}({COMPANY.nameEn})
           {dateLabel && (
             <>
@@ -46,7 +46,7 @@ const AVATAR = 'https://github.com/toris-dev.png';
   ) : (
     <aside
       aria-label="저자 소개"
-      class="mt-12 flex flex-col gap-5 rounded-2xl border border-line bg-coal p-7 sm:flex-row sm:items-start"
+      class="mt-12 flex flex-col gap-5 rounded-2xl border border-line bg-card p-7 sm:flex-row sm:items-start"
     >
       <img
         src={AVATAR}
@@ -57,10 +57,10 @@ const AVATAR = 'https://github.com/toris-dev.png';
         class="size-16 shrink-0 rounded-full border border-line"
       />
       <div>
-        <p class="font-display text-lg text-ivory">
-          {COMPANY.ceo} <span class="text-sm text-gold">Founder · Full Stack Developer</span>
+        <p class="font-display text-lg text-ink">
+          {COMPANY.ceo} <span class="text-sm text-mint">Founder · Full Stack Developer</span>
         </p>
-        <p class="mt-2 text-sm leading-relaxed text-sand">
+        <p class="mt-2 text-sm leading-relaxed text-muted">
           토리스({COMPANY.nameEn})를 운영하며 웹·모바일·자동화 제품을 기획부터
           출시, 운영까지 직접 만듭니다. 이 블로그에는 실제 프로젝트에서 내린
           기술 의사결정과 그 결과를 기록합니다.
@@ -70,7 +70,7 @@ const AVATAR = 'https://github.com/toris-dev.png';
             href={COMPANY.github}
             target="_blank"
             rel="noopener noreferrer"
-            class="text-gold hover:text-gold-bright focus-visible:outline-2 focus-visible:outline-gold"
+            class="text-mint hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint"
           >
             GitHub
           </a>
@@ -78,13 +78,13 @@ const AVATAR = 'https://github.com/toris-dev.png';
             href="https://www.linkedin.com/in/joohwan-yu"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-gold hover:text-gold-bright focus-visible:outline-2 focus-visible:outline-gold"
+            class="text-mint hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint"
           >
             LinkedIn
           </a>
           <a
             href="/about"
-            class="text-gold hover:text-gold-bright focus-visible:outline-2 focus-visible:outline-gold"
+            class="text-mint hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint"
           >
             회사 소개 →
           </a>
