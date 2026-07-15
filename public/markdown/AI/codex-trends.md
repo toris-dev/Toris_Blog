@@ -1,5 +1,5 @@
 ---
-title: '[AI] OpenAI Codex 동향 — CLI에서 클라우드 에이전트까지'
+title: 'AI 생산성 — OpenAI Codex의 진화와 대안을 검증하는 기준'
 date: 2026-07-06T09:20:00.000Z
 slug: codex-trends
 category: AI
@@ -7,7 +7,7 @@ tags: ['AI', 'Codex', 'OpenAI', 'ChatGPT', 'Agent', 'CLI']
 description: '2026년 Codex는 CLI·클라우드 에이전트·IDE·API 네 표면을 아우르는 OpenAI의 코딩 에이전트 플랫폼이다. Claude Code를 주력으로 쓰는 토리스가 대안 검증과 리스크 헤지 관점에서 진화를 정리했다.'
 ---
 
-# OpenAI Codex 동향 — CLI에서 클라우드 에이전트까지
+# AI 생산성 — OpenAI Codex의 진화와 대안을 검증하는 기준
 
 > **Q. 2026년의 OpenAI Codex는 무엇인가?**
 > 코드 특화 모델이 아니라 CLI·클라우드 에이전트·IDE 확장·API 네 표면을 아우르는 OpenAI의 코딩 에이전트 플랫폼이다.

@@ -1,5 +1,5 @@
 ---
-title: '[AI] 2026 AI 코딩 에이전트 지형도 — 하네스, Claude Code, Codex 한눈에'
+title: 'AI 생산성 — 2026 코딩 에이전트 지형과 도구 선택 기준'
 date: 2026-07-06T09:40:00.000Z
 slug: ai-coding-agents-2026-overview
 category: AI
@@ -7,7 +7,7 @@ tags:
 description: '2026년 AI 코딩 에이전트 시장은 모델 경쟁에서 하네스(스캐폴딩) 경쟁으로 재편됐다. 1인 스튜디오 토리스가 대표이자 개발자 관점에서 4단계 진화와 Claude Code·Codex 비교, 도구 선택 기준을 정리했다.'
 ---
 
-# 2026 AI 코딩 에이전트 지형도 — 하네스, Claude Code, Codex 한눈에
+# AI 생산성 — 2026 코딩 에이전트 지형과 도구 선택 기준
 
 > **Q. 2026년 AI 코딩 에이전트 지형은 어떻게 재편됐나?**
 > 모델 성능이 상향 평준화되면서 승부처는 모델이 아닌 하네스(스캐폴딩) 설계로 옮겨갔고, 시장의 양대 축은 Claude Code와 Codex다.

@@ -1,5 +1,5 @@
 ---
-title: '[AI] Claude Code $200 vs Codex $200 — 어느 쪽에 월 20만원을 쓸까'
+title: 'AI 생산성 — 월 20만 원 개발 도구 구독, 어디에 쓸 것인가'
 date: 2026-07-06T09:30:00.000Z
 slug: claude-code-vs-codex-200
 category: AI
@@ -7,7 +7,7 @@ tags: ['AI', 'Claude Code', 'Codex', 'ChatGPT Pro', 'Claude Max', '비교']
 description: '월 200달러 최상위 플랜 비교. 로컬 밀착 개발이 많으면 Claude Code(Claude Max), 클라우드 위임과 종합 번들이 중요하면 Codex(ChatGPT Pro). 구독료가 곧 인건비인 1인 스튜디오 토리스의 선택 기준을 담았다.'
 ---
 
-# Claude Code $200 vs Codex $200 — 어느 쪽에 월 20만원을 쓸까
+# AI 생산성 — 월 20만 원 개발 도구 구독, 어디에 쓸 것인가
 
 > **Q. 월 200달러라면 Claude Code(Claude Max)와 Codex(ChatGPT Pro) 중 어느 쪽인가?**
 > 로컬 코드베이스 밀착 코딩이 많으면 Claude Max, 클라우드 위임과 종합 AI 번들이 중요하면 ChatGPT Pro가 유리하다.

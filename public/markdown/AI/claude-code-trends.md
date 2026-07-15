@@ -1,5 +1,5 @@
 ---
-title: '[AI] Claude Code 동향 — 서브에이전트·스킬·MCP·훅으로 진화하는 에이전틱 CLI'
+title: 'AI 생산성 — Claude Code를 개발 워크플로의 중심에 두는 이유'
 date: 2026-07-06T09:10:00.000Z
 slug: claude-code-trends
 category: AI
@@ -7,7 +7,7 @@ tags: ['AI', 'Claude Code', 'Anthropic', 'MCP', 'Agent', 'Subagents']
 description: 'Claude Code는 서브에이전트·스킬·MCP·훅을 갖춘 에이전트 오케스트레이션 런타임으로 진화했다. 매일 이 도구로 제품을 만드는 1인 스튜디오 토리스의 대표이자 개발자 관점에서 2026년 초 동향을 정리했다.'
 ---
 
-# Claude Code 동향 — 서브에이전트·스킬·MCP·훅으로 진화하는 에이전틱 CLI
+# AI 생산성 — Claude Code를 개발 워크플로의 중심에 두는 이유
 
 > **Q. 2026년 Claude Code는 어디까지 진화했나?**
 > 단순 코딩 챗봇을 넘어 서브에이전트·스킬·MCP·훅으로 확장되는 에이전트 오케스트레이션 런타임이 됐다.
