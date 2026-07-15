@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import LogoMark from '../components/LogoMark.astro';
 import { COMPANY } from '../lib/site';
 import { fileBaseName, formatDate, toPlainExcerpt } from '../lib/slug';
 import { projects } from '../../../src/data/projects';
@@ -241,52 +242,76 @@ const isServiceLink = (url: string) =>
       </a>
     </div>
 
-    <!-- 위계: 첫 제품 크게, 나머지 3개 컴팩트 -->
+    <!-- 위계: 첫 제품 크게, 나머지 3개 컴팩트. 카드가 커서를 따라 기울고 금박 광택이 흐른다. -->
     <div class="mt-14 grid gap-4 md:grid-cols-3">
       {
-        featured.map((p, i) => { const Tag = isServiceLink(p.github) ? 'a' : 'div'; return (
+        featured.map((p, i) => { const linked = isServiceLink(p.github); const Tag = linked ? 'a' : 'div'; return (
           <Tag
-            href={isServiceLink(p.github) ? p.github : undefined}
-            target={isServiceLink(p.github) ? '_blank' : undefined}
-            rel={isServiceLink(p.github) ? 'noopener noreferrer' : undefined}
+            href={linked ? p.github : undefined}
+            target={linked ? '_blank' : undefined}
+            rel={linked ? 'noopener noreferrer' : undefined}
             class:list={[
-              'reveal group relative overflow-hidden border border-line bg-coal transition-all duration-300 hover:-translate-y-1 hover:border-gold-deep focus-visible:outline-2 focus-visible:outline-gold',
-              i === 0 ? 'p-8 md:col-span-2 md:row-span-2 md:p-12' : 'p-7'
+              'card-3d reveal group relative flex flex-col overflow-hidden border border-line bg-coal transition-[border-color] duration-300 hover:border-gold-deep focus-visible:outline-2 focus-visible:outline-gold',
+              i === 0 ? 'p-8 md:col-span-2 md:row-span-3 md:p-12' : 'p-7'
             ]}
             style={`transition-delay: ${i * 80}ms`}
           >
-            <div class="flex items-start justify-between gap-3">
-              <h3
-                class:list={[
-                  'font-display text-ivory',
-                  i === 0 ? 'text-3xl sm:text-4xl' : 'text-xl'
-                ]}
+            <span class="card-glare" aria-hidden="true" />
+            {i === 0 && (
+              <span
+                class="pointer-events-none absolute -bottom-20 -right-16 opacity-[0.05] transition-opacity duration-500 group-hover:opacity-[0.09]"
+                aria-hidden="true"
               >
-                {p.name}
-              </h3>
-              <span class="flex items-center gap-1.5 whitespace-nowrap text-[11px] tracking-wider text-live">
-                <span class="size-1.5 rounded-full bg-live" aria-hidden="true" />
-                {p.status}
+                <LogoMark class="size-96" />
               </span>
-            </div>
-            <p class="mt-1.5 text-xs tracking-wider text-sand">{p.category}</p>
+            )}
+            <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-sand">
+              {p.category}
+            </p>
+            <h3
+              class:list={[
+                'font-display mt-3 text-ivory',
+                i === 0 ? 'text-3xl sm:text-5xl' : 'text-2xl'
+              ]}
+            >
+              {p.name}
+            </h3>
             <p
               class:list={[
-                'mt-4 leading-relaxed text-ivory-dim',
-                i === 0 ? 'max-w-md text-base' : 'line-clamp-2 text-sm'
+                'mt-4 break-keep leading-relaxed text-ivory-dim',
+                i === 0 ? 'max-w-md text-base' : 'text-sm'
               ]}
             >
               {p.tagline}
             </p>
             {i === 0 && (
-              <p class="mt-8 flex flex-wrap gap-2">
-                {p.tech.slice(0, 5).map((t) => (
-                  <span class="border border-line px-2.5 py-1 text-[11px] text-sand">
-                    {t}
-                  </span>
-                ))}
+              <p class="mt-6 text-xs tracking-wide text-sand">
+                {p.tech.slice(0, 5).join(' · ')}
               </p>
             )}
+            <span class="mt-auto flex items-center justify-between gap-3 pt-8">
+              <span class="flex items-center gap-2 text-[11px] tracking-wider text-live">
+                <span class="size-1.5 rounded-full bg-live" aria-hidden="true" />
+                {p.status}
+              </span>
+              {linked && (
+                <span class="flex items-center gap-1.5 text-[13px] font-medium text-sand transition-colors duration-300 group-hover:text-gold">
+                  서비스 열기
+                  <svg
+                    viewBox="0 0 24 24"
+                    class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 17 17 7M9 7h8v8" />
+                  </svg>
+                </span>
+              )}
+            </span>
             <span
               class="absolute -bottom-px left-0 h-px w-0 bg-gold transition-all duration-500 group-hover:w-full"
               aria-hidden="true"
@@ -435,6 +460,41 @@ const isServiceLink = (url: string) =>
       transition: none;
     }
   }
+
+  /* 프로덕트 카드 — 커서를 따라 기우는 입체 틸트 + 금박 광택.
+     각도(--rx/--ry)와 광원 좌표(--mx/--my)는 스크립트가 공급한다. */
+  .card-3d {
+    transform: perspective(1100px) rotateX(var(--rx, 0deg))
+      rotateY(var(--ry, 0deg));
+    transition:
+      transform 180ms ease-out,
+      border-color 300ms;
+    will-change: transform;
+  }
+  .card-glare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 40%),
+      color-mix(in srgb, var(--color-gold) 13%, transparent),
+      transparent 65%
+    );
+    transition: opacity 300ms;
+  }
+  .card-3d:hover .card-glare {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce), (pointer: coarse) {
+    .card-3d {
+      transform: none;
+      transition: border-color 300ms;
+    }
+    .card-glare {
+      display: none;
+    }
+  }
 </style>
 
 <script>
@@ -566,6 +626,30 @@ const isServiceLink = (url: string) =>
     section.addEventListener('pointerleave', () => {
       mouse.x = -9999;
       mouse.y = -9999;
+    });
+  }
+
+  // ---------- 프로덕트 카드 3D 틸트 (pointer:fine 전용) ----------
+  if (!reduce && window.matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll<HTMLElement>('.card-3d').forEach((card) => {
+      let raf3 = 0;
+      card.addEventListener('pointermove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        cancelAnimationFrame(raf3);
+        raf3 = requestAnimationFrame(() => {
+          card.style.setProperty('--rx', `${((0.5 - py) * 5).toFixed(2)}deg`);
+          card.style.setProperty('--ry', `${((px - 0.5) * 7).toFixed(2)}deg`);
+          card.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`);
+          card.style.setProperty('--my', `${(py * 100).toFixed(1)}%`);
+        });
+      });
+      card.addEventListener('pointerleave', () => {
+        cancelAnimationFrame(raf3);
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+      });
     });
   }
 </script>
