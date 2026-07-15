@@ -159,7 +159,6 @@ PEPEBear는 Vercel에 배포되어 운영 중이다([pepe-bear.vercel.app](https
 
 ## 링크
 
-- [GitHub 저장소](https://github.com/toris-dev/PEPEBear)
 - [서비스 사이트](https://pepe-bear.vercel.app)
 - [Solana 공식 문서](https://solana.com/docs)
 - [Anchor Framework 공식 사이트](https://www.anchor-lang.com)

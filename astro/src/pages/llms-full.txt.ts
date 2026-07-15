@@ -21,7 +21,7 @@ export const GET: APIRoute = async () => {
     `> ${COMPANY.description}`,
     '',
     `- Site: ${SITE_URL} · Contact: ${COMPANY.email} · Posts: ${posts.length}`,
-    '- License: CC BY 4.0 — cite title, author (토리스/toris-dev), URL, and date.',
+    '- License: CC BY 4.0 — cite title, author (토리스/Toris Inc.), URL, and date.',
     ''
   ].join('\n');
 

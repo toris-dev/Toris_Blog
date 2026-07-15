@@ -161,7 +161,6 @@ CryptoTrade.gg는 Vercel에 배포되어 운영 중이다([tradinggg.vercel.app]
 
 ## 링크
 
-- [GitHub 저장소](https://github.com/toris-dev/CryptoTrade.gg)
 - [서비스 사이트](https://tradinggg.vercel.app)
 - [Chart.js 공식 문서](https://www.chartjs.org/docs/latest/)
 - [Next.js 공식 문서](https://nextjs.org/docs)

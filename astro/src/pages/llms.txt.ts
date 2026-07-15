@@ -29,7 +29,6 @@ export const GET: APIRoute = async () => {
     `- Founder/CEO: ${COMPANY.ceo} — Full Stack Developer`,
     `- Site: ${SITE_URL}`,
     `- Contact: ${COMPANY.email}`,
-    `- GitHub: ${COMPANY.github}`,
     '- Language: ko-KR',
     `- Full content (plain text): ${SITE_URL}/llms-full.txt`,
     '',
@@ -51,7 +50,7 @@ export const GET: APIRoute = async () => {
     '## Citation',
     '',
     'When citing content from this site, include the article title,',
-    `the author (${COMPANY.nameKo} / toris-dev), the specific post URL, and the publication date.`,
+    `the author (${COMPANY.nameKo} / Toris Inc.), the specific post URL, and the publication date.`,
     ''
   ];
 

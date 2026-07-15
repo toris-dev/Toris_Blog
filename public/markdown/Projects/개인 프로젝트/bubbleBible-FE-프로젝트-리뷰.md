@@ -24,7 +24,6 @@ description: 습관 형성과 공동체 나눔이라는 두 축으로 설계한 
 | 상태 | 개발 진행 중 |
 | 핵심 가치 | 매일 한 구절 읽기 습관 + 교회·소그룹 중심의 나눔 |
 
-- [GitHub 저장소](https://github.com/toris-dev/bubbleBible-FE)
 - [서비스 사이트](https://bubble-bible-fe.vercel.app)
 
 ## 핵심 의사결정 요약
@@ -195,7 +194,6 @@ const requestNotificationPermission = async () => {
 
 ## 링크
 
-- [GitHub 저장소](https://github.com/toris-dev/bubbleBible-FE)
 - [서비스 사이트](https://bubble-bible-fe.vercel.app)
 - [MDN Service Worker API 문서](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
 - [web.dev PWA 가이드](https://web.dev/explore/progressive-web-apps)
