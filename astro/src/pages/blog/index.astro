@@ -2,7 +2,9 @@
 import { getCollection } from 'astro:content';
 import PostSearch, { type PostItem } from '../../components/PostSearch';
 import Base from '../../layouts/Base.astro';
+import { PROJECT_JOURNALS, STUDIO_JOURNALS } from '../../lib/journal';
 import { fileBaseName, formatDate, toPlainExcerpt } from '../../lib/slug';
+import { projects } from '../../../../src/data/projects';
 
 const entries = await getCollection('posts');
 
@@ -20,29 +22,208 @@ const posts: PostItem[] = entries
     };
   })
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+const bySlug = new Map(posts.map((p) => [p.slug, p]));
+
+// 제품별 저널 그룹 — 매핑된 글이 실제 존재하는 것만
+const journalGroups = Object.entries(PROJECT_JOURNALS)
+  .map(([name, slugs]) => {
+    const groupPosts = slugs
+      .map((s) => bySlug.get(s))
+      .filter((p): p is PostItem => Boolean(p));
+    const project = projects.find((p) => p.name === name);
+    return { name, project, posts: groupPosts };
+  })
+  .filter((g) => g.posts.length > 0)
+  .sort(
+    (a, b) =>
+      new Date(b.posts[0].date).getTime() - new Date(a.posts[0].date).getTime()
+  );
+
+const studioPosts = STUDIO_JOURNALS.map((s) => bySlug.get(s)).filter(
+  (p): p is PostItem => Boolean(p)
+);
+
+// 나머지 = 엔지니어링 인사이트(트렌드·보안·스택 노트)
+const mapped = new Set([...Object.values(PROJECT_JOURNALS).flat(), ...STUDIO_JOURNALS]);
+const insightPosts = posts.filter((p) => !mapped.has(p.slug));
+
+// 지금 하고 있는 것 — 제품 레지스트리 실데이터
+const building = projects.filter((p) => p.status === '개발 중');
+const liveCount = projects.filter((p) => p.status === '운영 중').length;
+
+const isServiceLink = (url: string) =>
+  !url.startsWith('https://github.com/') || /\/releases\/?$/.test(url);
 ---
 
 <Base
-  title="기술 블로그 | 토리스"
-  description="토리스가 제품을 만들고 운영하며 남긴 기록 — 웹, 모바일, AI 자동화, 인프라까지 실전 기술 노트."
+  title="빌딩 로그 | 토리스"
+  description="토리스 대표이자 개발자의 프로젝트별 기록 — 각 제품을 왜 시작했고, 어떻게 만들었고, 출시하며 무엇을 배웠는지 남깁니다."
   path="/blog"
   pageType="CollectionPage"
 >
-  <section class="mx-auto max-w-3xl px-5 pb-20 pt-14">
-    <header class="reveal">
-      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-mint">
-        Blog
+  <!-- ============================ Header ============================ -->
+  <section class="mx-auto max-w-6xl px-5 pb-4 pt-20 sm:pt-24">
+    <header class="reveal max-w-2xl">
+      <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint-deep">
+        BUILDING LOG
       </p>
-      <h1 class="mt-3 text-4xl font-display text-ink">
-        만들면서 배운 것들
+      <h1 class="font-display mt-4 text-4xl text-ink sm:text-5xl">
+        만들면서, 기록합니다
       </h1>
-      <p class="mt-4 text-muted">
-        제품을 만들고 운영하며 남긴 {posts.length}개의 기술 기록입니다.
+      <p class="mt-5 break-keep leading-relaxed text-ink-dim">
+        대표이자 개발자로서 각 제품을 왜 시작했고, 어떻게 만들었고, 출시하며
+        무엇을 배웠는지 프로젝트 단위로 남깁니다.
       </p>
     </header>
+  </section>
 
-    <div class="reveal mt-10">
+  <!-- ===================== 지금 하고 있는 것 ===================== -->
+  <section class="mx-auto max-w-6xl px-5 py-12" aria-labelledby="now-heading">
+    <div class="reveal rounded-2xl border border-line bg-card p-7 sm:p-8">
+      <div class="flex flex-wrap items-baseline justify-between gap-3">
+        <h2 id="now-heading" class="font-mono text-[11px] tracking-[0.24em] text-muted">
+          NOW BUILDING
+        </h2>
+        <p class="text-xs text-muted">
+          운영 중 제품 {liveCount}개는 지표를 보며 개선을 이어갑니다
+        </p>
+      </div>
+      <ul class="mt-5 flex flex-wrap gap-2">
+        {
+          building.map((p) => (
+            <li class="flex items-center gap-2 rounded-full border border-line bg-paper px-4 py-1.5 text-[13px] text-ink-dim">
+              <span class="now-dot size-1.5 rounded-full bg-mint" aria-hidden="true" />
+              <span class="font-medium text-ink">{p.name}</span>
+              <span class="font-mono text-[10px] tracking-wide text-muted">{p.category}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ====================== 프로젝트별 저널 ====================== -->
+  <section class="mx-auto max-w-6xl px-5 py-12" aria-labelledby="journal-heading">
+    <h2 id="journal-heading" class="reveal font-mono text-[11px] tracking-[0.24em] text-muted">
+      PROJECT JOURNALS
+    </h2>
+    <div class="mt-6 grid gap-4 lg:grid-cols-2">
+      {
+        journalGroups.map((g, gi) => { const linked = g.project && isServiceLink(g.project.github); return (
+          <article
+            class="reveal flex flex-col rounded-2xl border border-line bg-card p-7"
+            style={`transition-delay: ${gi * 60}ms`}
+          >
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <h3 class="font-display text-2xl text-ink">{g.name}</h3>
+              {g.project && (
+                <span class:list={[
+                  'flex items-center gap-1.5 text-[11px] tracking-wider',
+                  g.project.status === '운영 중' ? 'text-live' : 'text-mint-deep'
+                ]}>
+                  <span class:list={['size-1.5 rounded-full', g.project.status === '운영 중' ? 'bg-live' : 'bg-mint']} aria-hidden="true" />
+                  {g.project.status}
+                </span>
+              )}
+            </div>
+            {g.project && (
+              <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
+                {g.project.category} · {g.project.platform}
+              </p>
+            )}
+            {g.project && (
+              <p class="mt-3 break-keep text-sm leading-relaxed text-ink-dim">
+                {g.project.tagline}
+              </p>
+            )}
+            <ol class="mt-5 space-y-1 border-t border-line pt-4">
+              {g.posts.map((post) => (
+                <li>
+                  <a
+                    href={`/posts/${post.slug}`}
+                    class="group flex items-baseline gap-4 rounded-lg px-2 py-2.5 transition-colors hover:bg-paper focus-visible:outline-2 focus-visible:outline-mint-deep"
+                  >
+                    <time class="shrink-0 font-mono text-[11px] text-muted">{post.dateLabel}</time>
+                    <span class="min-w-0">
+                      <span class="block break-keep text-[15px] font-medium leading-snug text-ink transition-colors group-hover:text-mint-deep">
+                        {post.title}
+                      </span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+            {linked && g.project && (
+              <a
+                href={g.project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-auto inline-flex items-center gap-1.5 pt-4 text-[13px] font-medium text-muted transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint-deep"
+              >
+                서비스 열기
+                <svg viewBox="0 0 24 24" class="size-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M7 17 17 7M9 7h8v8" />
+                </svg>
+              </a>
+            )}
+          </article>
+        ); })
+      }
+
+      <!-- 스튜디오 운영 기록 -->
+      {studioPosts.length > 0 && (
+        <article class="reveal flex flex-col rounded-2xl border border-line bg-paper-2/60 p-7">
+          <h3 class="font-display text-2xl text-ink">스튜디오 운영</h3>
+          <p class="mt-3 break-keep text-sm leading-relaxed text-ink-dim">
+            1인 스튜디오가 품질과 속도를 지키는 방식에 대한 기록.
+          </p>
+          <ol class="mt-5 space-y-1 border-t border-line pt-4">
+            {studioPosts.map((post) => (
+              <li>
+                <a
+                  href={`/posts/${post.slug}`}
+                  class="group flex items-baseline gap-4 rounded-lg px-2 py-2.5 transition-colors hover:bg-card focus-visible:outline-2 focus-visible:outline-mint-deep"
+                >
+                  <time class="shrink-0 font-mono text-[11px] text-muted">{post.dateLabel}</time>
+                  <span class="block break-keep text-[15px] font-medium leading-snug text-ink transition-colors group-hover:text-mint-deep">
+                    {post.title}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </article>
+      )}
+    </div>
+  </section>
+
+  <!-- ==================== 엔지니어링 인사이트 ==================== -->
+  <section class="mx-auto max-w-6xl px-5 py-12 pb-24" aria-labelledby="insight-heading">
+    <h2 id="insight-heading" class="reveal font-mono text-[11px] tracking-[0.24em] text-muted">
+      ENGINEERING INSIGHTS
+    </h2>
+    <p class="reveal mt-3 max-w-xl break-keep text-sm text-ink-dim">
+      특정 제품을 넘어, 도구·보안·스택을 판단한 기준들 — {insightPosts.length}편.
+      검색으로 전체 기록({posts.length}편)을 찾아볼 수도 있습니다.
+    </p>
+    <div class="reveal mt-8 max-w-3xl">
       <PostSearch posts={posts} client:load />
     </div>
   </section>
 </Base>
+
+<style>
+  .now-dot {
+    animation: now-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes now-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .now-dot {
+      animation: none;
+    }
+  }
+</style>
