@@ -58,6 +58,7 @@ const ids = {
 const personNode = {
   '@type': 'Person',
   '@id': ids.person,
+  alternateName: ['toris-dev', 'Toris-dev'],
   name: '토리스',
   alternateName: 'Toris',
   url: SITE_URL,
@@ -75,7 +76,7 @@ const organizationNode = {
   '@type': 'Organization',
   '@id': ids.organization,
   name: COMPANY.nameKo,
-  alternateName: [COMPANY.nameEn, 'Toris', '토리스 스튜디오'],
+  alternateName: ['Toris', 'toris', '토리스', 'toris-dev', 'Toris-dev', 'toris.kr'],
   legalName: `${COMPANY.nameKo}(${COMPANY.nameEn})`,
   disambiguatingDescription:
     '웹·모바일·AI 자동화 제품을 기획부터 출시·운영까지 만드는 대한민국 서울의 소프트웨어 개발 스튜디오. 동명의 음악 그룹이나 타 업종 법인과는 무관하다.',
