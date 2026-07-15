@@ -1,7 +1,7 @@
-# Brand Authority Report: 토리스 (Toris Inc.)
+# Brand Authority Report: 토리스 (Toris Studio)
 
 **Analysis Date:** 2026-07-15
-**Brand:** 토리스 / Toris Inc. (대표 유주환)
+**Brand:** 토리스 / Toris Studio (대표 유주환)
 **Domain:** https://toris.kr
 **Industry:** 소프트웨어 스튜디오 (웹·모바일·자동화) — 제품: 밈캐치(catchmeme.com), TraceDesk, asyncraft, @toris-dev/ui 등
 
@@ -35,7 +35,7 @@
 | TORIS (파나마 소재 기업) | linkedin.com/company/toris | 중간 — LinkedIn 회사 슬러그 선점 |
 | Toris Square(드론 레이더)·토리시스템즈·Toris Korea | 자체 도메인들 | 중간 |
 
-**의미**: AI에게 "토리스가 뭐야?"라고 물으면 국악 그룹이나 교육회사가 답으로 나올 확률이 높습니다. 한글 단독 브랜딩으로는 이길 수 없는 판이므로, **"토리스(Toris Inc.)" / "toris.kr" 병기**를 모든 외부 표기의 규칙으로 삼아야 합니다.
+**의미**: AI에게 "토리스가 뭐야?"라고 물으면 국악 그룹이나 교육회사가 답으로 나올 확률이 높습니다. 한글 단독 브랜딩으로는 이길 수 없는 판이므로, **"토리스(Toris Studio)" / "toris.kr" 병기**를 모든 외부 표기의 규칙으로 삼아야 합니다.
 
 ---
 
@@ -69,14 +69,14 @@
 ## Recommendations
 
 ### Immediate (Week 1-2) — 기반 정리
-1. **GitHub 프로필 blog → https://toris.kr** (5분) — 현존 최강 자산과 새 도메인의 연결 복구. 주요 리포(asyncraft·torisui-kit·TraceDesk·memeCatch) README 상단에도 "Made by [토리스(Toris Inc.)](https://toris.kr)" 배지 일괄 추가.
+1. **GitHub 프로필 blog → https://toris.kr** (5분) — 현존 최강 자산과 새 도메인의 연결 복구. 주요 리포(asyncraft·torisui-kit·TraceDesk·memeCatch) README 상단에도 "Made by [토리스(Toris Studio)](https://toris.kr)" 배지 일괄 추가.
 2. **LinkedIn 회사 페이지 생성** — 슬러그는 `toris-inc` 또는 `toris-kr`(toris는 선점됨). 사업자번호·toris.kr·대표 프로필 연결, 사이트 Organization.sameAs에 역연결.
-3. **Wikidata 항목 생성** (위키백과 문서와 별개로 가능) — "Toris Inc." 레이블, P31=기업, 공식 웹사이트=toris.kr, 설립일, 대표. 국악 그룹 Q117435288과 명시적으로 분리된 새 Q-넘버 확보 → sameAs에 추가.
+3. **Wikidata 항목 생성** (위키백과 문서와 별개로 가능) — "Toris Studio" 레이블, P31=기업, 공식 웹사이트=toris.kr, 설립일, 대표. 국악 그룹 Q117435288과 명시적으로 분리된 새 Q-넘버 확보 → sameAs에 추가.
 
 ### Short-Term (Month 1-3) — 국내 커뮤니티 발자국
 4. **케이스 스터디 2편을 GeekNews·disquiet에 공유** — 21n 전자계약(규제 제약 서사)과 AI 코딩 에이전트 시리즈가 적합. 커뮤니티 톤에 맞게 요약+원문 링크.
 5. **velog/커리어리 크로스포스트** — canonical을 toris.kr로 지정해 중복 페널티 없이 노출 확보.
-6. **제품 데모 YouTube 3편** (TraceDesk 사용법·밈캐치 소개·asyncraft 5분) — 제목·설명·음성에 "토리스(Toris Inc.)" 명시. 구독자보다 '존재+트랜스크립트'가 목적.
+6. **제품 데모 YouTube 3편** (TraceDesk 사용법·밈캐치 소개·asyncraft 5분) — 제목·설명·음성에 "토리스(Toris Studio)" 명시. 구독자보다 '존재+트랜스크립트'가 목적.
 
 ### Long-Term (Month 3-12) — 엔터티 권위
 7. 밈캐치·TraceDesk가 성장하면 **제품 단위로 Product Hunt/디스콰이엇 런칭** — 브랜드보다 제품이 언급을 만든다.
@@ -85,7 +85,7 @@
 
 ## Key Takeaway
 
-토리스의 AI 가시성은 **콘텐츠 문제가 아니라 존재 증명 문제**입니다 — 온페이지(76점 인용가능성)는 이미 준비됐지만 외부 세계에 "toris.kr = 토리스(Toris Inc.)"라는 좌표가 없고, 그 이름마저 국악 그룹과 교육회사가 선점했습니다. **단 하나만 한다면: GitHub blog 링크 수정 + 전 리포 README에 toris.kr 배지** — 지금 가진 유일한 권위 자산을 새 엔터티에 연결하는 5분짜리 작업이 출발점입니다.
+토리스의 AI 가시성은 **콘텐츠 문제가 아니라 존재 증명 문제**입니다 — 온페이지(76점 인용가능성)는 이미 준비됐지만 외부 세계에 "toris.kr = 토리스(Toris Studio)"라는 좌표가 없고, 그 이름마저 국악 그룹과 교육회사가 선점했습니다. **단 하나만 한다면: GitHub blog 링크 수정 + 전 리포 README에 toris.kr 배지** — 지금 가진 유일한 권위 자산을 새 엔터티에 연결하는 5분짜리 작업이 출발점입니다.
 
 ---
 

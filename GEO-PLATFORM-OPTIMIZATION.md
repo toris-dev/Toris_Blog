@@ -1,6 +1,6 @@
 # GEO Platform Optimization Report — toris.kr
 Date: 2026-07-15
-Brand: 토리스 (Toris Inc.) · 1인 소프트웨어 스튜디오 · ko-KR
+Brand: 토리스 (Toris Studio) · 1인 소프트웨어 스튜디오 · ko-KR
 데이터 출처: 동일 세션의 GEO 종합 감사(5에이전트) + 브랜드 멘션 스캔(위키·GitHub·npm API 실측) + 라이브 재검증. 이 리포트는 본 스킬의 플랫폼별 루브릭으로 재채점한 결과.
 
 ## Overall Platform Readiness

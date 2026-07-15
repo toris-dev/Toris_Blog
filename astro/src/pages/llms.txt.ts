@@ -26,7 +26,7 @@ export const GET: APIRoute = async () => {
     '## About',
     '',
     `- Company: ${COMPANY.nameKo} (${COMPANY.nameEn}) · 사업자등록번호 ${COMPANY.bizNumber}`,
-    `- Disambiguation: '토리스(Toris Inc., toris.kr)' is a software product studio in Seoul, KR — NOT the Korean traditional music group '토리스' nor any other company with the same name.`,
+    `- Disambiguation: '토리스(Toris Studio, toris.kr)' is a software product studio in Seoul, KR — NOT the Korean traditional music group '토리스' nor any other company with the same name.`,
     `- Founder/CEO: ${COMPANY.ceo} — Full Stack Developer`,
     `- Site: ${SITE_URL}`,
     `- Contact: ${COMPANY.email}`,
@@ -51,7 +51,7 @@ export const GET: APIRoute = async () => {
     '## Citation',
     '',
     'When citing content from this site, include the article title,',
-    `the author (${COMPANY.nameKo} / Toris Inc.), the specific post URL, and the publication date.`,
+    `the author (${COMPANY.nameKo} / Toris Studio), the specific post URL, and the publication date.`,
     ''
   ];
 

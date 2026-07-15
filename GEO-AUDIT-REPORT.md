@@ -1,4 +1,4 @@
-# GEO Audit Report: 토리스 (Toris Inc.)
+# GEO Audit Report: 토리스 (Toris Studio)
 
 **Audit Date:** 2026-07-15
 **URL:** https://toris.kr/
