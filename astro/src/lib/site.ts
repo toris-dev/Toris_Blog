@@ -14,7 +14,7 @@ export const COMPANY = {
 } as const;
 
 export const SITE_URL =
-  import.meta.env.PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
+  import.meta.env.PUBLIC_SITE_URL || 'https://toris.kr';
 
 export const NAV = [
   { href: '/about', label: '회사 소개' },

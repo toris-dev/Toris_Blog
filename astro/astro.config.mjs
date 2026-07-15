@@ -9,7 +9,7 @@ import { defineConfig } from 'astro/config';
  * 배포 도메인. 커스텀 도메인 확정 전까지 기존 canonical 호스트를 유지해
  * 게시글 canonical/OG URL 패리티를 보존한다. (요구사항: 메타데이터 보존)
  */
-const SITE_URL = process.env.PUBLIC_SITE_URL || 'https://toris-blog.vercel.app';
+const SITE_URL = process.env.PUBLIC_SITE_URL || 'https://toris.kr';
 
 // https://astro.build/config
 export default defineConfig({
