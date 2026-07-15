@@ -1,6 +1,6 @@
 ---
 title: 토리스가 제품을 만드는 방식 — 1인 스튜디오의 개발 워크플로
-description: 기획부터 운영까지, Toris Inc.가 제품을 만들 때 실제로 사용하는 도구·자동화·품질 게이트와 그 선택의 트레이드오프를 공개합니다.
+description: 기획부터 운영까지 Toris Inc.가 실제로 쓰는 도구·자동화·품질 게이트를 공개한다. 표준 스택으로 선택 비용을 없애고, 타입 체크·CI 테스트·Sentry 모니터링이 리뷰어의 빈자리를 메우는 1인 스튜디오 워크플로와 그 트레이드오프 정리.
 date: 2025-07-09T16:55:19.933Z
 slug: fullstack-workflow
 category: Dev
@@ -8,6 +8,10 @@ tags: [Workflow, FullStack, DevOps, Toris]
 ---
 
 # 토리스가 제품을 만드는 방식
+
+> **Q. 리뷰어가 없는 1인 스튜디오는 어떻게 품질을 지키나?**
+>
+> 표준 스택으로 선택 비용을 없애고, 타입 체크·CI 자동 테스트·Sentry 모니터링을 품질 게이트로 두어 리뷰어의 빈자리를 자동화로 메운다.
 
 토리스(Toris Inc.)는 1인 소프트웨어 스튜디오입니다. 기획자, 디자이너, 프론트엔드, 백엔드, 인프라 담당이 모두 한 사람이라는 뜻이고, 그래서 워크플로가 곧 팀입니다. 사람이 부족한 만큼 프로세스와 자동화가 그 자리를 대신해야 하고, 어떤 도구를 왜 쓰는지에 대한 기준이 흐려지면 곧바로 품질이 흔들립니다.
 
@@ -170,3 +174,4 @@ API 설계 → 데이터베이스 설계 → 서버 구현 → 테스트 → 배
 - [React 공식 문서](https://reactjs.org/) / [TypeScript 공식 문서](https://www.typescriptlang.org/)
 - [GitHub](https://github.com/) — 코드 관리와 이슈 추적
 - [Vercel](https://vercel.com/) / [AWS](https://aws.amazon.com/) — 배포 인프라
+- [Sentry](https://sentry.io/) — 에러 추적과 성능 모니터링

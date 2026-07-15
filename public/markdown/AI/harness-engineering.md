@@ -4,9 +4,13 @@ date: 2026-07-06T09:00:00.000Z
 slug: harness-engineering
 category: AI
 tags: ['AI', 'Harness Engineering', 'LLM', 'Agent', 'Claude Code', 'Codex']
+description: '하네스 엔지니어링은 컨텍스트 관리, 도구 오케스트레이션, 검증 루프, 권한 게이팅으로 모델을 감싸는 설계다. 모델은 상한선을 정하고 실제 신뢰성은 하네스가 결정한다.'
 ---
 
 # AI 하네스 엔지니어링 — 모델을 넘어 스캐폴딩을 설계하기
+
+> **Q. AI 하네스(harness) 엔지니어링이란 무엇이고 왜 중요한가?**
+> 모델을 감싼 컨텍스트·도구·검증·권한 스캐폴딩을 설계하는 일이다. 모델은 상한선을 정하고, 실제 신뢰성은 하네스가 결정한다.
 
 <img width="1200" height="600" loading="lazy" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&h=600&fit=crop&auto=format" alt="AI harness engineering" style="border-radius: 12px; margin: 20px 0;" />
 

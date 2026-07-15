@@ -4,9 +4,13 @@ date: 2026-07-06T09:40:00.000Z
 slug: ai-coding-agents-2026-overview
 category: AI
 tags:
+description: '2026년 AI 코딩 에이전트 시장은 모델 경쟁에서 하네스(스캐폴딩) 경쟁으로 재편됐다. 자동완성에서 하네스까지 4단계 진화와 Claude Code·Codex 비교를 한 장으로 정리한 허브 글.'
 ---
 
 # 2026 AI 코딩 에이전트 지형도 — 하네스, Claude Code, Codex 한눈에
+
+> **Q. 2026년 AI 코딩 에이전트 지형은 어떻게 재편됐나?**
+> 모델 성능이 상향 평준화되면서 승부처는 모델이 아닌 하네스(스캐폴딩) 설계로 옮겨갔고, 시장의 양대 축은 Claude Code와 Codex다.
 
 <img width="1200" height="600" loading="lazy" src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop&auto=format" alt="AI coding agents 2026" style="border-radius: 12px; margin: 20px 0;" />
 
@@ -43,7 +47,7 @@ tags:
 
 ## Claude Code vs Codex — 한눈에 보기
 
-2026년 초 기준으로 시장의 양대 축은 Anthropic의 Claude Code와 OpenAI의 Codex다. 둘 다 터미널 우선 에이전트에서 출발해 클라우드·IDE로 확장하는 궤적을 그리지만, 강조점이 다르다.
+2026년 초 기준으로 시장의 양대 축은 Anthropic의 [Claude Code](https://docs.anthropic.com/en/docs/claude-code)와 OpenAI의 [Codex](https://openai.com/codex/)다. 둘 다 터미널 우선 에이전트에서 출발해 클라우드·IDE로 확장하는 궤적을 그리지만, 강조점이 다르다.
 
 | 항목          | Claude Code                 | Codex                            |
 | ------------- | --------------------------- | -------------------------------- |

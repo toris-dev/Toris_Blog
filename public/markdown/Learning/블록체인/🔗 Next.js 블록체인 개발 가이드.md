@@ -4,9 +4,13 @@ date: 2025-07-13T12:00:00.000Z
 slug: nextjs-blockchain-application-development-guide
 category: 'Blockchain'
 tags: [Next.js, Blockchain, Web3, NFT, Smart Contracts, Solidity, Frontend]
+description: 'Next.js와 Solidity로 블록체인·Web3 앱을 개발하는 실전 가이드. Hardhat·OpenZeppelin·thirdweb·ethers.js로 스마트 컨트랙트를 배포하고 NFT 마켓플레이스와 포인트 시스템을 구축합니다.'
 ---
 
 # 🔗 Next.js 기반 블록체인 애플리케이션 개발 가이드
+
+> **Q. Next.js로 블록체인·Web3 앱은 어떻게 개발하나요?**
+> Next.js에 Hardhat·thirdweb·ethers.js를 연동해 스마트 컨트랙트를 배포하고 NFT·포인트 등 Web3 앱을 구축합니다.
 
 > Next.js의 강력한 프론트엔드 기능과 블록체인 기술을 결합하여 NFT 마켓플레이스, 포인트 시스템 등 다양한 Web3 애플리케이션을 구축하는 방법을 상세히 안내합니다.
 
@@ -903,10 +907,11 @@ export const trackMarketplaceSale = (
 
 ### 권장 리소스
 
-- **thirdweb Docs**: Next.js와 Web3 개발을 위한 가장 최신화된 자료를 제공합니다.
-- **OpenZeppelin Docs**: 스마트 컨트랙트 개발의 표준과 보안 모범 사례를 배울 수 있습니다.
-- **Hardhat Docs**: 이더리움 개발 환경 설정 및 테스트에 대한 깊이 있는 정보를 제공합니다.
-- **Ethers.js / Web3.js Docs**: 블록체인과 상호작용하는 JavaScript 라이브러리 사용법을 익힙니다.
+- **[thirdweb Docs](https://portal.thirdweb.com)**: Next.js와 Web3 개발을 위한 가장 최신화된 자료를 제공합니다.
+- **[OpenZeppelin Contracts Docs](https://docs.openzeppelin.com/contracts)**: 스마트 컨트랙트 개발의 표준과 보안 모범 사례를 배울 수 있습니다.
+- **[Hardhat Docs](https://hardhat.org/docs)**: 이더리움 개발 환경 설정 및 테스트에 대한 깊이 있는 정보를 제공합니다.
+- **[Ethers.js Docs](https://docs.ethers.org)**: 블록체인과 상호작용하는 JavaScript 라이브러리 사용법을 익힙니다.
+- **[Next.js 공식 문서](https://nextjs.org/docs)**: App Router, 캐싱, 배포 등 프레임워크 전반의 공식 레퍼런스입니다.
 
 ### 실무 팁
 

@@ -4,9 +4,13 @@ date: 2026-07-06T09:20:00.000Z
 slug: codex-trends
 category: AI
 tags: ['AI', 'Codex', 'OpenAI', 'ChatGPT', 'Agent', 'CLI']
+description: '2026년 Codex는 코드 특화 모델이 아니라 CLI, 클라우드 에이전트, IDE 확장, API 네 표면을 아우르는 OpenAI의 코딩 에이전트 플랫폼이다. 모델에서 클라우드 에이전트까지의 진화를 정리했다.'
 ---
 
 # OpenAI Codex 동향 — CLI에서 클라우드 에이전트까지
+
+> **Q. 2026년의 OpenAI Codex는 무엇인가?**
+> 코드 특화 모델이 아니라 CLI·클라우드 에이전트·IDE 확장·API 네 표면을 아우르는 OpenAI의 코딩 에이전트 플랫폼이다.
 
 <img width="1200" height="600" loading="lazy" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=600&fit=crop&auto=format" alt="OpenAI Codex" style="border-radius: 12px; margin: 20px 0;" />
 
@@ -165,6 +169,7 @@ Codex는 이제 "자동완성 모델"이 아니라 **여러 표면에 걸친 코
 
 - [OpenAI Platform Docs](https://platform.openai.com/docs)
 - [Introducing Codex — OpenAI](https://openai.com/index/introducing-codex/) (일반 참고용, [openai.com](https://openai.com))
+- [AGENTS.md 공식 안내](https://agents.md)
 - [AI 하네스 엔지니어링](/posts/harness-engineering)
 - [Claude Code 동향](/posts/claude-code-trends)
 - [Claude Code $200 vs Codex $200](/posts/claude-code-vs-codex-200)

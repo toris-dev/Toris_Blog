@@ -4,9 +4,13 @@ date: 2025-07-13T10:00:00.000Z
 slug: defi-services-development-guide-with-nextjs
 category: 'Blockchain'
 tags: ['DeFi', 'Blockchain', 'Next.js', 'Solidity', 'Smart Contracts', 'Web3']
+description: 'Next.js와 Solidity로 DeFi 서비스를 개발하는 가이드. AMM 기반 DEX, 대출·차용, 스테이킹 스마트 컨트랙트를 구현하고 ethers.js·thirdweb로 Web3 대시보드를 구축하며 재진입 공격 등 보안까지 다룹니다.'
 ---
 
 # 🏦 Next.js와 함께하는 DeFi (탈중앙화 금융) 서비스 개발 가이드
+
+> **Q. DeFi 서비스는 Next.js와 Solidity로 어떻게 개발하나요?**
+> 스마트 컨트랙트로 DEX·대출·스테이킹을 구현하고 Next.js에서 ethers.js·thirdweb로 지갑을 연동해 대시보드를 만듭니다.
 
 > 전통 금융을 혁신하는 블록체인 기반 금융 서비스들을 Next.js와 Solidity로 구축하는 방법을 알아봅니다.
 
@@ -202,3 +206,9 @@ DeFi는 혁신적이지만, 스마트 컨트랙트 버그, 오라클 문제, 유
 - **테스트**: 테스트 커버리지를 최대한 높여 엣지 케이스 검증.
 
 DeFi는 빠르게 발전하는 분야이며, 높은 수익의 기회와 기술적 도전 과제를 동시에 제공합니다. 이 가이드를 통해 Next.js 개발자들이 DeFi 생태계에 더 쉽게 참여하고, 안전하고 혁신적인 서비스를 만드는 데 도움이 되기를 바랍니다.
+
+## 참고 자료
+
+- [Solidity 공식 문서](https://docs.soliditylang.org) — 스마트 컨트랙트 언어 레퍼런스와 보안 고려 사항.
+- [OpenZeppelin Contracts 문서](https://docs.openzeppelin.com/contracts) — `ReentrancyGuard`, `Ownable` 등 검증된 컨트랙트 모듈.
+- [thirdweb 공식 문서](https://portal.thirdweb.com) — Next.js에서 컨트랙트와 지갑을 연동하는 SDK 가이드.

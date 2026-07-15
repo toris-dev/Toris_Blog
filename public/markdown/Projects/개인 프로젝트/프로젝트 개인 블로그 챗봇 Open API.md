@@ -1,6 +1,6 @@
 ---
 title: '실험 노트: 블로그 챗봇과 OpenAI API — 무엇을 검증하려 했고 무엇을 배웠나'
-description: 개인 블로그에 OpenAI API 기반 챗봇을 붙이는 실험의 기록. 문제 정의와 설계, RAG 도입 시도와 철회, 그리고 그 과정에서 배운 것.
+description: 개인 블로그에 OpenAI API 기반 챗봇을 붙인 실험 기록. Next.js API Route 하나와 system 프롬프트만으로 충분했고, RAG는 임베딩 비용·복잡도 대비 효과가 작아 철회했다. 최소 구성 설계와 시크릿 관리 교훈까지 정리.
 date: 2025-07-09T16:55:19.923Z
 slug: 프로젝트-개인-블로그-챗봇-open-api
 category: Projects
@@ -8,6 +8,10 @@ tags: [Projects, LLM, OpenAI, CaseStudy]
 ---
 
 # 실험 노트: 블로그 챗봇과 OpenAI API
+
+> **Q. 개인 블로그 챗봇에 RAG가 필요했나?**
+>
+> 아니다. Next.js API Route 하나와 system 프롬프트만으로 충분했고, RAG는 임베딩 비용과 복잡도 대비 품질 개선이 작아 도입을 철회했다.
 
 이 글은 완성된 제품의 소개가 아니라 실험 기록입니다. 개인 블로그에 OpenAI API 기반 챗봇을 붙이면서 무엇을 검증하려 했고, 어떤 설계를 택했으며, 어디서 방향을 접었고, 그 과정에서 무엇을 배웠는지를 정리합니다.
 
@@ -60,10 +64,10 @@ tags: [Projects, LLM, OpenAI, CaseStudy]
 
 ## 설계 — Next.js API Route 하나로 시작
 
-첫 번째 질문(최소 구성)에 대한 답은 단순했습니다. 블로그가 Next.js(Pages Router) 위에 있으므로, `/api` 핸들러 하나가 챗봇 백엔드의 전부가 될 수 있었습니다.
+첫 번째 질문(최소 구성)에 대한 답은 단순했습니다. 블로그가 [Next.js](https://nextjs.org)(Pages Router) 위에 있으므로, `/api` 핸들러 하나가 챗봇 백엔드의 전부가 될 수 있었습니다.
 
 - 클라이언트는 대화 메시지 배열을 POST로 보낸다
-- 서버 핸들러가 system 프롬프트를 앞에 붙여 OpenAI Chat Completions API를 호출한다
+- 서버 핸들러가 system 프롬프트를 앞에 붙여 [OpenAI](https://openai.com) Chat Completions API를 호출한다
 - 응답 메시지를 배열에 덧붙여 돌려준다
 
 당시 작성한 핸들러는 다음과 같습니다.

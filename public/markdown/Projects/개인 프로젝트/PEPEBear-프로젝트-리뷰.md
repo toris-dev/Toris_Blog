@@ -9,12 +9,25 @@ description: 토리스가 Solana 위에 구축한 커뮤니티 플랫폼 PEPEBea
 
 # PEPEBear — Solana 기반 커뮤니티 플랫폼 케이스 스터디
 
+> **Q. 게이미피케이션 커뮤니티에서 무엇을 온체인에 올릴지 어떻게 정했나?**
+> "조작되면 다른 사용자가 손해를 보는가"를 기준으로, 검증이 필요한 핵심 상태만 온체인에 두고 밸런스·UI 상태는 오프체인에 뒀다.
+
 **제품명**: PEPEBear
 **개발 기간**: 2025.11
 **기술 스택**: Next.js, TypeScript, React, Solana(@solana/web3.js, Wallet Adapter), Anchor Framework
 **포지셔닝**: Solana 블록체인 위에 게이미피케이션을 얹은 커뮤니티 참여 플랫폼
 
 PEPEBear는 토리스(Toris)가 Solana 생태계에서 설계·개발한 Web3 커뮤니티 플랫폼이다. 토큰 커뮤니티의 참여 활동을 포인트·레벨·업적이라는 게이미피케이션 구조로 조직하고, 온체인 데이터를 실시간에 가깝게 시각화한다. 이 글은 한 달이라는 짧은 개발 주기 안에서 내린 아키텍처 결정 — 특히 온체인/오프체인 데이터 분리와 커뮤니티 주도의 밸런스 조정 — 을 기록한다.
+
+## 핵심 의사결정 요약
+
+| 결정 | 선택 | 트레이드오프 |
+| --- | --- | --- |
+| 체인·컨트랙트 계층 | Solana + Anchor Framework | 생태계 종속을 감수하고 낮은 수수료·빠른 확정, 보일러플레이트 절감 확보 |
+| 데이터 저장 | 신뢰 요구 수준 기준 온체인/오프체인 분리 | 완전한 온체인 투명성 포기, 수수료·UX 확보 |
+| 조작 방지 검증 | 클라이언트가 아닌 스마트 컨트랙트에 구현 | 비가역적 배포 부담, 신뢰 경계를 클라이언트 바깥으로 |
+| 온체인 조회 | 주기적 폴링 + 캐싱 (WebSocket 기각) | 초 단위 실시간성 포기, 공용 RPC 제한 내 안정성 |
+| 밸런스 수치 | 오프체인 데이터로 관리 | 온체인 검증 대상에서 제외, 잦은 조정 루프 가능 |
 
 ## 1. 문제 정의와 제품 가설
 
@@ -148,3 +161,5 @@ PEPEBear는 Vercel에 배포되어 운영 중이다([pepe-bear.vercel.app](https
 
 - [GitHub 저장소](https://github.com/toris-dev/PEPEBear)
 - [서비스 사이트](https://pepe-bear.vercel.app)
+- [Solana 공식 문서](https://solana.com/docs)
+- [Anchor Framework 공식 사이트](https://www.anchor-lang.com)

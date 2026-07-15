@@ -9,6 +9,9 @@ description: 습관 형성과 공동체 나눔이라는 두 축으로 설계한 
 
 # bubbleBible — 매일의 말씀 습관을 만드는 모바일 우선 PWA 설계기
 
+> **Q. 1인 개발로 매일 알림 기반 습관 앱을 네이티브 없이 어떻게 성립시켰나?**
+> PWA와 Service Worker 푸시 알림으로 홈 화면 진입·매일 알림·오프라인 지원을 웹 단일 코드베이스로 구현해, 스토어 심사 없이 즉시 배포한다.
+
 토리스(Toris Inc.)가 설계·개발 중인 모바일 우선 성경 플랫폼 bubbleBible의 프론트엔드 기술 케이스 스터디다. "매일 한 구절"이라는 습관 형성 제품을 웹 기술로 성립시키기 위한 결정들 — PWA와 푸시 알림, 게이미피케이션의 절제, 교회·소그룹 커뮤니티의 실시간 아키텍처, 접근성 — 을 정리한다.
 
 ## 제품 스냅샷
@@ -23,6 +26,16 @@ description: 습관 형성과 공동체 나눔이라는 두 축으로 설계한 
 
 - [GitHub 저장소](https://github.com/toris-dev/bubbleBible-FE)
 - [서비스 사이트](https://bubble-bible-fe.vercel.app)
+
+## 핵심 의사결정 요약
+
+| 결정 | 선택 | 트레이드오프 |
+| --- | --- | --- |
+| 배포 채널 | PWA (웹 단일 코드베이스) | 네이티브 대비 알림·오프라인 경험 일부 양보, 스토어 심사 없는 즉시 배포 확보 |
+| 습관 트리거 | Service Worker 기반 푸시 알림 | 서버 측 발송 인프라 필요 → FE/BE 분리 구조 |
+| 보상 설계 | 절제된 게이미피케이션(낮은 보상 밸런스) | 참여 지표 일부 포기, 묵상이라는 본질 보호 |
+| 커뮤니티 실시간성 | WebSocket 실시간 업데이트 | 폴링 대비 구현 복잡도 증가, 공동체 경험 성립 |
+| 콘텐츠 저장 | 성경 본문은 공개 API, 사용자 데이터만 자체 DB | 외부 API 의존 대신 콘텐츠 운영 비용 제거 |
 
 ## 1. 어떤 사용자의 어떤 문제인가 — 제품 가설
 
@@ -184,3 +197,5 @@ const requestNotificationPermission = async () => {
 
 - [GitHub 저장소](https://github.com/toris-dev/bubbleBible-FE)
 - [서비스 사이트](https://bubble-bible-fe.vercel.app)
+- [MDN Service Worker API 문서](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
+- [web.dev PWA 가이드](https://web.dev/explore/progressive-web-apps)
