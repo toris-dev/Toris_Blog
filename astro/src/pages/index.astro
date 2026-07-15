@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import CardFX from '../components/CardFX.astro';
 import LogoMark from '../components/LogoMark.astro';
 import { COMPANY } from '../lib/site';
 import { fileBaseName, formatDate, toPlainExcerpt } from '../lib/slug';
@@ -334,11 +335,11 @@ const isServiceLink = (url: string) =>
       <ol class="mt-16 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-5">
         {
           steps.map((s, i) => (
-            <li class="reveal relative" style={`transition-delay: ${i * 70}ms`}>
-              <span class="font-display text-4xl text-gold/40">{s.n}</span>
-              <span class="rule-gold mt-3 block w-10" aria-hidden="true" />
+            <li class="reveal group relative" style={`transition-delay: ${i * 70}ms`}>
+              <span class="font-display text-4xl text-gold/40 transition-colors duration-300 group-hover:text-gold">{s.n}</span>
+              <span class="rule-gold mt-3 block w-10 transition-all duration-500 group-hover:w-16" aria-hidden="true" />
               <h3 class="mt-4 font-semibold text-ivory">{s.t}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-sand">{s.d}</p>
+              <p class="mt-2 text-sm leading-relaxed text-sand transition-colors duration-300 group-hover:text-ivory-dim">{s.d}</p>
             </li>
           ))
         }
@@ -439,6 +440,8 @@ const isServiceLink = (url: string) =>
       </div>
     </div>
   </section>
+
+  <CardFX />
 </Base>
 
 <style>
@@ -461,40 +464,6 @@ const isServiceLink = (url: string) =>
     }
   }
 
-  /* 프로덕트 카드 — 커서를 따라 기우는 입체 틸트 + 금박 광택.
-     각도(--rx/--ry)와 광원 좌표(--mx/--my)는 스크립트가 공급한다. */
-  .card-3d {
-    transform: perspective(1100px) rotateX(var(--rx, 0deg))
-      rotateY(var(--ry, 0deg));
-    transition:
-      transform 180ms ease-out,
-      border-color 300ms;
-    will-change: transform;
-  }
-  .card-glare {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0;
-    background: radial-gradient(
-      420px circle at var(--mx, 50%) var(--my, 40%),
-      color-mix(in srgb, var(--color-gold) 13%, transparent),
-      transparent 65%
-    );
-    transition: opacity 300ms;
-  }
-  .card-3d:hover .card-glare {
-    opacity: 1;
-  }
-  @media (prefers-reduced-motion: reduce), (pointer: coarse) {
-    .card-3d {
-      transform: none;
-      transition: border-color 300ms;
-    }
-    .card-glare {
-      display: none;
-    }
-  }
 </style>
 
 <script>
@@ -626,30 +595,6 @@ const isServiceLink = (url: string) =>
     section.addEventListener('pointerleave', () => {
       mouse.x = -9999;
       mouse.y = -9999;
-    });
-  }
-
-  // ---------- 프로덕트 카드 3D 틸트 (pointer:fine 전용) ----------
-  if (!reduce && window.matchMedia('(pointer: fine)').matches) {
-    document.querySelectorAll<HTMLElement>('.card-3d').forEach((card) => {
-      let raf3 = 0;
-      card.addEventListener('pointermove', (e) => {
-        const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width;
-        const py = (e.clientY - r.top) / r.height;
-        cancelAnimationFrame(raf3);
-        raf3 = requestAnimationFrame(() => {
-          card.style.setProperty('--rx', `${((0.5 - py) * 5).toFixed(2)}deg`);
-          card.style.setProperty('--ry', `${((px - 0.5) * 7).toFixed(2)}deg`);
-          card.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`);
-          card.style.setProperty('--my', `${(py * 100).toFixed(1)}%`);
-        });
-      });
-      card.addEventListener('pointerleave', () => {
-        cancelAnimationFrame(raf3);
-        card.style.setProperty('--rx', '0deg');
-        card.style.setProperty('--ry', '0deg');
-      });
     });
   }
 </script>

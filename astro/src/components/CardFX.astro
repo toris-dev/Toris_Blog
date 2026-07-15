@@ -1,0 +1,68 @@
+---
+/**
+ * 카드 3D 틸트 + 금박 글레어 공용 효과.
+ * `.card-3d` 카드에 `.card-glare` 자식을 두고, 페이지에 이 컴포넌트를 1회 포함한다.
+ * 각도(--rx/--ry)와 광원 좌표(--mx/--my)는 아래 스크립트가 공급한다.
+ */
+---
+
+<style is:global>
+  .card-3d {
+    transform: perspective(1100px) rotateX(var(--rx, 0deg))
+      rotateY(var(--ry, 0deg));
+    transition:
+      transform 180ms ease-out,
+      border-color 300ms;
+    will-change: transform;
+  }
+  .card-glare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 40%),
+      color-mix(in srgb, var(--color-gold) 13%, transparent),
+      transparent 65%
+    );
+    transition: opacity 300ms;
+  }
+  .card-3d:hover .card-glare {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce), (pointer: coarse) {
+    .card-3d {
+      transform: none;
+      transition: border-color 300ms;
+    }
+    .card-glare {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && window.matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll<HTMLElement>('.card-3d').forEach((card) => {
+      let raf = 0;
+      card.addEventListener('pointermove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          card.style.setProperty('--rx', `${((0.5 - py) * 5).toFixed(2)}deg`);
+          card.style.setProperty('--ry', `${((px - 0.5) * 7).toFixed(2)}deg`);
+          card.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`);
+          card.style.setProperty('--my', `${(py * 100).toFixed(1)}%`);
+        });
+      });
+      card.addEventListener('pointerleave', () => {
+        cancelAnimationFrame(raf);
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+      });
+    });
+  }
+</script>

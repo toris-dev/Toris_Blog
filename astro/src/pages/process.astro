@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import CardFX from '../components/CardFX.astro';
 import { COMPANY } from '../lib/site';
 
 const steps = [
@@ -178,10 +179,10 @@ const faqJsonLd = JSON.stringify({
         {
           principles.map((p, i) => (
             <article
-              class="reveal group rounded-2xl border border-line bg-coal p-7 transition-all hover:-translate-y-1 hover:border-gold-deep hover:shadow-xl hover:shadow-black/30"
+              class="reveal card-3d relative overflow-hidden border border-line group bg-coal p-7 transition-[border-color] duration-300 hover:border-gold-deep"
               style={`transition-delay: ${i * 80}ms`}
             >
-              <span class="flex size-12 items-center justify-center rounded-xl bg-gold/10 text-gold transition-colors group-hover:bg-gold group-hover:text-night">
+              <span class="flex size-12 items-center justify-center bg-gold/10 text-gold transition-colors group-hover:bg-gold group-hover:text-night">
                 <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d={p.icon} />
                 </svg>
@@ -208,10 +209,10 @@ const faqJsonLd = JSON.stringify({
         {
           faqs.map((f, i) => (
             <details
-              class="faq-item reveal group rounded-2xl border border-line bg-night transition-colors open:border-gold-deep"
+              class="faq-item reveal group border border-line bg-night transition-colors open:border-gold-deep"
               style={`transition-delay: ${i * 60}ms`}
             >
-              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl px-7 py-5 text-[15px] font-bold text-ivory focus-visible:outline-2 focus-visible:outline-gold">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-7 py-5 text-[15px] font-bold text-ivory focus-visible:outline-2 focus-visible:outline-gold">
                 {f.q}
                 <svg
                   viewBox="0 0 24 24"
@@ -250,6 +251,7 @@ const faqJsonLd = JSON.stringify({
       </a>
     </div>
   </section>
+  <CardFX />
 </Base>
 
 <style>

@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import CardFX from '../components/CardFX.astro';
 import { COMPANY } from '../lib/site';
 
 const values = [
@@ -70,10 +71,10 @@ const bizInfo = [
         {
           values.map((v, i) => (
             <article
-              class="reveal group rounded-2xl border border-line bg-night p-7 transition-all hover:-translate-y-1 hover:border-gold-deep hover:shadow-xl hover:shadow-black/30"
+              class="reveal group card-3d relative overflow-hidden border border-line bg-night p-7 transition-[border-color] duration-300 hover:border-gold-deep"
               style={`transition-delay: ${i * 80}ms`}
             >
-              <span class="flex size-12 items-center justify-center rounded-xl bg-gold/10 text-gold transition-colors group-hover:bg-gold group-hover:text-night">
+              <span class="flex size-12 items-center justify-center bg-gold/10 text-gold transition-colors group-hover:bg-gold group-hover:text-night">
                 <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d={v.icon} />
                 </svg>
@@ -149,7 +150,7 @@ const bizInfo = [
         {
           stats.map((s, i) => (
             <div
-              class="reveal rounded-2xl border border-line bg-night p-7"
+              class="card-3d relative overflow-hidden border border-line reveal bg-night p-7 transition-[border-color] duration-300 hover:border-gold-deep"
               style={`transition-delay: ${i * 80}ms`}
             >
               <dt class="text-xs font-medium uppercase tracking-wider text-sand">{s.label}</dt>
@@ -175,7 +176,7 @@ const bizInfo = [
         </p>
       </div>
       <div
-        class="reveal mt-10 max-w-2xl overflow-hidden rounded-2xl border border-line bg-coal"
+        class="reveal mt-10 max-w-2xl overflow-hidden border border-line bg-coal"
         style="transition-delay: 120ms"
       >
         <div class="h-1 bg-gold" aria-hidden="true"></div>
@@ -221,4 +222,5 @@ const bizInfo = [
       </a>
     </div>
   </section>
+  <CardFX />
 </Base>
