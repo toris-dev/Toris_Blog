@@ -1,22 +1,24 @@
 ---
-title: 'Supabase + Next.js 풀스택 개발 가이드'
+title: 'Supabase + Next.js — 토리스가 MVP를 빠르게 출시하는 표준 스택'
 date: '2024-01-15'
-description: 'Supabase와 Next.js로 풀스택 웹 앱을 개발하는 완벽 가이드. PostgreSQL 데이터베이스, 인증(소셜 로그인), 실시간 구독, Row Level Security(RLS), 파일 스토리지를 활용해 확장 가능한 애플리케이션을 구축합니다.'
+description: '토리스가 밈캐치·YM Guide·LOVETRIP 등 실제 제품에 적용해 온 Supabase + Next.js 실무 기준. PostgreSQL, 인증, RLS, 실시간 구독, 스토리지 구성을 프로덕션 관점에서 정리했다.'
 tags:
   ['Supabase', 'Next.js', 'React', 'PostgreSQL', 'Authentication', 'Fullstack']
 categories: ['Learning']
 ---
 
-# Supabase + Next.js 풀스택 개발 가이드
+# Supabase + Next.js — 토리스가 MVP를 빠르게 출시하는 표준 스택
 
-> **Q. Supabase와 Next.js로 풀스택 앱은 어떻게 개발하나요?**
-> @supabase/supabase-js로 PostgreSQL·인증·실시간·스토리지를 연결하고 Next.js·RLS로 안전한 풀스택 앱을 구축합니다.
+> **Q. 토리스는 왜 Supabase + Next.js를 표준 스택으로 쓰나요?**
+> @supabase/supabase-js 하나로 PostgreSQL·인증·실시간·스토리지를 연결하고, 보안 경계를 RLS로 데이터베이스에 두면 별도 백엔드 없이 몇 주 안에 프로덕션 수준의 MVP를 낼 수 있기 때문입니다.
 
 ## 🚀 개요
 
-Supabase는 Firebase의 오픈소스 대안으로, PostgreSQL 기반의 백엔드 서비스를 제공합니다. Next.js와 함께 사용하면 강력하고 확장 가능한 풀스택 애플리케이션을 빠르게 구축할 수 있습니다.
+토리스는 밈캐치, YM Guide, LOVETRIP 등 실제 제품에서 Supabase + Next.js를 표준 스택으로 쓴다. Supabase는 Firebase의 오픈소스 대안으로 PostgreSQL 기반의 백엔드 서비스를 제공하는데, 백엔드 서버를 따로 운영하지 않고도 데이터베이스·인증·실시간 구독·스토리지를 한 번에 확보할 수 있어 제품마다 인프라를 새로 설계하는 비용이 사라진다. 1인 스튜디오에서 여러 제품을 병렬로 운영하려면 이 비용 절감이 결정적이다.
 
-### 왜 Supabase + Next.js인가?
+이 글은 그 제품들을 만들고 운영하는 과정에서 정리한 실무 기준이다. 프로젝트 초기 설정부터 스키마 설계, RLS, 인증, 실시간 기능, 스토리지, 배포까지 — 새 제품을 시작할 때마다 반복하는 구성을 순서대로 담았다. 튜토리얼이 아니라, 우리가 실제로 쓰는 기본값이라고 보면 된다.
+
+### 우리가 이 조합을 선택한 기준
 
 **Supabase의 장점:**
 
@@ -91,7 +93,7 @@ export const createServerSupabaseClient = () => {
 
 ### 블로그 애플리케이션 예시
 
-Supabase 대시보드에서 SQL 에디터를 사용하여 테이블 생성:
+초기 스키마는 Supabase 대시보드의 SQL 에디터에서 바로 잡는 것을 기준으로 한다. 블로그 애플리케이션을 예로 들면:
 
 ```sql
 -- 프로필 테이블
@@ -143,6 +145,8 @@ CREATE TABLE post_categories (
 ```
 
 ### RLS (Row Level Security) 설정
+
+RLS는 이 스택에서 보안의 핵심이다. 우리는 접근 제어를 API 레이어가 아니라 데이터베이스 정책으로 강제하는 것을 기본값으로 둔다 — 클라이언트에서 Supabase를 직접 호출하는 구조에서는 이게 유일하게 믿을 수 있는 경계다.
 
 ```sql
 -- RLS 활성화
@@ -843,7 +847,7 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 ```
 
-## 📚 추가 학습 리소스
+## 📚 참고 자료
 
 ### 공식 문서
 
@@ -851,15 +855,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 - [Next.js 공식 문서](https://nextjs.org/docs)
 - [Supabase Auth Helpers](https://supabase.com/docs/guides/auth/auth-helpers/nextjs)
 
-### 실습 프로젝트 아이디어
-
-1. **블로그 플랫폼**: 게시글, 댓글, 좋아요 기능
-2. **할 일 관리 앱**: 실시간 협업, 파일 첨부
-3. **소셜 미디어**: 팔로우, 피드, 알림 시스템
-4. **이커머스**: 상품 관리, 주문, 결제 연동
-5. **채팅 애플리케이션**: 실시간 메시지, 파일 공유
-
-### 고급 주제
+### 여기서 더 깊게 들어가는 주제
 
 - **Database Functions**: PostgreSQL 함수 작성
 - **Edge Functions**: Deno 기반 서버리스 함수
@@ -867,4 +863,6 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 - **Multi-tenancy**: 테넌트별 데이터 분리
 - **Performance Monitoring**: 쿼리 성능 모니터링
 
-Supabase와 Next.js의 조합은 현대적인 웹 애플리케이션 개발에 이상적인 스택입니다. PostgreSQL의 강력함과 Next.js의 유연함을 활용하여 확장 가능하고 성능이 뛰어난 애플리케이션을 구축해보세요! 🎯
+## 마치며
+
+토리스는 이 구성을 밈캐치, YM Guide, LOVETRIP 같은 실제 제품에서 그대로 쓰고 있다. 이 스택으로 몇 주 안에 MVP를 내고 싶다면 [토리스에 문의](https://toris.kr/contact)하면 된다. 진행 방식은 [toris.kr/process](https://toris.kr/process)에 정리해 두었다.
