@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import { COMPANY } from '../lib/site';
+import { computeStats } from '../lib/stats';
+import { projects } from '../../../src/data/projects';
+
+const live = projects.filter((p) => p.status === '운영 중');
+const stats = computeStats(projects, 0);
+const isServiceLink = (url: string) =>
+  !url.startsWith('https://github.com/') || /\/releases\/?$/.test(url);
+---
+
+<Base
+  title="Toris — Product Engineering Studio in Seoul"
+  description="Toris (토리스) is a software product studio in Seoul, Korea. We design, build, ship, and operate web, mobile, and AI automation products — from idea to launch."
+  path="/en"
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'English' }]}
+>
+  <section class="mx-auto max-w-3xl px-5 pb-24 pt-24">
+    <p class="reveal font-mono text-[11px] font-medium tracking-[0.28em] text-mint-deep">
+      TORIS · SEOUL, KOREA
+    </p>
+    <h1 class="reveal font-display mt-5 text-4xl leading-tight text-ink sm:text-5xl">
+      Toris is a product<br />engineering studio.
+    </h1>
+    <p class="reveal mt-6 leading-relaxed text-ink-dim">
+      Toris (토리스) is a registered software studio in Seoul, Korea, run by a
+      founder-engineer. We take ideas from planning to launch and operation —
+      web, mobile, and AI automation products. Slow like a turtle, but we
+      always ship.
+    </p>
+
+    <dl class="reveal mt-10 flex flex-wrap gap-x-12 gap-y-6 border-l border-line pl-6">
+      <div>
+        <dd class="font-display text-3xl text-ink">{stats.total}+</dd>
+        <dt class="font-mono text-[11px] tracking-[0.18em] text-muted">PROJECTS</dt>
+      </div>
+      <div>
+        <dd class="font-display text-3xl text-ink">{stats.live}</dd>
+        <dt class="font-mono text-[11px] tracking-[0.18em] text-muted">LIVE PRODUCTS</dt>
+      </div>
+      <div>
+        <dd class="font-display text-3xl text-ink">24h</dd>
+        <dt class="font-mono text-[11px] tracking-[0.18em] text-muted">FIRST REPLY</dt>
+      </div>
+    </dl>
+
+    <h2 class="reveal font-display mt-14 text-2xl text-ink">What we build & operate</h2>
+    <ul class="reveal mt-5 divide-y divide-line border-y border-line">
+      {
+        live.map((p) => (
+          <li class="flex items-center justify-between gap-4 py-3 text-sm">
+            <span class="flex min-w-0 items-center gap-2.5">
+              <span class="size-1.5 shrink-0 rounded-full bg-live" aria-hidden="true" />
+              {isServiceLink(p.github) ? (
+                <a href={p.github} target="_blank" rel="noopener noreferrer" class="min-w-0 truncate font-medium text-ink transition-colors hover:text-mint-deep">
+                  {p.name}
+                </a>
+              ) : (
+                <span class="min-w-0 truncate font-medium text-ink">{p.name}</span>
+              )}
+            </span>
+            <span class="shrink-0 font-mono text-[11px] text-muted">{p.platform}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2 class="reveal font-display mt-14 text-2xl text-ink">Work with Toris</h2>
+    <p class="reveal mt-4 leading-relaxed text-ink-dim">
+      We partner on web/mobile products, MVPs, and AI workflow automation.
+      Ideas at any stage are welcome — we reply within 24 hours, contracts and
+      tax invoices available, NDA on request.
+    </p>
+    <p class="reveal mt-7 flex flex-wrap gap-4">
+      <a
+        href="/contact"
+        class="inline-flex h-12 items-center gap-2 rounded-xl bg-ink px-7 text-[15px] font-semibold text-paper transition-colors duration-300 hover:bg-mint-deep focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint-deep"
+      >
+        Start a conversation
+      </a>
+      <a
+        href="/"
+        class="inline-flex h-12 items-center rounded-xl border border-line bg-card px-6 text-[15px] font-medium text-ink-dim transition-colors hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint-deep"
+      >
+        한국어 홈 →
+      </a>
+    </p>
+    <p class="reveal mt-6 font-mono text-sm text-muted">
+      {COMPANY.email} · Business reg. {COMPANY.bizNumber}
+    </p>
+  </section>
+</Base>
