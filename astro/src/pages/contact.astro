@@ -51,7 +51,7 @@ const inputClass =
       <!-- 왼쪽: 연락 카드 + 환영 문의 -->
       <div class="space-y-6">
         <div
-          class="reveal card-3d relative overflow-hidden border border-line bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep"
+          class="reveal card-3d relative overflow-hidden rounded-2xl border border-line bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep"
         >
           <h2 class="text-lg font-bold text-ink">이메일로 바로 보내기</h2>
           <p class="mt-2 text-sm leading-relaxed text-muted">
@@ -59,7 +59,7 @@ const inputClass =
           </p>
           <a
             href={`mailto:${COMPANY.email}`}
-            class="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 bg-mint px-6 text-[15px] font-semibold text-ink shadow-lg shadow-mint/20 transition-all hover:-translate-y-0.5 hover:bg-mint-bright focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint active:translate-y-0"
+            class="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 bg-mint rounded-lg px-6 text-[15px] font-semibold text-ink shadow-lg shadow-mint/20 transition-all hover:-translate-y-0.5 hover:bg-mint-bright focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint active:translate-y-0"
           >
             <svg
               viewBox="0 0 24 24"
@@ -100,7 +100,7 @@ const inputClass =
         </script>
 
         <div
-          class="reveal card-3d relative overflow-hidden border border-line bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep"
+          class="reveal card-3d relative overflow-hidden rounded-2xl border border-line bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep"
           style="transition-delay: 70ms"
         >
           <h2 class="text-lg font-bold text-ink">GitHub</h2>
@@ -111,14 +111,14 @@ const inputClass =
             href={COMPANY.github}
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-5 inline-flex h-12 w-full items-center justify-center border border-line bg-card px-6 text-[15px] font-semibold text-ink-dim transition-all hover:-translate-y-0.5 hover:border-mint-deep hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint active:translate-y-0"
+            class="mt-5 inline-flex h-12 w-full items-center justify-center border border-line bg-card rounded-lg px-6 text-[15px] font-semibold text-ink-dim transition-all hover:-translate-y-0.5 hover:border-mint-deep hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint active:translate-y-0"
           >
             github.com/toris-dev
           </a>
         </div>
 
         <div
-          class="card-3d relative overflow-hidden border border-line reveal bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep"
+          class="card-3d relative overflow-hidden rounded-2xl border border-line reveal bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep"
           style="transition-delay: 140ms"
         >
           <h2 class="text-lg font-bold text-ink">이런 문의를 환영해요</h2>
@@ -149,7 +149,7 @@ const inputClass =
       <!-- 오른쪽: 문의 폼 -->
       <form
         id="contact-form"
-        class="reveal border border-line bg-card p-7 sm:p-9"
+        class="reveal rounded-2xl rounded-2xl border border-line bg-card p-7 sm:p-9"
         style="transition-delay: 100ms"
         data-api={CONTACT_API_URL}
         data-email={COMPANY.email}
@@ -204,7 +204,7 @@ const inputClass =
 
         <button
           type="submit"
-          class="mt-7 inline-flex h-12 w-full items-center justify-center gap-2 bg-mint px-7 text-[15px] font-semibold text-ink shadow-lg shadow-mint/20 transition-all hover:-translate-y-0.5 hover:bg-mint-bright focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
+          class="mt-7 inline-flex h-12 w-full items-center justify-center gap-2 bg-mint rounded-lg px-7 text-[15px] font-semibold text-ink shadow-lg shadow-mint/20 transition-all hover:-translate-y-0.5 hover:bg-mint-bright focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
         >
           문의 보내기
         </button>

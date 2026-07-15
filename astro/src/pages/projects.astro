@@ -74,7 +74,7 @@ const isServiceLink = (url: string) =>
               href={linked ? p.github : undefined}
               target={linked ? '_blank' : undefined}
               rel={linked ? 'noopener noreferrer' : undefined}
-              class="card-3d reveal group relative flex flex-col overflow-hidden border border-line bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep focus-visible:outline-2 focus-visible:outline-mint"
+              class="card-3d reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep focus-visible:outline-2 focus-visible:outline-mint"
               style={`transition-delay: ${i * 60}ms`}
             >
               <span class="card-glare" aria-hidden="true" />
@@ -139,7 +139,7 @@ const isServiceLink = (url: string) =>
 
   <!-- =============================== CTA =============================== -->
   <section class="mx-auto max-w-6xl px-5 py-20">
-    <div class="reveal relative overflow-hidden border border-line bg-card px-8 py-14 text-center">
+    <div class="reveal relative overflow-hidden rounded-2xl border border-line bg-card px-8 py-14 text-center">
       <span class="rule-accent absolute inset-x-0 top-0" aria-hidden="true"></span>
       <h2 class="font-display text-2xl text-ink sm:text-3xl">
         이런 제품, 함께 만들어볼까요?
@@ -149,7 +149,7 @@ const isServiceLink = (url: string) =>
       </p>
       <a
         href="/contact"
-        class="mt-8 inline-flex h-12 items-center gap-2 border border-mint bg-mint px-8 text-[15px] font-semibold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-mint-bright hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-mint)_45%,transparent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint active:translate-y-0"
+        class="mt-8 inline-flex h-12 items-center gap-2 border border-mint bg-mint rounded-lg px-8 text-[15px] font-semibold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-mint-bright hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-mint)_45%,transparent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint active:translate-y-0"
       >
         프로젝트 문의하기
         <svg

@@ -87,6 +87,11 @@ const isActive = (href: string) =>
       ))
     }
   </div>
+  <span
+    id="scroll-progress"
+    class="absolute bottom-0 left-0 h-0.5 bg-mint"
+    style="width: 0%"
+    aria-hidden="true"></span>
 </header>
 
 <script>
@@ -101,8 +106,13 @@ const isActive = (href: string) =>
   // 스크롤 시 헤더 축소 + 그림자
   const header = document.getElementById('site-header');
   const nav = header?.querySelector('nav');
+  const bar = document.getElementById('scroll-progress');
   const onScroll = () => {
     const scrolled = window.scrollY > 24;
+    if (bar) {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = max > 0 ? `${(window.scrollY / max) * 100}%` : '0%';
+    }
     nav?.classList.toggle('h-16', !scrolled);
     nav?.classList.toggle('h-14', scrolled);
     header?.classList.toggle('shadow-[0_8px_24px_-16px_color-mix(in_srgb,var(--color-ink)_35%,transparent)]', scrolled);

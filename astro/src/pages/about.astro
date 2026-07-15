@@ -71,7 +71,7 @@ const bizInfo = [
         {
           values.map((v, i) => (
             <article
-              class="reveal group card-3d relative overflow-hidden border border-line bg-paper p-7 transition-[border-color] duration-300 hover:border-mint-deep"
+              class="reveal group card-3d relative overflow-hidden rounded-2xl border border-line bg-paper p-7 transition-[border-color] duration-300 hover:border-mint-deep"
               style={`transition-delay: ${i * 80}ms`}
             >
               <span class="flex size-12 items-center justify-center bg-mint/10 text-mint transition-colors group-hover:bg-mint group-hover:text-ink">
@@ -97,18 +97,19 @@ const bizInfo = [
           <path
             d="M120 16 210 68v104L120 224 30 172V68L120 16Z"
             fill="none"
-            stroke="#0f6a62"
+            stroke="var(--color-mint-deep)"
             stroke-width="7"
             stroke-linejoin="round"></path>
           <path
             d="M120 62 158 84v44l-38 22-38-22V84l38-22Z"
-            fill="#17a394"
-            opacity="0.9"></path>
-          <g fill="none" stroke="#17a394" stroke-width="4" stroke-linejoin="round" opacity="0.45">
+            fill="var(--color-mint)"
+            opacity="0.85"></path>
+          <!-- 스포크: 내부 육각 꼭짓점 → 외곽 육각 꼭짓점 정확히 연결(이탈 금지) -->
+          <g fill="none" stroke="var(--color-mint)" stroke-width="4" stroke-linejoin="round" opacity="0.45">
             <path d="M120 62 158 84v44l-38 22-38-22V84l38-22Z"></path>
-            <path d="M120 62V16M158 84l52-30M158 128l52 30M120 150v74M82 128l-52 30M82 84 30 54"></path>
+            <path d="M120 62V16M158 84l52-16M158 128l52 44M120 150v74M82 128l-52 44M82 84 30 68"></path>
           </g>
-          <circle cx="120" cy="106" r="7" fill="#f59e0b"></circle>
+          <circle cx="120" cy="106" r="7" fill="var(--color-mint-bright)"></circle>
         </svg>
       </div>
       <div class="reveal" style="transition-delay: 120ms">
@@ -150,7 +151,7 @@ const bizInfo = [
         {
           stats.map((s, i) => (
             <div
-              class="card-3d relative overflow-hidden border border-line reveal bg-paper p-7 transition-[border-color] duration-300 hover:border-mint-deep"
+              class="card-3d relative overflow-hidden rounded-2xl border border-line reveal bg-paper p-7 transition-[border-color] duration-300 hover:border-mint-deep"
               style={`transition-delay: ${i * 80}ms`}
             >
               <dt class="text-xs font-medium uppercase tracking-wider text-muted">{s.label}</dt>
@@ -176,7 +177,7 @@ const bizInfo = [
         </p>
       </div>
       <div
-        class="reveal mt-10 max-w-2xl overflow-hidden border border-line bg-card"
+        class="reveal mt-10 max-w-2xl overflow-hidden rounded-2xl border border-line bg-card"
         style="transition-delay: 120ms"
       >
         <div class="h-1 bg-mint" aria-hidden="true"></div>

@@ -179,7 +179,7 @@ const faqJsonLd = JSON.stringify({
         {
           principles.map((p, i) => (
             <article
-              class="reveal card-3d relative overflow-hidden border border-line group bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep"
+              class="reveal card-3d relative overflow-hidden rounded-2xl border border-line group bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep"
               style={`transition-delay: ${i * 80}ms`}
             >
               <span class="flex size-12 items-center justify-center bg-mint/10 text-mint transition-colors group-hover:bg-mint group-hover:text-ink">
@@ -209,10 +209,10 @@ const faqJsonLd = JSON.stringify({
         {
           faqs.map((f, i) => (
             <details
-              class="faq-item reveal group border border-line bg-paper transition-colors open:border-mint-deep"
+              class="faq-item reveal group rounded-2xl border border-line bg-paper transition-colors open:border-mint-deep"
               style={`transition-delay: ${i * 60}ms`}
             >
-              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-7 py-5 text-[15px] font-bold text-ink focus-visible:outline-2 focus-visible:outline-mint">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl px-7 py-5 text-[15px] font-bold text-ink focus-visible:outline-2 focus-visible:outline-mint">
                 {f.q}
                 <svg
                   viewBox="0 0 24 24"
