@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const HOST = 'toris.kr';
-const SITEMAP = `https://${HOST}/sitemap-0.xml`;
+const SITEMAP = `https://${HOST}/sitemap.xml`;
 
 const keyLine = readFileSync(join(root, 'astro', '.indexnow'), 'utf8');
 const key = keyLine.match(/INDEXNOW_KEY=(\w+)/)?.[1];

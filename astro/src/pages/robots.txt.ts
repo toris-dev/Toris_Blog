@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { absoluteUrl } from '../lib/site';
 
 /** 주요 AI 크롤러 — 콘텐츠 인용/검색 노출을 위해 명시적으로 허용 */
 const AI_CRAWLERS = [
@@ -17,6 +18,7 @@ export const GET: APIRoute = ({ site }) => {
     'Allow: /',
     '',
     ...AI_CRAWLERS.flatMap((bot) => [`User-agent: ${bot}`, 'Allow: /', '']),
+    `Sitemap: ${absoluteUrl('/sitemap.xml')}`,
     `Sitemap: ${sitemapUrl}`,
     ''
   ];

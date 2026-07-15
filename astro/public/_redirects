@@ -12,5 +12,3 @@
 /bookmarks /blog 301
 /offline / 301
 
-# 표준 경로 별칭
-/sitemap.xml /sitemap-index.xml 301
