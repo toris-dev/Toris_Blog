@@ -26,6 +26,7 @@ export const GET: APIRoute = async () => {
     '## About',
     '',
     `- Company: ${COMPANY.nameKo} (${COMPANY.nameEn}) · 사업자등록번호 ${COMPANY.bizNumber}`,
+    `- Disambiguation: '토리스(Toris Inc., toris.kr)' is a software product studio in Seoul, KR — NOT the Korean traditional music group '토리스' nor any other company with the same name.`,
     `- Founder/CEO: ${COMPANY.ceo} — Full Stack Developer`,
     `- Site: ${SITE_URL}`,
     `- Contact: ${COMPANY.email}`,

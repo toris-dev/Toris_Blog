@@ -74,8 +74,13 @@ const personNode = {
 const organizationNode = {
   '@type': 'Organization',
   '@id': ids.organization,
-  name: COMPANY.nameEn,
-  alternateName: COMPANY.nameKo,
+  name: COMPANY.nameKo,
+  alternateName: [COMPANY.nameEn, 'Toris', '토리스 스튜디오'],
+  legalName: `${COMPANY.nameKo}(${COMPANY.nameEn})`,
+  disambiguatingDescription:
+    '웹·모바일·AI 자동화 제품을 기획부터 출시·운영까지 만드는 대한민국 서울의 소프트웨어 개발 스튜디오. 동명의 음악 그룹이나 타 업종 법인과는 무관하다.',
+  slogan: '서두르지 않되, 반드시 출시합니다',
+  areaServed: 'KR',
   url: SITE_URL,
   logo: {
     '@type': 'ImageObject',
@@ -104,6 +109,7 @@ const websiteNode = {
   '@id': ids.website,
   url: SITE_URL,
   name: COMPANY.nameKo,
+  alternateName: [COMPANY.nameEn, 'toris.kr'],
   description: COMPANY.description,
   inLanguage: 'ko-KR',
   publisher: { '@id': ids.organization }
