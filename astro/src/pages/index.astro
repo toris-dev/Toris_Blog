@@ -67,6 +67,17 @@ const services = [
     linkLabel: '자동화 상담하기',
     demo: 'pipe',
     wide: false
+  },
+  {
+    label: 'DESKTOP',
+    title: '데스크탑 애플리케이션',
+    problem: '웹만으로는 부족한 로컬 파일·시스템 접근이 필요하다.',
+    outcome: 'macOS·Windows에 설치되는 네이티브 앱',
+    scope: 'Tauri · Rust · 자동 업데이트 · 릴리스 배포',
+    href: '/contact',
+    linkLabel: '데스크탑 앱 상담하기',
+    demo: 'win',
+    wide: true
   }
 ] as const;
 
@@ -366,6 +377,25 @@ const isServiceLink = (url: string) =>
                   </div>
                 </div>
               )}
+              {s.demo === 'win' && (
+                <div class="demo-win mt-6 flex items-end gap-3" aria-hidden="true">
+                  <div class="w-44 rounded-lg border border-line bg-paper">
+                    <div class="flex items-center gap-1 border-b border-line px-2 py-1.5">
+                      <i class="size-1.5 rounded-full bg-coral/70" /><i class="size-1.5 rounded-full bg-line" /><i class="size-1.5 rounded-full bg-mint/70" />
+                      <span class="ml-1.5 font-mono text-[8px] tracking-wider text-muted">TRACEDESK</span>
+                    </div>
+                    <div class="space-y-1.5 p-2">
+                      <div class="demo-bar h-1.5 w-3/4 rounded bg-mint/40" />
+                      <div class="demo-bar h-1.5 w-1/2 rounded bg-line" style="transition-delay:80ms" />
+                      <div class="demo-bar h-1.5 w-2/3 rounded bg-line" style="transition-delay:160ms" />
+                    </div>
+                  </div>
+                  <p class="flex items-center gap-1.5 pb-1 font-mono text-[10px] text-muted">
+                    <i class="size-1 rounded-full bg-live" />
+                    auto-update ready
+                  </p>
+                </div>
+              )}
 
               <dl class="mt-6 space-y-2.5 text-sm">
                 <div class="flex gap-3">
@@ -430,7 +460,7 @@ const isServiceLink = (url: string) =>
               <div class="flex items-center gap-2">
                 <span class="flex gap-1"><i class="size-2 rounded-full bg-line" /><i class="size-2 rounded-full bg-line" /><i class="size-2 rounded-full bg-line" /></span>
                 <span class="ml-2 truncate rounded bg-card px-2 py-0.5 font-mono text-[10px] text-muted">
-                  {linked ? p.github.replace(/^https?:\/\//, '').replace(/\/$/, '') : p.platform}
+                  {linked && !p.github.includes('github.com') ? p.github.replace(/^https?:\/\//, '').replace(/\/$/, '') : p.platform}
                 </span>
               </div>
             </div>
@@ -553,13 +583,10 @@ const isServiceLink = (url: string) =>
           }
         </ul>
         <a
-          href={COMPANY.github}
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/projects"
           class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink-dim transition-colors hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
         >
-          <svg viewBox="0 0 24 24" class="size-4" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.84 9.67.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.49-1.11-1.49-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5.02 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.79-4.58 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.82 0 .27.18.59.69.49A10.02 10.02 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z"/></svg>
-          GitHub에서 코드 보기 →
+          제품 전체 보기 →
         </a>
       </div>
 
@@ -808,7 +835,9 @@ const isServiceLink = (url: string) =>
     transition: all 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
   .svc-card:hover .demo-sync .demo-bar,
-  .svc-card.demo-live .demo-sync .demo-bar {
+  .svc-card.demo-live .demo-sync .demo-bar,
+  .svc-card:hover .demo-win .demo-bar,
+  .svc-card.demo-live .demo-win .demo-bar {
     background: var(--color-mint);
     width: 100%;
   }
