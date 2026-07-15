@@ -8,7 +8,7 @@ tags:
 
 # 2026 AI 코딩 에이전트 지형도 — 하네스, Claude Code, Codex 한눈에
 
-<img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop&auto=format" alt="AI coding agents 2026" style="border-radius: 12px; margin: 20px 0;" />
+<img width="1200" height="600" loading="lazy" src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop&auto=format" alt="AI coding agents 2026" style="border-radius: 12px; margin: 20px 0;" />
 
 2026년 초 기준으로 "AI로 코딩한다"는 말의 의미가 완전히 바뀌었다. 2년 전만 해도 그것은 에디터 안에서 회색 글씨로 뜨는 자동완성을 탭으로 받아들이는 행위였다. 지금은 터미널에 작업을 던져두면 에이전트가 파일을 읽고, 테스트를 돌리고, 실패를 보고 스스로 고치고, PR을 올리는 것을 의미한다. 사람은 리뷰어이자 방향을 정하는 사람으로 물러난다.
 
@@ -39,7 +39,7 @@ tags:
 
 바꿔 말하면, 2026년에 "AI 코딩을 잘한다"는 것은 프롬프트를 잘 쓴다는 뜻이 아니라 **에이전트가 성공할 수밖에 없는 환경을 설계한다**는 뜻이다. 이 관점의 전환이 이 시리즈 전체를 관통하는 주제다.
 
-<img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=600&fit=crop&auto=format" alt="Landscape" style="border-radius: 12px; margin: 20px 0;" />
+<img width="1200" height="600" loading="lazy" src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=600&fit=crop&auto=format" alt="Landscape" style="border-radius: 12px; margin: 20px 0;" />
 
 ## Claude Code vs Codex — 한눈에 보기
 

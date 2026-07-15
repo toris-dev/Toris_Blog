@@ -31,6 +31,7 @@ export const GET: APIRoute = async () => {
     `- Contact: ${COMPANY.email}`,
     `- GitHub: ${COMPANY.github}`,
     '- Language: ko-KR',
+    `- Full content (plain text): ${SITE_URL}/llms-full.txt`,
     '',
     '## Key pages',
     '',

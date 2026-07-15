@@ -14,6 +14,11 @@ interface Article {
   wordCount?: number;
 }
 
+interface Crumb {
+  name: string;
+  url?: string;
+}
+
 interface Props {
   title: string;
   description: string;
@@ -21,6 +26,10 @@ interface Props {
   ogType?: 'website' | 'article';
   image?: string;
   article?: Article;
+  /** WebPage 하위 타입 (AboutPage·ContactPage 등) */
+  pageType?: 'WebPage' | 'AboutPage' | 'ContactPage' | 'CollectionPage';
+  /** 홈부터의 경로 — BreadcrumbList 생성 */
+  breadcrumbs?: Crumb[];
   noindex?: boolean;
 }
 
@@ -31,6 +40,8 @@ const {
   ogType = 'website',
   image = '/og-default.png',
   article,
+  pageType = 'WebPage',
+  breadcrumbs,
   noindex = false
 } = Astro.props;
 
@@ -105,15 +116,31 @@ const graph: Record<string, unknown>[] = [
   organizationNode,
   websiteNode,
   {
-    '@type': 'WebPage',
+    '@type': pageType,
     '@id': `${canonical}#webpage`,
     url: canonical,
     name: title,
     description,
     isPartOf: { '@id': ids.website },
-    inLanguage: 'ko-KR'
+    inLanguage: 'ko-KR',
+    ...(breadcrumbs?.length
+      ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } }
+      : {})
   }
 ];
+
+if (breadcrumbs?.length) {
+  graph.push({
+    '@type': 'BreadcrumbList',
+    '@id': `${canonical}#breadcrumb`,
+    itemListElement: breadcrumbs.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.name,
+      ...(c.url ? { item: absoluteUrl(c.url) } : {})
+    }))
+  });
+}
 
 if (article) {
   graph.push({

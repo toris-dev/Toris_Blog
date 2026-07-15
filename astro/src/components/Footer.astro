@@ -79,6 +79,10 @@ const year = new Date().getFullYear();
       </p>
       <p class="mt-1">
         문의: <a href={`mailto:${COMPANY.email}`} class="underline underline-offset-2 hover:text-gold">{COMPANY.email}</a>
+        <span class="mx-2" aria-hidden="true">·</span>
+        <a href="/privacy" class="underline underline-offset-2 hover:text-gold">개인정보처리방침</a>
+        <span class="mx-2" aria-hidden="true">·</span>
+        <a href="/terms" class="underline underline-offset-2 hover:text-gold">이용약관</a>
       </p>
       <p class="mt-4">© {year} {COMPANY.nameEn} All rights reserved.</p>
     </div>

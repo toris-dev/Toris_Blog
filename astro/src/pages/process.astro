@@ -67,17 +67,39 @@ const faqs = [
     a: '네. 월 단위 유지보수 계약으로 모니터링, 버그 대응, 소규모 개선을 이어갈 수 있습니다. 유지보수 없이 인수인계만 원하시는 경우에도 운영 문서와 코드 설명을 충분히 남겨드립니다.'
   },
   {
+    q: '원격으로만 진행하나요?',
+    a: '네, 기본은 원격입니다. 슬랙·노션·주간 화상 데모로 소통하며, 필요한 경우 서울·경기 지역은 대면 미팅도 가능합니다. 모든 결정 사항은 문서로 남겨 시차나 채널에 관계없이 같은 정보를 보게 합니다.'
+  },
+  {
+    q: '기존 서비스의 유지보수·개선만 맡길 수도 있나요?',
+    a: '가능합니다. 코드 인수 점검(1~2주)으로 현재 상태를 문서화한 뒤, 월 단위 유지보수 또는 개선 스프린트로 진행합니다. 다른 개발자가 만든 레거시도 점진적 마이그레이션 원칙으로 안전하게 다룹니다.'
+  },
+  {
     q: '어떤 기술을 쓰나요?',
     a: '웹은 Next.js·Astro, 모바일은 Flutter·React Native, 자동화는 Node.js 기반 파이프라인과 LLM 워크플로를 주로 씁니다. 다만 기술은 수단입니다 — 프로젝트의 목표와 운영 환경에 맞는 스택을 스코핑 단계에서 함께 결정합니다.'
   }
 ];
+
+// FAQ 구조화 데이터 — 화면의 faqs 배열과 단일 출처
+const faqJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': 'https://toris.kr/process#faq',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a }
+  }))
+});
 ---
 
 <Base
   title="진행 방식 | 토리스"
   description={`${COMPANY.nameKo}(${COMPANY.nameEn})의 프로젝트 진행 방식 — 문의부터 출시·운영까지 투명한 5단계로 진행합니다.`}
   path="/process"
+  breadcrumbs={[{ name: '홈', url: '/' }, { name: '진행 방식' }]}
 >
+  <script type="application/ld+json" set:html={faqJsonLd} />
   <!-- ============================== Hero ============================== -->
   <section class="mx-auto max-w-6xl px-5 pb-20 pt-24 sm:pt-32">
     <div class="reveal max-w-3xl">

@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import { COMPANY } from '../lib/site';
+const UPDATED = '2026-07-15';
+---
+
+<Base
+  title="이용약관 | 토리스"
+  description="토리스(Toris Inc.) 웹사이트 이용약관 — 콘텐츠 라이선스, 책임 한계, 문의 접수 조건."
+  path="/terms"
+  breadcrumbs={[{ name: '홈', url: '/' }, { name: '이용약관' }]}
+>
+  <article class="prose-post mx-auto max-w-3xl px-5 py-20">
+    <h1 class="font-display !mt-0 text-3xl text-ivory sm:text-4xl">이용약관</h1>
+    <p class="text-sm text-sand">시행일: {UPDATED}</p>
+
+    <h2>1. 목적</h2>
+    <p>
+      본 약관은 토리스({COMPANY.nameEn}, 이하 "회사")가 운영하는 웹사이트
+      toris.kr(이하 "사이트")의 이용 조건을 정합니다. 사이트를 이용하면 본
+      약관에 동의한 것으로 봅니다.
+    </p>
+
+    <h2>2. 콘텐츠와 라이선스</h2>
+    <ul>
+      <li>
+        블로그 글은 별도 표기가 없는 한
+        <a href="https://creativecommons.org/licenses/by/4.0/deed.ko" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+        으로 제공됩니다 — 출처(제목·저자 토리스·URL)를 표기하면 자유롭게 인용할
+        수 있습니다.
+      </li>
+      <li>로고·브랜드 자산은 라이선스 대상이 아니며 무단 사용을 금합니다.</li>
+    </ul>
+
+    <h2>3. 문의 접수</h2>
+    <p>
+      문의 폼/이메일을 통한 상담 요청은 계약의 성립이 아니며, 프로젝트 계약은
+      별도의 견적·계약 문서로 확정됩니다. 스팸·광고성 접수는 회신 없이 삭제될
+      수 있습니다.
+    </p>
+
+    <h2>4. 책임의 한계</h2>
+    <p>
+      사이트의 기술 콘텐츠는 작성 시점의 경험과 정보를 담은 참고 자료이며,
+      회사는 이를 적용해 발생한 결과에 대해 법적 책임을 지지 않습니다. 외부
+      링크의 내용은 해당 운영자의 책임입니다.
+    </p>
+
+    <h2>5. 준거법</h2>
+    <p>본 약관은 대한민국 법령을 따릅니다.</p>
+
+    <h2>6. 사업자 정보</h2>
+    <p>
+      상호: {COMPANY.nameKo}({COMPANY.nameEn}) · 대표: {COMPANY.ceo} ·
+      사업자등록번호: {COMPANY.bizNumber} · 문의:
+      <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
+    </p>
+  </article>
+</Base>

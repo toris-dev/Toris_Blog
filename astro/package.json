@@ -7,7 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "verify": "node ../scripts/verify-migration.mjs",
-    "deploy": "astro build && wrangler deploy"
+    "deploy": "astro build && wrangler deploy && node ../scripts/indexnow-ping.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",

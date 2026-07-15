@@ -1,0 +1,95 @@
+---
+/**
+ * 저자 byline(글 상단) / 바이오 블록(글 하단).
+ * JSON-LD Person(#person)과 동일 정보를 화면에 노출해 E-E-A-T 신호를 만든다.
+ */
+import { COMPANY } from '../lib/site';
+
+interface Props {
+  variant: 'byline' | 'bio';
+  date?: string;
+  dateLabel?: string;
+}
+const { variant, date, dateLabel } = Astro.props;
+const AVATAR = 'https://github.com/toris-dev.png';
+---
+
+{
+  variant === 'byline' ? (
+    <div class="mt-6 flex items-center gap-3">
+      <img
+        src={AVATAR}
+        alt=""
+        width="40"
+        height="40"
+        loading="lazy"
+        class="size-10 rounded-full border border-line"
+      />
+      <div class="text-sm">
+        <p class="font-semibold text-ivory">
+          {COMPANY.ceo}
+          <span class="ml-1.5 font-normal text-sand">
+            · Founder, Full Stack Developer
+          </span>
+        </p>
+        <p class="text-xs text-sand">
+          {COMPANY.nameKo}({COMPANY.nameEn})
+          {dateLabel && (
+            <>
+              {' · '}
+              <time datetime={date}>{dateLabel}</time> 발행
+            </>
+          )}
+        </p>
+      </div>
+    </div>
+  ) : (
+    <aside
+      aria-label="저자 소개"
+      class="mt-12 flex flex-col gap-5 rounded-2xl border border-line bg-coal p-7 sm:flex-row sm:items-start"
+    >
+      <img
+        src={AVATAR}
+        alt={`${COMPANY.ceo} 프로필 사진`}
+        width="64"
+        height="64"
+        loading="lazy"
+        class="size-16 shrink-0 rounded-full border border-line"
+      />
+      <div>
+        <p class="font-display text-lg text-ivory">
+          {COMPANY.ceo} <span class="text-sm text-gold">Founder · Full Stack Developer</span>
+        </p>
+        <p class="mt-2 text-sm leading-relaxed text-sand">
+          토리스({COMPANY.nameEn})를 운영하며 웹·모바일·자동화 제품을 기획부터
+          출시, 운영까지 직접 만듭니다. 이 블로그에는 실제 프로젝트에서 내린
+          기술 의사결정과 그 결과를 기록합니다.
+        </p>
+        <p class="mt-3 flex gap-4 text-sm">
+          <a
+            href={COMPANY.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gold hover:text-gold-bright focus-visible:outline-2 focus-visible:outline-gold"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://www.linkedin.com/in/joohwan-yu"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gold hover:text-gold-bright focus-visible:outline-2 focus-visible:outline-gold"
+          >
+            LinkedIn
+          </a>
+          <a
+            href="/about"
+            class="text-gold hover:text-gold-bright focus-visible:outline-2 focus-visible:outline-gold"
+          >
+            회사 소개 →
+          </a>
+        </p>
+      </div>
+    </aside>
+  )
+}

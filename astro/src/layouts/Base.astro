@@ -11,12 +11,15 @@ interface Props {
   ogType?: 'website' | 'article';
   image?: string;
   article?: {
+    headline?: string;
     publishedAt?: string;
     modifiedAt?: string;
     tags?: string[];
     category?: string;
     wordCount?: number;
   };
+  pageType?: 'WebPage' | 'AboutPage' | 'ContactPage' | 'CollectionPage';
+  breadcrumbs?: { name: string; url?: string }[];
   noindex?: boolean;
 }
 

@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import AuthorByline from '../../components/AuthorByline.astro';
 import Base from '../../layouts/Base.astro';
 import { fileBaseName, formatDate, toISO, toPlainExcerpt } from '../../lib/slug';
 
@@ -41,6 +42,11 @@ const wordCount = (post.body || '').split(/\s+/).filter(Boolean).length;
   path={`/posts/${post.id}`}
   ogType="article"
   article={{ headline: title, publishedAt: date, tags, category, wordCount }}
+  breadcrumbs={[
+    { name: '홈', url: '/' },
+    { name: '블로그', url: '/blog' },
+    { name: title }
+  ]}
 >
   <article class="mx-auto max-w-3xl px-5 py-14">
     <header class="reveal">
@@ -75,11 +81,14 @@ const wordCount = (post.body || '').split(/\s+/).filter(Boolean).length;
           </p>
         )
       }
+      <AuthorByline variant="byline" date={date} dateLabel={formatDate(date)} />
     </header>
 
     <div class="prose-post mt-10">
       <Content />
     </div>
+
+    <AuthorByline variant="bio" />
 
     <footer class="mt-14 border-t border-line pt-8">
       <div

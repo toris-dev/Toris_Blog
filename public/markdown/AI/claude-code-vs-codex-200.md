@@ -8,7 +8,7 @@ tags: ['AI', 'Claude Code', 'Codex', 'ChatGPT Pro', 'Claude Max', '비교']
 
 # Claude Code $200 vs Codex $200 — 어느 쪽에 월 20만원을 쓸까
 
-<img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&h=600&fit=crop&auto=format" alt="Claude Code vs Codex" style="border-radius: 12px; margin: 20px 0;" />
+<img width="1200" height="600" loading="lazy" src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&h=600&fit=crop&auto=format" alt="Claude Code vs Codex" style="border-radius: 12px; margin: 20px 0;" />
 
 월 200달러. 한국 돈으로 대략 20만원대. 개인 개발자가 코딩 도구 하나에 쓰기엔 결코 만만한 금액이 아니다. 그런데 요즘 AI 코딩 에이전트 판이 이 가격대에서 정면으로 붙었다. 한쪽은 **Anthropic의 Claude Max**(Claude Code를 굴리는 최상위 개인 플랜), 다른 쪽은 **OpenAI의 ChatGPT Pro**(Codex 에이전트 접근을 포함하는 최상위 플랜)다.
 
@@ -83,7 +83,7 @@ tags: ['AI', 'Claude Code', 'Codex', 'ChatGPT Pro', 'Claude Max', '비교']
 | 통제감         | 높음(직접 붙어 진행)         | 위임형(결과 리뷰 중심)     |
 | 잘 맞는 사람   | "옆에 앉혀 같이 짜는" 스타일 | "던져놓고 회수하는" 스타일 |
 
-<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=600&fit=crop&auto=format" alt="Comparison" style="border-radius: 12px; margin: 20px 0;" />
+<img width="1200" height="600" loading="lazy" src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=600&fit=crop&auto=format" alt="Comparison" style="border-radius: 12px; margin: 20px 0;" />
 
 ## 같은 작업, 두 CLI에서
 
