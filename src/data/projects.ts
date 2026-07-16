@@ -191,57 +191,6 @@ export const projects: Project[] = [
     span: 'md'
   },
   {
-    slug: 'instagram-pipeline',
-    name: 'Instagram Pipeline',
-    tagline: 'AI 릴리즈 뉴스를 카드뉴스로 — 수집·요약·게시 자동화',
-    description:
-      'Claude·Codex·Grok·Gemini 4개 벤더의 릴리즈 뉴스를 자동 수집·요약해 인스타그램 카드뉴스(캐러셀)로 렌더링하고 승인 모드를 거쳐 게시하는 로컬 파이프라인. LLM 큐레이션은 claude CLI 구독 로그인으로 API 키 없이 동작합니다.',
-    category: 'AI 자동화 · 파이프라인',
-    platform: 'CLI · Automation',
-    year: '2026',
-    status: '운영 중',
-    tags: ['Personal', 'Fullstack'],
-    accent: { from: '#E1306C', to: '#F77737', glow: 'rgba(225,48,108,0.35)' },
-    tech: [
-      'Python',
-      'uv',
-      'Playwright',
-      'Claude CLI',
-      'Cloudflare R2',
-      'Meta API'
-    ],
-    features: [
-      {
-        icon: 'globe',
-        title: '멀티소스 수집',
-        description:
-          'RSS·markdown-poll·browser-scrape 3전략으로 4개 AI 벤더의 릴리즈 소식을 수집, 소스 열화(stale) 경보까지.'
-      },
-      {
-        icon: 'cpu',
-        title: 'LLM 중요도 큐레이션',
-        description:
-          'claude CLI로 항목별 요약과 중요도 스코어(0~100) 산출 — 임계값 미만은 기록만 하고 건너뛴다.'
-      },
-      {
-        icon: 'layers',
-        title: '카드뉴스 렌더링',
-        description:
-          'Playwright로 캐러셀 카드 JPEG 렌더 + 미리보기 갤러리. 모든 카드에 "비공식 요약" 마커 표기.'
-      },
-      {
-        icon: 'shield',
-        title: '승인 모드 기본',
-        description:
-          'review 모드가 기본, 게시는 명시적 opt-in. 토큰은 .env가 아닌 SQLite credentials 테이블에 저장.'
-      }
-    ],
-    // 저장소 비공개 → 방문자용 링크는 GitHub 프로필로
-    github: 'https://github.com/toris-dev',
-    image: og('instagram_pipeline'),
-    span: 'md'
-  },
-  {
     slug: 'golmok-survivor',
     name: '골목길 생존기',
     tagline: '서울 골목, 한 칸만 더 — 한국형 무한 횡단 게임',
@@ -365,56 +314,6 @@ export const projects: Project[] = [
     github: gh('torisui-kit'),
     image: og('torisui-kit'),
     span: 'md'
-  },
-  {
-    slug: 'toris-blog',
-    name: 'Toris Blog',
-    tagline: '개발 지식을 아카이브하고 공유하는 기술 블로그',
-    description:
-      'Next.js 16 App Router 기반 개인 기술 블로그. MDX 콘텐츠, 카테고리·태그 필터, GitHub 기반 조회수·좋아요, 목차·다크모드, GEO/SEO 최적화까지 — 개발자의 지식 아카이브이자 생산성 기록입니다.',
-    category: '기술 블로그',
-    platform: 'Web',
-    year: '2026',
-    status: '운영 중',
-    tags: ['Personal', 'Frontend', 'Fullstack'],
-    accent: { from: '#0EA5E9', to: '#22D3EE', glow: 'rgba(14,165,233,0.35)' },
-    tech: [
-      'Next.js 16',
-      'React 19',
-      'TypeScript',
-      'Tailwind CSS',
-      'MDX',
-      'Vercel'
-    ],
-    features: [
-      {
-        icon: 'book',
-        title: 'MDX 콘텐츠 렌더링',
-        description:
-          '마크다운/MDX 기반 글 작성, 코드 하이라이트, 목차 자동 생성으로 읽기 좋은 글.'
-      },
-      {
-        icon: 'list',
-        title: '카테고리 · 태그 필터',
-        description:
-          '카테고리 칩과 태그로 원하는 글을 빠르게 탐색하는 아카이브.'
-      },
-      {
-        icon: 'activity',
-        title: '조회수 · 좋아요 (외부 DB 없이)',
-        description:
-          'GitHub Issue를 저장소로 활용해 서버리스로 조회수·좋아요를 집계.'
-      },
-      {
-        icon: 'shield',
-        title: 'GEO · SEO 최적화',
-        description:
-          'JSON-LD, sitemap, robots, llms.txt, 정제된 메타 설명으로 AI·검색 노출 강화.'
-      }
-    ],
-    github: gh('Toris_Blog'),
-    image: '/images/projects/toris-blog.png',
-    span: 'lg'
   },
   {
     slug: 'ym-guide',

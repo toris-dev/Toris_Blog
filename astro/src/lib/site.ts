@@ -10,7 +10,7 @@ export const COMPANY = {
   github: 'https://github.com/toris-dev',
   tagline: '꾸준함이 완성하는 소프트웨어',
   description:
-    '토리스(Toris)는 웹·모바일·자동화 제품을 기획부터 출시, 운영까지 직접 만드는 1인 소프트웨어 스튜디오입니다.'
+    '토리스(Toris)는 풀스택 개발자 유주환이 대표이자 개발자로 운영하는 개인사업 소프트웨어 스튜디오입니다. 밈캐치(catchmeme.com), bubbleBible 등 자체 제품을 직접 기획·개발·운영하며, 웹·모바일·AI 자동화 제품을 아이디어에서 출시까지 만듭니다.'
 } as const;
 
 export const SITE_URL =
