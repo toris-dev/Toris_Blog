@@ -43,7 +43,16 @@ const productsJsonLd = JSON.stringify({
       operatingSystem: osOf(p.platform),
       ...(isServiceLink(p.github) ? { url: p.github } : {}),
       author: { '@type': 'Organization', name: '토리스', url: SITE_URL },
-      image: absoluteUrl('/og-default.png')
+      brand: { '@type': 'Brand', name: '토리스 (Toris)' },
+      image: absoluteUrl('/og-default.png'),
+      // 전 제품 무료 공개 — Software App 리치 결과 요건(offers)
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'KRW',
+        availability: 'https://schema.org/InStock',
+        ...(isServiceLink(p.github) ? { url: p.github } : {})
+      }
     }
   }))
 });
