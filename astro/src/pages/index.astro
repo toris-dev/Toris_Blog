@@ -151,7 +151,7 @@ const isServiceLink = (url: string) =>
         style="transition-delay: 240ms"
       >
         아이디어를<br />
-        <span class="text-gradient">출시 가능한 제품</span>으로.
+        <span class="text-mint-deep">출시 가능한 제품</span>으로.
       </h1>
       <p
         class="hero-in mx-auto mt-7 max-w-xl break-keep text-base leading-relaxed text-ink-dim sm:text-lg"
@@ -275,7 +275,7 @@ const isServiceLink = (url: string) =>
       <p class="reveal font-mono text-[11px] tracking-[0.3em] text-muted">OUR PROMISE</p>
       <p class="reveal font-display mt-8 break-keep text-[clamp(2.4rem,7vw,5.5rem)] leading-[1.18]">
         <span class="text-ink-dim">서두르지 않되,</span><br />
-        <span class="text-gradient">반드시 출시합니다</span>
+        <span class="text-mint-deep">반드시 출시합니다</span>
       </p>
       <p class="reveal mx-auto mt-8 max-w-lg break-keep text-[15px] leading-relaxed text-muted">
         거북이의 걸음으로 — 조용히, 그러나 멈추지 않고. 계약보다 결과물이,
@@ -456,7 +456,7 @@ const isServiceLink = (url: string) =>
 
               <a
                 href={s.href}
-                class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-mint-deep transition-colors hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint"
+                class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-mint-deep transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint"
               >
                 {s.linkLabel}
                 <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -757,24 +757,6 @@ const isServiceLink = (url: string) =>
     to { transform: translate3d(48px, -36px, 0) scale(1.1); }
   }
 
-  /* ---------- 그라디언트 워드(민트→시안→라일락, 천천히 흐름) ---------- */
-  .text-gradient {
-    background: linear-gradient(
-      100deg,
-      var(--color-mint-deep),
-      #0f766e 40%,
-      var(--color-mint-deep) 75%,
-      #0f766e
-    );
-    background-size: 220% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: gradient-flow 7s linear infinite;
-  }
-  @keyframes gradient-flow {
-    to { background-position: -220% 0; }
-  }
 
   /* ---------- 스크롤 큐 ---------- */
   .scroll-cue i {
@@ -826,23 +808,6 @@ const isServiceLink = (url: string) =>
     to { transform: translateY(-50%); }
   }
 
-  /* ---------- 밸류 서클 글로우 ---------- */
-  .value-circle::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 9999px;
-    background: radial-gradient(
-      circle at 50% 0%,
-      color-mix(in srgb, var(--color-mint) 14%, transparent),
-      transparent 60%
-    );
-    opacity: 0;
-    transition: opacity 500ms;
-  }
-  .value-circle:hover::before {
-    opacity: 1;
-  }
 
   /* ---------- 플로팅 패널 ---------- */
   .float-panel {
@@ -992,7 +957,6 @@ const isServiceLink = (url: string) =>
     .marquee-track,
     .wall-col,
     .scroll-cue i,
-    .text-gradient,
     .btn-shine::after {
       animation: none;
     }
@@ -1270,9 +1234,16 @@ const isServiceLink = (url: string) =>
       b.addEventListener('focus', () => show(b));
     });
     mq.addEventListener('mouseenter', () => mq.classList.add('is-paused'));
-    mq.addEventListener('mouseleave', () => {
+    const hide = () => {
       pop.classList.remove('show');
       mq.classList.remove('is-paused');
+    };
+    mq.addEventListener('mouseleave', hide);
+    mq.addEventListener('focusout', (e) => {
+      if (!mq.contains(e.relatedTarget as Node)) hide();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hide();
     });
   }
 

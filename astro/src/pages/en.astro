@@ -136,7 +136,7 @@ const isServiceLink = (url: string) =>
         style="transition-delay: 240ms"
       >
         Ideas into<br />
-        <span class="text-gradient">shippable products</span>.
+        <span class="text-mint-deep">shippable products</span>.
       </h1>
       <p
         class="hero-in mx-auto mt-7 max-w-xl break-keep text-base leading-relaxed text-ink-dim sm:text-lg"
@@ -238,7 +238,7 @@ const isServiceLink = (url: string) =>
       <p class="reveal font-mono text-[11px] tracking-[0.3em] text-muted">OUR PROMISE</p>
       <p class="reveal font-display mt-8 break-keep text-[clamp(2.4rem,7vw,5.5rem)] leading-[1.18]">
         <span class="text-ink-dim">We never rush —</span><br />
-        <span class="text-gradient">and we always ship</span>
+        <span class="text-mint-deep">and we always ship</span>
       </p>
       <p class="reveal mx-auto mt-8 max-w-lg break-keep text-[15px] leading-relaxed text-muted">
         At a turtle's pace — quietly, but never stopping. Deliverables over
@@ -297,19 +297,19 @@ const isServiceLink = (url: string) =>
   <section class="relative overflow-hidden">
     <div class="mx-auto max-w-6xl px-5 py-28 sm:py-36">
       <p class="reveal text-center font-mono text-[11px] tracking-[0.3em] text-muted">HOW WE MOVE</p>
-      <div class="mt-16 flex flex-col items-center justify-center sm:flex-row">
+      <div class="mt-14 grid gap-4 sm:grid-cols-3">
         {
           values.map((v, i) => (
             <div
-              class:list={[
-                'value-circle reveal group relative flex aspect-square w-64 flex-col items-center justify-center rounded-full border border-line/80 text-center transition-colors duration-500 hover:border-mint/60 sm:w-72 lg:w-80',
-                i > 0 && '-mt-10 sm:-ml-14 sm:mt-0'
-              ]}
-              style={`transition-delay: ${i * 120}ms`}
+              class="card-3d reveal group relative overflow-hidden rounded-2xl border border-line bg-card p-8 transition-[border-color] duration-300 hover:border-mint/70"
+              style={`transition-delay: ${i * 100}ms`}
             >
-              <p class="font-mono text-lg tracking-[0.22em] text-ink transition-colors duration-500 group-hover:text-mint-deep">{v.en}</p>
-              <p class="mt-2 font-display text-sm text-ink-dim">{v.ko}</p>
-              <p class="mt-3 max-w-[12rem] break-keep px-6 text-xs leading-relaxed text-muted">{v.d}</p>
+              <span class="card-glare" aria-hidden="true" />
+              <p class="font-mono text-[10px] tracking-[0.28em] text-muted">0{i + 1}</p>
+              <p class="mt-4 font-mono text-xl tracking-[0.18em] text-mint-deep">{v.en}</p>
+              <p class="font-display mt-2 text-lg text-ink">{v.ko}</p>
+              <p class="mt-3 break-keep text-sm leading-relaxed text-ink-dim">{v.d}</p>
+              <span class="absolute -bottom-px left-0 h-px w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
             </div>
           ))
         }
@@ -419,7 +419,7 @@ const isServiceLink = (url: string) =>
 
               <a
                 href={s.href}
-                class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-mint-deep transition-colors hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint"
+                class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-mint-deep transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint"
               >
                 {s.linkLabel}
                 <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -716,24 +716,6 @@ const isServiceLink = (url: string) =>
     to { transform: translate3d(48px, -36px, 0) scale(1.1); }
   }
 
-  /* ---------- 그라디언트 워드(민트→시안→라일락, 천천히 흐름) ---------- */
-  .text-gradient {
-    background: linear-gradient(
-      100deg,
-      var(--color-mint-deep),
-      var(--color-cyan) 40%,
-      var(--color-lilac) 75%,
-      var(--color-mint-deep)
-    );
-    background-size: 220% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: gradient-flow 7s linear infinite;
-  }
-  @keyframes gradient-flow {
-    to { background-position: -220% 0; }
-  }
 
   /* ---------- 스크롤 큐 ---------- */
   .scroll-cue i {
@@ -785,23 +767,6 @@ const isServiceLink = (url: string) =>
     to { transform: translateY(-50%); }
   }
 
-  /* ---------- 밸류 서클 글로우 ---------- */
-  .value-circle::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 9999px;
-    background: radial-gradient(
-      circle at 50% 0%,
-      color-mix(in srgb, var(--color-mint) 14%, transparent),
-      transparent 60%
-    );
-    opacity: 0;
-    transition: opacity 500ms;
-  }
-  .value-circle:hover::before {
-    opacity: 1;
-  }
 
   /* ---------- 플로팅 패널 ---------- */
   .float-panel {
@@ -916,7 +881,6 @@ const isServiceLink = (url: string) =>
     .marquee-track,
     .wall-col,
     .scroll-cue i,
-    .text-gradient,
     .btn-shine::after {
       animation: none;
     }

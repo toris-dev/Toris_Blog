@@ -262,7 +262,13 @@ body {
   margin: 2.4em 0;
 }
 
-/* 한글 줄바꿈 — 단어 중간 분리 방지 */
+/* 한글 줄바꿈 — 단어 중간 분리 방지 + 행 균형 */
 h1, h2, h3, blockquote p {
   word-break: keep-all;
+}
+h1, h2, h3 {
+  text-wrap: balance;
+}
+.prose-post p {
+  text-wrap: pretty;
 }
