@@ -98,7 +98,7 @@ export default function PostSearch({ posts }: { posts: PostItem[] }) {
               className="group block rounded-xl px-3 py-5 transition-colors hover:bg-paper-2 focus-visible:outline-2 focus-visible:outline-mint"
             >
               <div className="flex items-center gap-2 text-xs">
-                <span className="rounded-full bg-mint/10 px-2 py-0.5 font-semibold text-mint-deep">
+                <span className="rounded-full bg-mint/10 px-2 py-0.5 font-semibold text-mint">
                   {p.category}
                 </span>
                 {p.dateLabel && <time dateTime={p.date} className="text-muted">{p.dateLabel}</time>}

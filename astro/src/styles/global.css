@@ -1,9 +1,8 @@
 @import 'tailwindcss';
 
 /* ================================================================
-   Toris — Terminal Emerald Light (테마 A · 브라이트)
-   아이보리 종이 위 딥 포레스트 잉크 + 에메랄드 글로우.
-   터미널·CI/CD 파이프라인 모티프는 유지, 무드만 밝게.
+   Toris — Bright Technical Craft
+   따뜻한 아이보리 종이 위 딥 네이비 잉크, 전기 민트 액센트.
    거북이 등껍질(육각)의 정밀한 선과 배포 흐름의 진행선이 시그니처.
    세리프(고운바탕) 헤드라인 + Pretendard 본문 + 모노 라벨.
    모든 색은 아래 토큰만 사용한다(즉흥 hex 금지).
@@ -16,31 +15,31 @@
     monospace;
 
   /* 바탕 — 따뜻한 아이보리 종이 */
-  --color-paper: #fafbf8;
-  --color-paper-2: #eef3ee;
+  --color-paper: #faf9f5;
+  --color-paper-2: #f1f0e9;
   --color-card: #ffffff;
-  --color-line: #c9d4cb;
+  --color-line: #e0e3e8;
 
   /* 글 — 딥 네이비 잉크 */
-  --color-ink: #13201a;
-  --color-ink-dim: #42584a;
-  --color-muted: #5b6e60;
+  --color-ink: #17233d;
+  --color-ink-dim: #46536e;
+  --color-muted: #717d94;
 
   /* 주 액센트 — 전기 민트 */
-  --color-mint: #10b981;
-  --color-mint-bright: #34d399;
-  --color-mint-deep: #047857;
+  --color-mint: #10c98f;
+  --color-mint-bright: #5ce4b8;
+  --color-mint-deep: #0a8a66;
 
   /* 보조 액센트 — 시안·라일락·코랄(소량) */
-  --color-cyan: #0d9488;
-  --color-lilac: #10b981;
+  --color-cyan: #26aed4;
+  --color-lilac: #9d8cf0;
   --color-coral: #ff7a66;
 
   /* 상태 */
-  --color-live: #047857;
+  --color-live: #0a8a66;
 
   /* 코드 블록 — 밝은 페이지 위의 다크 패널 */
-  --color-code: #0d1512;
+  --color-code: #131c30;
 }
 
 html {
@@ -125,9 +124,9 @@ body {
 
 /* ---------- 글래스 패널(내비·플로팅 패널 전용) ---------- */
 .glass {
-  background: color-mix(in srgb, var(--color-card) 80%, transparent);
+  background: color-mix(in srgb, var(--color-card) 78%, transparent);
   border: 1px solid var(--color-line);
-  box-shadow: 0 8px 30px -14px color-mix(in srgb, var(--color-ink) 22%, transparent);
+  box-shadow: 0 8px 32px -16px color-mix(in srgb, var(--color-ink) 24%, transparent);
 }
 @supports (backdrop-filter: blur(1px)) {
   .glass {
@@ -196,10 +195,10 @@ body {
   margin: 0.4em 0;
 }
 .prose-post blockquote {
-  border: 1px solid color-mix(in srgb, var(--color-mint-deep) 30%, var(--color-line));
-  background: color-mix(in srgb, var(--color-mint) 6%, var(--color-paper-2));
+  border-left: 2px solid var(--color-mint);
+  background: var(--color-paper-2);
   padding: 0.8em 1.2em;
-  border-radius: 0.5rem;
+  border-radius: 0 0.5rem 0.5rem 0;
   margin: 1.4em 0;
   color: var(--color-ink-dim);
   font-family: var(--font-serif);
@@ -262,13 +261,7 @@ body {
   margin: 2.4em 0;
 }
 
-/* 한글 줄바꿈 — 단어 중간 분리 방지 + 행 균형 */
+/* 한글 줄바꿈 — 단어 중간 분리 방지 */
 h1, h2, h3, blockquote p {
   word-break: keep-all;
-}
-h1, h2, h3 {
-  text-wrap: balance;
-}
-.prose-post p {
-  text-wrap: pretty;
 }

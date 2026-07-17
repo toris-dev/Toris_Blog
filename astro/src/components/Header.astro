@@ -21,7 +21,7 @@ const isActive = (href: string) =>
       <LogoMark class="size-8 transition-transform duration-300 group-hover:rotate-[12deg]" />
       <span class="flex items-baseline gap-2">
         <span class="font-display text-xl text-ink">토리스</span>
-        <span class="text-[11px] font-semibold tracking-[0.3em] text-mint-deep">TORIS</span>
+        <span class="text-[11px] font-semibold tracking-[0.3em] text-mint">TORIS</span>
       </span>
     </a>
 
@@ -34,7 +34,7 @@ const isActive = (href: string) =>
             class:list={[
               'relative rounded-md px-4 py-2 text-[15px] transition-colors focus-visible:outline-2 focus-visible:outline-mint',
               isActive(item.href)
-                ? 'font-semibold text-mint-deep'
+                ? 'font-semibold text-mint'
                 : 'text-ink-dim hover:text-ink'
             ]}
           >
