@@ -1,93 +1,1136 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import CardFX from '../components/CardFX.astro';
+import LogoMark from '../components/LogoMark.astro';
 import { COMPANY } from '../lib/site';
+import { fileBaseName, formatDate, toPlainExcerpt } from '../lib/slug';
 import { computeStats } from '../lib/stats';
 import { projects } from '../../../src/data/projects';
+import { enCat, enName, enTagline } from '../lib/en';
 
 const live = projects.filter((p) => p.status === '운영 중');
-const stats = computeStats(projects, 0);
+const featured = live.slice(0, 4);
+const sinceYear = Math.min(
+  ...projects.map((p) => parseInt(p.year, 10)).filter((y) => !Number.isNaN(y))
+);
+
+const entries = await getCollection('posts');
+const latestPosts = entries
+  .map((post) => ({
+    slug: post.id,
+    title: post.data.title || fileBaseName(post.filePath) || post.id,
+    description: post.data.description || toPlainExcerpt(post.body || '', 110),
+    date: post.data.date || '',
+    dateLabel: formatDate(post.data.date)
+  }))
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 3);
+
+// 신뢰 지표 — 단일 출처(lib/stats)에서 계산, 하드코딩 금지
+const stats = computeStats(projects, entries.length);
+const oss = projects.filter((p) => /npm/i.test(`${p.platform} ${p.category}`));
+
+// 제품 월(벽) — 실제 레지스트리 전체를 3열로 분배
+const wallCols: (typeof projects)[number][][] = [[], [], []];
+projects.forEach((p, i) => wallCols[i % 3].push(p));
+
+const services = [
+  {
+    label: 'WEB · MOBILE',
+    title: 'Web · Mobile Product Development',
+    problem: 'You have the idea and requirements, but no team to finish it.',
+    outcome: 'Products that actually ship to stores and browsers',
+    scope: 'Planning · Design · Build · Deploy · Operate',
+    href: '/contact',
+    linkLabel: 'Start a conversation',
+    demo: 'sync',
+    wide: true
+  },
+  {
+    label: 'MVP',
+    title: 'MVP · Prototype',
+    problem: 'You need to validate the idea in the market, fast.',
+    outcome: 'A tangible minimum product within weeks',
+    scope: 'Core flow · Landing · Validation metrics',
+    href: '/process',
+    linkLabel: 'See how we work',
+    demo: 'mvp',
+    wide: false
+  },
+  {
+    label: 'AUTOMATION',
+    title: 'AI · Workflow Automation',
+    problem: 'Repetitive work keeps draining human hours.',
+    outcome: 'Pipelines that collect → summarize → publish',
+    scope: 'LLM workflows · Bots · Back office',
+    href: '/contact',
+    linkLabel: 'Talk automation',
+    demo: 'pipe',
+    wide: false
+  },
+  {
+    label: 'DESKTOP',
+    title: 'Desktop Applications',
+    problem: 'You need local file & system access the web cannot give.',
+    outcome: 'Native apps installed on macOS & Windows',
+    scope: 'Tauri · Rust · Auto-update · Release delivery',
+    href: '/contact',
+    linkLabel: 'Talk desktop apps',
+    demo: 'win',
+    wide: true
+  }
+] as const;
+
+const steps = [
+  { n: '01', t: 'Inquiry · Consultation', d: 'We listen to what you want to build and your constraints.', out: 'First reply within 24h · NDA on request' },
+  { n: '02', t: 'Scoping', d: 'Scope, timeline, and cost — fixed in writing.', out: 'Scope doc · Schedule · Quote' },
+  { n: '03', t: 'Design · Prototype', d: 'We validate direction with a draft you can touch.', out: 'A working prototype' },
+  { n: '04', t: 'Build · Verify', d: 'Working results shared every week.', out: 'Weekly demos · Staging · Changelog' },
+  { n: '05', t: 'Launch · Operate', d: 'Improvement continues with metrics after deploy.', out: 'Deploy · Monitoring · Iteration' }
+] as const;
+
+// 밸류 서클 — 거북이 방식의 세 축
+const values = [
+  { en: 'STEADY', ko: 'No rush, no stopping', d: "Slow like a turtle — but never standing still" },
+  { en: 'COMPLETE', ko: 'What we start, we ship', d: 'Every product we begin reaches launch' },
+  { en: 'OPERATE', ko: 'Beyond the launch', d: 'We own the improvements after deploy' }
+] as const;
+
+// 서비스 링크(웹사이트·스토어·릴리스 다운로드)만 클릭 허용.
 const isServiceLink = (url: string) =>
   !url.startsWith('https://github.com/') || /\/releases\/?$/.test(url);
 ---
 
 <Base
-  title="Toris — Product Engineering Studio in Seoul"
-  description="Toris (토리스) is a software product studio in Seoul, Korea. We design, build, ship, and operate web, mobile, and AI automation products — from idea to launch."
+  title="Toris — Ideas into Shippable Products | Product Engineering Studio, Seoul"
+  description="Toris is a one-person software studio in Seoul run by a founder-engineer. We build and operate our own products — MemeCatch (catchmeme.com), bubbleBible — and take client ideas from planning to launch."
   path="/en"
-  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'English' }]}
 >
-  <section class="mx-auto max-w-3xl px-5 pb-24 pt-24">
-    <p class="reveal font-mono text-[11px] font-medium tracking-[0.28em] text-mint-deep">
-      TORIS · SEOUL, KOREA
-    </p>
-    <h1 class="reveal font-display mt-5 text-4xl leading-tight text-ink sm:text-5xl">
-      Toris is a product<br />engineering studio.
-    </h1>
-    <p class="reveal mt-6 leading-relaxed text-ink-dim">
-      Toris (토리스) is a registered software studio in Seoul, Korea, run by a
-      founder-engineer. We take ideas from planning to launch and operation —
-      web, mobile, and AI automation products. Slow like a turtle, but we
-      always ship.
-    </p>
+  <!-- ====================== S1. Hero — 글로우 인트로 ====================== -->
+  <section id="hero" class="relative overflow-hidden">
+    <canvas
+      id="shell-canvas"
+      class="pointer-events-none absolute inset-0 h-full w-full"
+      aria-hidden="true"></canvas>
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <span class="hero-blob hb-1"></span>
+      <span class="hero-blob hb-2"></span>
+      <span class="hero-blob hb-3"></span>
+    </div>
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-paper to-transparent"
+      aria-hidden="true"
+    >
+    </div>
 
-    <dl class="reveal mt-10 flex flex-wrap gap-x-12 gap-y-6 border-l border-line pl-6">
-      <div>
-        <dd class="font-display text-3xl text-ink">{stats.total}+</dd>
-        <dt class="font-mono text-[11px] tracking-[0.18em] text-muted">PROJECTS</dt>
+    <div class="relative mx-auto flex min-h-[100dvh] max-w-5xl flex-col items-center justify-center px-5 py-28 text-center">
+      <div class="hero-in hero-glow relative">
+        <LogoMark class="size-20 sm:size-24" />
       </div>
-      <div>
-        <dd class="font-display text-3xl text-ink">{stats.live}</dd>
-        <dt class="font-mono text-[11px] tracking-[0.18em] text-muted">LIVE PRODUCTS</dt>
-      </div>
-      <div>
-        <dd class="font-display text-3xl text-ink">24h</dd>
-        <dt class="font-mono text-[11px] tracking-[0.18em] text-muted">FIRST REPLY</dt>
-      </div>
-    </dl>
+      <p class="hero-in mt-8 font-mono text-[11px] font-medium tracking-[0.3em] text-mint" style="transition-delay: 120ms">
+        TORIS — PRODUCT ENGINEERING STUDIO · SEOUL
+      </p>
+      <h1
+        class="hero-in font-display mt-6 break-keep text-[clamp(2.6rem,7.5vw,5.75rem)] leading-[1.12] text-ink"
+        style="transition-delay: 240ms"
+      >
+        Ideas into<br />
+        <span class="text-gradient">shippable products</span>.
+      </h1>
+      <p
+        class="hero-in mx-auto mt-7 max-w-xl break-keep text-base leading-relaxed text-ink-dim sm:text-lg"
+        style="transition-delay: 360ms"
+      >
+        Toris is a software studio that takes web, mobile, and AI automation
+        products from planning to launch and operation.
+      </p>
 
-    <h2 class="reveal font-display mt-14 text-2xl text-ink">What we build & operate</h2>
-    <ul class="reveal mt-5 divide-y divide-line border-y border-line">
-      {
-        live.map((p) => (
-          <li class="flex items-center justify-between gap-4 py-3 text-sm">
-            <span class="flex min-w-0 items-center gap-2.5">
-              <span class="size-1.5 shrink-0 rounded-full bg-live" aria-hidden="true" />
-              {isServiceLink(p.github) ? (
-                <a href={p.github} target="_blank" rel="noopener noreferrer" class="min-w-0 truncate font-medium text-ink transition-colors hover:text-mint-deep">
-                  {p.name}
-                </a>
-              ) : (
-                <span class="min-w-0 truncate font-medium text-ink">{p.name}</span>
-              )}
-            </span>
-            <span class="shrink-0 font-mono text-[11px] text-muted">{p.platform}</span>
+      <div class="hero-in mt-11 flex flex-wrap items-center justify-center gap-4" style="transition-delay: 480ms">
+        <a
+          href="/contact"
+          class="btn-magnet btn-shine relative inline-flex h-13 items-center gap-3 overflow-hidden rounded-xl bg-ink px-8 py-3.5 text-[15px] font-semibold text-paper transition-colors duration-300 hover:bg-mint focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint"
+        >
+          Start a conversation
+          <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M5 12h14m-6-6 6 6-6 6"></path>
+          </svg>
+        </a>
+        <a
+          href="/projects"
+          class="inline-flex h-13 items-center gap-2 rounded-xl border border-line bg-card/60 px-7 py-3.5 text-[15px] font-medium text-ink-dim transition-all duration-300 hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
+        >
+          Explore our products
+        </a>
+      </div>
+
+      <!-- 배포 흐름 라인 -->
+      <div class="hero-in mt-16 w-full max-w-md" style="transition-delay: 600ms" aria-hidden="true">
+        <div class="pipe relative h-px bg-line">
+          <span class="pipe-dot"></span>
+        </div>
+        <div class="mt-2 flex justify-between font-mono text-[10px] tracking-[0.18em] text-muted">
+          <span>COMMIT</span><span>BUILD</span><span>DEPLOY</span><span>OPERATE</span>
+        </div>
+      </div>
+
+      <p class="hero-in mt-6" style="transition-delay: 560ms">
+        <a href="/?lang=ko" class="font-mono text-xs text-muted underline underline-offset-4 transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint">한국어로 보기</a>
+      </p>
+
+      <!-- 스크롤 큐 -->
+      <div class="hero-in absolute bottom-8 left-1/2 -translate-x-1/2" style="transition-delay: 720ms" aria-hidden="true">
+        <span class="scroll-cue block h-9 w-5 rounded-full border border-line">
+          <i class="mx-auto mt-1.5 block h-2 w-0.5 rounded bg-mint"></i>
+        </span>
+      </div>
+    </div>
+
+    <!-- 플로팅 제품 패널 — 실제 운영 데이터만 표기 -->
+    <div class="pointer-events-none absolute inset-0 hidden xl:block" aria-hidden="true">
+      <div class="float-panel glass absolute right-[6%] top-[22%] w-64 rounded-2xl p-4" data-depth="16">
+        <p class="font-mono text-[10px] tracking-[0.2em] text-muted">DEPLOYMENTS</p>
+        <ul class="mt-3 space-y-2.5">
+          <li class="flex items-center justify-between text-[13px]">
+            <span class="font-medium text-ink">catchmeme.com</span>
+            <span class="flex items-center gap-1.5 text-live"><span class="size-1.5 rounded-full bg-live"></span>Live</span>
           </li>
+          <li class="flex items-center justify-between text-[13px]">
+            <span class="font-medium text-ink">toris.kr</span>
+            <span class="flex items-center gap-1.5 text-live"><span class="size-1.5 rounded-full bg-live"></span>Live</span>
+          </li>
+          <li class="flex items-center justify-between text-[13px]">
+            <span class="font-medium text-ink">asyncraft</span>
+            <span class="font-mono text-[11px] text-muted">npm</span>
+          </li>
+        </ul>
+      </div>
+      <div class="float-panel glass absolute left-[5%] top-[58%] w-72 rounded-2xl p-4 font-mono text-[12px] leading-6" data-depth="26">
+        <p class="text-muted">$ pnpm run deploy</p>
+        <p class="text-ink-dim">✓ 30 pages built</p>
+        <p class="text-mint">▲ deployed to production</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 운영 제품 마퀴(실데이터) ==================== -->
+  <div class="marquee overflow-hidden border-y border-line bg-paper-2/70 py-3.5" aria-hidden="true">
+    <div class="marquee-track flex w-max">
+      {
+        [0, 1].map(() => (
+          <div class="marquee-seg flex shrink-0 items-center">
+            {live.map((p) => (
+              <span class="mx-7 inline-flex items-center gap-2.5 font-mono text-[12px] tracking-[0.22em] text-muted">
+                <i class="size-1 rounded-full bg-mint" />
+                {enName(p).toUpperCase()}
+              </span>
+            ))}
+          </div>
         ))
       }
-    </ul>
+    </div>
+  </div>
 
-    <h2 class="reveal font-display mt-14 text-2xl text-ink">Work with Toris</h2>
-    <p class="reveal mt-4 leading-relaxed text-ink-dim">
-      We partner on web/mobile products, MVPs, and AI workflow automation.
-      Ideas at any stage are welcome — we reply within 24 hours, contracts and
-      tax invoices available, NDA on request.
-    </p>
-    <p class="reveal mt-7 flex flex-wrap gap-4">
-      <a
-        href="/contact"
-        class="inline-flex h-12 items-center gap-2 rounded-xl bg-ink px-7 text-[15px] font-semibold text-paper transition-colors duration-300 hover:bg-mint-deep focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint-deep"
-      >
-        Start a conversation
-      </a>
-      <a
-        href="/?lang=ko"
-        class="inline-flex h-12 items-center rounded-xl border border-line bg-card px-6 text-[15px] font-medium text-ink-dim transition-colors hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint-deep"
-      >
-        한국어 홈 →
-      </a>
-    </p>
-    <p class="reveal mt-6 font-mono text-sm text-muted">
-      {COMPANY.email} · Business reg. {COMPANY.bizNumber}
-    </p>
+  <!-- =================== S2. 스테이트먼트 — 브랜드 선언 =================== -->
+  <section class="relative flex min-h-[72vh] items-center overflow-hidden">
+    <div class="aurora pointer-events-none absolute inset-0 opacity-70" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-5 py-28 text-center">
+      <p class="reveal font-mono text-[11px] tracking-[0.3em] text-muted">OUR PROMISE</p>
+      <p class="reveal font-display mt-8 break-keep text-[clamp(2.4rem,7vw,5.5rem)] leading-[1.18]">
+        <span class="text-ink-dim">We never rush —</span><br />
+        <span class="text-gradient">and we always ship</span>
+      </p>
+      <p class="reveal mx-auto mt-8 max-w-lg break-keep text-[15px] leading-relaxed text-muted">
+        At a turtle's pace — quietly, but never stopping. Deliverables over
+        contracts, deployments over words.
+      </p>
+    </div>
   </section>
+
+  <!-- ================ S3. 제품 월 — 여정과 지표(실데이터) ================ -->
+  <section class="relative overflow-hidden border-y border-line bg-paper-2/40">
+    <!-- 배경: 프로젝트 타일 3열 수직 흐름 -->
+    <div class="wall pointer-events-none absolute inset-0 grid grid-cols-2 gap-4 px-4 opacity-[0.5] md:grid-cols-3" aria-hidden="true">
+      {
+        wallCols.map((col, ci) => (
+          <div class:list={['wall-col flex flex-col gap-4', ci === 2 && 'hidden md:flex']} style={`animation-duration: ${44 + ci * 10}s; animation-direction: ${ci % 2 ? 'reverse' : 'normal'}`}>
+            {[0, 1].map(() => (
+              <div class="flex shrink-0 flex-col gap-4">
+                {col.map((p) => (
+                  <div class="rounded-2xl border border-line bg-card p-5">
+                    <p class="font-mono text-[9px] tracking-[0.18em] text-muted uppercase">{enCat(p)}</p>
+                    <p class="mt-1.5 truncate text-sm font-semibold text-ink-dim">{enName(p)}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-paper via-transparent to-paper" aria-hidden="true"></div>
+
+    <!-- 전경: 클레임 + 지표 -->
+    <div class="relative mx-auto max-w-6xl px-5 py-40 text-center sm:py-48">
+      <p class="reveal font-mono text-[11px] tracking-[0.3em] text-mint">SINCE {sinceYear} — KEEP SHIPPING</p>
+      <h2 class="reveal font-display mx-auto mt-6 max-w-3xl break-keep text-[clamp(1.9rem,5vw,3.4rem)] leading-[1.25] text-ink">
+        From MemeCatch to TraceDesk —<br />built and operated by ourselves
+      </h2>
+      <dl class="reveal mx-auto mt-14 flex max-w-2xl flex-wrap items-end justify-center gap-x-16 gap-y-8">
+        <div>
+          <dd class="font-display text-6xl text-ink sm:text-7xl"><span data-count={String(stats.total)}>{stats.total}</span><span class="text-mint">+</span></dd>
+          <dt class="mt-2 font-mono text-[11px] tracking-[0.2em] text-muted">PROJECTS</dt>
+        </div>
+        <div>
+          <dd class="font-display text-6xl text-ink sm:text-7xl"><span data-count={String(stats.live)}>{stats.live}</span></dd>
+          <dt class="mt-2 font-mono text-[11px] tracking-[0.2em] text-muted">LIVE NOW</dt>
+        </div>
+        <div>
+          <dd class="font-display text-6xl text-ink sm:text-7xl"><span data-count={String(stats.posts)}>{stats.posts}</span></dd>
+          <dt class="mt-2 font-mono text-[11px] tracking-[0.2em] text-muted">TECH LOGS</dt>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ================== S4. 밸류 서클 — 거북이의 방식 ================== -->
+  <section class="relative overflow-hidden">
+    <div class="mx-auto max-w-6xl px-5 py-28 sm:py-36">
+      <p class="reveal text-center font-mono text-[11px] tracking-[0.3em] text-muted">HOW WE MOVE</p>
+      <div class="mt-16 flex flex-col items-center justify-center sm:flex-row">
+        {
+          values.map((v, i) => (
+            <div
+              class:list={[
+                'value-circle reveal group relative flex aspect-square w-64 flex-col items-center justify-center rounded-full border border-line/80 text-center transition-colors duration-500 hover:border-mint/60 sm:w-72 lg:w-80',
+                i > 0 && '-mt-10 sm:-ml-14 sm:mt-0'
+              ]}
+              style={`transition-delay: ${i * 120}ms`}
+            >
+              <p class="font-mono text-lg tracking-[0.22em] text-ink transition-colors duration-500 group-hover:text-mint">{v.en}</p>
+              <p class="mt-2 font-display text-sm text-ink-dim">{v.ko}</p>
+              <p class="mt-3 max-w-[12rem] break-keep px-6 text-xs leading-relaxed text-muted">{v.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= S5. Services ========================= -->
+  <section class="border-t border-line bg-paper-2/40">
+    <div class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
+      <div class="reveal grid gap-6 md:grid-cols-[1fr_2fr]">
+        <div>
+          <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">SERVICES</p>
+          <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
+            Start small,<br />finish everything
+          </h2>
+        </div>
+        <p class="self-end break-keep text-[15px] leading-relaxed text-ink-dim md:max-w-md md:justify-self-end">
+          Not an agency relationship — a partner who builds the product with you.
+        </p>
+      </div>
+
+      <div class="mt-12 grid gap-4 md:grid-cols-3">
+        {
+          services.map((s, i) => (
+            <article
+              class:list={[
+                'svc-card reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-mint/70 hover:shadow-[0_20px_48px_-24px_color-mix(in_srgb,var(--color-mint)_28%,transparent)] sm:p-8',
+                s.wide && 'md:col-span-2'
+              ]}
+              style={`transition-delay: ${i * 90}ms`}
+            >
+              <span class="font-mono text-[10px] font-medium tracking-[0.24em] text-mint">{s.label}</span>
+              <h3 class="font-display mt-4 text-2xl text-ink">{s.title}</h3>
+
+              {s.demo === 'sync' && (
+                <div class="demo-sync mt-6 flex items-center gap-3" aria-hidden="true">
+                  <div class="w-40 rounded-lg border border-line bg-paper p-2">
+                    <div class="flex gap-1"><i class="size-1.5 rounded-full bg-line" /><i class="size-1.5 rounded-full bg-line" /><i class="size-1.5 rounded-full bg-line" /></div>
+                    <div class="mt-2 space-y-1.5">
+                      <div class="demo-bar h-1.5 w-4/5 rounded bg-mint/40" />
+                      <div class="demo-bar h-1.5 w-3/5 rounded bg-line" style="transition-delay:80ms" />
+                      <div class="demo-bar h-1.5 w-2/3 rounded bg-line" style="transition-delay:160ms" />
+                    </div>
+                  </div>
+                  <div class="demo-link h-px flex-1 bg-line" />
+                  <div class="w-14 rounded-lg border border-line bg-paper p-1.5">
+                    <div class="mx-auto h-16 w-full rounded border border-line bg-card p-1">
+                      <div class="demo-bar h-1 w-full rounded bg-mint/40" />
+                      <div class="demo-bar mt-1 h-1 w-2/3 rounded bg-line" style="transition-delay:120ms" />
+                    </div>
+                  </div>
+                </div>
+              )}
+              {s.demo === 'mvp' && (
+                <div class="demo-mvp mt-6 grid grid-cols-3 gap-2" aria-hidden="true">
+                  <div class="demo-block h-14 rounded-lg border border-dashed border-line" />
+                  <div class="demo-block h-14 rounded-lg border border-dashed border-line" style="transition-delay:100ms" />
+                  <div class="demo-block h-14 rounded-lg border border-dashed border-line" style="transition-delay:200ms" />
+                </div>
+              )}
+              {s.demo === 'pipe' && (
+                <div class="demo-pipe mt-6" aria-hidden="true">
+                  <div class="relative flex items-center justify-between">
+                    <span class="pipe-node">Collect</span>
+                    <span class="pipe-node">Summarize</span>
+                    <span class="pipe-node">Publish</span>
+                    <i class="absolute inset-x-8 top-1/2 -z-10 h-px bg-line" />
+                    <i class="pipe-runner" />
+                  </div>
+                </div>
+              )}
+              {s.demo === 'win' && (
+                <div class="demo-win mt-6 flex items-end gap-3" aria-hidden="true">
+                  <div class="w-44 rounded-lg border border-line bg-paper">
+                    <div class="flex items-center gap-1 border-b border-line px-2 py-1.5">
+                      <i class="size-1.5 rounded-full bg-coral/70" /><i class="size-1.5 rounded-full bg-line" /><i class="size-1.5 rounded-full bg-mint/70" />
+                      <span class="ml-1.5 font-mono text-[8px] tracking-wider text-muted">TRACEDESK</span>
+                    </div>
+                    <div class="space-y-1.5 p-2">
+                      <div class="demo-bar h-1.5 w-3/4 rounded bg-mint/40" />
+                      <div class="demo-bar h-1.5 w-1/2 rounded bg-line" style="transition-delay:80ms" />
+                      <div class="demo-bar h-1.5 w-2/3 rounded bg-line" style="transition-delay:160ms" />
+                    </div>
+                  </div>
+                  <p class="flex items-center gap-1.5 pb-1 font-mono text-[10px] text-muted">
+                    <i class="size-1 rounded-full bg-live" />
+                    auto-update ready
+                  </p>
+                </div>
+              )}
+
+              <dl class="mt-6 space-y-2.5 text-sm">
+                <div class="flex gap-3">
+                  <dt class="w-12 shrink-0 font-mono text-[10px] leading-6 tracking-[0.16em] text-muted">Problem</dt>
+                  <dd class="break-keep text-ink-dim">{s.problem}</dd>
+                </div>
+                <div class="flex gap-3">
+                  <dt class="w-12 shrink-0 font-mono text-[10px] leading-6 tracking-[0.16em] text-muted">Outcome</dt>
+                  <dd class="break-keep font-medium text-ink">{s.outcome}</dd>
+                </div>
+                <div class="flex gap-3">
+                  <dt class="w-12 shrink-0 font-mono text-[10px] leading-6 tracking-[0.16em] text-muted">Scope</dt>
+                  <dd class="text-ink-dim">{s.scope}</dd>
+                </div>
+              </dl>
+
+              <a
+                href={s.href}
+                class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-mint transition-colors hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint"
+              >
+                {s.linkLabel}
+                <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <path d="M5 12h14m-6-6 6 6-6 6"></path>
+                </svg>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== S6. Work =========================== -->
+  <section class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
+    <div class="reveal flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">WORK</p>
+        <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
+          Products we build & operate
+        </h2>
+      </div>
+      <a
+        href="/projects"
+        class="border-b border-transparent pb-1 text-sm font-medium text-ink-dim transition-colors hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
+      >
+        View all →
+      </a>
+    </div>
+
+    <div class="mt-12 grid gap-4 sm:grid-cols-2">
+      {
+        featured.map((p, i) => { const linked = isServiceLink(p.github); const Tag = linked ? 'a' : 'div'; return (
+          <Tag
+            href={linked ? p.github : undefined}
+            target={linked ? '_blank' : undefined}
+            rel={linked ? 'noopener noreferrer' : undefined}
+            class="card-3d reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-[border-color,box-shadow] duration-300 hover:border-mint/70 hover:shadow-[0_20px_48px_-24px_color-mix(in_srgb,var(--color-mint)_28%,transparent)] focus-visible:outline-2 focus-visible:outline-mint"
+            style={`transition-delay: ${i * 80}ms`}
+          >
+            <span class="card-glare" aria-hidden="true" />
+            <div class="border-b border-line bg-paper-2 px-4 py-2.5" aria-hidden="true">
+              <div class="flex items-center gap-2">
+                <span class="flex gap-1"><i class="size-2 rounded-full bg-line" /><i class="size-2 rounded-full bg-line" /><i class="size-2 rounded-full bg-line" /></span>
+                <span class="ml-2 truncate rounded bg-card px-2 py-0.5 font-mono text-[10px] text-muted">
+                  {linked && !p.github.includes('github.com') ? p.github.replace(/^https?:\/\//, '').replace(/\/$/, '') : p.platform}
+                </span>
+              </div>
+            </div>
+            <div class="flex grow flex-col p-6">
+              <div class="flex items-baseline justify-between gap-3">
+                <h3 class="font-display text-2xl text-ink">{enName(p)}</h3>
+                <span class="font-mono text-[10px] tracking-[0.14em] text-muted">{p.year}</span>
+              </div>
+              <p class="mt-1 font-mono text-[10px] tracking-[0.18em] text-muted uppercase">{enCat(p)} · {p.platform}</p>
+              <p class="mt-3 break-keep text-sm leading-relaxed text-ink-dim">{enTagline(p)}</p>
+              <p class="mt-4 text-xs tracking-wide text-muted">{p.tech.slice(0, 5).join(' · ')}</p>
+              <div class="mt-auto flex items-center justify-between gap-3 pt-6">
+                <span class="flex items-center gap-2 text-[11px] tracking-wider text-live">
+                  <span class="size-1.5 rounded-full bg-live" aria-hidden="true" />
+                  Live · planning to operations
+                </span>
+                {linked && (
+                  <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
+                    Open service
+                    <svg viewBox="0 0 24 24" class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M7 17 17 7M9 7h8v8" />
+                    </svg>
+                  </span>
+                )}
+              </div>
+            </div>
+            <span class="absolute -bottom-px left-0 h-0.5 w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
+          </Tag>
+        ); })
+      }
+    </div>
+  </section>
+
+  <!-- ========================= S7. Process ========================= -->
+  <section class="border-y border-line bg-paper-2/40">
+    <div class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
+      <div class="reveal max-w-2xl">
+        <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">PROCESS</p>
+        <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
+          Five steps are enough
+        </h2>
+      </div>
+
+      <div class="mt-14 grid gap-10 md:grid-cols-[1fr_2fr]">
+        <div class="hidden md:block">
+          <div class="sticky top-28">
+            <p id="process-now-n" class="font-display text-7xl text-mint/60 transition-all duration-300">01</p>
+            <p id="process-now-t" class="font-display mt-2 text-xl text-ink">Inquiry · Consultation</p>
+            <span class="rule-accent mt-5 block w-14" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <ol id="process-list" class="relative space-y-4 border-l border-line pl-8 md:pl-10">
+          <span
+            id="process-fill"
+            class="absolute -left-px top-0 w-px bg-mint transition-[height] duration-300"
+            style="height: 0%"
+            aria-hidden="true"></span>
+          {
+            steps.map((s, i) => (
+              <li
+                class="process-step reveal relative rounded-2xl border border-line bg-card p-6 transition-colors duration-300"
+                data-n={s.n}
+                data-t={s.t}
+                style={`transition-delay: ${i * 60}ms`}
+              >
+                <span class="absolute -left-[41px] top-7 size-2.5 rounded-full border-2 border-line bg-paper transition-colors duration-300 md:-left-[49px]" aria-hidden="true" />
+                <div class="flex items-baseline gap-3">
+                  <span class="font-mono text-xs text-mint">{s.n}</span>
+                  <h3 class="font-semibold text-ink">{s.t}</h3>
+                </div>
+                <p class="mt-2 break-keep text-sm leading-relaxed text-ink-dim">{s.d}</p>
+                <p class="mt-3 inline-flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] tracking-wide text-muted">
+                  <span class="text-mint">Deliverables</span> {s.out}
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <p class="reveal mt-10 md:pl-[calc(33.3%+2.5rem)]">
+        <a
+          href="/process"
+          class="border-b border-transparent pb-1 text-sm font-medium text-ink-dim transition-colors hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
+        >
+          See the full process →
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================== S8. 증거 — 말보다 배포가 먼저 ================== -->
+  <section class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
+    <div class="reveal max-w-2xl">
+      <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">PROOF OF SHIPPING</p>
+      <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
+        Deployments over words
+      </h2>
+      <p class="mt-4 break-keep text-[15px] leading-relaxed text-ink-dim">
+        We are not an agency that only builds for clients. Our own operating
+        products and public records are the proof of craft.
+      </p>
+    </div>
+
+    <div class="mt-12 grid min-w-0 gap-10 lg:grid-cols-[5fr_7fr]">
+      <div class="reveal min-w-0">
+        <h3 class="font-mono text-[11px] tracking-[0.22em] text-muted">NOW OPERATING</h3>
+        <ul class="mt-4 divide-y divide-line border-y border-line">
+          {
+            live.map((p) => (
+              <li class="flex items-center justify-between gap-4 py-3 text-sm">
+                <span class="flex min-w-0 items-center gap-2.5">
+                  <span class="size-1.5 shrink-0 rounded-full bg-live" aria-hidden="true" />
+                  <span class="min-w-0 truncate font-medium text-ink">{enName(p)}</span>
+                </span>
+                <span class="shrink-0 font-mono text-[11px] text-muted">{p.platform}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <a
+          href="/projects"
+          class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink-dim transition-colors hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
+        >
+          View all products →
+        </a>
+      </div>
+
+      <div class="reveal min-w-0" style="transition-delay: 90ms">
+        <h3 class="font-mono text-[11px] tracking-[0.22em] text-muted">JOURNAL & OPEN SOURCE</h3>
+        <ul class="mt-4 space-y-3">
+          {
+            latestPosts.map((post) => (
+              <li>
+                <a
+                  href={`/posts/${post.slug}`}
+                  class="group flex items-baseline justify-between gap-4 rounded-xl border border-line bg-card px-5 py-4 transition-colors hover:border-mint/70 focus-visible:outline-2 focus-visible:outline-mint"
+                >
+                  <span class="min-w-0">
+                    <span class="block truncate text-[15px] font-medium text-ink transition-colors group-hover:text-mint">{post.title}</span>
+                    <span class="mt-1 block truncate text-xs text-muted">{post.description}</span>
+                  </span>
+                  <time class="shrink-0 font-mono text-[11px] text-muted">{post.dateLabel}</time>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        {oss.length > 0 && (
+          <p class="mt-5 flex flex-wrap items-center gap-2 text-sm text-ink-dim">
+            <span class="font-mono text-[11px] tracking-[0.18em] text-muted">OPEN SOURCE</span>
+            {oss.map((p) => (
+              <span class="rounded-lg border border-line bg-card px-2.5 py-1 font-mono text-xs text-ink-dim">{enName(p)}</span>
+            ))}
+          </p>
+        )}
+        <a
+          href="/blog"
+          class="mt-5 inline-block border-b border-transparent pb-1 text-sm font-medium text-ink-dim transition-colors hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
+        >
+          Browse the journal (Korean) →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== S9. CTA — Ship the Next ===================== -->
+  <section class="relative overflow-hidden border-t border-line">
+    <div class="aurora pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-5 py-28 text-center sm:py-36">
+      <p class="reveal font-mono text-[11px] font-medium tracking-[0.3em] text-mint">CONTACT</p>
+      <h2 class="reveal font-display mx-auto mt-7 max-w-3xl break-keep text-[clamp(2.2rem,6.5vw,4.6rem)] leading-[1.15] text-ink">
+        Ship the Next.
+      </h2>
+      <p class="reveal mx-auto mt-6 max-w-md break-keep text-ink-dim">
+        If there is something you want to build, we will start from the very first screen with you.
+      </p>
+
+      <ul class="reveal mx-auto mt-9 flex max-w-2xl flex-wrap justify-center gap-2 text-[13px]">
+        {
+          ['Ideas at any stage', 'Reply within 24h', 'Contracts & tax invoices', 'NDA on request'].map((t) => (
+            <li class="rounded-full border border-line bg-card/70 px-4 py-1.5 text-ink-dim">{t}</li>
+          ))
+        }
+      </ul>
+
+      <div class="reveal mt-11 flex flex-col items-center gap-4">
+        <a
+          href="/contact"
+          class="btn-magnet btn-shine relative inline-flex h-13 items-center gap-3 overflow-hidden rounded-xl bg-ink px-9 py-3.5 text-base font-semibold text-paper transition-colors duration-300 hover:bg-mint focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint"
+        >
+          Start a project
+        </a>
+        <a
+          href={`mailto:${COMPANY.email}`}
+          class="font-mono text-sm text-muted underline underline-offset-4 transition-colors hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
+        >
+          {COMPANY.email}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CardFX />
 </Base>
+
+<style>
+  /* ---------- 히어로 페이지-로드 리빌 ---------- */
+  .hero-in {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  :global(body.hero-ready) .hero-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ---------- 히어로 글로우 + 오로라 블롭 ---------- */
+  .hero-glow::before {
+    content: '';
+    position: absolute;
+    inset: -70%;
+    z-index: -1;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-mint) 32%, transparent),
+      transparent 70%
+    );
+    filter: blur(18px);
+  }
+  .hero-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(90px);
+    opacity: 0.5;
+    animation: blob-drift 16s ease-in-out infinite alternate;
+  }
+  .hb-1 { width: 460px; height: 460px; top: -12%; left: 56%; background: color-mix(in srgb, var(--color-mint) 18%, transparent); }
+  .hb-2 { width: 420px; height: 420px; bottom: -6%; left: -8%; background: color-mix(in srgb, var(--color-cyan) 15%, transparent); animation-delay: -6s; }
+  .hb-3 { width: 380px; height: 380px; top: 32%; right: -10%; background: color-mix(in srgb, var(--color-lilac) 14%, transparent); animation-delay: -11s; }
+  @keyframes blob-drift {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to { transform: translate3d(48px, -36px, 0) scale(1.1); }
+  }
+
+  /* ---------- 그라디언트 워드(민트→시안→라일락, 천천히 흐름) ---------- */
+  .text-gradient {
+    background: linear-gradient(
+      100deg,
+      var(--color-mint-deep),
+      var(--color-cyan) 40%,
+      var(--color-lilac) 75%,
+      var(--color-mint-deep)
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradient-flow 7s linear infinite;
+  }
+  @keyframes gradient-flow {
+    to { background-position: -220% 0; }
+  }
+
+  /* ---------- 스크롤 큐 ---------- */
+  .scroll-cue i {
+    animation: cue-drop 1.8s ease-in-out infinite;
+  }
+  @keyframes cue-drop {
+    0% { transform: translateY(0); opacity: 1; }
+    70% { transform: translateY(10px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 0; }
+  }
+
+  /* ---------- 배포 흐름 라인 ---------- */
+  .pipe-dot {
+    position: absolute;
+    top: -2.5px;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--color-mint);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--color-mint) 80%, transparent);
+    animation: pipe-move 9s linear infinite;
+  }
+  @keyframes pipe-move {
+    0% { left: 0%; opacity: 0; }
+    6% { opacity: 1; }
+    94% { opacity: 1; }
+    100% { left: calc(100% - 6px); opacity: 0; }
+  }
+
+  /* ---------- 마퀴 ---------- */
+  .marquee-track {
+    animation: marquee-run 36s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes marquee-run {
+    to { transform: translateX(-50%); }
+  }
+
+  /* ---------- 제품 월 수직 흐름 ---------- */
+  .wall-col {
+    animation-name: wall-scroll;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  @keyframes wall-scroll {
+    to { transform: translateY(-50%); }
+  }
+
+  /* ---------- 밸류 서클 글로우 ---------- */
+  .value-circle::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle at 50% 0%,
+      color-mix(in srgb, var(--color-mint) 14%, transparent),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 500ms;
+  }
+  .value-circle:hover::before {
+    opacity: 1;
+  }
+
+  /* ---------- 플로팅 패널 ---------- */
+  .float-panel {
+    transform: translate3d(
+        calc(var(--hx, 0) * var(--depth, 12) * 1px),
+        calc(var(--hy, 0) * var(--depth, 12) * 1px),
+        0
+      );
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ---------- CTA 버튼: 샤인 스윕 ---------- */
+  .btn-shine::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 38%,
+      color-mix(in srgb, var(--color-card) 45%, transparent) 50%,
+      transparent 62%
+    );
+    transform: translateX(-120%);
+  }
+  .btn-shine:hover::after {
+    animation: shine-sweep 900ms ease forwards;
+  }
+  @keyframes shine-sweep {
+    to { transform: translateX(120%); }
+  }
+
+  /* ---------- 서비스 미니 데모(자동재생 .demo-live + hover) ---------- */
+  .demo-bar,
+  .demo-block,
+  .demo-link {
+    transition: all 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .svc-card:hover .demo-sync .demo-bar,
+  .svc-card.demo-live .demo-sync .demo-bar,
+  .svc-card:hover .demo-win .demo-bar,
+  .svc-card.demo-live .demo-win .demo-bar {
+    background: var(--color-mint);
+    width: 100%;
+  }
+  .svc-card:hover .demo-sync .demo-link,
+  .svc-card.demo-live .demo-sync .demo-link {
+    background: var(--color-mint);
+  }
+  .svc-card:hover .demo-mvp .demo-block,
+  .svc-card.demo-live .demo-mvp .demo-block {
+    border-style: solid;
+  }
+  .svc-card:hover .demo-mvp .demo-block:nth-child(1),
+  .svc-card.demo-live .demo-mvp .demo-block:nth-child(1) {
+    border-color: var(--color-mint);
+    background: color-mix(in srgb, var(--color-mint) 14%, transparent);
+  }
+  .svc-card:hover .demo-mvp .demo-block:nth-child(2),
+  .svc-card.demo-live .demo-mvp .demo-block:nth-child(2) {
+    border-color: var(--color-cyan);
+    background: color-mix(in srgb, var(--color-cyan) 14%, transparent);
+  }
+  .svc-card:hover .demo-mvp .demo-block:nth-child(3),
+  .svc-card.demo-live .demo-mvp .demo-block:nth-child(3) {
+    border-color: var(--color-lilac);
+    background: color-mix(in srgb, var(--color-lilac) 14%, transparent);
+  }
+  .pipe-node {
+    border: 1px solid var(--color-line);
+    background: var(--color-paper);
+    border-radius: 0.5rem;
+    padding: 0.35rem 0.7rem;
+    font-size: 12px;
+    color: var(--color-ink-dim);
+  }
+  .pipe-runner {
+    position: absolute;
+    top: calc(50% - 3px);
+    left: 12%;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--color-cyan);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-cyan) 80%, transparent);
+    animation: runner-move 3.2s ease-in-out infinite;
+  }
+  @keyframes runner-move {
+    0%, 12% { left: 12%; }
+    44%, 56% { left: 49%; }
+    88%, 100% { left: 84%; }
+  }
+
+  /* ---------- 프로세스 현재 단계 강조 ---------- */
+  .process-step.is-now {
+    border-color: var(--color-mint);
+  }
+  .process-step.is-now > span[aria-hidden] {
+    border-color: var(--color-mint);
+    background: var(--color-mint);
+  }
+
+  /* ---------- 모션 감소 환경: 전 애니메이션 비활성 ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-in {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .hero-blob,
+    .pipe-dot,
+    .pipe-runner,
+    .marquee-track,
+    .wall-col,
+    .scroll-cue i,
+    .text-gradient,
+    .btn-shine::after {
+      animation: none;
+    }
+    .float-panel {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  requestAnimationFrame(() => document.body.classList.add('hero-ready'));
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- 숫자 카운트업(뷰포트 진입 시 1회) ----------
+  document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
+    const target = Number(el.dataset.count || '0');
+    if (reduce) {
+      el.textContent = String(target);
+      return;
+    }
+    const io = new IntersectionObserver((es) => {
+      if (!es[0]?.isIntersecting) return;
+      io.disconnect();
+      el.textContent = '0';
+      const t0 = performance.now();
+      const dur = 1200;
+      const tick = (now: number) => {
+        const p = Math.min(1, (now - t0) / dur);
+        el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+    io.observe(el);
+  });
+
+  // ---------- 히어로 육각 등껍질 캔버스(토큰 런타임 참조) ----------
+  const canvas = document.getElementById('shell-canvas') as HTMLCanvasElement | null;
+  const section = canvas?.parentElement;
+  const ctx = canvas?.getContext('2d');
+  if (canvas && ctx && section) {
+    const styles = getComputedStyle(document.documentElement);
+    const hex2rgb = (h: string) => {
+      const m = h.trim().replace('#', '');
+      return [0, 2, 4].map((i) => parseInt(m.slice(i, i + 2), 16));
+    };
+    const MINT = hex2rgb(styles.getPropertyValue('--color-mint') || '#10c98f');
+    const CYAN = hex2rgb(styles.getPropertyValue('--color-cyan') || '#26aed4');
+    let W = 0, H = 0, dpr = 1, raf = 0, running = false;
+    type Cell = { x: number; y: number; heat: number; phase: number };
+    let cells: Cell[] = [];
+    const mouse = { x: -9999, y: -9999 };
+    const R = 44;
+
+    const build = () => {
+      const rect = section.getBoundingClientRect();
+      W = rect.width;
+      H = rect.height;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      cells = [];
+      const dx = R * 1.732;
+      const dy = R * 1.5;
+      for (let row = 0; row * dy < H + R; row++) {
+        for (let col = 0; col * dx < W + R; col++) {
+          cells.push({
+            x: col * dx + (row % 2 ? dx / 2 : 0),
+            y: row * dy,
+            heat: 0,
+            phase: Math.random() * Math.PI * 2
+          });
+        }
+      }
+    };
+
+    const hex = (x: number, y: number, r: number) => {
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const a = (Math.PI / 3) * i + Math.PI / 6;
+        const px = x + r * Math.cos(a);
+        const py = y + r * Math.sin(a);
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+    };
+
+    const draw = (t: number) => {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      for (const c of cells) {
+        const d = Math.hypot(c.x - mouse.x, c.y - mouse.y);
+        const target = Math.max(0, 1 - d / 230);
+        c.heat += (target - c.heat) * 0.08;
+        const idle = 0.04 + 0.025 * Math.sin(t / 2200 + c.phase);
+        const a = Math.min(0.45, idle + c.heat * 0.4);
+        const [r, g, b] = c.heat > 0.5 ? CYAN : MINT;
+        ctx.strokeStyle = `rgba(${r},${g},${b},${a})`;
+        ctx.lineWidth = 0.8;
+        hex(c.x, c.y, R - 5 + c.heat * 3);
+        ctx.stroke();
+      }
+    };
+
+    const frame = (t: number) => {
+      if (!running) return;
+      draw(t);
+      raf = requestAnimationFrame(frame);
+    };
+    const start = () => {
+      if (running || reduce) return;
+      running = true;
+      raf = requestAnimationFrame(frame);
+    };
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(raf);
+    };
+
+    build();
+    if (reduce) draw(0);
+    const ro = new ResizeObserver(() => {
+      build();
+      if (reduce) draw(0);
+    });
+    ro.observe(section);
+    const io = new IntersectionObserver((es) => (es[0]?.isIntersecting ? start() : stop()));
+    io.observe(section);
+    section.addEventListener('pointermove', (e) => {
+      const rect = section.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    });
+    section.addEventListener('pointerleave', () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    });
+  }
+
+  // ---------- 히어로 플로팅 패널 포인터 시차 ----------
+  const hero = document.getElementById('hero');
+  const panels = document.querySelectorAll<HTMLElement>('.float-panel');
+  if (hero && panels.length && !reduce && window.matchMedia('(pointer: fine)').matches) {
+    panels.forEach((p) => p.style.setProperty('--depth', p.dataset.depth || '12'));
+    let raf2 = 0;
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      const hx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+      const hy = ((e.clientY - r.top) / r.height - 0.5) * 2;
+      cancelAnimationFrame(raf2);
+      raf2 = requestAnimationFrame(() => {
+        panels.forEach((p) => {
+          p.style.setProperty('--hx', hx.toFixed(3));
+          p.style.setProperty('--hy', hy.toFixed(3));
+        });
+      });
+    });
+    hero.addEventListener('pointerleave', () => {
+      panels.forEach((p) => {
+        p.style.setProperty('--hx', '0');
+        p.style.setProperty('--hy', '0');
+      });
+    });
+  }
+
+  // ---------- CTA 마그네틱(±5px, pointer:fine 전용) ----------
+  if (!reduce && window.matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll<HTMLElement>('.btn-magnet').forEach((btn) => {
+      btn.addEventListener('pointermove', (e) => {
+        const r = btn.getBoundingClientRect();
+        const mx = ((e.clientX - r.left) / r.width - 0.5) * 10;
+        const my = ((e.clientY - r.top) / r.height - 0.5) * 8;
+        btn.style.transform = `translate(${mx.toFixed(1)}px, ${my.toFixed(1)}px)`;
+      });
+      btn.addEventListener('pointerleave', () => {
+        btn.style.transform = '';
+      });
+    });
+  }
+
+  // ---------- 서비스 데모 자동재생(뷰포트 진입 시) ----------
+  const svcIO = new IntersectionObserver(
+    (es) => es.forEach((e) => e.target.classList.toggle('demo-live', e.isIntersecting)),
+    { threshold: 0.5 }
+  );
+  document.querySelectorAll('.svc-card').forEach((c) => svcIO.observe(c));
+
+  // ---------- 프로세스 진행선 + 현재 단계 ----------
+  const list = document.getElementById('process-list');
+  const fill = document.getElementById('process-fill');
+  const nowN = document.getElementById('process-now-n');
+  const nowT = document.getElementById('process-now-t');
+  const stepEls = document.querySelectorAll<HTMLElement>('.process-step');
+  if (list && fill && stepEls.length) {
+    const stepIO = new IntersectionObserver(
+      (es) => {
+        es.forEach((e) => {
+          if (!e.isIntersecting) return;
+          stepEls.forEach((s) => s.classList.remove('is-now'));
+          const el = e.target as HTMLElement;
+          el.classList.add('is-now');
+          if (nowN && nowT) {
+            nowN.textContent = el.dataset.n || '';
+            nowT.textContent = el.dataset.t || '';
+          }
+          const idx = Array.from(stepEls).indexOf(el);
+          fill.style.height = `${((idx + 1) / stepEls.length) * 100}%`;
+        });
+      },
+      { rootMargin: '-40% 0px -50% 0px' }
+    );
+    stepEls.forEach((s) => stepIO.observe(s));
+    if (reduce) fill.style.transition = 'none';
+  }
+</script>
