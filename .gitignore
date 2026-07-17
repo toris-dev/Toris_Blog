@@ -1,51 +1,43 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-.yarn/install-state.gz
-.pnpm-store/
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
+.astro/
+.claude/
+.cursor/**
+.data/
 .DS_Store
+.env*
+.env*.*
+.gstack/
+.pnp.js
+.pnpm-store/
+.superpowers/
+.vercel
+.worktrees/
+.wrangler/
+.yarn/install-state.gz
 *.pem
-
+*.tsbuildinfo
+/.next/
+/.pnp
+/build
+/coverage
+/node_modules
+/out/
 # debug
+# dependencies
+# file-based storage (views, likes)
+# local env files
+# misc
+# next.js
+# production
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# testing
+# typescript
+# vercel
+dist/
+docs/**
+next-env.d.ts
+node_modules/
 npm-debug.log*
+public/**/.obsidian/**
 yarn-debug.log*
 yarn-error.log*
-
-# local env files
-.env*.*
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-public/**/.obsidian/**
-
-.cursor/**
-
-docs/**
-
-# file-based storage (views, likes)
-.data/
-.env*
-.gstack/
-.claude/
-.worktrees/
-.superpowers/

@@ -12,7 +12,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const HOST = 'toris.kr';
 const SITEMAP = `https://${HOST}/sitemap.xml`;
 
-const keyLine = readFileSync(join(root, 'astro', '.indexnow'), 'utf8');
+const keyLine = readFileSync(join(root, '.indexnow'), 'utf8');
 const key = keyLine.match(/INDEXNOW_KEY=(\w+)/)?.[1];
 if (!key) {
   console.error('INDEXNOW_KEY를 찾을 수 없습니다 (astro/.indexnow)');

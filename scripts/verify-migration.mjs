@@ -2,7 +2,7 @@
 /**
  * verify-migration.mjs — Next.js → Astro 마이그레이션 검증 스크립트
  *
- * 마이그레이션 '전'(public/markdown/**\/*.md)과 '후'(astro/dist/) 산출물을 비교해
+ * 마이그레이션 '전'(public/markdown/**\/*.md)과 '후'(dist/) 산출물을 비교해
  * URL(slug), 메타데이터, 게시글 수가 보존되었는지 검증한다.
  *
  * 실행: node scripts/verify-migration.mjs  (repo root 또는 astro/ 어디서든 가능)
@@ -134,7 +134,7 @@ function buildExpected() {
 }
 
 // ---------------------------------------------------------------------------
-// 2. BUILT OUTPUT — astro/dist/posts/*/index.html 스캔 및 메타 추출
+// 2. BUILT OUTPUT — dist/posts/*/index.html 스캔 및 메타 추출
 // ---------------------------------------------------------------------------
 function decodeEntities(str) {
   return (str || '')
@@ -338,12 +338,12 @@ function checkExtras(expectedCount) {
   check(
     fs.existsSync(path.join(DIST_DIR, 'blog', 'index.html')) ||
       fs.existsSync(path.join(DIST_DIR, 'blog.html')),
-    '목록 페이지 존재 (astro/dist/blog[.html|/index.html])'
+    '목록 페이지 존재 (dist/blog[.html|/index.html])'
   );
 
   const sitemapIndexPath = path.join(DIST_DIR, 'sitemap-index.xml');
   const hasSitemapIndex = fs.existsSync(sitemapIndexPath);
-  check(hasSitemapIndex, 'sitemap 존재 (astro/dist/sitemap-index.xml)');
+  check(hasSitemapIndex, 'sitemap 존재 (dist/sitemap-index.xml)');
 
   if (hasSitemapIndex) {
     // sitemap-*.xml 전체에서 /posts/ URL 수 집계
@@ -364,7 +364,7 @@ function checkExtras(expectedCount) {
 
   check(
     fs.existsSync(path.join(DIST_DIR, 'robots.txt')),
-    'robots.txt 존재 (astro/dist/robots.txt)'
+    'robots.txt 존재 (dist/robots.txt)'
   );
 }
 
@@ -398,7 +398,7 @@ function main() {
 
   // 2. 마이그레이션 '후' — Astro 빌드 산출물
   const actual = scanBuiltPosts();
-  console.log(`[빌드] astro/dist/posts/ 하위 게시글 페이지 ${actual.size}개`);
+  console.log(`[빌드] dist/posts/ 하위 게시글 페이지 ${actual.size}개`);
 
   // 3. 비교
   compareCounts(expected, actual);
