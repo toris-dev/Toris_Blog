@@ -20,22 +20,28 @@ export default function CookieConsent() {
 
   const handleAccept = () => {
     localStorage.setItem('cookie-consent', 'accepted');
-    localStorage.setItem('cookie-settings', JSON.stringify({
-      essential: true,
-      analytics: true,
-      marketing: true
-    }));
+    localStorage.setItem(
+      'cookie-settings',
+      JSON.stringify({
+        essential: true,
+        analytics: true,
+        marketing: true
+      })
+    );
     localStorage.setItem('cookie-consent-date', new Date().toISOString());
     setShowBanner(false);
   };
 
   const handleReject = () => {
     localStorage.setItem('cookie-consent', 'rejected');
-    localStorage.setItem('cookie-settings', JSON.stringify({
-      essential: true,
-      analytics: false,
-      marketing: false
-    }));
+    localStorage.setItem(
+      'cookie-settings',
+      JSON.stringify({
+        essential: true,
+        analytics: false,
+        marketing: false
+      })
+    );
     localStorage.setItem('cookie-consent-date', new Date().toISOString());
     setShowBanner(false);
   };
@@ -51,50 +57,39 @@ export default function CookieConsent() {
   return (
     <>
       {showBanner && (
-        <div className="fixed inset-x-0 bottom-0 z-50 animate-slide-up">
-          <div className="container mx-auto p-4">
-            <div className="mx-auto max-w-4xl rounded-lg border border-border bg-card p-6 shadow-lg backdrop-blur-sm">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-start gap-4">
-                  <FaCookieBite className="mt-1 size-6 shrink-0 text-primary" />
-                  <div className="flex-1">
-                    <h3 className="mb-2 text-lg font-semibold text-card-foreground">
-                      쿠키 사용 동의
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      이 웹사이트는 최적의 경험을 제공하기 위해 쿠키를 사용합니다.
-                      광고 및 분석을 위한 쿠키 사용에 동의하시겠습니까?
-                    </p>
-                    <button
-                      onClick={handleManage}
-                      className="mt-2 text-xs text-primary underline hover:text-primary/80"
-                    >
-                      쿠키 설정 관리
-                    </button>
-                  </div>
-                </div>
-                <div className="flex shrink-0 gap-2 sm:flex-col">
-                  <Button
-                    onClick={handleAccept}
-                    className="w-full sm:w-auto"
-                    variant="default"
-                  >
-                    동의
-                  </Button>
-                  <Button
-                    onClick={handleReject}
-                    className="w-full sm:w-auto"
-                    variant="outline"
-                  >
-                    거부
-                  </Button>
-                </div>
-              </div>
+        <div
+          role="region"
+          aria-label="쿠키 사용 안내"
+          className="fixed inset-x-4 bottom-20 z-[60] animate-slide-up md:inset-x-auto md:bottom-4 md:right-4 md:w-[min(28rem,calc(100vw-2rem))]"
+        >
+          <div className="grid grid-cols-[auto_1fr_auto_auto] items-center gap-2 rounded-2xl border border-border bg-card/95 p-3 shadow-xl backdrop-blur-md">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
+              <FaCookieBite className="size-3.5 text-primary" />
+            </span>
+            <div className="min-w-0">
+              <h3 className="truncate text-xs font-bold text-card-foreground">
+                쿠키 사용 안내
+              </h3>
+              <button
+                onClick={handleManage}
+                className="mt-0.5 text-[11px] font-medium text-muted-foreground underline underline-offset-2 transition-colors hover:text-foreground"
+              >
+                설정 관리
+              </button>
             </div>
+            <Button onClick={handleReject} size="sm" variant="outline">
+              거부
+            </Button>
+            <Button onClick={handleAccept} size="sm" variant="default">
+              동의
+            </Button>
           </div>
         </div>
       )}
-      <CookieSettingModal isOpen={showSettingModal} onClose={() => setShowSettingModal(false)} />
+      <CookieSettingModal
+        isOpen={showSettingModal}
+        onClose={() => setShowSettingModal(false)}
+      />
     </>
   );
 }

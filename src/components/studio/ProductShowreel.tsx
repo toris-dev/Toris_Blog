@@ -18,8 +18,8 @@ const reelProjects = [
     slug: '21n-apps',
     name: '예쁜계약',
     kind: 'B2B2C 전자계약 플랫폼',
-    image: '/images/projects/21n-apps/graphic.png',
-    imageFit: 'contain',
+    image: '/images/projects/21n-apps/cover.svg',
+    imageFit: 'cover',
     background: 'var(--toris-color-graphite)'
   },
   {

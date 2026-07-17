@@ -59,7 +59,7 @@ it('switches the visible product when a project tab is selected', () => {
 
   expect(
     screen.getByRole('img', { name: '예쁜계약 프로젝트 화면' })
-  ).toHaveAttribute('src', '/images/projects/21n-apps/graphic.png');
+  ).toHaveAttribute('src', '/images/projects/21n-apps/cover.svg');
 
   const firstTab = screen.getByRole('tab', { name: /예쁜계약/ });
   const snapMateTab = screen.getByRole('tab', { name: /SnapMate/ });

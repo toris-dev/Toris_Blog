@@ -155,7 +155,7 @@ function StudioHero({ projectCount }: { projectCount: number }) {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-32 top-14 -z-10 size-[34rem] opacity-55 sm:-right-24 sm:size-[44rem] lg:right-[2%] lg:top-4 lg:size-[52rem] lg:opacity-65"
+        className="pointer-events-none absolute -right-36 top-48 -z-10 size-[28rem] opacity-35 sm:-right-24 sm:top-14 sm:size-[44rem] sm:opacity-55 lg:right-[2%] lg:top-4 lg:size-[52rem] lg:opacity-65"
         data-testid="product-flow-signal"
         data-brand-signature="t-reactor"
       >
@@ -363,50 +363,62 @@ export function ServicesSection() {
           description="서비스를 선택해 보세요. 사용자가 만나는 인터페이스부터 데이터와 배포 환경까지, 하나의 제품 흐름으로 연결합니다."
         />
 
-        <div className="mt-16 grid gap-8 lg:grid-cols-[minmax(0,0.82fr)_minmax(28rem,1.18fr)] lg:items-start">
-          <div className="border-t border-[var(--toris-border)]">
-            {studioServices.map((service, index) => {
-              const Icon = SERVICE_ICONS[service.id];
-              const isActive = service.id === activeService.id;
+        <div className="mt-12 grid gap-8 sm:mt-16 lg:grid-cols-[minmax(0,0.82fr)_minmax(28rem,1.18fr)] lg:items-start">
+          <div>
+            <p className="mb-3 flex items-center gap-2 font-mono text-[11px] font-bold tracking-widest text-[var(--toris-signal-text)]">
+              <span className="size-1.5 rounded-full bg-[var(--toris-signal)]" />
+              탭하거나 가리켜 상세 보기
+            </p>
+            <div className="border-t border-[var(--toris-border)]">
+              {studioServices.map((service, index) => {
+                const Icon = SERVICE_ICONS[service.id];
+                const isActive = service.id === activeService.id;
 
-              return (
-                <article key={service.id}>
-                  <button
-                    type="button"
-                    onClick={() => setActiveServiceId(service.id)}
-                    onMouseEnter={() => setActiveServiceId(service.id)}
-                    onFocus={() => setActiveServiceId(service.id)}
-                    aria-pressed={isActive}
-                    className="group grid min-h-24 w-full cursor-pointer grid-cols-[2.5rem_1fr_auto] items-center gap-3 border-b border-[var(--toris-border)] py-5 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)] sm:grid-cols-[3rem_1fr_auto]"
-                  >
-                    <span
-                      className={`font-mono text-[11px] font-bold transition-colors duration-200 ${isActive ? 'text-[var(--toris-signal-text)]' : 'text-muted-foreground'}`}
+                return (
+                  <article key={service.id}>
+                    <button
+                      type="button"
+                      onClick={() => setActiveServiceId(service.id)}
+                      onMouseEnter={() => setActiveServiceId(service.id)}
+                      onFocus={() => setActiveServiceId(service.id)}
+                      aria-pressed={isActive}
+                      className={`group relative grid min-h-24 w-full cursor-pointer grid-cols-[2.5rem_1fr_auto] items-center gap-3 border-b border-[var(--toris-border)] py-5 text-left transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)] sm:grid-cols-[3rem_1fr_auto] ${isActive ? 'bg-[color-mix(in_srgb,var(--toris-signal)_7%,transparent)]' : 'hover:bg-[color-mix(in_srgb,var(--toris-surface)_55%,transparent)]'}`}
                     >
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <span>
+                      {isActive ? (
+                        <span
+                          aria-hidden
+                          className="absolute inset-y-3 left-0 w-0.5 rounded-full bg-[var(--toris-signal)]"
+                        />
+                      ) : null}
                       <span
-                        className={`block text-2xl font-black tracking-[-0.04em] transition-colors duration-200 sm:text-3xl ${isActive ? 'text-foreground' : 'text-muted-foreground group-hover:text-foreground'}`}
+                        className={`font-mono text-[11px] font-bold transition-colors duration-200 ${isActive ? 'text-[var(--toris-signal-text)]' : 'text-muted-foreground'}`}
                       >
-                        {service.title}
+                        {String(index + 1).padStart(2, '0')}
                       </span>
-                      <span className="mt-1 block text-xs font-medium text-[var(--toris-ink-muted)]">
-                        {service.label}
+                      <span>
+                        <span
+                          className={`block text-2xl font-black tracking-[-0.04em] transition-colors duration-200 sm:text-3xl ${isActive ? 'text-foreground' : 'text-muted-foreground group-hover:text-foreground'}`}
+                        >
+                          {service.title}
+                        </span>
+                        <span className="mt-1 block text-xs font-medium text-[var(--toris-ink-muted)]">
+                          {service.label}
+                        </span>
                       </span>
-                    </span>
-                    <span
-                      className={`flex size-11 items-center justify-center rounded-full border transition duration-200 ${
-                        isActive
-                          ? 'border-primary bg-primary text-primary-foreground'
-                          : 'border-[var(--toris-control-border)] text-[var(--toris-ink-muted)] group-hover:border-[var(--toris-system)] group-hover:text-[var(--toris-ink)]'
-                      }`}
-                    >
-                      <Icon className="size-4" />
-                    </span>
-                  </button>
-                </article>
-              );
-            })}
+                      <span
+                        className={`flex size-11 items-center justify-center rounded-full border transition duration-200 ${
+                          isActive
+                            ? 'border-primary bg-primary text-primary-foreground'
+                            : 'border-[var(--toris-control-border)] text-[var(--toris-ink-muted)] group-hover:border-[var(--toris-system)] group-hover:text-[var(--toris-ink)]'
+                        }`}
+                      >
+                        <Icon className="size-4" />
+                      </span>
+                    </button>
+                  </article>
+                );
+              })}
+            </div>
           </div>
 
           <div className="overflow-hidden rounded-2xl border border-[var(--toris-border)] bg-[var(--toris-surface)] p-5 shadow-[var(--toris-shadow-sm)] sm:p-8 lg:sticky lg:top-24">
@@ -796,8 +808,14 @@ export function ProcessSection() {
                     onFocus={() => setActiveStepIndex(index)}
                     onClick={() => setActiveStepIndex(index)}
                     aria-pressed={isActive}
-                    className="group grid min-h-32 w-full cursor-pointer grid-cols-[3rem_1fr_auto] items-center gap-3 border-b border-[var(--toris-border)] py-5 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)] sm:grid-cols-[4rem_1fr_auto]"
+                    className={`group relative grid min-h-32 w-full cursor-pointer grid-cols-[3rem_1fr_auto] items-center gap-3 border-b border-[var(--toris-border)] py-5 text-left transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--toris-focus)] sm:grid-cols-[4rem_1fr_auto] ${isActive ? 'bg-[color-mix(in_srgb,var(--toris-signal)_7%,transparent)]' : 'hover:bg-[color-mix(in_srgb,var(--toris-surface)_55%,transparent)]'}`}
                   >
+                    {isActive ? (
+                      <span
+                        aria-hidden
+                        className="absolute inset-y-4 left-0 w-0.5 rounded-full bg-[var(--toris-signal)]"
+                      />
+                    ) : null}
                     <span
                       className={`font-mono text-[11px] font-bold transition-colors duration-200 ${isActive ? 'text-[var(--toris-signal-text)]' : 'text-[var(--toris-ink-muted)]'}`}
                     >
@@ -932,7 +950,7 @@ function StudioContactCta() {
 
 export function StudioPageCanvas({ children }: { children: ReactNode }) {
   return (
-    <div className="toris-studio relative left-1/2 -mb-8 -mt-24 w-screen -translate-x-1/2 overflow-hidden bg-[var(--toris-canvas)] text-[var(--toris-ink)]">
+    <div className="toris-studio relative left-1/2 -mb-8 -mt-24 w-screen !max-w-none -translate-x-1/2 overflow-hidden bg-[var(--toris-canvas)] text-[var(--toris-ink)]">
       {children}
     </div>
   );

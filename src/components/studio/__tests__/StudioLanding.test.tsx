@@ -74,7 +74,14 @@ const posts = [
 ];
 
 it('presents a service business before the blog archive', () => {
-  render(<StudioLanding projectCount={25} latestPosts={posts} />);
+  const { container } = render(
+    <StudioLanding projectCount={25} latestPosts={posts} />
+  );
+
+  expect(container.querySelector('.toris-studio')).toHaveClass(
+    'w-screen',
+    '!max-w-none'
+  );
 
   expect(
     screen.getByRole('heading', {
@@ -110,6 +117,7 @@ it('presents a service business before the blog archive', () => {
     screen.getByText('TORIS · Product Engineering Lab')
   ).toBeInTheDocument();
   expect(screen.getByText('Build slot · Available')).toBeInTheDocument();
+  expect(screen.getByText('탭하거나 가리켜 상세 보기')).toBeInTheDocument();
   expect(screen.getByTestId('product-flow-signal')).toHaveAttribute(
     'data-brand-signature',
     't-reactor'
