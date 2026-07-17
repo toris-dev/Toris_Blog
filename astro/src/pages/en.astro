@@ -7,6 +7,7 @@ import { COMPANY } from '../lib/site';
 import { fileBaseName, formatDate, toPlainExcerpt } from '../lib/slug';
 import { computeStats } from '../lib/stats';
 import { projects } from '../../../src/data/projects';
+import { enCat, enName, enTagline } from '../lib/en';
 
 const live = projects.filter((p) => p.status === '운영 중');
 const featured = live.slice(0, 4);
@@ -37,63 +38,63 @@ projects.forEach((p, i) => wallCols[i % 3].push(p));
 const services = [
   {
     label: 'WEB · MOBILE',
-    title: '웹 · 모바일 제품 개발',
-    problem: '아이디어와 요구사항은 있는데, 끝까지 만들어 줄 팀이 없다.',
-    outcome: '스토어와 브라우저에 실제로 올라가는 제품',
-    scope: '기획 · 디자인 · 개발 · 배포 · 운영',
+    title: 'Web · Mobile Product Development',
+    problem: 'You have the idea and requirements, but no team to finish it.',
+    outcome: 'Products that actually ship to stores and browsers',
+    scope: 'Planning · Design · Build · Deploy · Operate',
     href: '/contact',
-    linkLabel: '프로젝트 이야기하기',
+    linkLabel: 'Start a conversation',
     demo: 'sync',
     wide: true
   },
   {
     label: 'MVP',
-    title: 'MVP · 프로토타입',
-    problem: '될지 안 될지, 시장에서 빠르게 검증이 필요하다.',
-    outcome: '몇 주 안에 만질 수 있는 최소 제품',
-    scope: '핵심 플로우 · 랜딩 · 검증 지표',
+    title: 'MVP · Prototype',
+    problem: 'You need to validate the idea in the market, fast.',
+    outcome: 'A tangible minimum product within weeks',
+    scope: 'Core flow · Landing · Validation metrics',
     href: '/process',
-    linkLabel: '진행 방식 보기',
+    linkLabel: 'See how we work',
     demo: 'mvp',
     wide: false
   },
   {
     label: 'AUTOMATION',
-    title: 'AI · 업무 자동화',
-    problem: '반복 작업에 사람의 시간이 계속 새고 있다.',
-    outcome: '수집 → 요약 → 발행까지 도는 파이프라인',
-    scope: 'LLM 워크플로 · 봇 · 백오피스',
+    title: 'AI · Workflow Automation',
+    problem: 'Repetitive work keeps draining human hours.',
+    outcome: 'Pipelines that collect → summarize → publish',
+    scope: 'LLM workflows · Bots · Back office',
     href: '/contact',
-    linkLabel: '자동화 상담하기',
+    linkLabel: 'Talk automation',
     demo: 'pipe',
     wide: false
   },
   {
     label: 'DESKTOP',
-    title: '데스크탑 애플리케이션',
-    problem: '웹만으로는 부족한 로컬 파일·시스템 접근이 필요하다.',
-    outcome: 'macOS·Windows에 설치되는 네이티브 앱',
-    scope: 'Tauri · Rust · 자동 업데이트 · 릴리스 배포',
+    title: 'Desktop Applications',
+    problem: 'You need local file & system access the web cannot give.',
+    outcome: 'Native apps installed on macOS & Windows',
+    scope: 'Tauri · Rust · Auto-update · Release delivery',
     href: '/contact',
-    linkLabel: '데스크탑 앱 상담하기',
+    linkLabel: 'Talk desktop apps',
     demo: 'win',
     wide: true
   }
 ] as const;
 
 const steps = [
-  { n: '01', t: '문의 · 상담', d: '만들고 싶은 것과 제약을 듣습니다.', out: '24시간 이내 1차 회신 · NDA 선택 가능' },
-  { n: '02', t: '스코핑', d: '범위·일정·비용을 문서로 확정합니다.', out: '범위 문서 · 일정표 · 견적' },
-  { n: '03', t: '설계 · 프로토타입', d: '만질 수 있는 초안으로 방향을 검증합니다.', out: '동작하는 프로토타입' },
-  { n: '04', t: '개발 · 검증', d: '주 단위로 동작하는 결과물을 공유합니다.', out: '주간 데모 · 스테이징 환경 · 변경 이력' },
-  { n: '05', t: '출시 · 운영', d: '배포 후에도 지표와 함께 개선을 잇습니다.', out: '배포 · 모니터링 · 개선 사이클' }
+  { n: '01', t: 'Inquiry · Consultation', d: 'We listen to what you want to build and your constraints.', out: 'First reply within 24h · NDA on request' },
+  { n: '02', t: 'Scoping', d: 'Scope, timeline, and cost — fixed in writing.', out: 'Scope doc · Schedule · Quote' },
+  { n: '03', t: 'Design · Prototype', d: 'We validate direction with a draft you can touch.', out: 'A working prototype' },
+  { n: '04', t: 'Build · Verify', d: 'Working results shared every week.', out: 'Weekly demos · Staging · Changelog' },
+  { n: '05', t: 'Launch · Operate', d: 'Improvement continues with metrics after deploy.', out: 'Deploy · Monitoring · Iteration' }
 ] as const;
 
 // 밸류 서클 — 거북이 방식의 세 축
 const values = [
-  { en: 'STEADY', ko: '꾸준함', d: '거북이의 걸음 — 서두르지 않고, 멈추지도 않습니다.' },
-  { en: 'COMPLETE', ko: '완성', d: '시작한 제품은 반드시 출시까지 갑니다.' },
-  { en: 'OPERATE', ko: '운영', d: '배포는 끝이 아니라 시작 — 개선까지 책임집니다.' }
+  { en: 'STEADY', ko: 'No rush, no stopping', d: "Slow like a turtle — but never standing still" },
+  { en: 'COMPLETE', ko: 'What we start, we ship', d: 'Every product we begin reaches launch' },
+  { en: 'OPERATE', ko: 'Beyond the launch', d: 'We own the improvements after deploy' }
 ] as const;
 
 // 서비스 링크(웹사이트·스토어·릴리스 다운로드)만 클릭 허용.
@@ -102,28 +103,12 @@ const isServiceLink = (url: string) =>
 ---
 
 <Base
-  title="토리스 (Toris) — 아이디어를 출시 가능한 제품으로"
-  description={COMPANY.description}
-  path="/"
+  title="Toris — Ideas into Shippable Products | Product Engineering Studio, Seoul"
+  description="Toris is a one-person software studio in Seoul run by a founder-engineer. We build and operate our own products — MemeCatch (catchmeme.com), bubbleBible — and take client ideas from planning to launch."
+  path="/en"
 >
-  <!-- ============ 파이프라인 내레이터 — 스크롤 따라 순차 점등 ============ -->
-  <div
-    id="pipe-nav"
-    class="glass fixed inset-x-0 top-16 z-40 border-x-0"
-    aria-hidden="true"
-  >
-    <div class="mx-auto flex max-w-6xl items-center justify-end px-5 py-2">
-      <div id="pipe-nav-stages" class="flex gap-3 font-mono text-[9px] tracking-[0.18em] sm:gap-5 sm:text-[10px]">
-        <span class="pipe-stage on">COMMIT</span>
-        <span class="pipe-stage">BUILD</span>
-        <span class="pipe-stage">DEPLOY</span>
-        <span class="pipe-stage">OPERATE</span>
-      </div>
-    </div>
-  </div>
-
   <!-- ====================== S1. Hero — 글로우 인트로 ====================== -->
-  <section id="hero" class="relative overflow-hidden" data-stage="0">
+  <section id="hero" class="relative overflow-hidden">
     <canvas
       id="shell-canvas"
       class="pointer-events-none absolute inset-0 h-full w-full"
@@ -150,15 +135,15 @@ const isServiceLink = (url: string) =>
         class="hero-in font-display mt-6 break-keep text-[clamp(2.6rem,7.5vw,5.75rem)] leading-[1.12] text-ink"
         style="transition-delay: 240ms"
       >
-        아이디어를<br />
-        <span class="text-gradient">출시 가능한 제품</span>으로.
+        Ideas into<br />
+        <span class="text-gradient">shippable products</span>.
       </h1>
       <p
         class="hero-in mx-auto mt-7 max-w-xl break-keep text-base leading-relaxed text-ink-dim sm:text-lg"
         style="transition-delay: 360ms"
       >
-        토리스는 웹·모바일·AI 자동화 제품을 기획부터 출시와 운영까지 책임지는
-        소프트웨어 스튜디오입니다.
+        Toris is a software studio that takes web, mobile, and AI automation
+        products from planning to launch and operation.
       </p>
 
       <div class="hero-in mt-11 flex flex-wrap items-center justify-center gap-4" style="transition-delay: 480ms">
@@ -166,7 +151,7 @@ const isServiceLink = (url: string) =>
           href="/contact"
           class="btn-magnet btn-shine relative inline-flex h-13 items-center gap-3 overflow-hidden rounded-xl bg-ink px-8 py-3.5 text-[15px] font-semibold text-paper transition-colors duration-300 hover:bg-mint focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint"
         >
-          프로젝트 이야기하기
+          Start a conversation
           <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
             <path d="M5 12h14m-6-6 6 6-6 6"></path>
           </svg>
@@ -175,7 +160,7 @@ const isServiceLink = (url: string) =>
           href="/projects"
           class="inline-flex h-13 items-center gap-2 rounded-xl border border-line bg-card/60 px-7 py-3.5 text-[15px] font-medium text-ink-dim transition-all duration-300 hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
         >
-          만든 제품 살펴보기
+          Explore our products
         </a>
       </div>
 
@@ -188,6 +173,10 @@ const isServiceLink = (url: string) =>
           <span>COMMIT</span><span>BUILD</span><span>DEPLOY</span><span>OPERATE</span>
         </div>
       </div>
+
+      <p class="hero-in mt-6" style="transition-delay: 560ms">
+        <a href="/?lang=ko" class="font-mono text-xs text-muted underline underline-offset-4 transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint">한국어로 보기</a>
+      </p>
 
       <!-- 스크롤 큐 -->
       <div class="hero-in absolute bottom-8 left-1/2 -translate-x-1/2" style="transition-delay: 720ms" aria-hidden="true">
@@ -217,54 +206,28 @@ const isServiceLink = (url: string) =>
         </ul>
       </div>
       <div class="float-panel glass absolute left-[5%] top-[58%] w-72 rounded-2xl p-4 font-mono text-[12px] leading-6" data-depth="26">
-        <div class="mb-2 flex gap-1.5" aria-hidden="true">
-          <i class="block size-2 rounded-full bg-coral/70"></i><i class="block size-2 rounded-full bg-line"></i><i class="block size-2 rounded-full bg-line"></i>
-        </div>
-        <div id="hero-term" role="img" aria-label="배포 터미널: pnpm run deploy 실행, 30페이지 빌드, 프로덕션 배포 완료">
-          <p class="term-line text-muted" data-text="$ pnpm run deploy"></p>
-          <p class="term-line text-ink-dim" data-text="✓ 30 pages built"></p>
-          <p class="term-line text-mint" data-text="▲ deployed to production"></p>
-          <p class="term-prompt hidden text-muted">$ <span class="term-cursor inline-block h-3 w-1.5 translate-y-0.5 bg-mint"></span></p>
-        </div>
+        <p class="text-muted">$ pnpm run deploy</p>
+        <p class="text-ink-dim">✓ 30 pages built</p>
+        <p class="text-mint">▲ deployed to production</p>
       </div>
     </div>
   </section>
 
   <!-- ==================== 운영 제품 마퀴(실데이터) ==================== -->
-  <div class="marquee relative border-y border-line bg-paper-2/70 py-3.5">
-    <p class="pointer-events-none absolute left-5 top-1/2 z-10 hidden -translate-y-1/2 font-mono text-[9px] tracking-[0.3em] text-muted md:block" aria-hidden="true">
-      DEPLOYMENTS
-    </p>
-    <div class="overflow-hidden">
-      <div class="marquee-track flex w-max">
-        {
-          [0, 1].map((k) => (
-            <div class="marquee-seg flex shrink-0 items-center" aria-hidden={k === 1}>
-              {projects.map((p) => (
-                <button
-                  type="button"
-                  class="mq-item mx-6 inline-flex items-center gap-2.5 font-mono text-[12px] tracking-[0.22em] text-muted transition-colors hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
-                  data-name={p.name}
-                  data-cat={p.category}
-                  data-status={p.status}
-                  data-url={isServiceLink(p.github) ? p.github : ''}
-                >
-                  <i class:list={['size-1 rounded-full', p.status === '운영 중' ? 'bg-mint' : 'bg-line']} aria-hidden="true" />
-                  {p.name.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          ))
-        }
-      </div>
-    </div>
-    <div id="mq-pop" class="rounded-xl border border-line bg-card p-4 shadow-[0_20px_50px_-16px_color-mix(in_srgb,#000_75%,transparent)]">
-      <p id="mq-pop-cat" class="font-mono text-[9px] tracking-[0.2em] text-muted"></p>
-      <p class="mt-1 flex items-center justify-between gap-3">
-        <span id="mq-pop-name" class="font-semibold text-ink"></span>
-        <span id="mq-pop-status" class="font-mono text-[10px]"></span>
-      </p>
-      <a id="mq-pop-link" href="#" target="_blank" rel="noopener noreferrer" class="mt-2 hidden text-xs text-mint underline underline-offset-4">서비스 열기 ↗</a>
+  <div class="marquee overflow-hidden border-y border-line bg-paper-2/70 py-3.5" aria-hidden="true">
+    <div class="marquee-track flex w-max">
+      {
+        [0, 1].map(() => (
+          <div class="marquee-seg flex shrink-0 items-center">
+            {live.map((p) => (
+              <span class="mx-7 inline-flex items-center gap-2.5 font-mono text-[12px] tracking-[0.22em] text-muted">
+                <i class="size-1 rounded-full bg-mint" />
+                {enName(p).toUpperCase()}
+              </span>
+            ))}
+          </div>
+        ))
+      }
     </div>
   </div>
 
@@ -274,12 +237,12 @@ const isServiceLink = (url: string) =>
     <div class="relative mx-auto max-w-6xl px-5 py-28 text-center">
       <p class="reveal font-mono text-[11px] tracking-[0.3em] text-muted">OUR PROMISE</p>
       <p class="reveal font-display mt-8 break-keep text-[clamp(2.4rem,7vw,5.5rem)] leading-[1.18]">
-        <span class="text-ink-dim">서두르지 않되,</span><br />
-        <span class="text-gradient">반드시 출시합니다</span>
+        <span class="text-ink-dim">We never rush —</span><br />
+        <span class="text-gradient">and we always ship</span>
       </p>
       <p class="reveal mx-auto mt-8 max-w-lg break-keep text-[15px] leading-relaxed text-muted">
-        거북이의 걸음으로 — 조용히, 그러나 멈추지 않고. 계약보다 결과물이,
-        말보다 배포가 먼저입니다.
+        At a turtle's pace — quietly, but never stopping. Deliverables over
+        contracts, deployments over words.
       </p>
     </div>
   </section>
@@ -295,8 +258,8 @@ const isServiceLink = (url: string) =>
               <div class="flex shrink-0 flex-col gap-4">
                 {col.map((p) => (
                   <div class="rounded-2xl border border-line bg-card p-5">
-                    <p class="font-mono text-[9px] tracking-[0.18em] text-muted uppercase">{p.category}</p>
-                    <p class="mt-1.5 truncate text-sm font-semibold text-ink-dim">{p.name}</p>
+                    <p class="font-mono text-[9px] tracking-[0.18em] text-muted uppercase">{enCat(p)}</p>
+                    <p class="mt-1.5 truncate text-sm font-semibold text-ink-dim">{enName(p)}</p>
                   </div>
                 ))}
               </div>
@@ -311,7 +274,7 @@ const isServiceLink = (url: string) =>
     <div class="relative mx-auto max-w-6xl px-5 py-40 text-center sm:py-48">
       <p class="reveal font-mono text-[11px] tracking-[0.3em] text-mint">SINCE {sinceYear} — KEEP SHIPPING</p>
       <h2 class="reveal font-display mx-auto mt-6 max-w-3xl break-keep text-[clamp(1.9rem,5vw,3.4rem)] leading-[1.25] text-ink">
-        밈캐치부터 TraceDesk까지,<br />직접 만들어 운영한 여정
+        From MemeCatch to TraceDesk —<br />built and operated by ourselves
       </h2>
       <dl class="reveal mx-auto mt-14 flex max-w-2xl flex-wrap items-end justify-center gap-x-16 gap-y-8">
         <div>
@@ -334,19 +297,19 @@ const isServiceLink = (url: string) =>
   <section class="relative overflow-hidden">
     <div class="mx-auto max-w-6xl px-5 py-28 sm:py-36">
       <p class="reveal text-center font-mono text-[11px] tracking-[0.3em] text-muted">HOW WE MOVE</p>
-      <div class="mt-14 grid gap-4 sm:grid-cols-3">
+      <div class="mt-16 flex flex-col items-center justify-center sm:flex-row">
         {
           values.map((v, i) => (
             <div
-              class="card-3d reveal group relative overflow-hidden rounded-2xl border border-line bg-card p-8 transition-[border-color] duration-300 hover:border-mint/70"
-              style={`transition-delay: ${i * 100}ms`}
+              class:list={[
+                'value-circle reveal group relative flex aspect-square w-64 flex-col items-center justify-center rounded-full border border-line/80 text-center transition-colors duration-500 hover:border-mint/60 sm:w-72 lg:w-80',
+                i > 0 && '-mt-10 sm:-ml-14 sm:mt-0'
+              ]}
+              style={`transition-delay: ${i * 120}ms`}
             >
-              <span class="card-glare" aria-hidden="true" />
-              <p class="font-mono text-[10px] tracking-[0.28em] text-muted">0{i + 1}</p>
-              <p class="mt-4 font-mono text-xl tracking-[0.18em] text-mint">{v.en}</p>
-              <p class="font-display mt-2 text-lg text-ink">{v.ko}</p>
-              <p class="mt-3 break-keep text-sm leading-relaxed text-ink-dim">{v.d}</p>
-              <span class="absolute -bottom-px left-0 h-px w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
+              <p class="font-mono text-lg tracking-[0.22em] text-ink transition-colors duration-500 group-hover:text-mint">{v.en}</p>
+              <p class="mt-2 font-display text-sm text-ink-dim">{v.ko}</p>
+              <p class="mt-3 max-w-[12rem] break-keep px-6 text-xs leading-relaxed text-muted">{v.d}</p>
             </div>
           ))
         }
@@ -355,17 +318,17 @@ const isServiceLink = (url: string) =>
   </section>
 
   <!-- ========================= S5. Services ========================= -->
-  <section class="border-t border-line bg-paper-2/40" data-stage="1">
+  <section class="border-t border-line bg-paper-2/40">
     <div class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
       <div class="reveal grid gap-6 md:grid-cols-[1fr_2fr]">
         <div>
           <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">SERVICES</p>
           <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
-            작게 시작해서,<br />끝까지 만듭니다
+            Start small,<br />finish everything
           </h2>
         </div>
         <p class="self-end break-keep text-[15px] leading-relaxed text-ink-dim md:max-w-md md:justify-self-end">
-          외주가 아니라 제품을 함께 만드는 파트너로 일합니다.
+          Not an agency relationship — a partner who builds the product with you.
         </p>
       </div>
 
@@ -411,9 +374,9 @@ const isServiceLink = (url: string) =>
               {s.demo === 'pipe' && (
                 <div class="demo-pipe mt-6" aria-hidden="true">
                   <div class="relative flex items-center justify-between">
-                    <span class="pipe-node">수집</span>
-                    <span class="pipe-node">요약</span>
-                    <span class="pipe-node">발행</span>
+                    <span class="pipe-node">Collect</span>
+                    <span class="pipe-node">Summarize</span>
+                    <span class="pipe-node">Publish</span>
                     <i class="absolute inset-x-8 top-1/2 -z-10 h-px bg-line" />
                     <i class="pipe-runner" />
                   </div>
@@ -441,15 +404,15 @@ const isServiceLink = (url: string) =>
 
               <dl class="mt-6 space-y-2.5 text-sm">
                 <div class="flex gap-3">
-                  <dt class="w-12 shrink-0 font-mono text-[10px] leading-6 tracking-[0.16em] text-muted">문제</dt>
+                  <dt class="w-12 shrink-0 font-mono text-[10px] leading-6 tracking-[0.16em] text-muted">Problem</dt>
                   <dd class="break-keep text-ink-dim">{s.problem}</dd>
                 </div>
                 <div class="flex gap-3">
-                  <dt class="w-12 shrink-0 font-mono text-[10px] leading-6 tracking-[0.16em] text-muted">결과물</dt>
+                  <dt class="w-12 shrink-0 font-mono text-[10px] leading-6 tracking-[0.16em] text-muted">Outcome</dt>
                   <dd class="break-keep font-medium text-ink">{s.outcome}</dd>
                 </div>
                 <div class="flex gap-3">
-                  <dt class="w-12 shrink-0 font-mono text-[10px] leading-6 tracking-[0.16em] text-muted">범위</dt>
+                  <dt class="w-12 shrink-0 font-mono text-[10px] leading-6 tracking-[0.16em] text-muted">Scope</dt>
                   <dd class="text-ink-dim">{s.scope}</dd>
                 </div>
               </dl>
@@ -476,14 +439,14 @@ const isServiceLink = (url: string) =>
       <div>
         <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">WORK</p>
         <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
-          직접 만들어 운영하는 제품
+          Products we build & operate
         </h2>
       </div>
       <a
         href="/projects"
         class="border-b border-transparent pb-1 text-sm font-medium text-ink-dim transition-colors hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
       >
-        전체 보기 →
+        View all →
       </a>
     </div>
 
@@ -508,24 +471,20 @@ const isServiceLink = (url: string) =>
             </div>
             <div class="flex grow flex-col p-6">
               <div class="flex items-baseline justify-between gap-3">
-                <h3 class="font-display text-2xl text-ink">{p.name}</h3>
+                <h3 class="font-display text-2xl text-ink">{enName(p)}</h3>
                 <span class="font-mono text-[10px] tracking-[0.14em] text-muted">{p.year}</span>
               </div>
-              <p class="mt-1 font-mono text-[10px] tracking-[0.18em] text-muted uppercase">{p.category} · {p.platform}</p>
-              <p class="mt-3 break-keep text-sm leading-relaxed text-ink-dim">{p.tagline}</p>
-              <p class="mt-4 flex flex-wrap gap-1.5">
-                {p.tech.slice(0, 5).map((t) => (
-                  <span class="rounded-md border border-line bg-paper-2 px-2 py-0.5 font-mono text-[10px] text-ink-dim">{t}</span>
-                ))}
-              </p>
+              <p class="mt-1 font-mono text-[10px] tracking-[0.18em] text-muted uppercase">{enCat(p)} · {p.platform}</p>
+              <p class="mt-3 break-keep text-sm leading-relaxed text-ink-dim">{enTagline(p)}</p>
+              <p class="mt-4 text-xs tracking-wide text-muted">{p.tech.slice(0, 5).join(' · ')}</p>
               <div class="mt-auto flex items-center justify-between gap-3 pt-6">
                 <span class="flex items-center gap-2 text-[11px] tracking-wider text-live">
                   <span class="size-1.5 rounded-full bg-live" aria-hidden="true" />
-                  {p.status} · 기획부터 운영까지
+                  Live · planning to operations
                 </span>
                 {linked && (
                   <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
-                    서비스 열기
+                    Open service
                     <svg viewBox="0 0 24 24" class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M7 17 17 7M9 7h8v8" />
                     </svg>
@@ -541,12 +500,12 @@ const isServiceLink = (url: string) =>
   </section>
 
   <!-- ========================= S7. Process ========================= -->
-  <section class="border-y border-line bg-paper-2/40" data-stage="2">
+  <section class="border-y border-line bg-paper-2/40">
     <div class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
       <div class="reveal max-w-2xl">
         <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">PROCESS</p>
         <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
-          다섯 걸음이면 충분합니다
+          Five steps are enough
         </h2>
       </div>
 
@@ -554,7 +513,7 @@ const isServiceLink = (url: string) =>
         <div class="hidden md:block">
           <div class="sticky top-28">
             <p id="process-now-n" class="font-display text-7xl text-mint/60 transition-all duration-300">01</p>
-            <p id="process-now-t" class="font-display mt-2 text-xl text-ink">문의 · 상담</p>
+            <p id="process-now-t" class="font-display mt-2 text-xl text-ink">Inquiry · Consultation</p>
             <span class="rule-accent mt-5 block w-14" aria-hidden="true"></span>
           </div>
         </div>
@@ -580,7 +539,7 @@ const isServiceLink = (url: string) =>
                 </div>
                 <p class="mt-2 break-keep text-sm leading-relaxed text-ink-dim">{s.d}</p>
                 <p class="mt-3 inline-flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] tracking-wide text-muted">
-                  <span class="text-mint">산출물</span> {s.out}
+                  <span class="text-mint">Deliverables</span> {s.out}
                 </p>
               </li>
             ))
@@ -593,7 +552,7 @@ const isServiceLink = (url: string) =>
           href="/process"
           class="border-b border-transparent pb-1 text-sm font-medium text-ink-dim transition-colors hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
         >
-          진행 방식 자세히 보기 →
+          See the full process →
         </a>
       </p>
     </div>
@@ -604,11 +563,11 @@ const isServiceLink = (url: string) =>
     <div class="reveal max-w-2xl">
       <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">PROOF OF SHIPPING</p>
       <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
-        말보다 배포가 먼저입니다
+        Deployments over words
       </h2>
       <p class="mt-4 break-keep text-[15px] leading-relaxed text-ink-dim">
-        고객 프로젝트만 만드는 회사가 아닙니다. 직접 기획해 운영 중인 제품과
-        공개된 기록이 실력의 증거입니다.
+        We are not an agency that only builds for clients. Our own operating
+        products and public records are the proof of craft.
       </p>
     </div>
 
@@ -621,7 +580,7 @@ const isServiceLink = (url: string) =>
               <li class="flex items-center justify-between gap-4 py-3 text-sm">
                 <span class="flex min-w-0 items-center gap-2.5">
                   <span class="size-1.5 shrink-0 rounded-full bg-live" aria-hidden="true" />
-                  <span class="min-w-0 truncate font-medium text-ink">{p.name}</span>
+                  <span class="min-w-0 truncate font-medium text-ink">{enName(p)}</span>
                 </span>
                 <span class="shrink-0 font-mono text-[11px] text-muted">{p.platform}</span>
               </li>
@@ -632,7 +591,7 @@ const isServiceLink = (url: string) =>
           href="/projects"
           class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink-dim transition-colors hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
         >
-          제품 전체 보기 →
+          View all products →
         </a>
       </div>
 
@@ -660,7 +619,7 @@ const isServiceLink = (url: string) =>
           <p class="mt-5 flex flex-wrap items-center gap-2 text-sm text-ink-dim">
             <span class="font-mono text-[11px] tracking-[0.18em] text-muted">OPEN SOURCE</span>
             {oss.map((p) => (
-              <span class="rounded-lg border border-line bg-card px-2.5 py-1 font-mono text-xs text-ink-dim">{p.name}</span>
+              <span class="rounded-lg border border-line bg-card px-2.5 py-1 font-mono text-xs text-ink-dim">{enName(p)}</span>
             ))}
           </p>
         )}
@@ -668,14 +627,14 @@ const isServiceLink = (url: string) =>
           href="/blog"
           class="mt-5 inline-block border-b border-transparent pb-1 text-sm font-medium text-ink-dim transition-colors hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
         >
-          블로그 전체 보기 →
+          Browse the journal (Korean) →
         </a>
       </div>
     </div>
   </section>
 
   <!-- ===================== S9. CTA — Ship the Next ===================== -->
-  <section class="relative overflow-hidden border-t border-line" data-stage="3">
+  <section class="relative overflow-hidden border-t border-line">
     <div class="aurora pointer-events-none absolute inset-0" aria-hidden="true"></div>
     <div class="relative mx-auto max-w-6xl px-5 py-28 text-center sm:py-36">
       <p class="reveal font-mono text-[11px] font-medium tracking-[0.3em] text-mint">CONTACT</p>
@@ -683,12 +642,12 @@ const isServiceLink = (url: string) =>
         Ship the Next.
       </h2>
       <p class="reveal mx-auto mt-6 max-w-md break-keep text-ink-dim">
-        만들고 싶은 것이 있다면, 첫 번째 화면부터 함께 시작하겠습니다.
+        If there is something you want to build, we will start from the very first screen with you.
       </p>
 
       <ul class="reveal mx-auto mt-9 flex max-w-2xl flex-wrap justify-center gap-2 text-[13px]">
         {
-          ['아이디어 단계 환영', '24시간 이내 회신', '계약·세금계산서 가능', 'NDA 선택 가능'].map((t) => (
+          ['Ideas at any stage', 'Reply within 24h', 'Contracts & tax invoices', 'NDA on request'].map((t) => (
             <li class="rounded-full border border-line bg-card/70 px-4 py-1.5 text-ink-dim">{t}</li>
           ))
         }
@@ -699,7 +658,7 @@ const isServiceLink = (url: string) =>
           href="/contact"
           class="btn-magnet btn-shine relative inline-flex h-13 items-center gap-3 overflow-hidden rounded-xl bg-ink px-9 py-3.5 text-base font-semibold text-paper transition-colors duration-300 hover:bg-mint focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint"
         >
-          프로젝트 문의하기
+          Start a project
         </a>
         <a
           href={`mailto:${COMPANY.email}`}
@@ -935,41 +894,6 @@ const isServiceLink = (url: string) =>
     88%, 100% { left: 84%; }
   }
 
-  /* ---------- 파이프라인 내레이터 점등 ---------- */
-  .pipe-stage {
-    color: var(--color-muted);
-    transition: color 0.4s, text-shadow 0.4s;
-  }
-  .pipe-stage.on {
-    color: var(--color-mint);
-    text-shadow: 0 0 12px color-mix(in srgb, var(--color-mint) 60%, transparent);
-  }
-
-  /* ---------- 히어로 터미널 타이핑 ---------- */
-  .term-cursor {
-    animation: term-blink 1s steps(1) infinite;
-  }
-  @keyframes term-blink {
-    50% { opacity: 0; }
-  }
-
-  /* ---------- 마퀴 hover 카드 ---------- */
-  .marquee.is-paused .marquee-track {
-    animation-play-state: paused;
-  }
-  #mq-pop {
-    position: absolute;
-    left: 50%;
-    top: calc(100% + 8px);
-    transform: translateX(-50%);
-    z-index: 30;
-    width: 18rem;
-    display: none;
-  }
-  #mq-pop.show {
-    display: block;
-  }
-
   /* ---------- 프로세스 현재 단계 강조 ---------- */
   .process-step.is-now {
     border-color: var(--color-mint);
@@ -998,12 +922,6 @@ const isServiceLink = (url: string) =>
     }
     .float-panel {
       transform: none;
-      transition: none;
-    }
-    .term-cursor {
-      animation: none;
-    }
-    .pipe-stage {
       transition: none;
     }
   }
@@ -1187,94 +1105,6 @@ const isServiceLink = (url: string) =>
     { threshold: 0.5 }
   );
   document.querySelectorAll('.svc-card').forEach((c) => svcIO.observe(c));
-
-  // ---------- 히어로 터미널 타이핑(1회) ----------
-  const term = document.getElementById('hero-term');
-  if (term) {
-    const lines = [...term.querySelectorAll<HTMLElement>('.term-line')];
-    const prompt = term.querySelector<HTMLElement>('.term-prompt');
-    if (reduce) {
-      lines.forEach((l) => (l.textContent = l.dataset.text || ''));
-      prompt?.classList.remove('hidden');
-    } else {
-      const io2 = new IntersectionObserver((es) => {
-        if (!es[0]?.isIntersecting) return;
-        io2.disconnect();
-        let li = 0;
-        const typeLine = () => {
-          const el = lines[li];
-          const target = el?.dataset.text || '';
-          let i = 0;
-          const t = setInterval(() => {
-            i++;
-            el.textContent = target.slice(0, i);
-            if (i >= target.length) {
-              clearInterval(t);
-              li++;
-              if (li < lines.length) setTimeout(typeLine, 320);
-              else prompt?.classList.remove('hidden');
-            }
-          }, 26);
-        };
-        typeLine();
-      }, { threshold: 0.3 });
-      io2.observe(term);
-    }
-  }
-
-  // ---------- 파이프라인 내레이터 — 스크롤 순차 점등 ----------
-  const pipeStages = document.querySelectorAll<HTMLElement>('#pipe-nav-stages .pipe-stage');
-  const stageMarks = document.querySelectorAll<HTMLElement>('[data-stage]');
-  if (pipeStages.length && stageMarks.length) {
-    let current = 0;
-    const setStage = (n: number) => {
-      if (n === current) return;
-      current = n;
-      pipeStages.forEach((s, i) => s.classList.toggle('on', i <= n));
-    };
-    const io3 = new IntersectionObserver(
-      (es) => {
-        es.forEach((e) => {
-          if (e.isIntersecting)
-            setStage(Number((e.target as HTMLElement).dataset.stage || '0'));
-        });
-      },
-      { rootMargin: '-35% 0px -55% 0px' }
-    );
-    stageMarks.forEach((m) => io3.observe(m));
-  }
-
-  // ---------- 마퀴 hover 카드 상세 ----------
-  const mq = document.querySelector<HTMLElement>('.marquee');
-  const pop = document.getElementById('mq-pop');
-  if (mq && pop) {
-    const nameEl = document.getElementById('mq-pop-name')!;
-    const catEl = document.getElementById('mq-pop-cat')!;
-    const stEl = document.getElementById('mq-pop-status')!;
-    const linkEl = document.getElementById('mq-pop-link') as HTMLAnchorElement;
-    const show = (b: HTMLElement) => {
-      nameEl.textContent = b.dataset.name || '';
-      catEl.textContent = (b.dataset.cat || '').toUpperCase();
-      const liveNow = b.dataset.status === '운영 중';
-      stEl.textContent = b.dataset.status || '';
-      stEl.className = `font-mono text-[10px] ${liveNow ? 'text-mint' : 'text-muted'}`;
-      if (b.dataset.url) {
-        linkEl.href = b.dataset.url;
-        linkEl.classList.remove('hidden');
-      } else linkEl.classList.add('hidden');
-      pop.classList.add('show');
-      mq.classList.add('is-paused');
-    };
-    mq.querySelectorAll<HTMLElement>('.mq-item').forEach((b) => {
-      b.addEventListener('mouseenter', () => show(b));
-      b.addEventListener('focus', () => show(b));
-    });
-    mq.addEventListener('mouseenter', () => mq.classList.add('is-paused'));
-    mq.addEventListener('mouseleave', () => {
-      pop.classList.remove('show');
-      mq.classList.remove('is-paused');
-    });
-  }
 
   // ---------- 프로세스 진행선 + 현재 단계 ----------
   const list = document.getElementById('process-list');

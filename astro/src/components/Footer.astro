@@ -1,6 +1,6 @@
 ---
 import LogoMark from './LogoMark.astro';
-import { COMPANY, NAV } from '../lib/site';
+import { COMPANY } from '../lib/site';
 const year = new Date().getFullYear();
 ---
 
@@ -12,7 +12,7 @@ const year = new Date().getFullYear();
           <LogoMark class="size-9" />
           <span class="flex items-baseline gap-2">
             <span class="font-display text-xl text-ink">토리스</span>
-            <span class="text-[11px] font-semibold tracking-[0.3em] text-mint">TORIS STUDIO</span>
+            <span class="text-[11px] font-semibold tracking-[0.3em] text-mint">TORIS</span>
           </span>
         </div>
         <p class="mt-4 text-sm leading-relaxed text-muted">
@@ -39,20 +39,43 @@ const year = new Date().getFullYear();
         </div>
       </div>
 
-      <nav aria-label="푸터 메뉴" class="grid grid-cols-2 gap-x-16 gap-y-3">
-        {
-          NAV.map((item) => (
-            <a
-              href={item.href}
-              class="text-sm text-muted transition-colors hover:text-mint"
-            >
-              {item.label}
-            </a>
-          ))
-        }
-        <a href="/posts" class="text-sm text-muted transition-colors hover:text-mint">
-          전체 글
-        </a>
+      <nav aria-label="푸터 메뉴" class="flex gap-14 sm:gap-20">
+        <div>
+          <p class="font-mono text-[10px] tracking-[0.22em] text-muted">COMPANY</p>
+          <ul class="mt-4 space-y-2.5">
+            {
+              [
+                { href: '/about', label: '회사 소개' },
+                { href: '/process', label: '진행 방식' },
+                { href: '/contact', label: '문의하기' }
+              ].map((item) => (
+                <li>
+                  <a href={item.href} class="text-sm text-ink-dim transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint-deep">
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div>
+          <p class="font-mono text-[10px] tracking-[0.22em] text-muted">WORK & WRITING</p>
+          <ul class="mt-4 space-y-2.5">
+            {
+              [
+                { href: '/projects', label: '프로젝트' },
+                { href: '/blog', label: '블로그' },
+                { href: '/posts', label: '전체 글' }
+              ].map((item) => (
+                <li>
+                  <a href={item.href} class="text-sm text-ink-dim transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint-deep">
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       </nav>
     </div>
 

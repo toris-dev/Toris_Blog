@@ -1,7 +1,13 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import CardFX from '../components/CardFX.astro';
 import { COMPANY } from '../lib/site';
+import { computeStats } from '../lib/stats';
+import { projects } from '../../../src/data/projects';
+
+const entries = await getCollection('posts');
+const s = computeStats(projects, entries.length);
 
 const values = [
   {
@@ -21,10 +27,11 @@ const values = [
   }
 ];
 
+// 실적 — 단일 출처(lib/stats) 계산값, 하드코딩 금지
 const stats = [
-  { label: '출시·운영 제품', value: '20+' },
-  { label: '기술 아티클', value: '50+' },
-  { label: '다루는 플랫폼', value: '4' }
+  { label: '누적 프로젝트', value: `${s.total}+` },
+  { label: '기술 기록', value: String(s.posts) },
+  { label: '다루는 플랫폼', value: String(s.platforms) }
 ];
 
 const bizInfo = [
@@ -37,7 +44,7 @@ const bizInfo = [
 
 <Base
   title="회사 소개 | 토리스"
-  description="토리스(Toris Studio)는 거북이처럼 꾸준하게, 기획부터 출시·운영까지 제품을 완성하는 1인 소프트웨어 스튜디오입니다."
+  description="토리스(Toris)는 거북이처럼 꾸준하게, 기획부터 출시·운영까지 제품을 완성하는 1인 소프트웨어 스튜디오입니다."
   path="/about"
   pageType="AboutPage"
   breadcrumbs={[{ name: '홈', url: '/' }, { name: '회사 소개' }]}
