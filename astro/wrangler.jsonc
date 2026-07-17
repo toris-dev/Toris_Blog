@@ -3,6 +3,7 @@
   // 배포: astro/에서 `pnpm build && wrangler deploy`
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "toris-site",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-07-01",
   // 커스텀 도메인 — 존(toris.kr)이 이 Cloudflare 계정에 있어야 하며,
   // deploy 시 DNS 레코드·인증서가 자동 생성된다.
@@ -13,6 +14,9 @@
   "assets": {
     // Astro static 빌드 산출물을 그대로 정적 자산으로 서빙
     "directory": "./dist",
+    "binding": "ASSETS",
+    // 홈('/')만 워커가 선처리(언어 라우팅) — 나머지는 자산 직서빙
+    "run_worker_first": ["/"],
     // SPA 아님 — 존재하지 않는 경로는 404.html
     "not_found_handling": "404-page"
     // 참고: public/_redirects, public/_headers 파일이 함께 배포되어
