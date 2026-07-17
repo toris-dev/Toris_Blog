@@ -112,10 +112,7 @@ const isServiceLink = (url: string) =>
     class="glass fixed inset-x-0 top-16 z-40 border-x-0"
     aria-hidden="true"
   >
-    <div class="mx-auto flex max-w-6xl items-center gap-4 px-5 py-2">
-      <div class="relative h-px flex-1 bg-line">
-        <span id="pipe-nav-fill" class="absolute left-0 top-0 h-px bg-mint shadow-[0_0_10px_var(--color-mint)] transition-[width] duration-500" style="width: 25%"></span>
-      </div>
+    <div class="mx-auto flex max-w-6xl items-center justify-end px-5 py-2">
       <div id="pipe-nav-stages" class="flex gap-3 font-mono text-[9px] tracking-[0.18em] sm:gap-5 sm:text-[10px]">
         <span class="pipe-stage on">COMMIT</span>
         <span class="pipe-stage">BUILD</span>
@@ -1006,8 +1003,7 @@ const isServiceLink = (url: string) =>
     .term-cursor {
       animation: none;
     }
-    .pipe-stage,
-    #pipe-nav-fill {
+    .pipe-stage {
       transition: none;
     }
   }
@@ -1228,15 +1224,13 @@ const isServiceLink = (url: string) =>
 
   // ---------- 파이프라인 내레이터 — 스크롤 순차 점등 ----------
   const pipeStages = document.querySelectorAll<HTMLElement>('#pipe-nav-stages .pipe-stage');
-  const pipeFill = document.getElementById('pipe-nav-fill');
   const stageMarks = document.querySelectorAll<HTMLElement>('[data-stage]');
-  if (pipeStages.length && pipeFill && stageMarks.length) {
+  if (pipeStages.length && stageMarks.length) {
     let current = 0;
     const setStage = (n: number) => {
       if (n === current) return;
       current = n;
       pipeStages.forEach((s, i) => s.classList.toggle('on', i <= n));
-      pipeFill.style.width = `${((n + 1) / pipeStages.length) * 100}%`;
     };
     const io3 = new IntersectionObserver(
       (es) => {
