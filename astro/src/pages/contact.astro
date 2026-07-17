@@ -27,7 +27,7 @@ const inputClass =
 >
   <!-- ============================== Hero ============================== -->
   <section class="mx-auto max-w-6xl px-5 pb-6 pt-20 sm:pt-28">
-    <p class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-mint">
+    <p class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-mint-deep">
       Contact
     </p>
     <h1
@@ -83,7 +83,7 @@ const inputClass =
           >
             주소 복사
           </button>
-          <p id="copy-status" class="mt-2 min-h-4 text-center text-xs text-mint" aria-live="polite"></p>
+          <p id="copy-status" class="mt-2 min-h-4 text-center text-xs text-mint-deep" aria-live="polite"></p>
         </div>
         <script>
           const btn = document.getElementById('copy-email');
@@ -126,7 +126,7 @@ const inputClass =
                 <li class="flex items-start gap-2.5 text-[15px] leading-relaxed text-muted">
                   <svg
                     viewBox="0 0 24 24"
-                    class="mt-1 size-4 shrink-0 text-mint"
+                    class="mt-1 size-4 shrink-0 text-mint-deep"
                     fill="none"
                     stroke="currentColor"
                     stroke-width="2.2"
@@ -239,7 +239,7 @@ const inputClass =
 
     const setStatus = (message: string, ok: boolean) => {
       statusEl.textContent = message;
-      statusEl.classList.toggle('text-mint', ok);
+      statusEl.classList.toggle('text-mint-deep', ok);
       statusEl.classList.toggle('text-red-600', !ok);
     };
 

@@ -11,7 +11,7 @@ const shipped = projects.filter((p) => p.status === '출시');
 
 const groups = [
   { label: '운영 중', items: live, dot: 'bg-live', text: 'text-live', wide: true },
-  { label: '개발 중', items: building, dot: 'bg-mint', text: 'text-mint', wide: false },
+  { label: '개발 중', items: building, dot: 'bg-mint', text: 'text-mint-deep', wide: false },
   { label: '출시', items: shipped, dot: 'bg-sand', text: 'text-muted', wide: false }
 ].filter((g) => g.items.length > 0);
 
@@ -70,7 +70,7 @@ const productsJsonLd = JSON.stringify({
   <section class="mx-auto max-w-6xl px-5 pb-6 pt-20 sm:pt-28">
     <div class="reveal flex items-center gap-4">
       <span class="rule-accent w-16" aria-hidden="true"></span>
-      <p class="text-xs font-semibold tracking-[0.35em] text-mint">PRODUCTS</p>
+      <p class="text-xs font-semibold tracking-[0.35em] text-mint-deep">PRODUCTS</p>
     </div>
     <h1
       class="reveal font-display mt-6 text-4xl text-ink sm:text-5xl"
@@ -150,7 +150,7 @@ const productsJsonLd = JSON.stringify({
                   {p.status}
                 </span>
                 {linked && (
-                  <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
+                  <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint-deep">
                     서비스 열기
                     <svg
                       viewBox="0 0 24 24"

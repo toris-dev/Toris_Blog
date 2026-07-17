@@ -143,7 +143,7 @@ const isServiceLink = (url: string) =>
       <div class="hero-in hero-glow relative">
         <LogoMark class="size-20 sm:size-24" />
       </div>
-      <p class="hero-in mt-8 font-mono text-[11px] font-medium tracking-[0.3em] text-mint" style="transition-delay: 120ms">
+      <p class="hero-in mt-8 font-mono text-[11px] font-medium tracking-[0.3em] text-mint-deep" style="transition-delay: 120ms">
         TORIS — PRODUCT ENGINEERING STUDIO · SEOUL
       </p>
       <h1
@@ -223,7 +223,7 @@ const isServiceLink = (url: string) =>
         <div id="hero-term" role="img" aria-label="배포 터미널: pnpm run deploy 실행, 30페이지 빌드, 프로덕션 배포 완료">
           <p class="term-line text-muted" data-text="$ pnpm run deploy"></p>
           <p class="term-line text-ink-dim" data-text="✓ 30 pages built"></p>
-          <p class="term-line text-mint" data-text="▲ deployed to production"></p>
+          <p class="term-line text-mint-deep" data-text="▲ deployed to production"></p>
           <p class="term-prompt hidden text-muted">$ <span class="term-cursor inline-block h-3 w-1.5 translate-y-0.5 bg-mint"></span></p>
         </div>
       </div>
@@ -243,7 +243,7 @@ const isServiceLink = (url: string) =>
               {projects.map((p) => (
                 <button
                   type="button"
-                  class="mq-item mx-6 inline-flex items-center gap-2.5 font-mono text-[12px] tracking-[0.22em] text-muted transition-colors hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
+                  class="mq-item mx-6 inline-flex items-center gap-2.5 font-mono text-[12px] tracking-[0.22em] text-muted transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint"
                   data-name={p.name}
                   data-cat={p.category}
                   data-status={p.status}
@@ -264,7 +264,7 @@ const isServiceLink = (url: string) =>
         <span id="mq-pop-name" class="font-semibold text-ink"></span>
         <span id="mq-pop-status" class="font-mono text-[10px]"></span>
       </p>
-      <a id="mq-pop-link" href="#" target="_blank" rel="noopener noreferrer" class="mt-2 hidden text-xs text-mint underline underline-offset-4">서비스 열기 ↗</a>
+      <a id="mq-pop-link" href="#" target="_blank" rel="noopener noreferrer" class="mt-2 hidden text-xs text-mint-deep underline underline-offset-4">서비스 열기 ↗</a>
     </div>
   </div>
 
@@ -309,13 +309,13 @@ const isServiceLink = (url: string) =>
 
     <!-- 전경: 클레임 + 지표 -->
     <div class="relative mx-auto max-w-6xl px-5 py-40 text-center sm:py-48">
-      <p class="reveal font-mono text-[11px] tracking-[0.3em] text-mint">SINCE {sinceYear} — KEEP SHIPPING</p>
+      <p class="reveal font-mono text-[11px] tracking-[0.3em] text-mint-deep">SINCE {sinceYear} — KEEP SHIPPING</p>
       <h2 class="reveal font-display mx-auto mt-6 max-w-3xl break-keep text-[clamp(1.9rem,5vw,3.4rem)] leading-[1.25] text-ink">
         밈캐치부터 TraceDesk까지,<br />직접 만들어 운영한 여정
       </h2>
       <dl class="reveal mx-auto mt-14 flex max-w-2xl flex-wrap items-end justify-center gap-x-16 gap-y-8">
         <div>
-          <dd class="font-display text-6xl text-ink sm:text-7xl"><span data-count={String(stats.total)}>{stats.total}</span><span class="text-mint">+</span></dd>
+          <dd class="font-display text-6xl text-ink sm:text-7xl"><span data-count={String(stats.total)}>{stats.total}</span><span class="text-mint-deep">+</span></dd>
           <dt class="mt-2 font-mono text-[11px] tracking-[0.2em] text-muted">PROJECTS</dt>
         </div>
         <div>
@@ -343,7 +343,7 @@ const isServiceLink = (url: string) =>
             >
               <span class="card-glare" aria-hidden="true" />
               <p class="font-mono text-[10px] tracking-[0.28em] text-muted">0{i + 1}</p>
-              <p class="mt-4 font-mono text-xl tracking-[0.18em] text-mint">{v.en}</p>
+              <p class="mt-4 font-mono text-xl tracking-[0.18em] text-mint-deep">{v.en}</p>
               <p class="font-display mt-2 text-lg text-ink">{v.ko}</p>
               <p class="mt-3 break-keep text-sm leading-relaxed text-ink-dim">{v.d}</p>
               <span class="absolute -bottom-px left-0 h-px w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
@@ -359,7 +359,7 @@ const isServiceLink = (url: string) =>
     <div class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
       <div class="reveal grid gap-6 md:grid-cols-[1fr_2fr]">
         <div>
-          <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">SERVICES</p>
+          <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint-deep">SERVICES</p>
           <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
             작게 시작해서,<br />끝까지 만듭니다
           </h2>
@@ -379,7 +379,7 @@ const isServiceLink = (url: string) =>
               ]}
               style={`transition-delay: ${i * 90}ms`}
             >
-              <span class="font-mono text-[10px] font-medium tracking-[0.24em] text-mint">{s.label}</span>
+              <span class="font-mono text-[10px] font-medium tracking-[0.24em] text-mint-deep">{s.label}</span>
               <h3 class="font-display mt-4 text-2xl text-ink">{s.title}</h3>
 
               {s.demo === 'sync' && (
@@ -456,7 +456,7 @@ const isServiceLink = (url: string) =>
 
               <a
                 href={s.href}
-                class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-mint transition-colors hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint"
+                class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-mint-deep transition-colors hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint"
               >
                 {s.linkLabel}
                 <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -474,7 +474,7 @@ const isServiceLink = (url: string) =>
   <section class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
     <div class="reveal flex flex-wrap items-end justify-between gap-6">
       <div>
-        <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">WORK</p>
+        <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint-deep">WORK</p>
         <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
           직접 만들어 운영하는 제품
         </h2>
@@ -524,7 +524,7 @@ const isServiceLink = (url: string) =>
                   {p.status} · 기획부터 운영까지
                 </span>
                 {linked && (
-                  <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
+                  <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint-deep">
                     서비스 열기
                     <svg viewBox="0 0 24 24" class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M7 17 17 7M9 7h8v8" />
@@ -544,7 +544,7 @@ const isServiceLink = (url: string) =>
   <section class="border-y border-line bg-paper-2/40" data-stage="2">
     <div class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
       <div class="reveal max-w-2xl">
-        <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">PROCESS</p>
+        <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint-deep">PROCESS</p>
         <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
           다섯 걸음이면 충분합니다
         </h2>
@@ -553,7 +553,7 @@ const isServiceLink = (url: string) =>
       <div class="mt-14 grid gap-10 md:grid-cols-[1fr_2fr]">
         <div class="hidden md:block">
           <div class="sticky top-28">
-            <p id="process-now-n" class="font-display text-7xl text-mint/60 transition-all duration-300">01</p>
+            <p id="process-now-n" class="font-display text-7xl text-mint-deep/60 transition-all duration-300">01</p>
             <p id="process-now-t" class="font-display mt-2 text-xl text-ink">문의 · 상담</p>
             <span class="rule-accent mt-5 block w-14" aria-hidden="true"></span>
           </div>
@@ -575,12 +575,12 @@ const isServiceLink = (url: string) =>
               >
                 <span class="absolute -left-[41px] top-7 size-2.5 rounded-full border-2 border-line bg-paper transition-colors duration-300 md:-left-[49px]" aria-hidden="true" />
                 <div class="flex items-baseline gap-3">
-                  <span class="font-mono text-xs text-mint">{s.n}</span>
+                  <span class="font-mono text-xs text-mint-deep">{s.n}</span>
                   <h3 class="font-semibold text-ink">{s.t}</h3>
                 </div>
                 <p class="mt-2 break-keep text-sm leading-relaxed text-ink-dim">{s.d}</p>
                 <p class="mt-3 inline-flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] tracking-wide text-muted">
-                  <span class="text-mint">산출물</span> {s.out}
+                  <span class="text-mint-deep">산출물</span> {s.out}
                 </p>
               </li>
             ))
@@ -602,7 +602,7 @@ const isServiceLink = (url: string) =>
   <!-- ================== S8. 증거 — 말보다 배포가 먼저 ================== -->
   <section class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
     <div class="reveal max-w-2xl">
-      <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">PROOF OF SHIPPING</p>
+      <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint-deep">PROOF OF SHIPPING</p>
       <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
         말보다 배포가 먼저입니다
       </h2>
@@ -630,7 +630,7 @@ const isServiceLink = (url: string) =>
         </ul>
         <a
           href="/projects"
-          class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink-dim transition-colors hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
+          class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink-dim transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint"
         >
           제품 전체 보기 →
         </a>
@@ -647,7 +647,7 @@ const isServiceLink = (url: string) =>
                   class="group flex items-baseline justify-between gap-4 rounded-xl border border-line bg-card px-5 py-4 transition-colors hover:border-mint/70 focus-visible:outline-2 focus-visible:outline-mint"
                 >
                   <span class="min-w-0">
-                    <span class="block truncate text-[15px] font-medium text-ink transition-colors group-hover:text-mint">{post.title}</span>
+                    <span class="block truncate text-[15px] font-medium text-ink transition-colors group-hover:text-mint-deep">{post.title}</span>
                     <span class="mt-1 block truncate text-xs text-muted">{post.description}</span>
                   </span>
                   <time class="shrink-0 font-mono text-[11px] text-muted">{post.dateLabel}</time>
@@ -678,7 +678,7 @@ const isServiceLink = (url: string) =>
   <section class="relative overflow-hidden border-t border-line" data-stage="3">
     <div class="aurora pointer-events-none absolute inset-0" aria-hidden="true"></div>
     <div class="relative mx-auto max-w-6xl px-5 py-28 text-center sm:py-36">
-      <p class="reveal font-mono text-[11px] font-medium tracking-[0.3em] text-mint">CONTACT</p>
+      <p class="reveal font-mono text-[11px] font-medium tracking-[0.3em] text-mint-deep">CONTACT</p>
       <h2 class="reveal font-display mx-auto mt-7 max-w-3xl break-keep text-[clamp(2.2rem,6.5vw,4.6rem)] leading-[1.15] text-ink">
         Ship the Next.
       </h2>
@@ -703,7 +703,7 @@ const isServiceLink = (url: string) =>
         </a>
         <a
           href={`mailto:${COMPANY.email}`}
-          class="font-mono text-sm text-muted underline underline-offset-4 transition-colors hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
+          class="font-mono text-sm text-muted underline underline-offset-4 transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint"
         >
           {COMPANY.email}
         </a>
@@ -762,9 +762,9 @@ const isServiceLink = (url: string) =>
     background: linear-gradient(
       100deg,
       var(--color-mint-deep),
-      var(--color-cyan) 40%,
-      var(--color-lilac) 75%,
-      var(--color-mint-deep)
+      #0f766e 40%,
+      var(--color-mint-deep) 75%,
+      #0f766e
     );
     background-size: 220% 100%;
     -webkit-background-clip: text;
@@ -941,7 +941,7 @@ const isServiceLink = (url: string) =>
     transition: color 0.4s, text-shadow 0.4s;
   }
   .pipe-stage.on {
-    color: var(--color-mint);
+    color: var(--color-mint-deep);
     text-shadow: 0 0 12px color-mix(in srgb, var(--color-mint) 60%, transparent);
   }
 
@@ -1257,7 +1257,7 @@ const isServiceLink = (url: string) =>
       catEl.textContent = (b.dataset.cat || '').toUpperCase();
       const liveNow = b.dataset.status === '운영 중';
       stEl.textContent = b.dataset.status || '';
-      stEl.className = `font-mono text-[10px] ${liveNow ? 'text-mint' : 'text-muted'}`;
+      stEl.className = `font-mono text-[10px] ${liveNow ? 'text-mint-deep' : 'text-muted'}`;
       if (b.dataset.url) {
         linkEl.href = b.dataset.url;
         linkEl.classList.remove('hidden');
