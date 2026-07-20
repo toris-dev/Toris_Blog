@@ -960,8 +960,8 @@ const isServiceLink = (url: string) =>
       const m = h.trim().replace('#', '');
       return [0, 2, 4].map((i) => parseInt(m.slice(i, i + 2), 16));
     };
-    const MINT = hex2rgb(styles.getPropertyValue('--color-brand') || '#10c98f');
-    const CYAN = hex2rgb(styles.getPropertyValue('--color-cyan') || '#26aed4');
+    const BRAND = hex2rgb(styles.getPropertyValue('--color-brand') || '#2070b0');
+    const CYAN = hex2rgb(styles.getPropertyValue('--color-cyan') || '#4a9ad4');
     let W = 0, H = 0, dpr = 1, raf = 0, running = false;
     type Cell = { x: number; y: number; heat: number; phase: number };
     let cells: Cell[] = [];
@@ -1010,7 +1010,7 @@ const isServiceLink = (url: string) =>
         c.heat += (target - c.heat) * 0.08;
         const idle = 0.04 + 0.025 * Math.sin(t / 2200 + c.phase);
         const a = Math.min(0.45, idle + c.heat * 0.4);
-        const [r, g, b] = c.heat > 0.5 ? CYAN : MINT;
+        const [r, g, b] = c.heat > 0.5 ? CYAN : BRAND;
         ctx.strokeStyle = `rgba(${r},${g},${b},${a})`;
         ctx.lineWidth = 0.8;
         hex(c.x, c.y, R - 5 + c.heat * 3);
