@@ -128,7 +128,7 @@ const isServiceLink = (url: string) =>
       <div class="hero-in hero-glow relative">
         <LogoMark class="size-20 sm:size-24" />
       </div>
-      <p class="hero-in mt-8 font-mono text-[11px] font-medium tracking-[0.3em] text-mint" style="transition-delay: 120ms">
+      <p class="hero-in mt-8 font-mono text-[11px] font-medium tracking-[0.3em] text-brand" style="transition-delay: 120ms">
         TORIS — PRODUCT ENGINEERING STUDIO · SEOUL
       </p>
       <h1
@@ -149,7 +149,7 @@ const isServiceLink = (url: string) =>
       <div class="hero-in mt-11 flex flex-wrap items-center justify-center gap-4" style="transition-delay: 480ms">
         <a
           href="/contact"
-          class="btn-magnet btn-shine relative inline-flex h-13 items-center gap-3 overflow-hidden rounded-xl bg-ink px-8 py-3.5 text-[15px] font-semibold text-paper transition-colors duration-300 hover:bg-mint focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint"
+          class="btn-magnet btn-shine relative inline-flex h-13 items-center gap-3 overflow-hidden rounded-xl bg-ink px-8 py-3.5 text-[15px] font-semibold text-paper transition-colors duration-300 hover:bg-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
         >
           Start a conversation
           <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
@@ -158,7 +158,7 @@ const isServiceLink = (url: string) =>
         </a>
         <a
           href="/projects"
-          class="inline-flex h-13 items-center gap-2 rounded-xl border border-line bg-card/60 px-7 py-3.5 text-[15px] font-medium text-ink-dim transition-all duration-300 hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
+          class="inline-flex h-13 items-center gap-2 rounded-xl border border-line bg-card/60 px-7 py-3.5 text-[15px] font-medium text-ink-dim transition-all duration-300 hover:border-brand hover:text-ink focus-visible:outline-2 focus-visible:outline-brand"
         >
           Explore our products
         </a>
@@ -175,13 +175,13 @@ const isServiceLink = (url: string) =>
       </div>
 
       <p class="hero-in mt-6" style="transition-delay: 560ms">
-        <a href="/?lang=ko" class="font-mono text-xs text-muted underline underline-offset-4 transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint">한국어로 보기</a>
+        <a href="/?lang=ko" class="font-mono text-xs text-muted underline underline-offset-4 transition-colors hover:text-brand-deep focus-visible:outline-2 focus-visible:outline-brand">한국어로 보기</a>
       </p>
 
       <!-- 스크롤 큐 -->
       <div class="hero-in absolute bottom-8 left-1/2 -translate-x-1/2" style="transition-delay: 720ms" aria-hidden="true">
         <span class="scroll-cue block h-9 w-5 rounded-full border border-line">
-          <i class="mx-auto mt-1.5 block h-2 w-0.5 rounded bg-mint"></i>
+          <i class="mx-auto mt-1.5 block h-2 w-0.5 rounded bg-brand"></i>
         </span>
       </div>
     </div>
@@ -208,7 +208,7 @@ const isServiceLink = (url: string) =>
       <div class="float-panel glass absolute left-[5%] top-[58%] w-72 rounded-2xl p-4 font-mono text-[12px] leading-6" data-depth="26">
         <p class="text-muted">$ pnpm run deploy</p>
         <p class="text-ink-dim">✓ 30 pages built</p>
-        <p class="text-mint">▲ deployed to production</p>
+        <p class="text-brand">▲ deployed to production</p>
       </div>
     </div>
   </section>
@@ -221,7 +221,7 @@ const isServiceLink = (url: string) =>
           <div class="marquee-seg flex shrink-0 items-center">
             {live.map((p) => (
               <span class="mx-7 inline-flex items-center gap-2.5 font-mono text-[12px] tracking-[0.22em] text-muted">
-                <i class="size-1 rounded-full bg-mint" />
+                <i class="size-1 rounded-full bg-brand" />
                 {enName(p).toUpperCase()}
               </span>
             ))}
@@ -272,13 +272,13 @@ const isServiceLink = (url: string) =>
 
     <!-- 전경: 클레임 + 지표 -->
     <div class="relative mx-auto max-w-6xl px-5 py-40 text-center sm:py-48">
-      <p class="reveal font-mono text-[11px] tracking-[0.3em] text-mint">SINCE {sinceYear} — KEEP SHIPPING</p>
+      <p class="reveal font-mono text-[11px] tracking-[0.3em] text-brand">SINCE {sinceYear} — KEEP SHIPPING</p>
       <h2 class="reveal font-display mx-auto mt-6 max-w-3xl break-keep text-[clamp(1.9rem,5vw,3.4rem)] leading-[1.25] text-ink">
         From MemeCatch to TraceDesk —<br />built and operated by ourselves
       </h2>
       <dl class="reveal mx-auto mt-14 flex max-w-2xl flex-wrap items-end justify-center gap-x-16 gap-y-8">
         <div>
-          <dd class="font-display text-6xl text-ink sm:text-7xl"><span data-count={String(stats.total)}>{stats.total}</span><span class="text-mint">+</span></dd>
+          <dd class="font-display text-6xl text-ink sm:text-7xl"><span data-count={String(stats.total)}>{stats.total}</span><span class="text-brand">+</span></dd>
           <dt class="mt-2 font-mono text-[11px] tracking-[0.2em] text-muted">PROJECTS</dt>
         </div>
         <div>
@@ -302,12 +302,12 @@ const isServiceLink = (url: string) =>
           values.map((v, i) => (
             <div
               class:list={[
-                'value-circle reveal group relative flex aspect-square w-64 flex-col items-center justify-center rounded-full border border-line/80 text-center transition-colors duration-500 hover:border-mint/60 sm:w-72 lg:w-80',
+                'value-circle reveal group relative flex aspect-square w-64 flex-col items-center justify-center rounded-full border border-line/80 text-center transition-colors duration-500 hover:border-brand/60 sm:w-72 lg:w-80',
                 i > 0 && '-mt-10 sm:-ml-14 sm:mt-0'
               ]}
               style={`transition-delay: ${i * 120}ms`}
             >
-              <p class="font-mono text-lg tracking-[0.22em] text-ink transition-colors duration-500 group-hover:text-mint">{v.en}</p>
+              <p class="font-mono text-lg tracking-[0.22em] text-ink transition-colors duration-500 group-hover:text-brand">{v.en}</p>
               <p class="mt-2 font-display text-sm text-ink-dim">{v.ko}</p>
               <p class="mt-3 max-w-[12rem] break-keep px-6 text-xs leading-relaxed text-muted">{v.d}</p>
             </div>
@@ -322,7 +322,7 @@ const isServiceLink = (url: string) =>
     <div class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
       <div class="reveal grid gap-6 md:grid-cols-[1fr_2fr]">
         <div>
-          <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">SERVICES</p>
+          <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-brand">SERVICES</p>
           <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
             Start small,<br />finish everything
           </h2>
@@ -337,12 +337,12 @@ const isServiceLink = (url: string) =>
           services.map((s, i) => (
             <article
               class:list={[
-                'svc-card reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-mint/70 hover:shadow-[0_20px_48px_-24px_color-mix(in_srgb,var(--color-mint)_28%,transparent)] sm:p-8',
+                'svc-card reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-brand/70 hover:shadow-[0_20px_48px_-24px_color-mix(in_srgb,var(--color-brand)_28%,transparent)] sm:p-8',
                 s.wide && 'md:col-span-2'
               ]}
               style={`transition-delay: ${i * 90}ms`}
             >
-              <span class="font-mono text-[10px] font-medium tracking-[0.24em] text-mint">{s.label}</span>
+              <span class="font-mono text-[10px] font-medium tracking-[0.24em] text-brand">{s.label}</span>
               <h3 class="font-display mt-4 text-2xl text-ink">{s.title}</h3>
 
               {s.demo === 'sync' && (
@@ -350,7 +350,7 @@ const isServiceLink = (url: string) =>
                   <div class="w-40 rounded-lg border border-line bg-paper p-2">
                     <div class="flex gap-1"><i class="size-1.5 rounded-full bg-line" /><i class="size-1.5 rounded-full bg-line" /><i class="size-1.5 rounded-full bg-line" /></div>
                     <div class="mt-2 space-y-1.5">
-                      <div class="demo-bar h-1.5 w-4/5 rounded bg-mint/40" />
+                      <div class="demo-bar h-1.5 w-4/5 rounded bg-brand/40" />
                       <div class="demo-bar h-1.5 w-3/5 rounded bg-line" style="transition-delay:80ms" />
                       <div class="demo-bar h-1.5 w-2/3 rounded bg-line" style="transition-delay:160ms" />
                     </div>
@@ -358,7 +358,7 @@ const isServiceLink = (url: string) =>
                   <div class="demo-link h-px flex-1 bg-line" />
                   <div class="w-14 rounded-lg border border-line bg-paper p-1.5">
                     <div class="mx-auto h-16 w-full rounded border border-line bg-card p-1">
-                      <div class="demo-bar h-1 w-full rounded bg-mint/40" />
+                      <div class="demo-bar h-1 w-full rounded bg-brand/40" />
                       <div class="demo-bar mt-1 h-1 w-2/3 rounded bg-line" style="transition-delay:120ms" />
                     </div>
                   </div>
@@ -386,11 +386,11 @@ const isServiceLink = (url: string) =>
                 <div class="demo-win mt-6 flex items-end gap-3" aria-hidden="true">
                   <div class="w-44 rounded-lg border border-line bg-paper">
                     <div class="flex items-center gap-1 border-b border-line px-2 py-1.5">
-                      <i class="size-1.5 rounded-full bg-coral/70" /><i class="size-1.5 rounded-full bg-line" /><i class="size-1.5 rounded-full bg-mint/70" />
+                      <i class="size-1.5 rounded-full bg-coral/70" /><i class="size-1.5 rounded-full bg-line" /><i class="size-1.5 rounded-full bg-brand/70" />
                       <span class="ml-1.5 font-mono text-[8px] tracking-wider text-muted">TRACEDESK</span>
                     </div>
                     <div class="space-y-1.5 p-2">
-                      <div class="demo-bar h-1.5 w-3/4 rounded bg-mint/40" />
+                      <div class="demo-bar h-1.5 w-3/4 rounded bg-brand/40" />
                       <div class="demo-bar h-1.5 w-1/2 rounded bg-line" style="transition-delay:80ms" />
                       <div class="demo-bar h-1.5 w-2/3 rounded bg-line" style="transition-delay:160ms" />
                     </div>
@@ -419,7 +419,7 @@ const isServiceLink = (url: string) =>
 
               <a
                 href={s.href}
-                class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-mint transition-colors hover:text-mint-bright focus-visible:outline-2 focus-visible:outline-mint"
+                class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-brand transition-colors hover:text-brand-bright focus-visible:outline-2 focus-visible:outline-brand"
               >
                 {s.linkLabel}
                 <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -437,14 +437,14 @@ const isServiceLink = (url: string) =>
   <section class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
     <div class="reveal flex flex-wrap items-end justify-between gap-6">
       <div>
-        <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">WORK</p>
+        <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-brand">WORK</p>
         <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
           Products we build & operate
         </h2>
       </div>
       <a
         href="/projects"
-        class="border-b border-transparent pb-1 text-sm font-medium text-ink-dim transition-colors hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
+        class="border-b border-transparent pb-1 text-sm font-medium text-ink-dim transition-colors hover:border-brand hover:text-ink focus-visible:outline-2 focus-visible:outline-brand"
       >
         View all →
       </a>
@@ -457,7 +457,7 @@ const isServiceLink = (url: string) =>
             href={linked ? p.github : undefined}
             target={linked ? '_blank' : undefined}
             rel={linked ? 'noopener noreferrer' : undefined}
-            class="card-3d reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-[border-color,box-shadow] duration-300 hover:border-mint/70 hover:shadow-[0_20px_48px_-24px_color-mix(in_srgb,var(--color-mint)_28%,transparent)] focus-visible:outline-2 focus-visible:outline-mint"
+            class="card-3d reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-[border-color,box-shadow] duration-300 hover:border-brand/70 hover:shadow-[0_20px_48px_-24px_color-mix(in_srgb,var(--color-brand)_28%,transparent)] focus-visible:outline-2 focus-visible:outline-brand"
             style={`transition-delay: ${i * 80}ms`}
           >
             <span class="card-glare" aria-hidden="true" />
@@ -483,7 +483,7 @@ const isServiceLink = (url: string) =>
                   Live · planning to operations
                 </span>
                 {linked && (
-                  <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
+                  <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-brand">
                     Open service
                     <svg viewBox="0 0 24 24" class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M7 17 17 7M9 7h8v8" />
@@ -492,7 +492,7 @@ const isServiceLink = (url: string) =>
                 )}
               </div>
             </div>
-            <span class="absolute -bottom-px left-0 h-0.5 w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
+            <span class="absolute -bottom-px left-0 h-0.5 w-0 bg-brand transition-all duration-500 group-hover:w-full" aria-hidden="true" />
           </Tag>
         ); })
       }
@@ -503,7 +503,7 @@ const isServiceLink = (url: string) =>
   <section class="border-y border-line bg-paper-2/40">
     <div class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
       <div class="reveal max-w-2xl">
-        <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">PROCESS</p>
+        <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-brand">PROCESS</p>
         <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
           Five steps are enough
         </h2>
@@ -512,7 +512,7 @@ const isServiceLink = (url: string) =>
       <div class="mt-14 grid gap-10 md:grid-cols-[1fr_2fr]">
         <div class="hidden md:block">
           <div class="sticky top-28">
-            <p id="process-now-n" class="font-display text-7xl text-mint/60 transition-all duration-300">01</p>
+            <p id="process-now-n" class="font-display text-7xl text-brand/60 transition-all duration-300">01</p>
             <p id="process-now-t" class="font-display mt-2 text-xl text-ink">Inquiry · Consultation</p>
             <span class="rule-accent mt-5 block w-14" aria-hidden="true"></span>
           </div>
@@ -521,7 +521,7 @@ const isServiceLink = (url: string) =>
         <ol id="process-list" class="relative space-y-4 border-l border-line pl-8 md:pl-10">
           <span
             id="process-fill"
-            class="absolute -left-px top-0 w-px bg-mint transition-[height] duration-300"
+            class="absolute -left-px top-0 w-px bg-brand transition-[height] duration-300"
             style="height: 0%"
             aria-hidden="true"></span>
           {
@@ -534,12 +534,12 @@ const isServiceLink = (url: string) =>
               >
                 <span class="absolute -left-[41px] top-7 size-2.5 rounded-full border-2 border-line bg-paper transition-colors duration-300 md:-left-[49px]" aria-hidden="true" />
                 <div class="flex items-baseline gap-3">
-                  <span class="font-mono text-xs text-mint">{s.n}</span>
+                  <span class="font-mono text-xs text-brand">{s.n}</span>
                   <h3 class="font-semibold text-ink">{s.t}</h3>
                 </div>
                 <p class="mt-2 break-keep text-sm leading-relaxed text-ink-dim">{s.d}</p>
                 <p class="mt-3 inline-flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] tracking-wide text-muted">
-                  <span class="text-mint">Deliverables</span> {s.out}
+                  <span class="text-brand">Deliverables</span> {s.out}
                 </p>
               </li>
             ))
@@ -550,7 +550,7 @@ const isServiceLink = (url: string) =>
       <p class="reveal mt-10 md:pl-[calc(33.3%+2.5rem)]">
         <a
           href="/process"
-          class="border-b border-transparent pb-1 text-sm font-medium text-ink-dim transition-colors hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
+          class="border-b border-transparent pb-1 text-sm font-medium text-ink-dim transition-colors hover:border-brand hover:text-ink focus-visible:outline-2 focus-visible:outline-brand"
         >
           See the full process →
         </a>
@@ -561,7 +561,7 @@ const isServiceLink = (url: string) =>
   <!-- ================== S8. 증거 — 말보다 배포가 먼저 ================== -->
   <section class="mx-auto max-w-6xl px-5 py-24 sm:py-28">
     <div class="reveal max-w-2xl">
-      <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-mint">PROOF OF SHIPPING</p>
+      <p class="font-mono text-[11px] font-medium tracking-[0.28em] text-brand">PROOF OF SHIPPING</p>
       <h2 class="font-display mt-4 text-3xl leading-snug text-ink sm:text-4xl">
         Deployments over words
       </h2>
@@ -589,7 +589,7 @@ const isServiceLink = (url: string) =>
         </ul>
         <a
           href="/projects"
-          class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink-dim transition-colors hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
+          class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink-dim transition-colors hover:text-brand focus-visible:outline-2 focus-visible:outline-brand"
         >
           View all products →
         </a>
@@ -603,10 +603,10 @@ const isServiceLink = (url: string) =>
               <li>
                 <a
                   href={`/posts/${post.slug}`}
-                  class="group flex items-baseline justify-between gap-4 rounded-xl border border-line bg-card px-5 py-4 transition-colors hover:border-mint/70 focus-visible:outline-2 focus-visible:outline-mint"
+                  class="group flex items-baseline justify-between gap-4 rounded-xl border border-line bg-card px-5 py-4 transition-colors hover:border-brand/70 focus-visible:outline-2 focus-visible:outline-brand"
                 >
                   <span class="min-w-0">
-                    <span class="block truncate text-[15px] font-medium text-ink transition-colors group-hover:text-mint">{post.title}</span>
+                    <span class="block truncate text-[15px] font-medium text-ink transition-colors group-hover:text-brand">{post.title}</span>
                     <span class="mt-1 block truncate text-xs text-muted">{post.description}</span>
                   </span>
                   <time class="shrink-0 font-mono text-[11px] text-muted">{post.dateLabel}</time>
@@ -625,7 +625,7 @@ const isServiceLink = (url: string) =>
         )}
         <a
           href="/blog"
-          class="mt-5 inline-block border-b border-transparent pb-1 text-sm font-medium text-ink-dim transition-colors hover:border-mint hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
+          class="mt-5 inline-block border-b border-transparent pb-1 text-sm font-medium text-ink-dim transition-colors hover:border-brand hover:text-ink focus-visible:outline-2 focus-visible:outline-brand"
         >
           Browse the journal (Korean) →
         </a>
@@ -637,7 +637,7 @@ const isServiceLink = (url: string) =>
   <section class="relative overflow-hidden border-t border-line">
     <div class="aurora pointer-events-none absolute inset-0" aria-hidden="true"></div>
     <div class="relative mx-auto max-w-6xl px-5 py-28 text-center sm:py-36">
-      <p class="reveal font-mono text-[11px] font-medium tracking-[0.3em] text-mint">CONTACT</p>
+      <p class="reveal font-mono text-[11px] font-medium tracking-[0.3em] text-brand">CONTACT</p>
       <h2 class="reveal font-display mx-auto mt-7 max-w-3xl break-keep text-[clamp(2.2rem,6.5vw,4.6rem)] leading-[1.15] text-ink">
         Ship the Next.
       </h2>
@@ -656,13 +656,13 @@ const isServiceLink = (url: string) =>
       <div class="reveal mt-11 flex flex-col items-center gap-4">
         <a
           href="/contact"
-          class="btn-magnet btn-shine relative inline-flex h-13 items-center gap-3 overflow-hidden rounded-xl bg-ink px-9 py-3.5 text-base font-semibold text-paper transition-colors duration-300 hover:bg-mint focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint"
+          class="btn-magnet btn-shine relative inline-flex h-13 items-center gap-3 overflow-hidden rounded-xl bg-ink px-9 py-3.5 text-base font-semibold text-paper transition-colors duration-300 hover:bg-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
         >
           Start a project
         </a>
         <a
           href={`mailto:${COMPANY.email}`}
-          class="font-mono text-sm text-muted underline underline-offset-4 transition-colors hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
+          class="font-mono text-sm text-muted underline underline-offset-4 transition-colors hover:text-brand focus-visible:outline-2 focus-visible:outline-brand"
         >
           {COMPANY.email}
         </a>
@@ -696,7 +696,7 @@ const isServiceLink = (url: string) =>
     border-radius: 9999px;
     background: radial-gradient(
       circle,
-      color-mix(in srgb, var(--color-mint) 32%, transparent),
+      color-mix(in srgb, var(--color-brand) 32%, transparent),
       transparent 70%
     );
     filter: blur(18px);
@@ -708,7 +708,7 @@ const isServiceLink = (url: string) =>
     opacity: 0.5;
     animation: blob-drift 16s ease-in-out infinite alternate;
   }
-  .hb-1 { width: 460px; height: 460px; top: -12%; left: 56%; background: color-mix(in srgb, var(--color-mint) 18%, transparent); }
+  .hb-1 { width: 460px; height: 460px; top: -12%; left: 56%; background: color-mix(in srgb, var(--color-brand) 18%, transparent); }
   .hb-2 { width: 420px; height: 420px; bottom: -6%; left: -8%; background: color-mix(in srgb, var(--color-cyan) 15%, transparent); animation-delay: -6s; }
   .hb-3 { width: 380px; height: 380px; top: 32%; right: -10%; background: color-mix(in srgb, var(--color-lilac) 14%, transparent); animation-delay: -11s; }
   @keyframes blob-drift {
@@ -720,10 +720,10 @@ const isServiceLink = (url: string) =>
   .text-gradient {
     background: linear-gradient(
       100deg,
-      var(--color-mint-deep),
+      var(--color-brand-deep),
       var(--color-cyan) 40%,
       var(--color-lilac) 75%,
-      var(--color-mint-deep)
+      var(--color-brand-deep)
     );
     background-size: 220% 100%;
     -webkit-background-clip: text;
@@ -753,8 +753,8 @@ const isServiceLink = (url: string) =>
     width: 6px;
     height: 6px;
     border-radius: 9999px;
-    background: var(--color-mint);
-    box-shadow: 0 0 12px color-mix(in srgb, var(--color-mint) 80%, transparent);
+    background: var(--color-brand);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--color-brand) 80%, transparent);
     animation: pipe-move 9s linear infinite;
   }
   @keyframes pipe-move {
@@ -793,7 +793,7 @@ const isServiceLink = (url: string) =>
     border-radius: 9999px;
     background: radial-gradient(
       circle at 50% 0%,
-      color-mix(in srgb, var(--color-mint) 14%, transparent),
+      color-mix(in srgb, var(--color-brand) 14%, transparent),
       transparent 60%
     );
     opacity: 0;
@@ -843,12 +843,12 @@ const isServiceLink = (url: string) =>
   .svc-card.demo-live .demo-sync .demo-bar,
   .svc-card:hover .demo-win .demo-bar,
   .svc-card.demo-live .demo-win .demo-bar {
-    background: var(--color-mint);
+    background: var(--color-brand);
     width: 100%;
   }
   .svc-card:hover .demo-sync .demo-link,
   .svc-card.demo-live .demo-sync .demo-link {
-    background: var(--color-mint);
+    background: var(--color-brand);
   }
   .svc-card:hover .demo-mvp .demo-block,
   .svc-card.demo-live .demo-mvp .demo-block {
@@ -856,8 +856,8 @@ const isServiceLink = (url: string) =>
   }
   .svc-card:hover .demo-mvp .demo-block:nth-child(1),
   .svc-card.demo-live .demo-mvp .demo-block:nth-child(1) {
-    border-color: var(--color-mint);
-    background: color-mix(in srgb, var(--color-mint) 14%, transparent);
+    border-color: var(--color-brand);
+    background: color-mix(in srgb, var(--color-brand) 14%, transparent);
   }
   .svc-card:hover .demo-mvp .demo-block:nth-child(2),
   .svc-card.demo-live .demo-mvp .demo-block:nth-child(2) {
@@ -896,11 +896,11 @@ const isServiceLink = (url: string) =>
 
   /* ---------- 프로세스 현재 단계 강조 ---------- */
   .process-step.is-now {
-    border-color: var(--color-mint);
+    border-color: var(--color-brand);
   }
   .process-step.is-now > span[aria-hidden] {
-    border-color: var(--color-mint);
-    background: var(--color-mint);
+    border-color: var(--color-brand);
+    background: var(--color-brand);
   }
 
   /* ---------- 모션 감소 환경: 전 애니메이션 비활성 ---------- */
@@ -965,7 +965,7 @@ const isServiceLink = (url: string) =>
       const m = h.trim().replace('#', '');
       return [0, 2, 4].map((i) => parseInt(m.slice(i, i + 2), 16));
     };
-    const MINT = hex2rgb(styles.getPropertyValue('--color-mint') || '#10c98f');
+    const MINT = hex2rgb(styles.getPropertyValue('--color-brand') || '#10c98f');
     const CYAN = hex2rgb(styles.getPropertyValue('--color-cyan') || '#26aed4');
     let W = 0, H = 0, dpr = 1, raf = 0, running = false;
     type Cell = { x: number; y: number; heat: number; phase: number };

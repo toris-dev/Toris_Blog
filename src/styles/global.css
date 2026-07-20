@@ -2,7 +2,8 @@
 
 /* ================================================================
    Toris — Bright Technical Craft
-   따뜻한 아이보리 종이 위 딥 네이비 잉크, 전기 민트 액센트.
+   아이보리 종이 위 딥 네이비 잉크 + 브랜드 블루 액센트.
+   색은 토리스 로고(네이비·블루·블랙)에서 직접 추출했다.
    거북이 등껍질(육각)의 정밀한 선과 배포 흐름의 진행선이 시그니처.
    세리프(고운바탕) 헤드라인 + Pretendard 본문 + 모노 라벨.
    모든 색은 아래 토큰만 사용한다(즉흥 hex 금지).
@@ -18,28 +19,28 @@
   --color-paper: #faf9f5;
   --color-paper-2: #f1f0e9;
   --color-card: #ffffff;
-  --color-line: #e0e3e8;
+  --color-line: #d8dfe6;
 
-  /* 글 — 딥 네이비 잉크 */
-  --color-ink: #17233d;
-  --color-ink-dim: #46536e;
-  --color-muted: #717d94;
+  /* 글 — 딥 네이비 잉크(로고 네이비 계열) */
+  --color-ink: #0f1c33;
+  --color-ink-dim: #3d4d63;
+  --color-muted: #5c6b7a;
 
-  /* 주 액센트 — 전기 민트 */
-  --color-mint: #10c98f;
-  --color-mint-bright: #5ce4b8;
-  --color-mint-deep: #0a8a66;
+  /* 주 액센트 — 브랜드 블루(로고 추출) */
+  --color-brand: #2070b0;
+  --color-brand-bright: #4a9ad4;
+  --color-brand-deep: #175a94;
 
-  /* 보조 액센트 — 시안·라일락·코랄(소량) */
-  --color-cyan: #26aed4;
-  --color-lilac: #9d8cf0;
+  /* 보조 — 라이트 블루 · 딥 네이비 · 코랄(소량) */
+  --color-cyan: #4a9ad4;
+  --color-lilac: #102860;
   --color-coral: #ff7a66;
 
   /* 상태 */
   --color-live: #0a8a66;
 
   /* 코드 블록 — 밝은 페이지 위의 다크 패널 */
-  --color-code: #131c30;
+  --color-code: #0f1c33;
 }
 
 html {
@@ -60,7 +61,7 @@ body {
 }
 
 ::selection {
-  background: var(--color-mint);
+  background: var(--color-brand);
   color: var(--color-ink);
 }
 
@@ -96,7 +97,7 @@ body {
   height: 1px;
   background: linear-gradient(
     90deg,
-    var(--color-mint) 0%,
+    var(--color-brand) 0%,
     var(--color-cyan) 55%,
     transparent 100%
   );
@@ -107,7 +108,7 @@ body {
   background:
     radial-gradient(
       480px 320px at 18% 20%,
-      color-mix(in srgb, var(--color-mint) 16%, transparent),
+      color-mix(in srgb, var(--color-brand) 16%, transparent),
       transparent 70%
     ),
     radial-gradient(
@@ -173,12 +174,12 @@ body {
   margin: 1.1em 0;
 }
 .prose-post a {
-  color: var(--color-mint-deep);
+  color: var(--color-brand-deep);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 .prose-post a:hover {
-  color: var(--color-mint);
+  color: var(--color-brand);
 }
 .prose-post ul,
 .prose-post ol {
@@ -195,7 +196,7 @@ body {
   margin: 0.4em 0;
 }
 .prose-post blockquote {
-  border-left: 2px solid var(--color-mint);
+  border-left: 2px solid var(--color-brand);
   background: var(--color-paper-2);
   padding: 0.8em 1.2em;
   border-radius: 0 0.5rem 0.5rem 0;

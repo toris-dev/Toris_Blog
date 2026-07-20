@@ -16,12 +16,12 @@ const isActive = (href: string) =>
   >
     <a
       href="/"
-      class="group flex items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint"
+      class="group flex items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
     >
       <LogoMark class="size-8 transition-transform duration-300 group-hover:rotate-[12deg]" />
       <span class="flex items-baseline gap-2">
         <span class="font-display text-xl text-ink">토리스</span>
-        <span class="text-[11px] font-semibold tracking-[0.3em] text-mint">TORIS</span>
+        <span class="text-[11px] font-semibold tracking-[0.3em] text-brand">TORIS</span>
       </span>
     </a>
 
@@ -32,16 +32,16 @@ const isActive = (href: string) =>
             href={item.href}
             aria-current={isActive(item.href) ? 'page' : undefined}
             class:list={[
-              'relative rounded-md px-4 py-2 text-[15px] transition-colors focus-visible:outline-2 focus-visible:outline-mint',
+              'relative rounded-md px-4 py-2 text-[15px] transition-colors focus-visible:outline-2 focus-visible:outline-brand',
               isActive(item.href)
-                ? 'font-semibold text-mint'
+                ? 'font-semibold text-brand'
                 : 'text-ink-dim hover:text-ink'
             ]}
           >
             {item.label}
             {isActive(item.href) && (
               <span
-                class="absolute inset-x-4 -bottom-px h-px bg-mint"
+                class="absolute inset-x-4 -bottom-px h-px bg-brand"
                 aria-hidden="true"
               />
             )}
@@ -53,7 +53,7 @@ const isActive = (href: string) =>
     <button
       id="menu-toggle"
       type="button"
-      class="flex size-11 items-center justify-center rounded-lg text-ink-dim hover:text-ink focus-visible:outline-2 focus-visible:outline-mint md:hidden"
+      class="flex size-11 items-center justify-center rounded-lg text-ink-dim hover:text-ink focus-visible:outline-2 focus-visible:outline-brand md:hidden"
       aria-label="메뉴 열기"
       aria-expanded="false"
       aria-controls="mobile-menu"
@@ -80,7 +80,7 @@ const isActive = (href: string) =>
       NAV.map((item) => (
         <a
           href={item.href}
-          class="block rounded-lg px-3 py-3 text-[15px] text-ink-dim hover:bg-card hover:text-ink focus-visible:outline-2 focus-visible:outline-mint"
+          class="block rounded-lg px-3 py-3 text-[15px] text-ink-dim hover:bg-card hover:text-ink focus-visible:outline-2 focus-visible:outline-brand"
         >
           {item.label}
         </a>
@@ -89,7 +89,7 @@ const isActive = (href: string) =>
   </div>
   <span
     id="scroll-progress"
-    class="absolute bottom-0 left-0 h-0.5 bg-mint"
+    class="absolute bottom-0 left-0 h-0.5 bg-brand"
     style="width: 0%"
     aria-hidden="true"></span>
 </header>
