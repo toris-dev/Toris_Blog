@@ -41,3 +41,6 @@ npm-debug.log*
 public/**/.obsidian/**
 yarn-debug.log*
 yarn-error.log*
+
+# builderstep 서브트리 문서는 추적 유지 (루트 docs/** 무시 규칙 예외)
+!builderstep/docs/**

@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     return config;
   },
   // 모노레포 루트를 명시해 상위 디렉토리의 무관한 lockfile 오탐을 방지한다.
-  outputFileTracingRoot: path.join(__dirname, "../.."),
+  outputFileTracingRoot: path.join(__dirname, "../../.."),
 };
 
 export default nextConfig;

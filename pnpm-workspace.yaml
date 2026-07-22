@@ -1,0 +1,4 @@
+# 토리스 모노레포 — 루트(toris.kr Astro 사이트) + builderstep 서브트리
+packages:
+  - 'builderstep/apps/*'
+  - 'builderstep/packages/*'

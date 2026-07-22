@@ -2,12 +2,21 @@
   "name": "toris",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "verify": "node ../scripts/verify-migration.mjs",
-    "deploy": "astro build && wrangler deploy && node scripts/indexnow-ping.mjs"
+    "deploy": "astro build && wrangler deploy && node scripts/indexnow-ping.mjs",
+    "deploy:toris": "pnpm run deploy",
+    "deploy:builder": "pnpm --filter @builderstep/web run deploy",
+    "deploy:all": "pnpm run deploy:toris && pnpm run deploy:builder",
+    "builder:dev": "pnpm --filter @builderstep/web run dev",
+    "builder:typecheck": "pnpm --filter \"@builderstep/*\" run typecheck",
+    "builder:test": "pnpm --filter \"@builderstep/*\" run --if-present test"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
@@ -27,5 +36,11 @@
     "tailwindcss": "^4.1.0",
     "typescript": "5.3",
     "wrangler": "^4.26.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "19.2.17",
+      "@types/react-dom": "19.2.3"
+    }
   }
 }

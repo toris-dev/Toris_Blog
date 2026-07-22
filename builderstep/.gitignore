@@ -17,3 +17,6 @@ graphify-out/
 *.tsbuildinfo
 artifacts/
 .rapid-webhook-secret.local
+
+# 빌드 산출물 — 배포는 항상 로컬에서 fresh build (모노레포 전환 시 추적 해제)
+out/
