@@ -2,6 +2,21 @@
   "note": "Higgsfield MCP로 생성한 분위기·컨셉 자산 기록. 원본 PNG는 각 저장소의 src/assets/generated/ (toris.kr) 및 apps/web/public/media/generated/ (builder.toris.kr)에 보관하며, 빌드 파이프라인이 WebP 파생본을 생성한다. 제품 증거용 이미지가 아니라 순수 무드/컨셉 레이어로만 사용한다.",
   "assets": [
     {
+      "file": "toris-hero-atmosphere-v3.png",
+      "repo": "Toris_Blog/src/assets/generated",
+      "page": "toris.kr / (index.astro), /en (en.astro)",
+      "section": "hero background atmosphere layer (현재 사용본, blue-native)",
+      "tool": "higgsfield mcp generate_image",
+      "model": "soul_location",
+      "job_id": "495ce9c7-bbe7-4de1-8f15-8f7834d63426",
+      "aspect_ratio": "21:9",
+      "size": "2560x1072",
+      "generated_at": "2026-07-22",
+      "post_processing": "Astro assets pipeline (sharp) responsive WebP",
+      "note": "브랜드 블루 네이티브 재생성(1일 무제한 체험 중 soul_location 0.12cr). 기각본 1건(04abfc2f — 거북 각인이 헤드라인 영역 침범). v2는 대체됨.",
+      "prompt": "Ultra-wide cinematic architectural interior, corner view of a modular dark graphite structure system [...] Strict palette: deep graphite #10151d, warm ivory light, steel blue #2070b0 / #4a9ad4 accents, no green. No people, no screens, no text, no letters, no logos, no furniture, no neon, no watermark."
+    },
+    {
       "file": "toris-hero-atmosphere-v2.png",
       "repo": "Toris_Blog/src/assets/generated",
       "page": "toris.kr / (index.astro), /en (en.astro)",
