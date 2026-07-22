@@ -12,7 +12,7 @@ const year = new Date().getFullYear();
           <LogoMark class="size-9" />
           <span class="flex items-baseline gap-2">
             <span class="font-display text-xl text-ink">토리스</span>
-            <span class="text-[11px] font-semibold tracking-[0.3em] text-mint">TORIS</span>
+            <span class="text-[11px] font-semibold tracking-[0.3em] text-brand">TORIS</span>
           </span>
         </div>
         <p class="mt-4 text-sm leading-relaxed text-muted">
@@ -22,7 +22,7 @@ const year = new Date().getFullYear();
           <a
             href={`mailto:${COMPANY.email}`}
             aria-label="이메일"
-            class="flex size-11 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-mint-deep hover:text-mint focus-visible:outline-2 focus-visible:outline-mint"
+            class="flex size-11 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-brand-deep hover:text-brand focus-visible:outline-2 focus-visible:outline-brand"
           >
             <svg
               viewBox="0 0 24 24"
@@ -50,7 +50,7 @@ const year = new Date().getFullYear();
                 { href: '/contact', label: '문의하기' }
               ].map((item) => (
                 <li>
-                  <a href={item.href} class="text-sm text-ink-dim transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint-deep">
+                  <a href={item.href} class="text-sm text-ink-dim transition-colors hover:text-brand-deep focus-visible:outline-2 focus-visible:outline-brand-deep">
                     {item.label}
                   </a>
                 </li>
@@ -68,7 +68,7 @@ const year = new Date().getFullYear();
                 { href: '/posts', label: '전체 글' }
               ].map((item) => (
                 <li>
-                  <a href={item.href} class="text-sm text-ink-dim transition-colors hover:text-mint-deep focus-visible:outline-2 focus-visible:outline-mint-deep">
+                  <a href={item.href} class="text-sm text-ink-dim transition-colors hover:text-brand-deep focus-visible:outline-2 focus-visible:outline-brand-deep">
                     {item.label}
                   </a>
                 </li>
@@ -88,11 +88,11 @@ const year = new Date().getFullYear();
         사업자등록번호: {COMPANY.bizNumber}
       </p>
       <p class="mt-1">
-        문의: <a href={`mailto:${COMPANY.email}`} class="underline underline-offset-2 hover:text-mint">{COMPANY.email}</a>
+        문의: <a href={`mailto:${COMPANY.email}`} class="underline underline-offset-2 hover:text-brand">{COMPANY.email}</a>
         <span class="mx-2" aria-hidden="true">·</span>
-        <a href="/privacy" class="underline underline-offset-2 hover:text-mint">개인정보처리방침</a>
+        <a href="/privacy" class="underline underline-offset-2 hover:text-brand">개인정보처리방침</a>
         <span class="mx-2" aria-hidden="true">·</span>
-        <a href="/terms" class="underline underline-offset-2 hover:text-mint">이용약관</a>
+        <a href="/terms" class="underline underline-offset-2 hover:text-brand">이용약관</a>
       </p>
       <p class="mt-4">© {year} {COMPANY.nameEn} All rights reserved.</p>
     </div>

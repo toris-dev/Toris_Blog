@@ -55,7 +55,7 @@ export default function PostSearch({ posts }: { posts: PostItem[] }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="제목·내용 검색"
-            className="h-11 w-full rounded-full border border-line bg-card pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-mint"
+            className="h-11 w-full rounded-full border border-line bg-card pl-10 pr-4 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-brand"
           />
         </label>
         <p className="text-sm tabular-nums text-muted">
@@ -78,10 +78,10 @@ export default function PostSearch({ posts }: { posts: PostItem[] }) {
               aria-selected={selected}
               onClick={() => setCategory(c)}
               className={
-                'rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint ' +
+                'rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ' +
                 (selected
-                  ? 'border-mint bg-mint text-ink'
-                  : 'border-line bg-card text-muted hover:border-mint-deep hover:text-mint-bright')
+                  ? 'border-brand bg-brand text-ink'
+                  : 'border-line bg-card text-muted hover:border-brand-deep hover:text-brand-bright')
               }
             >
               {c}
@@ -95,15 +95,15 @@ export default function PostSearch({ posts }: { posts: PostItem[] }) {
           <li key={p.slug}>
             <a
               href={`/posts/${encodeURIComponent(p.slug)}`}
-              className="group block rounded-xl px-3 py-5 transition-colors hover:bg-paper-2 focus-visible:outline-2 focus-visible:outline-mint"
+              className="group block rounded-xl px-3 py-5 transition-colors hover:bg-paper-2 focus-visible:outline-2 focus-visible:outline-brand"
             >
               <div className="flex items-center gap-2 text-xs">
-                <span className="rounded-full bg-mint/10 px-2 py-0.5 font-semibold text-mint">
+                <span className="rounded-full bg-brand/10 px-2 py-0.5 font-semibold text-brand">
                   {p.category}
                 </span>
                 {p.dateLabel && <time dateTime={p.date} className="text-muted">{p.dateLabel}</time>}
               </div>
-              <h3 className="mt-2 text-lg font-bold text-ink group-hover:text-mint-bright">
+              <h3 className="mt-2 text-lg font-bold text-ink group-hover:text-brand-bright">
                 {p.title}
               </h3>
               <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted">

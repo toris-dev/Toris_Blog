@@ -2,6 +2,17 @@
   "note": "Higgsfield MCP로 생성한 분위기·컨셉 자산 기록. 원본 PNG는 각 저장소의 src/assets/generated/ (toris.kr) 및 apps/web/public/media/generated/ (builder.toris.kr)에 보관하며, 빌드 파이프라인이 WebP 파생본을 생성한다. 제품 증거용 이미지가 아니라 순수 무드/컨셉 레이어로만 사용한다.",
   "assets": [
     {
+      "file": "toris-hero-atmosphere-v2.png",
+      "repo": "Toris_Blog/src/assets/generated",
+      "page": "toris.kr / (index.astro), /en (en.astro)",
+      "section": "hero background atmosphere layer (현재 사용본)",
+      "tool": "sharp 선택적 재채색 (Higgsfield 크레딧 소진으로 로컬 후처리)",
+      "source": "toris-hero-atmosphere-v1.png",
+      "generated_at": "2026-07-22",
+      "post_processing": "green-dominant 픽셀만 브랜드 블루로 이동(웜 아이보리 조명 보존) + Astro assets WebP",
+      "note": "공식 브랜드 블루 정렬용. 크레딧 충전 후 blue-native 재생성 권장(v3)."
+    },
+    {
       "file": "toris-hero-atmosphere-v1.png",
       "repo": "Toris_Blog/src/assets/generated",
       "page": "toris.kr / (index.astro), /en (en.astro)",

@@ -70,7 +70,7 @@ const productsJsonLd = JSON.stringify({
   <section class="mx-auto max-w-6xl px-5 pb-6 pt-20 sm:pt-28">
     <div class="reveal flex items-center gap-4">
       <span class="rule-accent w-16" aria-hidden="true"></span>
-      <p class="text-xs font-semibold tracking-[0.35em] text-mint">PRODUCTS</p>
+      <p class="text-xs font-semibold tracking-[0.35em] text-brand">PRODUCTS</p>
     </div>
     <h1
       class="reveal font-display mt-6 text-4xl text-ink sm:text-5xl"
@@ -100,7 +100,7 @@ const productsJsonLd = JSON.stringify({
         href={linked ? featured.github : undefined}
         target={linked ? '_blank' : undefined}
         rel={linked ? 'noopener noreferrer' : undefined}
-        class="reveal group relative mt-8 grid overflow-hidden rounded-2xl border border-line bg-card transition-[border-color,box-shadow] duration-300 hover:border-mint/70 hover:shadow-(--shadow-lift) focus-visible:outline-2 focus-visible:outline-mint lg:grid-cols-[7fr_5fr]"
+        class="reveal group relative mt-8 grid overflow-hidden rounded-2xl border border-line bg-card transition-[border-color,box-shadow] duration-300 hover:border-brand/70 hover:shadow-(--shadow-lift) focus-visible:outline-2 focus-visible:outline-brand lg:grid-cols-[7fr_5fr]"
       >
         <ProjectCover
           project={featured}
@@ -109,7 +109,7 @@ const productsJsonLd = JSON.stringify({
           loading="eager"
         />
         <div class="flex flex-col p-7 sm:p-9">
-          <p class="font-mono text-[10px] tracking-[0.24em] text-mint uppercase">FEATURED · {featured.category}</p>
+          <p class="font-mono text-[10px] tracking-[0.24em] text-brand uppercase">FEATURED · {featured.category}</p>
           <h3 class="font-display mt-4 text-3xl text-ink sm:text-4xl">{featured.name}</h3>
           <p class="mt-3 break-keep text-[15px] font-medium leading-relaxed text-ink-dim">{featured.tagline}</p>
           <p class="mt-4 break-keep text-sm leading-relaxed text-muted">{featured.description}</p>
@@ -120,7 +120,7 @@ const productsJsonLd = JSON.stringify({
               {featured.status} · {featured.platform}
             </span>
             {linked && (
-              <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
+              <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-brand">
                 서비스 열기
                 <svg viewBox="0 0 24 24" class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M7 17 17 7M9 7h8v8" />
@@ -129,7 +129,7 @@ const productsJsonLd = JSON.stringify({
             )}
           </div>
         </div>
-        <span class="absolute -bottom-px left-0 h-0.5 w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
+        <span class="absolute -bottom-px left-0 h-0.5 w-0 bg-brand transition-all duration-500 group-hover:w-full" aria-hidden="true" />
       </Tag>
     ); })()}
 
@@ -139,7 +139,7 @@ const productsJsonLd = JSON.stringify({
           href={linked ? p.github : undefined}
           target={linked ? '_blank' : undefined}
           rel={linked ? 'noopener noreferrer' : undefined}
-          class="card-3d reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-[border-color,box-shadow] duration-300 hover:border-mint/70 hover:shadow-(--shadow-lift) focus-visible:outline-2 focus-visible:outline-mint"
+          class="card-3d reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-[border-color,box-shadow] duration-300 hover:border-brand/70 hover:shadow-(--shadow-lift) focus-visible:outline-2 focus-visible:outline-brand"
           style={`transition-delay: ${i * 60}ms`}
         >
           <span class="card-glare" aria-hidden="true" />
@@ -154,7 +154,7 @@ const productsJsonLd = JSON.stringify({
                 {p.status} · {p.platform}
               </span>
               {linked && (
-                <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
+                <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-brand">
                   서비스 열기
                   <svg viewBox="0 0 24 24" class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M7 17 17 7M9 7h8v8" />
@@ -162,7 +162,7 @@ const productsJsonLd = JSON.stringify({
                 </span>
               )}
             </span>
-            <span class="absolute -bottom-px left-0 h-px w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
+            <span class="absolute -bottom-px left-0 h-px w-0 bg-brand transition-all duration-500 group-hover:w-full" aria-hidden="true" />
           </div>
         </Tag>
       ); })}
@@ -173,7 +173,7 @@ const productsJsonLd = JSON.stringify({
   {building.length > 0 && (
     <section class="mx-auto max-w-6xl px-5 py-14" aria-label="개발 중 프로젝트">
       <h2 class="reveal font-display flex items-center gap-3 text-2xl text-ink">
-        <span class="size-1.5 rounded-full bg-mint" aria-hidden="true"></span>
+        <span class="size-1.5 rounded-full bg-brand" aria-hidden="true"></span>
         개발 중
         <span class="text-sm font-normal tracking-wider text-muted">{building.length}</span>
       </h2>
@@ -183,7 +183,7 @@ const productsJsonLd = JSON.stringify({
             href={linked ? p.github : undefined}
             target={linked ? '_blank' : undefined}
             rel={linked ? 'noopener noreferrer' : undefined}
-            class="card-3d reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-[border-color] duration-300 hover:border-mint/70 focus-visible:outline-2 focus-visible:outline-mint"
+            class="card-3d reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-[border-color] duration-300 hover:border-brand/70 focus-visible:outline-2 focus-visible:outline-brand"
             style={`transition-delay: ${i * 60}ms`}
           >
             <span class="card-glare" aria-hidden="true" />
@@ -193,12 +193,12 @@ const productsJsonLd = JSON.stringify({
               <h3 class="font-display mt-2 text-xl text-ink">{p.name}</h3>
               <p class="mt-2 break-keep text-sm leading-relaxed text-ink-dim">{p.tagline}</p>
               <span class="mt-auto flex items-center justify-between gap-3 pt-6">
-                <span class="flex items-center gap-2 text-[11px] tracking-wider text-mint">
-                  <span class="size-1.5 rounded-full bg-mint" aria-hidden="true" />
+                <span class="flex items-center gap-2 text-[11px] tracking-wider text-brand">
+                  <span class="size-1.5 rounded-full bg-brand" aria-hidden="true" />
                   {p.status}
                 </span>
                 {linked && (
-                  <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
+                  <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-brand">
                     서비스 열기
                     <svg viewBox="0 0 24 24" class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M7 17 17 7M9 7h8v8" />
@@ -206,7 +206,7 @@ const productsJsonLd = JSON.stringify({
                   </span>
                 )}
               </span>
-              <span class="absolute -bottom-px left-0 h-px w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
+              <span class="absolute -bottom-px left-0 h-px w-0 bg-brand transition-all duration-500 group-hover:w-full" aria-hidden="true" />
             </div>
           </Tag>
         ); })}
@@ -228,7 +228,7 @@ const productsJsonLd = JSON.stringify({
             href={linked ? p.github : undefined}
             target={linked ? '_blank' : undefined}
             rel={linked ? 'noopener noreferrer' : undefined}
-            class="reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card p-6 transition-[border-color] duration-300 hover:border-mint/60 focus-visible:outline-2 focus-visible:outline-mint"
+            class="reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card p-6 transition-[border-color] duration-300 hover:border-brand/60 focus-visible:outline-2 focus-visible:outline-brand"
             style={`transition-delay: ${i * 60}ms`}
           >
             <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-muted">{p.category}</p>
@@ -240,7 +240,7 @@ const productsJsonLd = JSON.stringify({
                 {p.status} · {p.year}
               </span>
               {linked && (
-                <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
+                <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-brand">
                   서비스 열기
                   <svg viewBox="0 0 24 24" class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M7 17 17 7M9 7h8v8" />
@@ -248,7 +248,7 @@ const productsJsonLd = JSON.stringify({
                 </span>
               )}
             </span>
-            <span class="absolute -bottom-px left-0 h-px w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
+            <span class="absolute -bottom-px left-0 h-px w-0 bg-brand transition-all duration-500 group-hover:w-full" aria-hidden="true" />
           </Tag>
         ); })}
       </div>
@@ -267,7 +267,7 @@ const productsJsonLd = JSON.stringify({
       </p>
       <a
         href="/contact"
-        class="mt-8 inline-flex h-12 items-center gap-2 border border-mint bg-mint rounded-lg px-8 text-[15px] font-semibold text-paper transition-all duration-300 hover:-translate-y-0.5 hover:bg-mint-bright hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-mint)_45%,transparent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint active:translate-y-0"
+        class="mt-8 inline-flex h-12 items-center gap-2 border border-brand bg-brand rounded-lg px-8 text-[15px] font-semibold text-paper transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-bright hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-brand)_45%,transparent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand active:translate-y-0"
       >
         프로젝트 문의하기
         <svg

@@ -1,40 +1,24 @@
 ---
 /**
- * 토리스 로고 마크 — 금박 육각 등껍질.
- * 바깥 육각(견고한 설계) 안에 등껍질 인갑(scute) 세 조각이 모여
- * 위로 향한 화살 형태(꾸준한 전진)를 이룬다.
+ * 토리스 심볼 마크 — 공식 로고(투명 배경 PNG).
+ * 교체 지점: public/logo-symbol.png 파일만 바꾸면 헤더·푸터·히어로에 일괄 반영된다.
+ * 워드마크가 포함된 전체 로고는 public/logo-full.png.
  */
 interface Props {
   class?: string;
+  /** 헤더처럼 즉시 보여야 하는 위치는 eager, 그 외는 lazy */
+  loading?: 'eager' | 'lazy';
 }
-const { class: className = 'size-8' } = Astro.props;
-const uid = Math.random().toString(36).slice(2, 8);
+const { class: className = 'size-8', loading = 'eager' } = Astro.props;
 ---
 
-<svg viewBox="0 0 48 48" fill="none" class={className} aria-hidden="true">
-  <defs>
-    <linearGradient id={`mint-${uid}`} x1="8" y1="6" x2="40" y2="44">
-      <stop stop-color="#5ce4b8"></stop>
-      <stop offset="0.55" stop-color="#10c98f"></stop>
-      <stop offset="1" stop-color="#0a8a66"></stop>
-    </linearGradient>
-  </defs>
-  <!-- 바깥 육각 쉘 -->
-  <path
-    d="M24 3.5 41.5 13.6v20.8L24 44.5 6.5 34.4V13.6L24 3.5Z"
-    stroke={`url(#mint-${uid})`}
-    stroke-width="2"
-    stroke-linejoin="round"></path>
-  <!-- 인갑 3조각: 중앙 상단 + 좌우 하단 -->
-  <path
-    d="M24 12.5 31 16.6v8.2l-7 4.1-7-4.1v-8.2l7-4.1Z"
-    stroke={`url(#mint-${uid})`}
-    stroke-width="1.6"
-    stroke-linejoin="round"></path>
-  <path
-    d="M15.5 27.4 22 31.2v6.2l-6.5-3.7v-6.3ZM32.5 27.4 26 31.2v6.2l6.5-3.7v-6.3Z"
-    fill={`url(#mint-${uid})`}
-    fill-opacity="0.85"></path>
-  <!-- 중앙 정점 -->
-  <circle cx="24" cy="20.7" r="1.6" fill="#5ce4b8"></circle>
-</svg>
+<span class:list={['logo-chip', className]} aria-hidden="true">
+  <img
+    src="/logo-symbol.png"
+    width="430"
+    height="374"
+    alt=""
+    loading={loading}
+    decoding="async"
+  />
+</span>

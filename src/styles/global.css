@@ -2,8 +2,10 @@
 
 /* ================================================================
    Toris — Quiet Momentum
-   딥 그라파이트 바탕 위 따뜻한 아이보리 잉크, 이끼·에메랄드 액센트.
+   딥 그라파이트 바탕 위 따뜻한 아이보리 잉크, 공식 로고 블루 액센트.
    "서두르지 않되, 반드시 출시하는" 스튜디오의 조용한 전진.
+   브랜드 블루는 공식 로고(logo-symbol.png)에서 추출한 패밀리이며,
+   다크 바탕 대비를 위해 밝은 톤(#4a9ad4)을 기본 액센트로 쓴다.
    거북이 등껍질(육각)의 정밀한 선과 배포 흐름의 진행선이 시그니처.
    세리프(고운바탕) 헤드라인 + Pretendard 본문 + 모노 라벨.
    모든 색·그림자·모션은 아래 토큰만 사용한다(즉흥 hex 금지).
@@ -26,18 +28,18 @@
   --color-ink-dim: #b9bfc6;
   --color-muted: #7f8792;
 
-  /* 주 액센트 — 이끼·에메랄드 민트 (꾸준한 성장) */
-  --color-mint: #10c98f;
-  --color-mint-bright: #5ce4b8;
-  --color-mint-deep: #0fa87a;
+  /* 주 액센트 — 브랜드 블루(공식 로고 추출: #2070b0 · #4a9ad4) */
+  --color-brand: #4a9ad4;
+  --color-brand-bright: #7cc0ea;
+  --color-brand-deep: #2070b0;
 
-  /* 보조 액센트 — 시안(기술·인터랙션)·라일락·코랄·샌드(소량) */
+  /* 보조 액센트 — 시안(기술·인터랙션)·페리윙클·코랄·샌드(소량) */
   --color-cyan: #38b6dc;
-  --color-lilac: #a596f2;
+  --color-lilac: #7ca6e8;
   --color-coral: #ff8a76;
   --color-sand: #cdb878;
 
-  /* 상태 */
+  /* 상태 — 라이브·성장 지표는 에메랄드 유지 */
   --color-live: #2fd39c;
 
   /* 코드 블록 — 그라파이트보다 한 단계 깊은 패널 */
@@ -72,7 +74,7 @@ body {
 }
 
 ::selection {
-  background: var(--color-mint);
+  background: var(--color-brand);
   color: var(--color-paper);
 }
 
@@ -103,12 +105,12 @@ body {
   }
 }
 
-/* ---------- 민트 헤어라인(시그니처 구조 장치) ---------- */
+/* ---------- 브랜드 헤어라인(시그니처 구조 장치) ---------- */
 .rule-accent {
   height: 1px;
   background: linear-gradient(
     90deg,
-    var(--color-mint) 0%,
+    var(--color-brand) 0%,
     var(--color-cyan) 55%,
     transparent 100%
   );
@@ -119,7 +121,7 @@ body {
   background:
     radial-gradient(
       480px 320px at 18% 20%,
-      color-mix(in srgb, var(--color-mint) 16%, transparent),
+      color-mix(in srgb, var(--color-brand) 16%, transparent),
       transparent 70%
     ),
     radial-gradient(
@@ -152,7 +154,22 @@ body {
   }
 }
 
-/* ---------- 블로그 본문 (브라이트) ---------- */
+/* ---------- 공식 로고 칩 — 다크 바탕에서 블랙 획 가독성 확보 ---------- */
+.logo-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--color-ink);
+  border-radius: 22%;
+}
+.logo-chip > img {
+  width: 74%;
+  height: 74%;
+  object-fit: contain;
+}
+
+/* ---------- 블로그 본문 ---------- */
 .prose-post {
   line-height: 1.85;
   font-size: 1.0625rem;
@@ -185,12 +202,12 @@ body {
   margin: 1.1em 0;
 }
 .prose-post a {
-  color: var(--color-mint);
+  color: var(--color-brand);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 .prose-post a:hover {
-  color: var(--color-mint-bright);
+  color: var(--color-brand-bright);
 }
 .prose-post ul,
 .prose-post ol {
@@ -207,7 +224,7 @@ body {
   margin: 0.4em 0;
 }
 .prose-post blockquote {
-  border-left: 2px solid var(--color-mint);
+  border-left: 2px solid var(--color-brand);
   background: var(--color-paper-2);
   padding: 0.8em 1.2em;
   border-radius: 0 0.5rem 0.5rem 0;
