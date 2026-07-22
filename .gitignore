@@ -41,3 +41,4 @@ npm-debug.log*
 public/**/.obsidian/**
 yarn-debug.log*
 yarn-error.log*
+.playwright-mcp/

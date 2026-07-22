@@ -1,7 +1,8 @@
 ---
 import LogoMark from './LogoMark.astro';
-import { NAV } from '../lib/site';
+import { NAV, COMPANY } from '../lib/site';
 const current = Astro.url.pathname;
+const isEn = current === '/en' || current.startsWith('/en/');
 const isActive = (href: string) =>
   href === '/' ? current === '/' : current.startsWith(href);
 ---
@@ -15,14 +16,11 @@ const isActive = (href: string) =>
     aria-label="주 메뉴"
   >
     <a
-      href="/"
+      href={isEn ? '/en' : '/'}
       class="group flex items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
     >
       <LogoMark class="size-8 transition-transform duration-300 group-hover:rotate-[12deg]" />
-      <span class="flex items-baseline gap-2">
-        <span class="font-display text-xl text-ink">토리스</span>
-        <span class="text-[11px] font-semibold tracking-[0.3em] text-brand">TORIS</span>
-      </span>
+      <span class="font-display text-xl text-ink">{isEn ? COMPANY.nameEn : COMPANY.nameKo}</span>
     </a>
 
     <div class="hidden items-center gap-1 md:flex">

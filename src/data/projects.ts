@@ -61,6 +61,94 @@ const taglines = {
 
 export const projects: Project[] = [
   {
+    slug: 'builderstep',
+    name: '빌더스텝',
+    tagline: '혼자 만드는 제품, 다음 단계는 함께',
+    description:
+      '아이디어·검증·MVP·출시·사용자 확보·첫 매출·반복 매출·성장까지, 사업화 8단계 중 지금 내 위치를 진단하고 가장 중요한 다음 행동을 짚어주는 1인 빌더 성장 플랫폼. 진단·맞춤 로드맵·목표 트래킹·전문가 상담·지표 대시보드를 제공합니다.',
+    category: '창업 · 운영 코파일럿',
+    platform: 'Web · SaaS',
+    year: '2026',
+    status: '운영 중',
+    tags: ['Company', 'Fullstack'],
+    accent: { from: '#FF6D1F', to: '#FFA057', glow: 'rgba(255,109,31,0.32)' },
+    tech: ['Next.js', 'Hono', 'Cloudflare', 'Firebase Auth'],
+    features: [
+      {
+        icon: 'check',
+        title: '단계 진단',
+        description:
+          '몇 개의 질문으로 지금 사업화 단계를 진단하고 다음 행동을 제안한다.'
+      },
+      {
+        icon: 'map',
+        title: '맞춤 로드맵',
+        description:
+          '진단 결과를 바탕으로 첫 매출까지 이어지는 개인화된 실행 경로를 그린다.'
+      },
+      {
+        icon: 'chart',
+        title: '지표 대시보드',
+        description:
+          '매출·사용자 데이터를 단계 목표와 연결해 진척을 한눈에 확인한다.'
+      },
+      {
+        icon: 'users',
+        title: '빌더 커뮤니티',
+        description:
+          '기록·피드백·빌더 매칭으로 혼자 헤매지 않도록 함께 나아간다.'
+      }
+    ],
+    github: 'https://builder.toris.kr',
+    image: '/og-default.png',
+    ctaLabel: '서비스 열기',
+    span: 'lg'
+  },
+  {
+    slug: 'knotice',
+    name: '케이노티스',
+    tagline: '문 앞의 한국어 안내문이, 실행 가능한 계획으로',
+    description:
+      '한국에 사는 사람을 위한 안내문 리더. 한국어 고지서·안내문의 텍스트를 읽어 날짜와 해야 할 행동을 뽑아내고, 애매한 부분은 표시하며 단계별 계획으로 바꿔준다. 영어·일본어·중국어·한국어를 지원하며, 사진은 기기 안에 머물고 인식된 텍스트만 처리하는 온디바이스 파이프라인.',
+    category: '문서 분석 · 생활 도구',
+    platform: 'Web · Touch',
+    year: '2026',
+    status: '운영 중',
+    tags: ['Company', 'Frontend'],
+    accent: { from: '#2563EB', to: '#38BDF8', glow: 'rgba(37,99,235,0.32)' },
+    tech: ['OCR', 'On-Device', 'Cloudflare', '다국어'],
+    features: [
+      {
+        icon: 'camera',
+        title: '사진 한 장이면',
+        description:
+          '안내문을 찍으면 텍스트를 인식해 핵심 정보를 정리한다 — 사진은 기기 밖으로 나가지 않는다.'
+      },
+      {
+        icon: 'check',
+        title: '해야 할 행동 추출',
+        description:
+          '무엇을, 언제까지 해야 하는지 명확한 액션으로 정리하고 애매한 항목은 표시한다.'
+      },
+      {
+        icon: 'clock',
+        title: '마감일 정리',
+        description:
+          '흩어진 날짜를 모아 놓치지 않도록 단계별 계획으로 이어준다.'
+      },
+      {
+        icon: 'globe',
+        title: '4개 언어 지원',
+        description:
+          '영어·일본어·중국어·한국어로, 한국에 사는 누구나 안내문을 이해할 수 있게.'
+      }
+    ],
+    github: 'https://knotice.pages.dev',
+    image: '/og-default.png',
+    ctaLabel: '서비스 열기',
+    span: 'md'
+  },
+  {
     slug: 'hanbutgil-garden',
     name: '한붓길 정원',
     tagline: '한 번의 선으로, 고요한 정원을 완성하세요',

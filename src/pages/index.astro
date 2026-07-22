@@ -9,7 +9,9 @@ import { computeStats } from '../lib/stats';
 import { projects } from '../data/projects';
 
 const live = projects.filter((p) => p.status === '운영 중');
-const featured = live.slice(0, 4);
+// 홈 대표 제품: 직접 만들어 운영하는 서비스 중심 — OSS 라이브러리(asyncraft, torisUI)는 /projects 에서만 노출
+const homeExclude = ['asyncraft', 'torisui-kit'];
+const featured = live.filter((p) => !homeExclude.includes(p.slug)).slice(0, 4);
 const sinceYear = Math.min(
   ...projects.map((p) => parseInt(p.year, 10)).filter((y) => !Number.isNaN(y))
 );
@@ -195,8 +197,8 @@ const isServiceLink = (url: string) =>
             <span class="flex items-center gap-1.5 text-live"><span class="size-1.5 rounded-full bg-live"></span>Live</span>
           </li>
           <li class="flex items-center justify-between text-[13px]">
-            <span class="font-medium text-ink">asyncraft</span>
-            <span class="font-mono text-[11px] text-muted">npm</span>
+            <span class="font-medium text-ink">builder.toris.kr</span>
+            <span class="flex items-center gap-1.5 text-live"><span class="size-1.5 rounded-full bg-live"></span>Live</span>
           </li>
         </ul>
       </div>

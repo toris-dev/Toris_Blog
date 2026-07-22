@@ -2,6 +2,8 @@
 import LogoMark from './LogoMark.astro';
 import { COMPANY } from '../lib/site';
 const year = new Date().getFullYear();
+const current = Astro.url.pathname;
+const isEn = current === '/en' || current.startsWith('/en/');
 ---
 
 <footer class="border-t border-line bg-card">
@@ -10,10 +12,7 @@ const year = new Date().getFullYear();
       <div class="max-w-sm">
         <div class="flex items-center gap-3">
           <LogoMark class="size-9" />
-          <span class="flex items-baseline gap-2">
-            <span class="font-display text-xl text-ink">토리스</span>
-            <span class="text-[11px] font-semibold tracking-[0.3em] text-brand">TORIS</span>
-          </span>
+          <span class="font-display text-xl text-ink">{isEn ? COMPANY.nameEn : COMPANY.nameKo}</span>
         </div>
         <p class="mt-4 text-sm leading-relaxed text-muted">
           {COMPANY.description}
