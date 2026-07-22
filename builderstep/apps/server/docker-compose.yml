@@ -1,0 +1,22 @@
+# 로컬 개발용 PostgreSQL 16 컨테이너.
+#
+# 사용법:
+#   docker compose up -d
+#   DATABASE_URL=postgres://builderstep:builderstep@localhost:5432/builderstep
+#
+# 이 파일은 로컬 개발 전용이며 운영 환경 구성에는 사용하지 않는다.
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: builderstep
+      POSTGRES_PASSWORD: builderstep
+      POSTGRES_DB: builderstep
+    ports:
+      - "5432:5432"
+    volumes:
+      - builderstep_pgdata:/var/lib/postgresql/data
+
+volumes:
+  builderstep_pgdata:

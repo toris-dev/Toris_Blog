@@ -1,0 +1,19 @@
+node_modules/
+.next/
+.expo/
+dist/
+build/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+.turbo/
+
+# GJC 세션 상태 / 도구 산출물
+.gjc/
+graphify-out/
+*.tsbuildinfo
+artifacts/
+.rapid-webhook-secret.local

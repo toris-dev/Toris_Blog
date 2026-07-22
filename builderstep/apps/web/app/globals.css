@@ -1,0 +1,324 @@
+@import "tailwindcss";
+
+/* ================================================================
+   BuilderStep — Quiet Momentum (조용한 전진)
+   토리스 패밀리의 딥 그라파이트 셸 안에, 따뜻한 아이보리 작업면.
+   에메랄드(완료·진행)는 부모 브랜드 토리스의 성장색이고,
+   잉걸 주황(행동)은 빌더스텝 고유의 '다음 걸음' 색이다.
+   철학 문서: apps/web/DESIGN-PHILOSOPHY.md
+   ================================================================ */
+@theme {
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, "Noto Sans KR", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+
+  /* 여명 — 따뜻한 종이빛 작업면 */
+  --color-bg: #fbfaf6;
+  --color-bg-2: #f2efe8;
+  --color-card: #ffffff;
+  --color-line: #e7e2d6;
+
+  /* 먹빛 잉크 — 종이 위의 글자 */
+  --color-ink: #1a1712;
+  --color-ink-dim: #57534a;
+  --color-muted: #8c8577;
+
+  /* 딥 그라파이트 셸 — 토리스 부모 브랜드와 공유하는 바깥 껍질 */
+  --color-shell: #101419;
+  --color-shell-2: #151b22;
+  --color-shell-line: #29313c;
+  --color-shell-ink: #f2efe6;
+  --color-shell-dim: #b9bfc6;
+  --color-shell-muted: #7f8792;
+
+  /* 잉걸 주황 — 행동과 전진에만 타오른다 */
+  --color-step: #ff6d1f;
+  --color-step-bright: #ff8f4d;
+  --color-step-deep: #c73f05;
+
+  /* 에메랄드 — 완료·진행의 성장색 (토리스 민트 패밀리) */
+  --color-grow: #0fa87a;
+  --color-grow-bright: #10c98f;
+
+  /* 저녁 보라 — 먼 것들의 안개 */
+  --color-violet: #6d4bff;
+
+  --color-ok: #15a34a;
+  --color-lock: #b3ae9f;
+}
+
+html { color-scheme: light; scroll-behavior: smooth; }
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--color-step); color: #0b0d16; }
+h1, h2, h3 { word-break: keep-all; text-wrap: balance; }
+
+/* ---- 심연 배경: 상단 잉걸 여명 + 하단 보라 안개 ---- */
+.void {
+  background:
+    radial-gradient(900px 520px at 78% -10%, color-mix(in srgb, var(--color-step) 9%, transparent), transparent 68%),
+    radial-gradient(760px 480px at 12% 108%, color-mix(in srgb, var(--color-violet) 8%, transparent), transparent 66%),
+    var(--color-bg);
+}
+
+/* ---- 원근 격자: 측정 가능한 세계의 약속 (다크 셸 히어로 전용) ---- */
+.hero-grid {
+  position: absolute;
+  inset: auto -24% -34% -24%;
+  height: 78%;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--color-violet) 26%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-violet) 26%, transparent) 1px, transparent 1px);
+  background-size: 46px 46px;
+  transform: perspective(640px) rotateX(63deg);
+  transform-origin: 50% 0;
+  mask-image: radial-gradient(72% 88% at 50% 6%, #000 34%, transparent 78%);
+}
+
+/* ---- 다크 셸 위 고스트 버튼 ---- */
+.btn-ghost-shell {
+  border: 1px solid var(--color-shell-line);
+  color: var(--color-shell-dim);
+  backdrop-filter: blur(8px);
+  transition: color .2s, border-color .2s, background-color .2s;
+}
+.btn-ghost-shell:hover {
+  color: var(--color-shell-ink);
+  border-color: color-mix(in srgb, var(--color-step) 55%, transparent);
+  background: color-mix(in srgb, var(--color-step) 10%, transparent);
+}
+
+/* ---- 서리 유리 패널 ---- */
+.glass {
+  background: color-mix(in srgb, #ffffff 68%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-ink) 8%, transparent);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-ink) 5%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+/* ---- 주 행동: 잉걸 버튼 (화면당 하나의 초점) ---- */
+.btn-ember {
+  background: linear-gradient(135deg, var(--color-step) 0%, #ff8a3d 100%);
+  color: #14100b;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-step-bright) 45%, transparent),
+    0 8px 32px -8px color-mix(in srgb, var(--color-step) 55%, transparent);
+  transition: transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s cubic-bezier(.16,1,.3,1), filter .25s;
+}
+.btn-ember:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.07);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-step-bright) 60%, transparent),
+    0 14px 44px -10px color-mix(in srgb, var(--color-step) 70%, transparent);
+}
+.btn-ghost {
+  border: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+  color: var(--color-ink-dim);
+  backdrop-filter: blur(8px);
+  transition: color .2s, border-color .2s, background-color .2s;
+}
+.btn-ghost:hover {
+  color: var(--color-ink);
+  border-color: color-mix(in srgb, var(--color-step) 55%, transparent);
+  background: color-mix(in srgb, var(--color-step) 7%, transparent);
+}
+
+/* ---- 궤도 테두리: PRO 카드의 시그니처 ---- */
+@property --orbit { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+.border-orbit {
+  position: relative;
+  border-radius: 1rem;
+  padding: 1px;
+  background:
+    conic-gradient(from var(--orbit),
+      color-mix(in srgb, var(--color-step) 85%, transparent),
+      color-mix(in srgb, var(--color-violet) 55%, transparent) 30%,
+      color-mix(in srgb, var(--color-ink) 12%, transparent) 55%,
+      color-mix(in srgb, var(--color-step) 85%, transparent) 100%);
+  animation: orbit-spin 7s linear infinite;
+}
+@keyframes orbit-spin { to { --orbit: 360deg; } }
+
+/* ---- 스크롤 리빌: 20px의 조용한 상승 ---- */
+.reveal { opacity: 0; transform: translateY(20px);
+  transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+.reveal.on { opacity: 1; transform: none; }
+
+/* ---- 성장 게이지 ---- */
+.gauge-fill {
+  transition: width .6s cubic-bezier(.16,1,.3,1);
+  box-shadow: 0 0 14px -2px color-mix(in srgb, var(--color-step) 70%, transparent);
+}
+
+/* ---- 단계 노드: 지나온 길(에메랄드) · 현재(잉걸) · 다가올 길(잿빛) ---- */
+.step-node { transition: all .25s cubic-bezier(.16,1,.3,1); }
+.step-node[data-state="done"],
+.step-row[data-state="done"] {
+  border-color: color-mix(in srgb, var(--color-grow) 45%, transparent);
+  background: color-mix(in srgb, var(--color-grow) 8%, #ffffff 60%);
+}
+.step-node[data-state="done"] { color: var(--color-grow); }
+.step-node[aria-selected="true"],
+.step-row[data-state="now"] {
+  background: linear-gradient(135deg, var(--color-step) 0%, #ff8a3d 100%);
+  border-color: transparent;
+  color: #14100b;
+  box-shadow: 0 0 26px -6px color-mix(in srgb, var(--color-step) 75%, transparent);
+}
+.step-node[aria-selected="true"] { transform: translateY(-3px); }
+.step-row[data-state="now"] .text-ink,
+.step-row[data-state="now"] .text-muted { color: #14100b; }
+.step-dot[data-state="done"] {
+  border-color: transparent;
+  background: var(--color-grow);
+  color: #ffffff;
+}
+.step-dot[data-state="now"] {
+  border-color: transparent;
+  background: #14100b;
+  color: var(--color-step-bright);
+}
+
+/* ---- 3D 틸트: 표면은 시선을 따라 기울어진다 (±6°) ---- */
+[data-tilt] {
+  transform:
+    perspective(900px)
+    rotateX(calc(var(--ty, 0) * -6deg))
+    rotateY(calc(var(--tx, 0) * 6deg));
+  transition: transform .35s cubic-bezier(.16,1,.3,1);
+  will-change: transform;
+}
+[data-tilt]:hover { transition: transform .06s linear; }
+[data-tilt] > .glare {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(360px 260px at calc(var(--gx, 50) * 1%) calc(var(--gy, 50) * 1%),
+    color-mix(in srgb, var(--color-step) 10%, transparent), transparent 70%);
+  opacity: 0; transition: opacity .3s;
+}
+[data-tilt]:hover > .glare { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .gauge-fill, .step-node { transition: none; }
+  .step-node[aria-selected="true"] { transform: none; }
+  .border-orbit { animation: none; }
+  [data-tilt] { transform: none !important; transition: none; }
+  [data-tilt] > .glare { display: none; }
+}
+
+/* ============================================================
+   Dashboard form UX polish (toast / hover / calendar / input / select)
+   Scoped under .dash-ui so marketing pages are unaffected.
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  .dash-ui input,
+  .dash-ui select,
+  .dash-ui textarea,
+  .btn-ember,
+  .btn-ghost {
+    transition: border-color .15s ease, box-shadow .15s ease,
+      background-color .15s ease, color .15s ease, transform .12s ease;
+  }
+}
+
+/* Inputs, selects & textareas: cohesive focus ring */
+.dash-ui input:focus-visible,
+.dash-ui select:focus-visible,
+.dash-ui textarea:focus-visible {
+  outline: none;
+  border-color: var(--color-step);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-step) 28%, transparent);
+}
+.dash-ui input:hover:not(:focus):not(:disabled),
+.dash-ui select:hover:not(:focus):not(:disabled),
+.dash-ui textarea:hover:not(:focus):not(:disabled) {
+  border-color: color-mix(in srgb, var(--color-step) 45%, var(--color-line));
+}
+
+/* Native date / calendar picker indicator */
+.dash-ui input[type="date"]::-webkit-calendar-picker-indicator,
+.dash-ui input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+.dash-ui input[type="month"]::-webkit-calendar-picker-indicator,
+.dash-ui input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  padding: 3px;
+  margin-left: 2px;
+  border-radius: 5px;
+  opacity: .55;
+  filter: invert(0.5);
+  transition: opacity .15s ease, background-color .15s ease;
+}
+.dash-ui input[type="date"]::-webkit-calendar-picker-indicator:hover,
+.dash-ui input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover,
+.dash-ui input[type="month"]::-webkit-calendar-picker-indicator:hover,
+.dash-ui input[type="time"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+  background: color-mix(in srgb, var(--color-step) 22%, transparent);
+}
+
+/* Custom chevron for selects */
+.dash-ui select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b93a7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 1rem;
+  padding-right: 2.25rem;
+}
+.dash-ui select:focus-visible {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f0a03a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+}
+
+/* Button micro-interactions */
+.btn-ember:hover:not(:disabled),
+.btn-ghost:hover:not(:disabled) { transform: translateY(-1px); }
+.btn-ember:active:not(:disabled),
+.btn-ghost:active:not(:disabled) { transform: translateY(0); }
+.btn-ember:disabled,
+.btn-ghost:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .btn-ember:hover:not(:disabled),
+  .btn-ghost:hover:not(:disabled),
+  .btn-ember:active,
+  .btn-ghost:active { transform: none; }
+}
+
+/* ---- Toast ---- */
+.dash-toast-wrap {
+  position: fixed; z-index: 60; bottom: 1rem; right: 1rem;
+  display: flex; flex-direction: column; gap: .5rem;
+  max-width: min(92vw, 22rem); pointer-events: none;
+}
+.dash-toast {
+  pointer-events: auto;
+  display: flex; align-items: flex-start; gap: .6rem;
+  border: 1px solid var(--color-line);
+  background: color-mix(in srgb, var(--color-card) 92%, black);
+  color: var(--color-ink);
+  border-radius: .6rem; padding: .65rem .8rem;
+  box-shadow: 0 8px 24px -8px rgba(0,0,0,.55);
+  font-size: .8125rem; line-height: 1.35;
+  animation: dash-toast-in .22s cubic-bezier(.16,1,.3,1);
+}
+.dash-toast[data-kind="success"] { border-left: 3px solid var(--color-ok, #46c07a); }
+.dash-toast[data-kind="error"]   { border-left: 3px solid #e5654b; }
+.dash-toast[data-kind="info"]    { border-left: 3px solid var(--color-step); }
+.dash-toast-x {
+  margin-left: auto; opacity: .5; cursor: pointer; background: none;
+  border: none; color: inherit; font-size: 1rem; line-height: 1; padding: 0 .1rem;
+}
+.dash-toast-x:hover { opacity: 1; }
+@keyframes dash-toast-in {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dash-toast { animation: none; }
+}
