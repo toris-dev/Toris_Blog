@@ -1,0 +1,11 @@
+{
+  // BuilderStep API — 래피드 웹훅·구독 엔타이틀먼트 (D1)
+  "name": "builderstep-api",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-07-01",
+  // custom_domain은 cafe24發 *.toris.kr 와일드카드 DNS와 충돌 — 기존 프록시드 레코드 위에서 동작하는 라우트 사용
+  "routes": [{ "pattern": "api.builder.toris.kr/*", "zone_name": "toris.kr" }],
+  "d1_databases": [
+    { "binding": "DB", "database_name": "builderstep", "database_id": "d834ea17-2a56-45fc-bbd0-bb03d056e8ac" }
+  ]
+}

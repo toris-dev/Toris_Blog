@@ -1,0 +1,11 @@
+{
+  // BuilderStep Web — Next 정적 export를 Workers Static Assets로 서빙
+  "name": "builderstep-web",
+  "compatibility_date": "2026-07-01",
+  // custom_domain은 cafe24發 *.toris.kr 와일드카드 DNS와 충돌 — 기존 프록시드 레코드 위에서 동작하는 라우트 사용
+  "routes": [{ "pattern": "builder.toris.kr/*", "zone_name": "toris.kr" }],
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
+}

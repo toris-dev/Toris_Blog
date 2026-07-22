@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "빌더스텝",
+    "slug": "builderstep",
+    "scheme": "builderstep",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "backgroundColor": "#0B1220",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.builderstep.mobile"
+    },
+    "android": {
+      "package": "com.builderstep.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#0B1220"
+      }
+    }
+  }
+}
