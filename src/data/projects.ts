@@ -62,7 +62,7 @@ const taglines = {
 export const projects: Project[] = [
   {
     slug: 'builderstep',
-    name: '빌더스텝',
+    name: 'builder-step',
     tagline: '혼자 만드는 제품, 다음 단계는 함께',
     description:
       '아이디어·검증·MVP·출시·사용자 확보·첫 매출·반복 매출·성장까지, 사업화 8단계 중 지금 내 위치를 진단하고 가장 중요한 다음 행동을 짚어주는 1인 빌더 성장 플랫폼. 진단·맞춤 로드맵·목표 트래킹·전문가 상담·지표 대시보드를 제공합니다.',
