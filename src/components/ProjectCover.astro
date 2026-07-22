@@ -1,0 +1,86 @@
+---
+/**
+ * 프로젝트 카드 커버.
+ * - covers.ts에 실제 자산이 있으면 최적화 이미지(<Image>)로 렌더
+ * - 없으면 프로젝트 액센트 토큰으로 만든 생성형 CSS 커버(장식용)로 대체
+ *   — 가짜 인터페이스나 AI 목업 대신, 정직한 타이포그래피 커버.
+ */
+import { Image } from 'astro:assets';
+import { covers, coverAlts, coverPositions } from '../data/covers';
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+  class?: string;
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+}
+
+const {
+  project,
+  class: className = '',
+  sizes = '(min-width: 1024px) 50vw, 100vw',
+  loading = 'lazy'
+} = Astro.props;
+
+const cover = covers[project.slug];
+const alt = coverAlts[project.slug] ?? '';
+const objectPosition = coverPositions[project.slug];
+const initial = project.name.trim().charAt(0);
+---
+
+{
+  cover ? (
+    <div class:list={['relative overflow-hidden bg-paper-2', className]}>
+      <Image
+        src={cover}
+        alt={alt}
+        widths={[480, 768, 1080, 1600]}
+        sizes={sizes}
+        loading={loading}
+        class="h-full w-full object-cover transition-transform duration-500 ease-[var(--ease-swift)] group-hover:scale-[1.03]"
+        style={objectPosition ? `object-position: ${objectPosition}` : undefined}
+      />
+      <span
+        class="pointer-events-none absolute inset-0 ring-1 ring-inset ring-line/60"
+        aria-hidden="true"
+      />
+    </div>
+  ) : (
+    <div
+      class:list={[
+        'relative flex items-center justify-center overflow-hidden bg-paper-2',
+        className
+      ]}
+      aria-hidden="true"
+    >
+      <span
+        class="absolute inset-0 opacity-[0.32] transition-opacity duration-500 group-hover:opacity-45"
+        style={`background:
+          radial-gradient(120% 90% at 18% 0%, ${project.accent.from}33, transparent 60%),
+          radial-gradient(120% 100% at 85% 100%, ${project.accent.to}2e, transparent 62%)`}
+      />
+      <svg
+        viewBox="0 0 48 48"
+        fill="none"
+        class="absolute -right-6 -top-8 size-40 opacity-[0.13]"
+      >
+        <path
+          d="M24 3.5 41.5 13.6v20.8L24 44.5 6.5 34.4V13.6L24 3.5Z"
+          stroke={project.accent.from}
+          stroke-width="1"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <span class="font-display relative text-[clamp(3rem,9vw,5rem)] leading-none text-ink/85">
+        {initial}
+      </span>
+      <span class="absolute bottom-3 left-4 font-mono text-[9px] tracking-[0.24em] text-muted uppercase">
+        {project.platform}
+      </span>
+      <span
+        class="pointer-events-none absolute inset-0 ring-1 ring-inset ring-line/60"
+      />
+    </div>
+  )
+}

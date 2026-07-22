@@ -1,6 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import CardFX from '../components/CardFX.astro';
+import ProjectCover from '../components/ProjectCover.astro';
+import { covers } from '../data/covers';
 import { SITE_URL, absoluteUrl } from '../lib/site';
 // 기존 Next 프로젝트 데이터 재사용 (원본 단일 출처)
 import { projects } from '../data/projects';
@@ -9,11 +11,9 @@ const live = projects.filter((p) => p.status === '운영 중');
 const building = projects.filter((p) => p.status === '개발 중');
 const shipped = projects.filter((p) => p.status === '출시');
 
-const groups = [
-  { label: '운영 중', items: live, dot: 'bg-live', text: 'text-live', wide: true },
-  { label: '개발 중', items: building, dot: 'bg-mint', text: 'text-mint', wide: false },
-  { label: '출시', items: shipped, dot: 'bg-sand', text: 'text-muted', wide: false }
-].filter((g) => g.items.length > 0);
+// 에디토리얼 하이어라키 — 실제 커버가 있는 운영 제품을 대표작으로
+const featured = live.find((p) => covers[p.slug]) ?? live[0];
+const liveRest = live.filter((p) => p !== featured);
 
 // 서비스 링크(웹사이트·스토어·릴리스 다운로드)만 클릭 허용.
 // GitHub 리포/프로필 루트로만 가는 항목은 카드 링크를 제거한다.
@@ -87,96 +87,173 @@ const productsJsonLd = JSON.stringify({
     </p>
   </section>
 
-  <!-- ============================ 상태별 그룹 ============================ -->
-  {
-    groups.map((group) => (
-      <section
-        class="mx-auto max-w-6xl px-5 py-14"
-        aria-label={`${group.label} 프로젝트`}
+  <!-- ==================== 운영 중 — 대표작 + 미디엄 ==================== -->
+  <section class="mx-auto max-w-6xl px-5 py-14" aria-label="운영 중 프로젝트">
+    <h2 class="reveal font-display flex items-center gap-3 text-2xl text-ink">
+      <span class="size-1.5 rounded-full bg-live" aria-hidden="true"></span>
+      운영 중
+      <span class="text-sm font-normal tracking-wider text-muted">{live.length}</span>
+    </h2>
+
+    {featured && (() => { const linked = isServiceLink(featured.github); const Tag = linked ? 'a' : 'div'; return (
+      <Tag
+        href={linked ? featured.github : undefined}
+        target={linked ? '_blank' : undefined}
+        rel={linked ? 'noopener noreferrer' : undefined}
+        class="reveal group relative mt-8 grid overflow-hidden rounded-2xl border border-line bg-card transition-[border-color,box-shadow] duration-300 hover:border-mint/70 hover:shadow-(--shadow-lift) focus-visible:outline-2 focus-visible:outline-mint lg:grid-cols-[7fr_5fr]"
       >
-        <h2 class="reveal font-display flex items-center gap-3 text-2xl text-ink">
-          <span
-            class:list={['size-1.5 rounded-full', group.dot]}
-            aria-hidden="true"
-          />
-          {group.label}
-          <span class="text-sm font-normal tracking-wider text-muted">
-            {group.items.length}
-          </span>
-        </h2>
-        <div
-          class:list={[
-            'mt-8 grid gap-4',
-            group.wide ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'
-          ]}
+        <ProjectCover
+          project={featured}
+          class="aspect-[16/9] w-full lg:aspect-auto lg:h-full"
+          sizes="(min-width: 1024px) 58vw, 100vw"
+          loading="eager"
+        />
+        <div class="flex flex-col p-7 sm:p-9">
+          <p class="font-mono text-[10px] tracking-[0.24em] text-mint uppercase">FEATURED · {featured.category}</p>
+          <h3 class="font-display mt-4 text-3xl text-ink sm:text-4xl">{featured.name}</h3>
+          <p class="mt-3 break-keep text-[15px] font-medium leading-relaxed text-ink-dim">{featured.tagline}</p>
+          <p class="mt-4 break-keep text-sm leading-relaxed text-muted">{featured.description}</p>
+          <p class="mt-5 text-xs tracking-wide text-muted">{featured.tech.slice(0, 5).join(' · ')}</p>
+          <div class="mt-auto flex items-center justify-between gap-3 pt-7">
+            <span class="flex items-center gap-2 text-[11px] tracking-wider text-live">
+              <span class="size-1.5 rounded-full bg-live" aria-hidden="true"></span>
+              {featured.status} · {featured.platform}
+            </span>
+            {linked && (
+              <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
+                서비스 열기
+                <svg viewBox="0 0 24 24" class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M7 17 17 7M9 7h8v8" />
+                </svg>
+              </span>
+            )}
+          </div>
+        </div>
+        <span class="absolute -bottom-px left-0 h-0.5 w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
+      </Tag>
+    ); })()}
+
+    <div class="mt-4 grid gap-4 sm:grid-cols-2">
+      {liveRest.map((p, i) => { const linked = isServiceLink(p.github); const Tag = linked ? 'a' : 'div'; return (
+        <Tag
+          href={linked ? p.github : undefined}
+          target={linked ? '_blank' : undefined}
+          rel={linked ? 'noopener noreferrer' : undefined}
+          class="card-3d reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-[border-color,box-shadow] duration-300 hover:border-mint/70 hover:shadow-(--shadow-lift) focus-visible:outline-2 focus-visible:outline-mint"
+          style={`transition-delay: ${i * 60}ms`}
         >
-          {group.items.map((p, i) => { const linked = isServiceLink(p.github); const Tag = linked ? 'a' : 'div'; return (
-            <Tag
-              href={linked ? p.github : undefined}
-              target={linked ? '_blank' : undefined}
-              rel={linked ? 'noopener noreferrer' : undefined}
-              class="card-3d reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card p-7 transition-[border-color] duration-300 hover:border-mint-deep focus-visible:outline-2 focus-visible:outline-mint"
-              style={`transition-delay: ${i * 60}ms`}
-            >
-              <span class="card-glare" aria-hidden="true" />
-              <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-muted">
-                {p.category}
-              </p>
-              <h3
-                class:list={[
-                  'font-display mt-3 text-ink',
-                  group.wide ? 'text-2xl sm:text-3xl' : 'text-2xl'
-                ]}
-              >
-                {p.name}
-              </h3>
-              <p class="mt-3 break-keep text-sm leading-relaxed text-ink-dim">
-                {p.tagline}
-              </p>
-              <p class="mt-4 text-xs tracking-wide text-muted">
-                {p.tech.slice(0, 4).join(' · ')}
-              </p>
-              <span class="mt-auto flex items-center justify-between gap-3 pt-7">
-                <span
-                  class:list={[
-                    'flex items-center gap-2 text-[11px] tracking-wider',
-                    group.text
-                  ]}
-                >
-                  <span
-                    class:list={['size-1.5 rounded-full', group.dot]}
-                    aria-hidden="true"
-                  />
+          <span class="card-glare" aria-hidden="true" />
+          <ProjectCover project={p} class="aspect-[16/9] w-full" sizes="(min-width: 640px) 50vw, 100vw" />
+          <div class="flex grow flex-col p-6">
+            <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-muted">{p.category}</p>
+            <h3 class="font-display mt-2 text-2xl text-ink">{p.name}</h3>
+            <p class="mt-2 break-keep text-sm leading-relaxed text-ink-dim">{p.tagline}</p>
+            <span class="mt-auto flex items-center justify-between gap-3 pt-6">
+              <span class="flex items-center gap-2 text-[11px] tracking-wider text-live">
+                <span class="size-1.5 rounded-full bg-live" aria-hidden="true" />
+                {p.status} · {p.platform}
+              </span>
+              {linked && (
+                <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
+                  서비스 열기
+                  <svg viewBox="0 0 24 24" class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M7 17 17 7M9 7h8v8" />
+                  </svg>
+                </span>
+              )}
+            </span>
+            <span class="absolute -bottom-px left-0 h-px w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
+          </div>
+        </Tag>
+      ); })}
+    </div>
+  </section>
+
+  <!-- ==================== 개발 중 — 미디엄 커버 카드 ==================== -->
+  {building.length > 0 && (
+    <section class="mx-auto max-w-6xl px-5 py-14" aria-label="개발 중 프로젝트">
+      <h2 class="reveal font-display flex items-center gap-3 text-2xl text-ink">
+        <span class="size-1.5 rounded-full bg-mint" aria-hidden="true"></span>
+        개발 중
+        <span class="text-sm font-normal tracking-wider text-muted">{building.length}</span>
+      </h2>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {building.map((p, i) => { const linked = isServiceLink(p.github); const Tag = linked ? 'a' : 'div'; return (
+          <Tag
+            href={linked ? p.github : undefined}
+            target={linked ? '_blank' : undefined}
+            rel={linked ? 'noopener noreferrer' : undefined}
+            class="card-3d reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-[border-color] duration-300 hover:border-mint/70 focus-visible:outline-2 focus-visible:outline-mint"
+            style={`transition-delay: ${i * 60}ms`}
+          >
+            <span class="card-glare" aria-hidden="true" />
+            <ProjectCover project={p} class="aspect-[16/10] w-full" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
+            <div class="flex grow flex-col p-6">
+              <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-muted">{p.category}</p>
+              <h3 class="font-display mt-2 text-xl text-ink">{p.name}</h3>
+              <p class="mt-2 break-keep text-sm leading-relaxed text-ink-dim">{p.tagline}</p>
+              <span class="mt-auto flex items-center justify-between gap-3 pt-6">
+                <span class="flex items-center gap-2 text-[11px] tracking-wider text-mint">
+                  <span class="size-1.5 rounded-full bg-mint" aria-hidden="true" />
                   {p.status}
                 </span>
                 {linked && (
                   <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
                     서비스 열기
-                    <svg
-                      viewBox="0 0 24 24"
-                      class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
+                    <svg viewBox="0 0 24 24" class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M7 17 17 7M9 7h8v8" />
                     </svg>
                   </span>
                 )}
               </span>
-              <span
-                class="absolute -bottom-px left-0 h-px w-0 bg-mint transition-all duration-500 group-hover:w-full"
-                aria-hidden="true"
-              />
-            </Tag>
-          ); })}
-        </div>
-      </section>
-    ))
-  }
+              <span class="absolute -bottom-px left-0 h-px w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
+            </div>
+          </Tag>
+        ); })}
+      </div>
+    </section>
+  )}
+
+  <!-- ===================== 출시 — 컴팩트 카드 ===================== -->
+  {shipped.length > 0 && (
+    <section class="mx-auto max-w-6xl px-5 py-14" aria-label="출시 프로젝트">
+      <h2 class="reveal font-display flex items-center gap-3 text-2xl text-ink">
+        <span class="size-1.5 rounded-full bg-sand" aria-hidden="true"></span>
+        출시
+        <span class="text-sm font-normal tracking-wider text-muted">{shipped.length}</span>
+      </h2>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {shipped.map((p, i) => { const linked = isServiceLink(p.github); const Tag = linked ? 'a' : 'div'; return (
+          <Tag
+            href={linked ? p.github : undefined}
+            target={linked ? '_blank' : undefined}
+            rel={linked ? 'noopener noreferrer' : undefined}
+            class="reveal group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-card p-6 transition-[border-color] duration-300 hover:border-mint/60 focus-visible:outline-2 focus-visible:outline-mint"
+            style={`transition-delay: ${i * 60}ms`}
+          >
+            <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-muted">{p.category}</p>
+            <h3 class="font-display mt-2 text-xl text-ink">{p.name}</h3>
+            <p class="mt-2 break-keep text-sm leading-relaxed text-ink-dim">{p.tagline}</p>
+            <span class="mt-auto flex items-center justify-between gap-3 pt-6">
+              <span class="flex items-center gap-2 text-[11px] tracking-wider text-muted">
+                <span class="size-1.5 rounded-full bg-sand" aria-hidden="true" />
+                {p.status} · {p.year}
+              </span>
+              {linked && (
+                <span class="flex items-center gap-1.5 text-[13px] font-medium text-muted transition-colors duration-300 group-hover:text-mint">
+                  서비스 열기
+                  <svg viewBox="0 0 24 24" class="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M7 17 17 7M9 7h8v8" />
+                  </svg>
+                </span>
+              )}
+            </span>
+            <span class="absolute -bottom-px left-0 h-px w-0 bg-mint transition-all duration-500 group-hover:w-full" aria-hidden="true" />
+          </Tag>
+        ); })}
+      </div>
+    </section>
+  )}
 
   <!-- =============================== CTA =============================== -->
   <section class="mx-auto max-w-6xl px-5 py-20">
@@ -190,7 +267,7 @@ const productsJsonLd = JSON.stringify({
       </p>
       <a
         href="/contact"
-        class="mt-8 inline-flex h-12 items-center gap-2 border border-mint bg-mint rounded-lg px-8 text-[15px] font-semibold text-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-mint-bright hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-mint)_45%,transparent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint active:translate-y-0"
+        class="mt-8 inline-flex h-12 items-center gap-2 border border-mint bg-mint rounded-lg px-8 text-[15px] font-semibold text-paper transition-all duration-300 hover:-translate-y-0.5 hover:bg-mint-bright hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-mint)_45%,transparent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mint active:translate-y-0"
       >
         프로젝트 문의하기
         <svg

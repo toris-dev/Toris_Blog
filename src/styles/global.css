@@ -1,11 +1,12 @@
 @import 'tailwindcss';
 
 /* ================================================================
-   Toris — Bright Technical Craft
-   따뜻한 아이보리 종이 위 딥 네이비 잉크, 전기 민트 액센트.
+   Toris — Quiet Momentum
+   딥 그라파이트 바탕 위 따뜻한 아이보리 잉크, 이끼·에메랄드 액센트.
+   "서두르지 않되, 반드시 출시하는" 스튜디오의 조용한 전진.
    거북이 등껍질(육각)의 정밀한 선과 배포 흐름의 진행선이 시그니처.
    세리프(고운바탕) 헤드라인 + Pretendard 본문 + 모노 라벨.
-   모든 색은 아래 토큰만 사용한다(즉흥 hex 금지).
+   모든 색·그림자·모션은 아래 토큰만 사용한다(즉흥 hex 금지).
    ================================================================ */
 @theme {
   --font-sans: 'Pretendard Variable', Pretendard, -apple-system,
@@ -14,32 +15,43 @@
   --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas,
     monospace;
 
-  /* 바탕 — 따뜻한 아이보리 종이 */
-  --color-paper: #faf9f5;
-  --color-paper-2: #f1f0e9;
-  --color-card: #ffffff;
-  --color-line: #e0e3e8;
+  /* 바탕 — 딥 그라파이트 (paper < paper-2 < card 순으로 밝아짐) */
+  --color-paper: #101419;
+  --color-paper-2: #151b22;
+  --color-card: #181f28;
+  --color-line: #29313c;
 
-  /* 글 — 딥 네이비 잉크 */
-  --color-ink: #17233d;
-  --color-ink-dim: #46536e;
-  --color-muted: #717d94;
+  /* 글 — 따뜻한 아이보리 잉크 */
+  --color-ink: #f2efe6;
+  --color-ink-dim: #b9bfc6;
+  --color-muted: #7f8792;
 
-  /* 주 액센트 — 전기 민트 */
+  /* 주 액센트 — 이끼·에메랄드 민트 (꾸준한 성장) */
   --color-mint: #10c98f;
   --color-mint-bright: #5ce4b8;
-  --color-mint-deep: #0a8a66;
+  --color-mint-deep: #0fa87a;
 
-  /* 보조 액센트 — 시안·라일락·코랄(소량) */
-  --color-cyan: #26aed4;
-  --color-lilac: #9d8cf0;
-  --color-coral: #ff7a66;
+  /* 보조 액센트 — 시안(기술·인터랙션)·라일락·코랄·샌드(소량) */
+  --color-cyan: #38b6dc;
+  --color-lilac: #a596f2;
+  --color-coral: #ff8a76;
+  --color-sand: #cdb878;
 
   /* 상태 */
-  --color-live: #0a8a66;
+  --color-live: #2fd39c;
 
-  /* 코드 블록 — 밝은 페이지 위의 다크 패널 */
-  --color-code: #131c30;
+  /* 코드 블록 — 그라파이트보다 한 단계 깊은 패널 */
+  --color-code: #0c1016;
+
+  /* 그림자 — 다크 바탕에서는 항상 순수 검정 기반(잉크 금지) */
+  --shadow-soft: 0 8px 32px -16px rgb(0 0 0 / 0.55);
+  --shadow-lift: 0 20px 48px -24px rgb(0 0 0 / 0.6);
+
+  /* 모션 — 상태 변화에만, 180–500ms */
+  --ease-swift: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 180ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
 }
 
 html {
@@ -61,7 +73,7 @@ body {
 
 ::selection {
   background: var(--color-mint);
-  color: var(--color-ink);
+  color: var(--color-paper);
 }
 
 /* 세리프 헤드라인 유틸 */
@@ -126,7 +138,7 @@ body {
 .glass {
   background: color-mix(in srgb, var(--color-card) 78%, transparent);
   border: 1px solid var(--color-line);
-  box-shadow: 0 8px 32px -16px color-mix(in srgb, var(--color-ink) 24%, transparent);
+  box-shadow: var(--shadow-soft);
 }
 @supports (backdrop-filter: blur(1px)) {
   .glass {
@@ -173,12 +185,12 @@ body {
   margin: 1.1em 0;
 }
 .prose-post a {
-  color: var(--color-mint-deep);
+  color: var(--color-mint);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 .prose-post a:hover {
-  color: var(--color-mint);
+  color: var(--color-mint-bright);
 }
 .prose-post ul,
 .prose-post ol {
@@ -214,7 +226,7 @@ body {
 }
 .prose-post pre {
   background: var(--color-code);
-  border: 1px solid var(--color-code);
+  border: 1px solid var(--color-line);
   color: #cdd6e8;
   border-radius: 0.75rem;
   padding: 1.1em 1.3em;

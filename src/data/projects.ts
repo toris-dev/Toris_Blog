@@ -1,6 +1,8 @@
 /**
  * 개인 프로젝트 데이터 — 각 레포지토리 README 기반
- * 이미지: GitHub OpenGraph (https://opengraph.githubassets.com)
+ * 이미지: `image` 필드는 레거시(현재 페이지에서 렌더하지 않음).
+ * 카드 커버는 src/data/covers.ts(로컬 실자산·컨셉 커버 레지스트리)가 단일 출처이며,
+ * 커버가 없는 프로젝트는 ProjectCover가 액센트 토큰 CSS 커버로 대체한다.
  */
 
 export interface ProjectFeature {

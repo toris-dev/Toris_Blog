@@ -1,0 +1,65 @@
+{
+  "note": "Higgsfield MCP로 생성한 분위기·컨셉 자산 기록. 원본 PNG는 각 저장소의 src/assets/generated/ (toris.kr) 및 apps/web/public/media/generated/ (builder.toris.kr)에 보관하며, 빌드 파이프라인이 WebP 파생본을 생성한다. 제품 증거용 이미지가 아니라 순수 무드/컨셉 레이어로만 사용한다.",
+  "assets": [
+    {
+      "file": "toris-hero-atmosphere-v1.png",
+      "repo": "Toris_Blog/src/assets/generated",
+      "page": "toris.kr / (index.astro), /en (en.astro)",
+      "section": "hero background atmosphere layer",
+      "tool": "higgsfield mcp generate_image",
+      "model": "nano_banana_pro (served as nano_banana_2)",
+      "job_id": "85177a55-31b8-47d6-992b-c8aae460e787",
+      "aspect_ratio": "21:9",
+      "size": "3168x1344",
+      "reference_image": null,
+      "generated_at": "2026-07-22",
+      "post_processing": "Astro assets pipeline (sharp) responsive WebP",
+      "prompt": "Ultra-wide premium editorial background for a Seoul-based independent product engineering studio. A calm architectural system of modular dark graphite structures and precision hairline grid lines, translucent technical layers stacked in shallow depth, a few small softly illuminated emerald-green nodes marking steady progress, warm ivory light reflections on matte graphite surfaces, one restrained hexagonal motif echoing a turtle shell rendered as fine line geometry. [...] No people, no robots, no laptops, no screens, no code, no letters, no text, no logos, no user interfaces, no neon, no cyberpunk, no lens flare, no excessive glow, no watermark."
+    },
+    {
+      "file": "builderstep-hero-atmosphere-v1.png",
+      "repo": "builder_step/apps/web/public/media/generated",
+      "page": "builder.toris.kr / (app/(site)/page.tsx)",
+      "section": "hero background atmosphere layer",
+      "tool": "higgsfield mcp generate_image",
+      "model": "nano_banana_pro (served as nano_banana_2)",
+      "job_id": "5e9fef9f-25c5-4b3b-b0b6-915576ccdf0b",
+      "aspect_ratio": "16:9",
+      "size": "2752x1536",
+      "reference_image": null,
+      "generated_at": "2026-07-22",
+      "post_processing": "sharp CLI script → WebP 2400w/1200w derivatives",
+      "prompt": "Optimistic premium editorial visual of a solo builder's journey from idea to sustainable business growth, seen as a physical architectural path: eight connected modular platforms of warm ivory stone stepping steadily forward across a deep graphite midnight environment [...] No people, no text, no letters, no numbers, no logos, no dashboards, no user interface, no money symbols, no rockets, no trophies, no neon, no cyberpunk, no excessive glow, no stock-photo look, no watermark."
+    },
+    {
+      "file": "project-tracedesk-cover-v1.png",
+      "repo": "Toris_Blog/src/assets/generated",
+      "page": "toris.kr /projects, / (work section)",
+      "section": "TraceDesk 프로젝트 컨셉 커버 (인터페이스 아님 — 로컬 타임라인 기록의 은유)",
+      "tool": "higgsfield mcp generate_image",
+      "model": "nano_banana_pro (served as nano_banana_2)",
+      "job_id": "2003fb26-531b-4c58-9e24-5c144bf765d9",
+      "aspect_ratio": "4:3",
+      "size": "2400x1792",
+      "reference_image": null,
+      "generated_at": "2026-07-22",
+      "post_processing": "Astro assets pipeline (sharp) responsive WebP",
+      "prompt": "Truthful conceptual editorial cover for a desktop productivity software product that privately records a person's own computer activity into a local timeline journal. [...] Absolutely no computer screens, no user interface, no windows, no charts, no text, no letters, no numbers, no logos, no people, no keyboards, no laptops, no neon, no excessive gradients, no watermark. 4:3 composition."
+    },
+    {
+      "file": "project-hanbutgil-garden-cover-v1.png",
+      "repo": "Toris_Blog/src/assets/generated",
+      "page": "toris.kr /projects",
+      "section": "한붓길 정원 프로젝트 컨셉 커버 (게임 화면 아님 — 한붓그리기 정원의 은유)",
+      "tool": "higgsfield mcp generate_image",
+      "model": "nano_banana_pro (served as nano_banana_2)",
+      "job_id": "53eb2bba-2b5e-44ff-9da1-acaef609aa83",
+      "aspect_ratio": "4:3",
+      "size": "2400x1792",
+      "reference_image": null,
+      "generated_at": "2026-07-22",
+      "post_processing": "Astro assets pipeline (sharp) responsive WebP",
+      "prompt": "Truthful conceptual editorial cover for a calm one-line-drawing garden puzzle game. Visual metaphor: a small serene Korean garden seen from above at dusk [...] No text, no letters, no numbers, no logos, no user interface, no buttons, no people, no characters, no cartoon mascots, no neon, no excessive glow, no watermark. 4:3 composition."
+    }
+  ]
+}

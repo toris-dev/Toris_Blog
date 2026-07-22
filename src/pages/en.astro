@@ -1,8 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import CardFX from '../components/CardFX.astro';
 import LogoMark from '../components/LogoMark.astro';
+import ProjectCover from '../components/ProjectCover.astro';
+import heroAtmosphere from '../assets/generated/toris-hero-atmosphere-v1.png';
+import memecatchScreen from '../assets/projects/memecatch-screen.png';
 import { COMPANY } from '../lib/site';
 import { fileBaseName, formatDate, toPlainExcerpt } from '../lib/slug';
 import { computeStats } from '../lib/stats';
@@ -109,20 +113,25 @@ const isServiceLink = (url: string) =>
 >
   <!-- ====================== S1. Hero — 글로우 인트로 ====================== -->
   <section id="hero" class="relative overflow-hidden">
+    <!-- 배경 분위기 레이어 — Higgsfield 생성(제품 증거 아님, 순수 무드) -->
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <Image
+        src={heroAtmosphere}
+        alt=""
+        widths={[1280, 1920, 2560]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="h-full w-full object-cover opacity-55"
+      />
+      <span class="absolute inset-0 bg-gradient-to-r from-paper via-paper/55 to-paper/25"></span>
+      <span class="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-paper to-transparent"></span>
+      <span class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-paper/80 to-transparent"></span>
+    </div>
     <canvas
       id="shell-canvas"
-      class="pointer-events-none absolute inset-0 h-full w-full"
+      class="pointer-events-none absolute inset-0 h-full w-full opacity-70"
       aria-hidden="true"></canvas>
-    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      <span class="hero-blob hb-1"></span>
-      <span class="hero-blob hb-2"></span>
-      <span class="hero-blob hb-3"></span>
-    </div>
-    <div
-      class="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-paper to-transparent"
-      aria-hidden="true"
-    >
-    </div>
 
     <div class="relative mx-auto flex min-h-[100dvh] max-w-5xl flex-col items-center justify-center px-5 py-28 text-center">
       <div class="hero-in hero-glow relative">
@@ -186,8 +195,23 @@ const isServiceLink = (url: string) =>
       </div>
     </div>
 
-    <!-- 플로팅 제품 패널 — 실제 운영 데이터만 표기 -->
+    <!-- 플로팅 제품 패널 — 실제 운영 데이터·실제 제품 화면만 표기 -->
     <div class="pointer-events-none absolute inset-0 hidden xl:block" aria-hidden="true">
+      <div class="float-panel glass absolute left-[4.5%] top-[20%] w-72 overflow-hidden rounded-2xl" data-depth="20">
+        <div class="flex items-center gap-2 border-b border-line bg-paper-2/80 px-3 py-2">
+          <span class="flex gap-1"><i class="size-1.5 rounded-full bg-line"></i><i class="size-1.5 rounded-full bg-line"></i><i class="size-1.5 rounded-full bg-line"></i></span>
+          <span class="ml-1 truncate rounded bg-card px-2 py-0.5 font-mono text-[10px] text-muted">catchmeme.com</span>
+          <span class="ml-auto flex items-center gap-1 text-[10px] text-live"><i class="size-1 rounded-full bg-live"></i>LIVE</span>
+        </div>
+        <Image
+          src={memecatchScreen}
+          alt=""
+          widths={[420, 640]}
+          sizes="288px"
+          loading="eager"
+          class="block w-full"
+        />
+      </div>
       <div class="float-panel glass absolute right-[6%] top-[22%] w-64 rounded-2xl p-4" data-depth="16">
         <p class="font-mono text-[10px] tracking-[0.2em] text-muted">DEPLOYMENTS</p>
         <ul class="mt-3 space-y-2.5">
@@ -205,7 +229,7 @@ const isServiceLink = (url: string) =>
           </li>
         </ul>
       </div>
-      <div class="float-panel glass absolute left-[5%] top-[58%] w-72 rounded-2xl p-4 font-mono text-[12px] leading-6" data-depth="26">
+      <div class="float-panel glass absolute left-[5%] top-[62%] w-72 rounded-2xl p-4 font-mono text-[12px] leading-6" data-depth="26">
         <p class="text-muted">$ pnpm run deploy</p>
         <p class="text-ink-dim">✓ 30 pages built</p>
         <p class="text-mint">▲ deployed to production</p>
@@ -469,6 +493,7 @@ const isServiceLink = (url: string) =>
                 </span>
               </div>
             </div>
+            <ProjectCover project={p} class="aspect-[16/9] w-full" sizes="(min-width: 640px) 50vw, 100vw" />
             <div class="flex grow flex-col p-6">
               <div class="flex items-baseline justify-between gap-3">
                 <h3 class="font-display text-2xl text-ink">{enName(p)}</h3>
@@ -687,7 +712,7 @@ const isServiceLink = (url: string) =>
     transform: none;
   }
 
-  /* ---------- 히어로 글로우 + 오로라 블롭 ---------- */
+  /* ---------- 히어로 글로우 ---------- */
   .hero-glow::before {
     content: '';
     position: absolute;
@@ -701,21 +726,6 @@ const isServiceLink = (url: string) =>
     );
     filter: blur(18px);
   }
-  .hero-blob {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(90px);
-    opacity: 0.5;
-    animation: blob-drift 16s ease-in-out infinite alternate;
-  }
-  .hb-1 { width: 460px; height: 460px; top: -12%; left: 56%; background: color-mix(in srgb, var(--color-mint) 18%, transparent); }
-  .hb-2 { width: 420px; height: 420px; bottom: -6%; left: -8%; background: color-mix(in srgb, var(--color-cyan) 15%, transparent); animation-delay: -6s; }
-  .hb-3 { width: 380px; height: 380px; top: 32%; right: -10%; background: color-mix(in srgb, var(--color-lilac) 14%, transparent); animation-delay: -11s; }
-  @keyframes blob-drift {
-    from { transform: translate3d(0, 0, 0) scale(1); }
-    to { transform: translate3d(48px, -36px, 0) scale(1.1); }
-  }
-
   /* ---------- 그라디언트 워드(민트→시안→라일락, 천천히 흐름) ---------- */
   .text-gradient {
     background: linear-gradient(
@@ -910,7 +920,6 @@ const isServiceLink = (url: string) =>
       transform: none;
       transition: none;
     }
-    .hero-blob,
     .pipe-dot,
     .pipe-runner,
     .marquee-track,

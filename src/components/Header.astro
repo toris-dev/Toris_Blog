@@ -115,7 +115,7 @@ const isActive = (href: string) =>
     }
     nav?.classList.toggle('h-16', !scrolled);
     nav?.classList.toggle('h-14', scrolled);
-    header?.classList.toggle('shadow-[0_8px_24px_-16px_color-mix(in_srgb,var(--color-ink)_35%,transparent)]', scrolled);
+    header?.classList.toggle('shadow-[0_8px_24px_-16px_rgb(0_0_0/0.55)]', scrolled);
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
