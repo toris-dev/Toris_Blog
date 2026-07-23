@@ -1,0 +1,10 @@
+{
+  // FieldStep Web — Next 정적 export를 Workers Static Assets로 서빙
+  "name": "fieldstep-web",
+  "compatibility_date": "2026-07-01",
+  "routes": [{ "pattern": "field.toris.kr/*", "zone_name": "toris.kr" }],
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
+}

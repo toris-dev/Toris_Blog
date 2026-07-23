@@ -13,10 +13,14 @@
     "deploy": "astro build && wrangler deploy && node scripts/indexnow-ping.mjs",
     "deploy:toris": "pnpm run deploy",
     "deploy:builder": "pnpm --filter @builderstep/web run deploy",
+    "deploy:field": "pnpm --filter @fieldstep/web run deploy && pnpm --filter @fieldstep/server run deploy",
     "deploy:all": "pnpm run deploy:toris && pnpm run deploy:builder",
     "builder:dev": "pnpm --filter @builderstep/web run dev",
     "builder:typecheck": "pnpm --filter \"@builderstep/*\" run typecheck",
-    "builder:test": "pnpm --filter \"@builderstep/*\" run --if-present test"
+    "builder:test": "pnpm --filter \"@builderstep/*\" run --if-present test",
+    "field:dev": "pnpm --filter @fieldstep/web run dev",
+    "field:typecheck": "pnpm --filter \"@fieldstep/*\" run typecheck",
+    "field:test": "pnpm --filter \"@fieldstep/*\" run --if-present test"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",

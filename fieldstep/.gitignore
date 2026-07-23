@@ -1,0 +1,23 @@
+node_modules/
+.next/
+.wrangler/
+.expo/
+dist/
+build/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+.turbo/
+
+# GJC 세션 상태 / 도구 산출물
+.gjc/
+graphify-out/
+*.tsbuildinfo
+artifacts/
+.rapid-webhook-secret.local
+
+# 빌드 산출물 — 배포는 항상 로컬에서 fresh build (모노레포 전환 시 추적 해제)
+out/

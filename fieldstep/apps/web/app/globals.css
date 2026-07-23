@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* ================================================================
+   현장완료 (FieldStep) — 아이보리 작업면 + 딥 그라파이트 셸
+   + 신뢰의 철강 블루 + 완료 그린. 절제된 실무 도구 톤.
+   ================================================================ */
+@theme {
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, "Noto Sans KR", sans-serif;
+
+  /* 아이보리 작업면 */
+  --color-bg: #f6f4ee;
+  --color-bg-2: #efece2;
+  --color-card: #ffffff;
+  --color-line: #e2ddcf;
+
+  --color-ink: #1a1e24;
+  --color-ink-dim: #4c5560;
+  --color-muted: #868f99;
+
+  /* 딥 그라파이트 셸 (토리스 패밀리) */
+  --color-shell: #11151b;
+  --color-shell-2: #171c24;
+  --color-shell-line: #2a3038;
+  --color-shell-ink: #eef1f5;
+  --color-shell-dim: #b7bec8;
+
+  /* 철강 블루 — 주 행동/신뢰 */
+  --color-primary: #1e5eff;
+  --color-primary-dark: #123fb0;
+  --color-primary-bright: #4c7dff;
+
+  /* 완료 그린 */
+  --color-done: #17a34a;
+}
+
+html { color-scheme: light; }
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { word-break: keep-all; text-wrap: balance; }
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #ffffff;
+  transition: background-color .15s ease, transform .1s ease;
+}
+.btn-primary:hover:not(:disabled) { background: var(--color-primary-dark); }
+.btn-primary:active:not(:disabled) { transform: translateY(1px); }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+
+.btn-ghost {
+  border: 1px solid var(--color-line);
+  color: var(--color-ink-dim);
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.btn-ghost:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.btn-ghost:disabled { opacity: .5; cursor: not-allowed; }
+.btn-ghost-shell {
+  border: 1px solid var(--color-shell-line);
+  color: var(--color-shell-dim);
+  transition: border-color .15s ease, color .15s ease, background-color .15s ease;
+}
+.btn-ghost-shell:hover:not(:disabled) {
+  color: var(--color-shell-ink);
+  border-color: var(--color-primary-bright);
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: #fff;
+}
+.btn-danger:hover:not(:disabled) { background: #b91c1c; }
+
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: .75rem;
+}
+
+.input {
+  border: 1px solid var(--color-line);
+  border-radius: .5rem;
+  background: var(--color-card);
+  padding: .5rem .75rem;
+  font-size: .9rem;
+  color: var(--color-ink);
+}
+.input:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+
+/* 현장 모바일 화면: 큰 터치 타깃 */
+.tap-target { min-height: 48px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* -------------------------------------------------------------
+   인쇄 뷰 (A4) — /app/print 페이지 전용
+   ------------------------------------------------------------- */
+@media print {
+  @page { size: A4; margin: 14mm 12mm; }
+  body { background: #fff; }
+  .no-print { display: none !important; }
+  .print-sheet { box-shadow: none !important; border: none !important; }
+}

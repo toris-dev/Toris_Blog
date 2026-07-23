@@ -1,0 +1,14 @@
+{
+  // 현장완료 API — Hono + D1
+  "name": "fieldstep-api",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-07-01",
+  // 2단계 서브도메인이라 *.toris.kr Universal SSL 범위 밖 → Custom Domain으로
+  // 전용 DNS 레코드 + 엣지 인증서를 wrangler가 자동 프로비저닝(Total TLS 대상 확보).
+  "routes": [{ "pattern": "api.field.toris.kr", "custom_domain": true }],
+  // 승인 링크 생성 시 공개 URL origin. 미설정 시 코드 폴백도 동일 값이지만 명시적으로 고정한다.
+  "vars": { "APP_ORIGIN": "https://field.toris.kr" },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "fieldstep", "database_id": "0f23599b-0eb3-4d2c-a4dc-96b37b6a8788" }
+  ]
+}
