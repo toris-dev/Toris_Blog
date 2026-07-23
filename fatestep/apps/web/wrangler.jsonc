@@ -1,0 +1,14 @@
+{
+  // 운명의 카드 (fate.toris.kr) — Astro static 빌드(dist)를 Workers Static Assets로 서빙.
+  // 워커 스크립트 없음(정적 자산 전용). 서버가 필요 없는 익명·로컬저장 앱.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "fatestep-web",
+  "compatibility_date": "2026-07-24",
+  // fieldstep-web과 동일한 패턴: 구체적 라우트가 존 전체의 *.toris.kr 와일드카드(→toris-site)를
+  // 오버라이드한다. DNS는 기존 *.toris.kr 와일드카드, 인증서는 유니버설(*.toris.kr)을 재사용.
+  "routes": [{ "pattern": "fate.toris.kr/*", "zone_name": "toris.kr" }],
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}

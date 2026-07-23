@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fate.toris.kr/sitemap.xml

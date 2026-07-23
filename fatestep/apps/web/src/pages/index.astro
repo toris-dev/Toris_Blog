@@ -1,0 +1,19 @@
+---
+import App from '../app/App';
+import Base from '../layouts/Base.astro';
+---
+
+<Base>
+  <App client:only="react" />
+  <noscript>
+    <div class="doc">
+      <h1>운명의 카드</h1>
+      <p>
+        미래를 맞히는 카드보다, 오늘을 선택하는 카드. 질문을 정리하고 카드를 고르면 지금의 흐름과 오늘 할 수
+        있는 작은 행동을 제안하는 한국어 자기성찰 카드 리딩 서비스입니다.
+      </p>
+      <p class="tertiary">이 서비스는 브라우저에서 동작합니다. JavaScript 를 켜 주세요.</p>
+      <p><a href="/terms">이용약관</a> · <a href="/privacy">개인정보 처리방침</a></p>
+    </div>
+  </noscript>
+</Base>

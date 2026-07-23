@@ -2,6 +2,7 @@
   "name": "toris",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@9.14.2",
   "engines": {
     "node": ">=20"
   },
@@ -12,15 +13,22 @@
     "verify": "node ../scripts/verify-migration.mjs",
     "deploy": "astro build && wrangler deploy && node scripts/indexnow-ping.mjs",
     "deploy:toris": "pnpm run deploy",
-    "deploy:builder": "pnpm --filter @builderstep/web run deploy",
-    "deploy:field": "pnpm --filter @fieldstep/web run deploy && pnpm --filter @fieldstep/server run deploy",
-    "deploy:all": "pnpm run deploy:toris && pnpm run deploy:builder",
+    "deploy:builder": "node scripts/builder-release.mjs --deploy",
+    "deploy:field": "node scripts/field-release.mjs --deploy",
+    "deploy:fate": "node scripts/fate-release.mjs --deploy",
+    "deploy:all": "node scripts/builder-release.mjs --check-deploy-confirm && pnpm run deploy:toris && pnpm run deploy:builder",
     "builder:dev": "pnpm --filter @builderstep/web run dev",
+    "builder:release:check": "node scripts/builder-release.mjs",
     "builder:typecheck": "pnpm --filter \"@builderstep/*\" run typecheck",
     "builder:test": "pnpm --filter \"@builderstep/*\" run --if-present test",
     "field:dev": "pnpm --filter @fieldstep/web run dev",
+    "field:release:check": "node scripts/field-release.mjs",
     "field:typecheck": "pnpm --filter \"@fieldstep/*\" run typecheck",
-    "field:test": "pnpm --filter \"@fieldstep/*\" run --if-present test"
+    "field:test": "pnpm --filter \"@fieldstep/*\" run --if-present test",
+    "fate:dev": "pnpm --filter @fatestep/web run dev",
+    "fate:release:check": "node scripts/fate-release.mjs",
+    "fate:typecheck": "pnpm --filter \"@fatestep/*\" run typecheck",
+    "fate:test": "pnpm --filter \"@fatestep/*\" run --if-present test"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
