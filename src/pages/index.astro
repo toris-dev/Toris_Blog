@@ -103,6 +103,14 @@ const values = [
 // 서비스 링크(웹사이트·스토어·릴리스 다운로드)만 클릭 허용.
 const isServiceLink = (url: string) =>
   !url.startsWith('https://github.com/') || /\/releases\/?$/.test(url);
+
+// 링크 칩에 표시할 짧은 라벨. 긴 스토어 URL은 스토어 이름으로 대체한다.
+const serviceLabel = (url: string) =>
+  url.includes('play.google.com')
+    ? 'Google Play'
+    : url.includes('apps.apple.com')
+      ? 'App Store'
+      : url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 ---
 
 <Base
@@ -484,7 +492,7 @@ const isServiceLink = (url: string) =>
               <div class="flex items-center gap-2">
                 <span class="flex gap-1"><i class="size-2 rounded-full bg-line" /><i class="size-2 rounded-full bg-line" /><i class="size-2 rounded-full bg-line" /></span>
                 <span class="ml-2 truncate rounded bg-card px-2 py-0.5 font-mono text-[10px] text-muted">
-                  {linked && !p.github.includes('github.com') ? p.github.replace(/^https?:\/\//, '').replace(/\/$/, '') : p.platform}
+                  {linked && !p.github.includes('github.com') ? serviceLabel(p.github) : p.platform}
                 </span>
               </div>
             </div>

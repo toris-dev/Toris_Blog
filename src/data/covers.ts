@@ -7,7 +7,12 @@
 import type { ImageMetadata } from 'astro';
 import memecatch from '../assets/projects/memecatch-cover.png';
 import loveTrip from '../assets/projects/love-trip-cover.png';
-import snapmate from '../assets/projects/snapmate-cover.png';
+// 플레이스토어 제출 자료(피처 그래픽 1024×500) — 실제 스토어에 게시된 이미지
+import snapmate from '../assets/projects/snapmate-feature.png';
+import loca from '../assets/projects/loca-feature.png';
+import bubbleBible from '../assets/projects/bubble-bible-feature.png';
+import hwanseung from '../assets/projects/hwanseung-jiok-feature.png';
+import dongnePaint from '../assets/projects/dongne-paint-feature.png';
 import tracedesk from '../assets/generated/project-tracedesk-cover-v1.png';
 import hanbutgil from '../assets/generated/project-hanbutgil-garden-cover-v1.png';
 
@@ -15,6 +20,10 @@ export const covers: Record<string, ImageMetadata> = {
   memecatch,
   'love-trip': loveTrip,
   snapmate,
+  loca,
+  'bubble-bible': bubbleBible,
+  'hwanseung-jiok': hwanseung,
+  'dongne-paint': dongnePaint,
   tracedesk,
   'hanbutgil-garden': hanbutgil
 };
@@ -23,7 +32,11 @@ export const covers: Record<string, ImageMetadata> = {
 export const coverAlts: Record<string, string> = {
   memecatch: '밈캐치 데스크톱·모바일 화면 소개 커버',
   'love-trip': 'LOVETRIP 여행 설계 화면 소개 커버',
-  snapmate: 'SnapMate 그룹 갤러리 앱 화면 소개 커버',
+  snapmate: 'SnapMate 플레이스토어 피처 그래픽',
+  loca: 'Loca 플레이스토어 피처 그래픽',
+  'bubble-bible': 'Bubble Bible 플레이스토어 피처 그래픽',
+  'hwanseung-jiok': '환승지옥 플레이스토어 피처 그래픽',
+  'dongne-paint': '동네 칠하기 대작전 플레이스토어 피처 그래픽',
   tracedesk: 'TraceDesk 컨셉 커버 — 하루의 활동이 타임라인 블록으로 기록되는 은유',
   'hanbutgil-garden': '한붓길 정원 컨셉 커버 — 정원 타일을 잇는 한 줄의 길 은유'
 };

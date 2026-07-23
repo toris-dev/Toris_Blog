@@ -63,6 +63,112 @@ const taglines = {
 
 export const projects: Project[] = [
   {
+    slug: 'builderstep',
+    name: '빌더스텝',
+    tagline: '혼자 만드는 제품, 다음 단계는 함께',
+    description:
+      '1인 개발자가 아이디어 검증부터 출시, 첫 매출, 사업 성장까지 단계적으로 나아가도록 돕는 사업화 지원 플랫폼. 현재 단계를 진단하고 다음 행동을 제안합니다.',
+    category: '사업화 지원 · SaaS',
+    platform: 'Web',
+    year: '2026',
+    status: '운영 중',
+    tags: ['Personal', 'Fullstack'],
+    accent: { from: '#6366F1', to: '#3B82F6', glow: 'rgba(99,102,241,0.32)' },
+    tech: ['Next.js', 'TypeScript', 'Cloudflare Workers', 'Expo'],
+    features: [
+      {
+        icon: 'activity',
+        title: '단계 진단',
+        description:
+          '아이디어·검증·출시·매출·성장 중 지금 어디에 있는지 진단하고 다음 행동을 제안합니다.'
+      },
+      {
+        icon: 'list',
+        title: '실행 가능한 다음 단계',
+        description:
+          '막연한 조언 대신, 현재 단계에서 바로 실행할 수 있는 구체적인 액션으로 이어집니다.'
+      },
+      {
+        icon: 'smartphone',
+        title: '웹 · 모바일',
+        description: 'Next.js 웹과 Expo 모바일 앱으로 어디서든 제품의 다음 단계를 이어갑니다.'
+      }
+    ],
+    github: 'https://builder.toris.kr',
+    image: 'https://builder.toris.kr/og.png',
+    span: 'lg'
+  },
+  {
+    slug: 'fieldstep',
+    name: '현장완료',
+    tagline: '현장 기록을 완료보고서로, 청구까지',
+    description:
+      '산업설비·공조 유지보수팀을 위한 작업완료보고 자동화. 현장 사진과 메모를 완료보고서로 정리하고, 고객 승인부터 청구 가능 상태까지 하나의 흐름으로 연결합니다.',
+    category: 'B2B SaaS · 현장관리',
+    platform: 'Web',
+    year: '2026',
+    status: '운영 중',
+    tags: ['Personal', 'Fullstack'],
+    accent: { from: '#0D9488', to: '#22C55E', glow: 'rgba(13,148,136,0.30)' },
+    tech: ['Next.js', 'Hono', 'Cloudflare D1', 'TypeScript'],
+    features: [
+      {
+        icon: 'camera',
+        title: '현장 사진·메모 정리',
+        description: '현장에서 남긴 사진과 메모를 구조화된 작업완료보고서로 자동 정리합니다.'
+      },
+      {
+        icon: 'users',
+        title: '고객 승인 흐름',
+        description: '완료보고서를 고객이 확인·서명하고 승인하는 단계를 앱 안에서 연결합니다.'
+      },
+      {
+        icon: 'download',
+        title: '청구 준비까지',
+        description: '승인된 작업을 청구 가능한 상태로 이어, 보고와 청구 사이의 수작업을 줄입니다.'
+      }
+    ],
+    github: 'https://field.toris.kr',
+    image: 'https://field.toris.kr/images/field-hero.webp',
+    span: 'md'
+  },
+  {
+    slug: 'fate-card',
+    name: '운명의 카드',
+    tagline: '미래를 맞히는 카드보다, 오늘을 선택하는 카드',
+    description:
+      '질문을 정리하고 카드를 고르면 지금의 흐름과 오늘 할 수 있는 작은 행동을 제안하는 한국어 자기성찰 카드 리딩 서비스. 회원가입·서버 없이 브라우저에서 동작하는 무료 웹앱입니다.',
+    category: '자기성찰 · 카드 리딩',
+    platform: 'Web',
+    year: '2026',
+    status: '운영 중',
+    tags: ['Personal', 'Fullstack'],
+    accent: { from: '#D7B46A', to: '#8E7CC3', glow: 'rgba(215,180,106,0.30)' },
+    tech: ['Astro', 'React', 'TypeScript', 'Cloudflare Workers'],
+    features: [
+      {
+        icon: 'layers',
+        title: '오늘의 한 장 · 세 장',
+        description: '질문을 정리하고 카드를 골라 지금의 흐름과 오늘의 작은 행동을 제안받습니다.'
+      },
+      {
+        icon: 'shield',
+        title: '완전 로컬 · 무료',
+        description:
+          '서버 없이 브라우저(localStorage)에서만 동작. 어떤 데이터도 외부로 보내지 않는 무료 서비스.'
+      },
+      {
+        icon: 'heart',
+        title: '단정하지 않는 해석',
+        description:
+          '검수된 템플릿으로 예언 대신 자기성찰을 돕고, 민감한 질문은 현실의 도움을 먼저 안내합니다.'
+      }
+    ],
+    github: 'https://fate.toris.kr',
+    image: 'https://fate.toris.kr/og.png',
+    span: 'md'
+  },
+  {
     slug: 'hanbutgil-garden',
     name: '한붓길 정원',
     tagline: '한 번의 선으로, 고요한 정원을 완성하세요',
@@ -193,40 +299,40 @@ export const projects: Project[] = [
     span: 'md'
   },
   {
-    slug: 'golmok-survivor',
-    name: '골목길 생존기',
-    tagline: '서울 골목, 한 칸만 더 — 한국형 무한 횡단 게임',
+    slug: 'hwanseung-jiok',
+    name: '환승지옥',
+    tagline: '막차는 기다려주지 않는다 — 지하철 환승 무한 생존',
     description:
-      '한국의 도로·골목·지하철·시장·한강을 한 칸씩 건너며 기록을 갱신하는 원터치 하이퍼캐주얼 게임. Crossy Road류의 검증된 손맛에 한국 도시 생활 풍경을 입혔습니다. Flutter + Flame 엔진, 3-레이어 디자인 토큰 시스템으로 제작 중.',
+      '복잡한 환승 통로에서 인파·캐리어·역주행 에스컬레이터를 피하고, 닫히는 열차 문의 초록 통과 칸을 노려 최대한 오래 버티는 5레인 원터치 스와이프 게임. 구 「골목길 생존기」에서 피벗했습니다. Flutter + Flame 엔진, 로컬 저장(계정·서버 없음), 수집형 캐릭터 8종.',
     category: '게임 · 하이퍼캐주얼',
-    platform: 'Mobile (Android → iOS)',
+    platform: 'Mobile (Android)',
     year: '2026',
-    status: '개발 중',
+    status: '운영 중',
     tags: ['Personal', 'Mobile'],
     accent: { from: '#16C172', to: '#FF7A1A', glow: 'rgba(22,193,114,0.35)' },
     tech: ['Flutter', 'Flame', 'Dart', 'AdMob'],
     features: [
       {
         icon: 'gamepad',
-        title: '원터치 횡단 손맛',
+        title: '닫히는 문 스와이프',
         description:
-          '탭/스와이프만으로 전진·좌우·후진. 조작 즉시 반응, 억울하지 않은 죽음이 MVP 4대 목표.'
+          '3비트 점멸 예고 후 하강하는 열차 문의 열린 한 칸으로만 통과. 드래그 24px 즉발 스와이프로 연속 이동.'
       },
       {
         icon: 'map',
-        title: '한국 도시 테마',
+        title: '5레인 지하철 생존',
         description:
-          '골목·지하철·시장·한강 — 매일 지나치는 서울 풍경을 레인으로. 건너가 그린 × 택시 오렌지 브랜드.'
+          '인파·캐리어·역주행 에스컬레이터를 피하며 점수 = 생존 초. 셀 충돌로 고속에서도 터널링 없음.'
       },
       {
-        icon: 'layers',
-        title: '토큰 기반 디자인 시스템',
+        icon: 'users',
+        title: '수집형 캐릭터 8종',
         description:
-          'primitive→semantic→component 3-레이어 토큰을 Flutter ThemeData로 브릿지해 브랜드 일관성 유지.'
+          '능력치 차이 없는 순수 수집 요소. 로컬 저장만 사용해 계정·서버·랭킹 없이 가볍게 즐깁니다.'
       }
     ],
-    // 저장소 비공개 → 방문자용 링크는 GitHub 프로필로
-    github: 'https://github.com/toris-dev',
+    // 구글 플레이 스토어에 게시된 라이브 앱
+    github: 'https://play.google.com/store/apps/details?id=com.toris.hwanseung_jiok',
     image: og('hwanseung-jiok'),
     span: 'md'
   },
@@ -554,7 +660,7 @@ export const projects: Project[] = [
     category: '위치기반 소셜',
     platform: 'Mobile (iOS · Android)',
     year: '2026',
-    status: '개발 중',
+    status: '운영 중',
     accent: { from: '#06B6D4', to: '#22D3EE', glow: 'rgba(6,182,212,0.35)' },
     tech: ['Flutter', 'Dart', 'Geolocation', 'Realtime Chat'],
     features: [
@@ -578,8 +684,8 @@ export const projects: Project[] = [
       }
     ],
     tags: ['Personal', 'Mobile'],
-    // 저장소는 비공개 → 방문자용 링크는 라이브 서비스로 연결
-    github: 'https://loca.vercel.app',
+    // 구글 플레이 스토어에 게시된 라이브 앱
+    github: 'https://play.google.com/store/apps/details?id=com.toris.loca',
     image: og('loca'),
     span: 'md'
   },
@@ -705,9 +811,9 @@ export const projects: Project[] = [
     description:
       '카메라로 남긴 순간을 친구와 가족의 그룹별 갤러리에 바로 모아 보는 따뜻한 모바일 사진 공유 앱입니다.',
     category: '사진 · 그룹 공유',
-    platform: 'Mobile (iOS · Android)',
+    platform: 'Mobile (Android)',
     year: '2026',
-    status: '개발 중',
+    status: '운영 중',
     tags: ['Personal', 'Mobile', 'Fullstack'],
     accent: { from: '#FB923C', to: '#FB7185', glow: 'rgba(251,146,60,0.32)' },
     tech: ['Expo', 'React Native', 'TypeScript', 'Firebase'],
@@ -731,10 +837,10 @@ export const projects: Project[] = [
           '크림과 피치 톤의 브랜드 자산으로 촬영과 공유의 감정을 일관되게 전합니다.'
       }
     ],
-    github: 'https://github.com/toris-dev',
+    // 구글 플레이 스토어에 게시된 라이브 앱
+    github: 'https://play.google.com/store/apps/details?id=com.toris.snapmate',
     image: '/images/projects/snapmate/feature.png',
     imageAlt: 'SnapMate 그룹 사진 공유 기능 소개 이미지',
-    ctaLabel: 'GitHub 프로필 보기',
     span: 'lg'
   },
   {
@@ -744,9 +850,9 @@ export const projects: Project[] = [
     description:
       '매일 성경을 읽고 묵상을 기록하며 교회와 소그룹에 나누는 흐름을 연결한 모바일 우선 커뮤니티 앱입니다.',
     category: '성경 · 커뮤니티',
-    platform: 'Mobile · Web',
+    platform: 'Mobile (Android)',
     year: '2026',
-    status: '개발 중',
+    status: '운영 중',
     tags: ['Personal', 'Mobile', 'Fullstack'],
     accent: { from: '#C99A36', to: '#7393B3', glow: 'rgba(201,154,54,0.30)' },
     tech: ['Expo', 'React Native', 'TypeScript', 'Supabase'],
@@ -768,7 +874,8 @@ export const projects: Project[] = [
         description: '개인의 읽기 경험을 교회와 소그룹의 나눔으로 연결합니다.'
       }
     ],
-    github: gh('bubbleBible-FE'),
+    // 구글 플레이 스토어에 게시된 라이브 앱
+    github: 'https://play.google.com/store/apps/details?id=com.toris.bubblebible',
     image: '/images/projects/bubble-bible/feature.png',
     imageAlt: 'Bubble Bible 말씀 읽기와 나눔 기능 소개 이미지',
     span: 'md'
@@ -780,9 +887,9 @@ export const projects: Project[] = [
     description:
       '골목 타일 위에 경로를 그리고 출발 영역으로 돌아와 내부를 점령하며 AI 봇과 경쟁하는 모바일 캐주얼 게임입니다.',
     category: '게임 · 영역 점령',
-    platform: 'Mobile',
+    platform: 'Mobile (Android)',
     year: '2026',
-    status: '개발 중',
+    status: '운영 중',
     tags: ['Personal', 'Mobile'],
     accent: { from: '#18B87A', to: '#FF6B4A', glow: 'rgba(24,184,122,0.32)' },
     tech: ['Flutter', 'Flame', 'Dart', 'Local Save'],
@@ -805,10 +912,10 @@ export const projects: Project[] = [
         description: '게임 진행 상태를 기기에 보관해 다음 플레이에 이어갑니다.'
       }
     ],
-    github: 'https://github.com/toris-dev',
+    // 구글 플레이 스토어에 게시된 라이브 앱
+    github: 'https://play.google.com/store/apps/details?id=com.toris.dongne_paint',
     image: '/images/projects/dongne-paint/cover.svg',
     imageAlt: '동네 칠하기 대작전 영역 점령 게임 커버',
-    ctaLabel: 'GitHub 프로필 보기',
     span: 'md'
   },
   {
