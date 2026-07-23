@@ -528,12 +528,19 @@ a:hover {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
+  /* 카드 뒤에 균일한 불투명 트레이를 깐다. 오로라가 카드 사이(gap)로 비쳐
+     인접 카드의 밝기가 달라 보이는 대비 착시를 없애 모든 카드를 동일하게 만든다. */
+  background: #0e0f20;
+  padding: 12px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
 }
 .card-grid.reveal {
   grid-template-columns: repeat(var(--cols, 3), 1fr);
   max-width: 380px;
   margin: 0 auto;
   gap: var(--md);
+  padding: var(--base);
 }
 @media (max-width: 380px) {
   .card-grid {
