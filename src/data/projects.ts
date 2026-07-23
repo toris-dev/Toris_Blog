@@ -498,8 +498,8 @@ export const projects: Project[] = [
       }
     ],
     tags: ['Personal', 'Fullstack'],
-    // 데스크톱 앱 — 릴리스(다운로드) 페이지로 연결
-    github: 'https://github.com/toris-dev/TraceDesk/releases',
+    // 데스크톱 앱 — 제품(구매/다운로드) 페이지로 연결
+    github: 'https://www.groble.im/products/q8ZSPZ',
     image: og('TraceDesk'),
     span: 'sm'
   },
