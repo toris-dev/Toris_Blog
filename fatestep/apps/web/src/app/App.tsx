@@ -374,10 +374,16 @@ function Home({
 
         <div className="stack">
           <button className="spread-card" onClick={() => onSpread(SPREADS.daily)}>
+            <span className="go" aria-hidden>
+              →
+            </span>
             <div className="k">오늘의 한 장</div>
             <div className="d">질문 없이 오늘의 흐름을 한 장으로 확인합니다.</div>
           </button>
           <button className="spread-card" onClick={() => onSpread(SPREADS['fate-three'])}>
+            <span className="go" aria-hidden>
+              →
+            </span>
             <div className="k">운명의 세 장</div>
             <div className="d">씨앗 · 흐름 · 문 — 배경과 가능성을 함께 읽습니다.</div>
           </button>
@@ -606,7 +612,11 @@ function Select({
         </div>
       </div>
       <div className="bottombar">
-        <button className="btn btn-primary" disabled={!done} onClick={onReveal}>
+        <button
+          className={`btn btn-primary${done ? ' ready' : ''}`}
+          disabled={!done}
+          onClick={onReveal}
+        >
           {done ? '카드 펼치기' : `${need - session.selected.length}장 더 선택`}
         </button>
       </div>
