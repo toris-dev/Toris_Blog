@@ -140,13 +140,17 @@ export default function App() {
           onToggle={(i) =>
             setSession((prev) => {
               if (!prev) return prev;
-              const has = prev.selected.includes(i);
-              const selected = has
-                ? prev.selected.filter((x) => x !== i)
-                : prev.selected.length < prev.spread.cardCount
-                  ? [...prev.selected, i]
-                  : prev.selected;
-              return { ...prev, selected };
+              // 이미 고른 카드 → 선택 해제
+              if (prev.selected.includes(i)) {
+                return { ...prev, selected: prev.selected.filter((x) => x !== i) };
+              }
+              // 아직 여유가 있으면 추가
+              if (prev.selected.length < prev.spread.cardCount) {
+                return { ...prev, selected: [...prev.selected, i] };
+              }
+              // 정원이 찼는데 새 카드를 누르면 가장 먼저 고른 카드를 빼고 교체한다.
+              // (한 장 스프레드면 방금 누른 카드로 곧바로 바뀐다)
+              return { ...prev, selected: [...prev.selected.slice(1), i] };
             })
           }
           onReveal={() => {
