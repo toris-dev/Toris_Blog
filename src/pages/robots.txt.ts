@@ -1,15 +1,8 @@
 import type { APIRoute } from 'astro';
 import { absoluteUrl } from '../lib/site';
 
-/** 주요 AI 크롤러 — 콘텐츠 인용/검색 노출을 위해 명시적으로 허용 */
-const AI_CRAWLERS = [
-  'GPTBot',
-  'ClaudeBot',
-  'Google-Extended',
-  'PerplexityBot',
-  'OAI-SearchBot'
-] as const;
-
+// toris.kr은 공개 마케팅·포트폴리오 사이트로 로그인 전용 페이지가 없다.
+// Cloudflare의 AI 봇 차단을 껐으므로 'User-agent: * Allow: /'만으로 AI 봇 포함 전부 허용된다.
 export const GET: APIRoute = ({ site }) => {
   const sitemapUrl = new URL('/sitemap-index.xml', site).href;
 
@@ -17,7 +10,6 @@ export const GET: APIRoute = ({ site }) => {
     'User-agent: *',
     'Allow: /',
     '',
-    ...AI_CRAWLERS.flatMap((bot) => [`User-agent: ${bot}`, 'Allow: /', '']),
     `Sitemap: ${absoluteUrl('/sitemap.xml')}`,
     `Sitemap: ${sitemapUrl}`,
     ''

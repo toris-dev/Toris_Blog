@@ -1,5 +1,7 @@
-# 빌더스텝 — 모든 크롤러 허용 (AI 검색·인용 크롤러 포함)
+# 빌더스텝 — 공개 페이지는 모든 크롤러 허용 (AI 검색·인용 포함), 로그인 전용 페이지는 제외
 User-agent: *
 Allow: /
+Disallow: /app
+Disallow: /dashboard
 
 Sitemap: https://builder.toris.kr/sitemap.xml
