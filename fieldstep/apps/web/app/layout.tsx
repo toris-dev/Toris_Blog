@@ -12,6 +12,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  verification: {
+    other: {
+      "naver-site-verification": "a4674395b2d6798bb8662284d1c29a7d7beee8a8",
+    },
+  },
   manifest: "/manifest.webmanifest",
   applicationName: "현장완료",
   appleWebApp: {
