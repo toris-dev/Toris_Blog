@@ -48,6 +48,13 @@ const jsonLd = {
       "@id": "https://toris.kr/#org",
       name: "토리스 (Toris)",
       url: "https://toris.kr",
+      sameAs: [
+        "https://www.instagram.com/toris.kr",
+        "https://github.com/torisKR",
+        "https://www.linkedin.com/in/toriskorea/",
+        "https://www.threads.com/@toris.kr",
+        "https://play.google.com/store/apps/dev?id=6912640494861955983",
+      ],
     },
     {
       "@type": "WebSite",

@@ -49,6 +49,15 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
             <a href="mailto:korea@toris.kr" className="underline underline-offset-4 transition-colors hover:text-grow-bright">korea@toris.kr</a>
           </p>
         </div>
+        <div className="mx-auto max-w-6xl px-5 pb-10">
+          <nav aria-label="소셜 채널" className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-shell-muted">
+            <a href="https://www.instagram.com/toris.kr" target="_blank" rel="me noopener" className="underline underline-offset-4 transition-colors hover:text-grow-bright">Instagram</a>
+            <a href="https://github.com/torisKR" target="_blank" rel="me noopener" className="underline underline-offset-4 transition-colors hover:text-grow-bright">GitHub</a>
+            <a href="https://www.linkedin.com/in/toriskorea/" target="_blank" rel="me noopener" className="underline underline-offset-4 transition-colors hover:text-grow-bright">LinkedIn</a>
+            <a href="https://www.threads.com/@toris.kr" target="_blank" rel="me noopener" className="underline underline-offset-4 transition-colors hover:text-grow-bright">Threads</a>
+            <a href="https://play.google.com/store/apps/dev?id=6912640494861955983" target="_blank" rel="me noopener" className="underline underline-offset-4 transition-colors hover:text-grow-bright">Google Play</a>
+          </nav>
+        </div>
       </footer>
     </>
   );

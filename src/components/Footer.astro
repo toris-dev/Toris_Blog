@@ -76,6 +76,34 @@ const year = new Date().getFullYear();
             }
           </ul>
         </div>
+        <div>
+          <p class="font-mono text-[10px] tracking-[0.22em] text-muted">SOCIAL</p>
+          <ul class="mt-4 space-y-2.5">
+            {
+              [
+                { href: 'https://www.instagram.com/toris.kr', label: 'Instagram' },
+                { href: 'https://github.com/torisKR', label: 'GitHub' },
+                { href: 'https://www.linkedin.com/in/toriskorea/', label: 'LinkedIn' },
+                { href: 'https://www.threads.com/@toris.kr', label: 'Threads' },
+                {
+                  href: 'https://play.google.com/store/apps/dev?id=6912640494861955983',
+                  label: 'Google Play'
+                }
+              ].map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="me noopener"
+                    class="text-sm text-ink-dim transition-colors hover:text-brand-deep focus-visible:outline-2 focus-visible:outline-brand-deep"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       </nav>
     </div>
 

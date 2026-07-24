@@ -403,6 +403,25 @@ function Home({
         <div className="footer-links">
           <a href="/terms">이용약관</a>
           <a href="/privacy">개인정보 처리방침</a>
+          <a href="https://www.instagram.com/toris.kr" target="_blank" rel="me noopener">
+            Instagram
+          </a>
+          <a href="https://github.com/torisKR" target="_blank" rel="me noopener">
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/toriskorea/" target="_blank" rel="me noopener">
+            LinkedIn
+          </a>
+          <a href="https://www.threads.com/@toris.kr" target="_blank" rel="me noopener">
+            Threads
+          </a>
+          <a
+            href="https://play.google.com/store/apps/dev?id=6912640494861955983"
+            target="_blank"
+            rel="me noopener"
+          >
+            Google Play
+          </a>
         </div>
       </div>
     </div>
@@ -1068,6 +1087,25 @@ function Settings({
         <div className="footer-links">
           <a href="/terms">이용약관</a>
           <a href="/privacy">개인정보 처리방침</a>
+          <a href="https://www.instagram.com/toris.kr" target="_blank" rel="me noopener">
+            Instagram
+          </a>
+          <a href="https://github.com/torisKR" target="_blank" rel="me noopener">
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/toriskorea/" target="_blank" rel="me noopener">
+            LinkedIn
+          </a>
+          <a href="https://www.threads.com/@toris.kr" target="_blank" rel="me noopener">
+            Threads
+          </a>
+          <a
+            href="https://play.google.com/store/apps/dev?id=6912640494861955983"
+            target="_blank"
+            rel="me noopener"
+          >
+            Google Play
+          </a>
         </div>
         <p className="tertiary small center">운명의 카드 · 무료 · v0.1.0 · 카드 36장</p>
         {toast && (
