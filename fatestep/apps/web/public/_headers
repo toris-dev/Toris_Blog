@@ -1,3 +1,10 @@
+# 보안·신뢰 헤더 (기술 SEO)
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+
 # 카드 이미지·아이콘은 내용이 고정 — 장기 캐시
 /cards/*
   Cache-Control: public, max-age=31536000, immutable
