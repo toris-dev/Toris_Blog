@@ -1,14 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged, signInWithPopup, signOut, type User } from "firebase/auth";
 import { FREE_GOAL_LIMIT } from "@builderstep/shared";
 import { auth, googleProvider } from "@/lib/firebase";
-import { authFetch } from "@/lib/api";
+import { authFetch, cachedFetch, invalidate, invalidateAll, peek } from "@/lib/api";
+import { setQuery, useQueryParams } from "@/lib/query";
 import { DIAGNOSIS } from "@/lib/diagnosis";
 import { STAGES } from "@/lib/stages";
+import EmailAuthForm from "@/components/EmailAuthForm";
 import { CommandCenter } from "@/components/CommandCenter";
 import RunwayLite from "@/components/RunwayLite";
 import SignalHub from "@/components/SignalHub";
@@ -224,7 +226,9 @@ function RoadmapPreview({ stageN, onJump }: { stageN: number; onJump: () => void
 
 /* ---------------------------- 개요: 커뮤니티 최신글 미리보기 ---------------------------- */
 
-function CommunityPreview({ posts, onJump }: { posts: Post[]; onJump: () => void }) {
+function CommunityPreview({
+  posts, onJump, onOpen,
+}: { posts: Post[]; onJump: () => void; onOpen: (id: number) => void }) {
   const latest = posts.slice(0, 4);
   return (
     <section aria-label="커뮤니티 최신 글" className="glass flex h-full flex-col rounded-2xl p-5">
@@ -244,19 +248,25 @@ function CommunityPreview({ posts, onJump }: { posts: Post[]; onJump: () => void
           아직 글이 없습니다. 첫 기록을 남겨보세요.
         </div>
       ) : (
-        <ul className="mt-3 divide-y divide-line/60">
+        <ul className="mt-3 space-y-1.5">
           {latest.map((p) => (
-            <li key={p.id} className="py-3">
-              <div className="flex items-center gap-2">
-                <span className="shrink-0 rounded-full bg-step/10 px-2 py-0.5 font-mono text-[10px] font-bold text-step-bright">
-                  {POST_TYPE[p.type]}
-                </span>
-                <span className="truncate text-sm font-semibold text-ink">{p.title}</span>
-              </div>
-              <p className="mt-1 truncate text-xs text-ink-dim">{p.body}</p>
-              <p className="mt-1 font-mono text-[10px] text-muted">
-                {p.author} · {new Date(p.createdAt).toLocaleDateString("ko-KR")}
-              </p>
+            <li key={p.id}>
+              <button
+                type="button"
+                onClick={() => onOpen(p.id)}
+                className="tap-card w-full rounded-lg border border-transparent px-2.5 py-2 text-left focus-visible:outline-2 focus-visible:outline-step"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="shrink-0 rounded-full bg-step/10 px-2 py-0.5 font-mono text-[10px] font-bold text-step-bright">
+                    {POST_TYPE[p.type]}
+                  </span>
+                  <span className="truncate text-sm font-semibold text-ink">{p.title}</span>
+                </div>
+                <p className="mt-1 truncate text-xs text-ink-dim">{p.body}</p>
+                <p className="mt-1 font-mono text-[10px] text-muted">
+                  {p.author} · {new Date(p.createdAt).toLocaleDateString("ko-KR")}
+                </p>
+              </button>
             </li>
           ))}
         </ul>
@@ -467,13 +477,13 @@ function GoalsSection({
             <div className="flex flex-wrap items-center gap-2.5">
               <button
                 onClick={() => void cycle(g)}
-                title="상태 바꾸기"
-                className={`shrink-0 rounded-full px-2.5 py-0.5 font-mono text-[10px] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-step ${
+                title="상태 바꾸기 (클릭)"
+                className={`shrink-0 cursor-pointer rounded-full px-2.5 py-0.5 font-mono text-[10px] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-step ${
                   g.status === "done"
-                    ? "bg-ok/15 text-ok"
+                    ? "bg-ok/15 text-ok hover:bg-ok/30"
                     : g.status === "doing"
-                      ? "bg-step/15 text-step-bright"
-                      : "bg-line text-ink-dim"
+                      ? "bg-step/15 text-step-bright hover:bg-step/30"
+                      : "bg-line text-ink-dim hover:bg-line/70 hover:text-ink"
                 }`}
               >
                 {GOAL_STATUS[g.status].label}
@@ -484,7 +494,7 @@ function GoalsSection({
               {pro && g.status === "done" && (
                 <button
                   onClick={() => { setRetroFor(retroFor === g.id ? null : g.id); setRetroText(g.retro ?? ""); }}
-                  className="text-xs font-semibold text-step-bright underline underline-offset-4"
+                  className="text-xs font-semibold text-step-bright underline underline-offset-4 transition-colors hover:text-step"
                 >
                   회고
                 </button>
@@ -525,14 +535,44 @@ function GoalsSection({
 
 /* -------------------------------- 커뮤니티 --------------------------------- */
 
+const POST_TONE: Record<Post["type"], string> = {
+  story: "bg-step/15 text-step-bright",
+  feedback: "bg-ok/15 text-ok",
+  match: "bg-line text-ink-dim",
+};
+
+const POST_FILTERS: { key: "all" | Post["type"]; label: string }[] = [
+  { key: "all", label: "전체" },
+  { key: "story", label: POST_TYPE.story },
+  { key: "feedback", label: POST_TYPE.feedback },
+  { key: "match", label: POST_TYPE.match },
+];
+
+/**
+ * 마스터-디테일 커뮤니티.
+ * 목록에서 글을 고르면 URL 쿼리(?post=id)가 바뀌고 우측에 전문이 열린다.
+ * 좁은 화면에서는 목록↔상세가 교대로 표시되고, 넓은 화면에서는 나란히 보인다.
+ */
 function CommunitySection({
-  posts, canWrite, reload,
-}: { posts: Post[]; canWrite: boolean; reload: () => void }) {
+  posts, canWrite, reload, activePostId, onSelect,
+}: {
+  posts: Post[];
+  canWrite: boolean;
+  reload: () => void;
+  activePostId: string | null;
+  onSelect: (id: number | null) => void;
+}) {
   const [writing, setWriting] = useState(false);
+  const [filter, setFilter] = useState<"all" | Post["type"]>("all");
   const [type, setType] = useState<Post["type"]>("story");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [error, setError] = useState("");
+
+  const filtered = filter === "all" ? posts : posts.filter((p) => p.type === filter);
+  const selected = activePostId ? posts.find((p) => String(p.id) === activePostId) ?? null : null;
+  // 상세·작성 화면이 열려 있으면 좁은 화면에서 목록을 감춘다.
+  const detailOpen = writing || selected !== null;
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -547,73 +587,159 @@ function CommunitySection({
   };
 
   return (
-    <Card
-      eyebrow="COMMUNITY · 열람 무료"
-      title="빌더 커뮤니티"
-      action={
-        canWrite ? (
-          <button
-            onClick={() => setWriting(!writing)}
-            className="btn-ghost shrink-0 rounded-lg px-3 py-1.5 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-step"
-          >
-            {writing ? "닫기" : "글 쓰기"}
-          </button>
-        ) : (
-          <span className="shrink-0 font-mono text-[10px] text-lock">작성 PRO 🔒</span>
-        )
-      }
-    >
-      {writing && (
-        <form onSubmit={submit} className="mb-3 space-y-2.5 rounded-xl border border-line bg-card p-4">
-          <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="글 유형">
-            {(Object.keys(POST_TYPE) as Post["type"][]).map((t) => (
-              <button
-                key={t} type="button" role="radio" aria-checked={type === t}
-                onClick={() => setType(t)}
-                className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-step ${
-                  type === t ? "bg-step text-[#14100b]" : "bg-line text-ink-dim hover:text-ink"
-                }`}
-              >
-                {POST_TYPE[t]}
-              </button>
-            ))}
+    <div className="grid gap-4 lg:grid-cols-12">
+      {/* ── 목록 (마스터) ── */}
+      <section
+        aria-label="커뮤니티 글 목록"
+        className={`glass max-h-[calc(100dvh-13rem)] flex-col rounded-2xl p-5 lg:col-span-5 lg:flex xl:col-span-4 ${
+          detailOpen ? "hidden lg:flex" : "flex"
+        }`}
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="font-mono text-[10px] font-bold tracking-[0.24em] text-step-bright">COMMUNITY · 열람 무료</p>
+            <h3 className="mt-1.5 text-lg font-extrabold text-ink">빌더 커뮤니티</h3>
           </div>
-          <label htmlFor="post-title" className="sr-only">제목</label>
-          <input
-            id="post-title" required maxLength={120} value={title}
-            onChange={(e) => setTitle(e.target.value)} placeholder="제목"
-            className="h-10 w-full rounded-xl border border-line bg-bg-2/60 px-3.5 text-sm text-ink placeholder:text-muted focus:border-step focus:outline-none"
-          />
-          <label htmlFor="post-body" className="sr-only">내용</label>
-          <textarea
-            id="post-body" required rows={3} maxLength={4000} value={body}
-            onChange={(e) => setBody(e.target.value)}
-            placeholder="경험·실패·성과를 기록하거나 피드백을 요청하세요"
-            className="w-full rounded-xl border border-line bg-bg-2/60 px-3.5 py-2.5 text-sm text-ink placeholder:text-muted focus:border-step focus:outline-none"
-          />
-          <button type="submit" className="btn-ember h-10 rounded-xl px-5 text-sm font-bold">게시</button>
-        </form>
-      )}
-      <p aria-live="polite" className="min-h-5 text-[13px] text-step-bright">{error}</p>
+          {canWrite ? (
+            <button
+              onClick={() => { setError(""); onSelect(null); setWriting(true); }}
+              className="btn-ember shrink-0 rounded-lg px-3.5 py-1.5 text-xs font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-step-bright"
+            >
+              글 쓰기
+            </button>
+          ) : (
+            <span className="shrink-0 font-mono text-[10px] text-lock">작성 PRO 🔒</span>
+          )}
+        </div>
 
-      <ul className="min-h-0 flex-1 space-y-2.5 overflow-y-auto pr-1" style={{ maxHeight: "360px" }}>
-        {posts.map((p) => (
-          <li key={p.id} className="rounded-xl border border-line bg-card px-4 py-3.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className={`rounded-full px-2 py-0.5 font-mono text-[10px] font-bold ${
-                p.type === "story" ? "bg-step/15 text-step-bright" : p.type === "feedback" ? "bg-ok/15 text-ok" : "bg-line text-ink-dim"
-              }`}>
-                {POST_TYPE[p.type]}
-              </span>
-              <span className="text-[13px] font-semibold text-ink">{p.author}</span>
-              <span className="font-mono text-[10px] text-muted">{p.createdAt.slice(0, 10)}</span>
+        <div className="mt-3 flex flex-wrap gap-1.5" role="tablist" aria-label="유형 필터">
+          {POST_FILTERS.map((f) => (
+            <button
+              key={f.key}
+              role="tab"
+              aria-selected={filter === f.key}
+              onClick={() => setFilter(f.key)}
+              className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-step ${
+                filter === f.key ? "bg-step/15 text-step-bright" : "text-ink-dim hover:bg-line/50 hover:text-ink"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+
+        <ul className="mt-3 min-h-0 flex-1 space-y-2 overflow-y-auto pr-1">
+          {filtered.length === 0 ? (
+            <li className="rounded-xl border border-dashed border-line/70 bg-bg-2/40 px-4 py-10 text-center text-sm text-muted">
+              {filter === "all" ? "아직 글이 없습니다. 첫 기록을 남겨보세요." : "이 유형의 글이 아직 없습니다."}
+            </li>
+          ) : (
+            filtered.map((p) => {
+              const active = String(p.id) === activePostId;
+              return (
+                <li key={p.id}>
+                  <button
+                    onClick={() => { setWriting(false); onSelect(p.id); }}
+                    aria-current={active ? "true" : undefined}
+                    className={`tap-card w-full rounded-xl border px-4 py-3 text-left focus-visible:outline-2 focus-visible:outline-step ${
+                      active ? "border-step/60 bg-step/[0.06]" : "border-line bg-card"
+                    }`}
+                  >
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className={`rounded-full px-2 py-0.5 font-mono text-[10px] font-bold ${POST_TONE[p.type]}`}>
+                        {POST_TYPE[p.type]}
+                      </span>
+                      <span className="font-mono text-[10px] text-muted">{p.createdAt.slice(0, 10)}</span>
+                    </div>
+                    <h4 className="mt-1.5 truncate text-sm font-bold text-ink">{p.title}</h4>
+                    <p className="mt-0.5 line-clamp-2 text-[13px] leading-relaxed text-ink-dim">{p.body}</p>
+                    <p className="mt-1 truncate font-mono text-[10px] text-muted">{p.author}</p>
+                  </button>
+                </li>
+              );
+            })
+          )}
+        </ul>
+      </section>
+
+      {/* ── 상세 / 작성 (디테일) ── */}
+      <section
+        aria-label="커뮤니티 글 상세"
+        className={`lg:col-span-7 lg:block xl:col-span-8 ${detailOpen ? "block" : "hidden lg:block"}`}
+      >
+        {writing ? (
+          <div className="glass rounded-2xl p-5 sm:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="font-mono text-[10px] font-bold tracking-[0.24em] text-step-bright">NEW POST</p>
+                <h3 className="mt-1.5 text-lg font-extrabold text-ink">새 글 쓰기</h3>
+              </div>
+              <button
+                onClick={() => setWriting(false)}
+                className="btn-ghost shrink-0 rounded-lg px-3 py-1.5 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-step"
+              >
+                닫기
+              </button>
             </div>
-            <h4 className="mt-1.5 text-sm font-bold text-ink">{p.title}</h4>
-            <p className="mt-1 text-[13px] leading-relaxed text-ink-dim">{p.body}</p>
-          </li>
-        ))}
-      </ul>
-    </Card>
+            <form onSubmit={submit} className="mt-4 space-y-3">
+              <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="글 유형">
+                {(Object.keys(POST_TYPE) as Post["type"][]).map((t) => (
+                  <button
+                    key={t} type="button" role="radio" aria-checked={type === t}
+                    onClick={() => setType(t)}
+                    className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-step ${
+                      type === t ? "bg-step text-[#14100b]" : "bg-line text-ink-dim hover:text-ink"
+                    }`}
+                  >
+                    {POST_TYPE[t]}
+                  </button>
+                ))}
+              </div>
+              <label htmlFor="post-title" className="sr-only">제목</label>
+              <input
+                id="post-title" required maxLength={120} value={title}
+                onChange={(e) => setTitle(e.target.value)} placeholder="제목"
+                className="h-11 w-full rounded-xl border border-line bg-card px-4 text-sm text-ink placeholder:text-muted focus:border-step focus:outline-none"
+              />
+              <label htmlFor="post-body" className="sr-only">내용</label>
+              <textarea
+                id="post-body" required rows={8} maxLength={4000} value={body}
+                onChange={(e) => setBody(e.target.value)}
+                placeholder="경험·실패·성과를 기록하거나 피드백을 요청하세요"
+                className="w-full rounded-xl border border-line bg-card px-4 py-3 text-sm leading-relaxed text-ink placeholder:text-muted focus:border-step focus:outline-none"
+              />
+              <p aria-live="polite" className="min-h-5 text-[13px] text-step-bright">{error}</p>
+              <button type="submit" className="btn-ember h-11 rounded-xl px-6 text-sm font-bold">게시</button>
+            </form>
+          </div>
+        ) : selected ? (
+          <article className="glass rounded-2xl p-5 sm:p-7">
+            <button
+              onClick={() => onSelect(null)}
+              className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-dim transition-colors hover:text-ink lg:hidden"
+            >
+              ← 목록으로
+            </button>
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className={`rounded-full px-2.5 py-0.5 font-mono text-[10px] font-bold ${POST_TONE[selected.type]}`}>
+                {POST_TYPE[selected.type]}
+              </span>
+              <span className="text-[13px] font-semibold text-ink">{selected.author}</span>
+              <span className="font-mono text-[10px] text-muted">{selected.createdAt.slice(0, 10)}</span>
+            </div>
+            <h2 className="mt-3 text-2xl font-extrabold text-ink">{selected.title}</h2>
+            <div className="mt-4 whitespace-pre-wrap text-[15px] leading-[1.85] text-ink-dim">{selected.body}</div>
+          </article>
+        ) : (
+          <div className="glass hidden min-h-[20rem] flex-col items-center justify-center rounded-2xl border-dashed p-8 text-center lg:flex">
+            <p className="font-mono text-[10px] font-bold tracking-[0.24em] text-muted">SELECT A POST</p>
+            <p className="mt-2 max-w-xs text-sm leading-relaxed text-ink-dim">
+              왼쪽 목록에서 글을 고르면 여기에 전문이 열립니다.
+            </p>
+          </div>
+        )}
+      </section>
+    </div>
   );
 }
 
@@ -627,7 +753,7 @@ function SessionsSection({ pro }: { pro: boolean }) {
   const [error, setError] = useState("");
 
   const load = useCallback(async () => {
-    const d = await authFetch<{ sessions: SessionRow[] }>("/app/sessions");
+    const d = await cachedFetch<{ sessions: SessionRow[] }>("/app/sessions");
     setRows(d.sessions);
   }, []);
 
@@ -650,6 +776,7 @@ function SessionsSection({ pro }: { pro: boolean }) {
     try {
       await authFetch("/app/sessions", { method: "POST", body: JSON.stringify({ topic, preferredAt, note }) });
       setPreferredAt(""); setNote("");
+      invalidate("/app/sessions");
       await load();
     } catch (err) {
       setError((err as Error).message);
@@ -793,7 +920,7 @@ function MetricsSection({ pro, stageN }: { pro: boolean; stageN: number }) {
   const [error, setError] = useState("");
 
   const load = useCallback(async () => {
-    const d = await authFetch<{ metrics: MetricRow[] }>("/app/metrics");
+    const d = await cachedFetch<{ metrics: MetricRow[] }>("/app/metrics");
     setRows(d.metrics);
   }, []);
 
@@ -818,6 +945,7 @@ function MetricsSection({ pro, stageN }: { pro: boolean; stageN: number }) {
         method: "PUT",
         body: JSON.stringify({ revenue: Number(revenue) || 0, users: Number(users) || 0 }),
       });
+      invalidate("/app/metrics");
       await load();
     } catch (err) {
       setError((err as Error).message);
@@ -964,44 +1092,126 @@ const TAB_TITLE: Record<Tab, { title: string; desc: string }> = {
 
 export default function AppHub() {
   const router = useRouter();
+  const mountedRef = useRef(false);
+  const loadRequestRef = useRef(0);
+  const inFlightRef = useRef<{ uid: string; promise: Promise<void> } | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [ready, setReady] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [me, setMe] = useState<Me | null>(null);
-  const [tab, setTab] = useState<Tab>("overview");
   const [goalsData, setGoalsData] = useState<{ goals: Goal[]; limit: number | null }>({ goals: [], limit: FREE_GOAL_LIMIT });
   const [postsData, setPostsData] = useState<{ posts: Post[]; canWrite: boolean }>({ posts: [], canWrite: false });
   const [error, setError] = useState("");
 
-  const loadAll = useCallback(async () => {
-    try {
-      const [m, g, p] = await Promise.all([
-        authFetch<Me>("/app/me"),
-        authFetch<{ goals: Goal[]; limit: number | null }>("/app/goals"),
-        authFetch<{ posts: Post[]; canWrite: boolean }>("/app/posts"),
-      ]);
-      setMe(m); setGoalsData(g); setPostsData(p);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "불러오기 실패");
+  // 탭·선택 글은 URL 쿼리에서 파생한다 — 딥링크·뒤로가기·공유가 가능해진다.
+  const params = useQueryParams();
+  const rawTab = params.get("tab");
+  const tab: Tab = rawTab && rawTab in TAB_TITLE ? (rawTab as Tab) : "overview";
+  const activePostId = params.get("post");
+
+  const goTab = useCallback((next: Tab) => {
+    setQuery({ tab: next === "overview" ? null : next, post: null });
+  }, []);
+  const openPost = useCallback((id: number | null) => {
+    setQuery({ tab: "community", post: id == null ? null : String(id) });
+  }, []);
+
+  const loadAll = useCallback((force = false) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) return Promise.resolve();
+
+    const existing = inFlightRef.current;
+    if (!force && existing?.uid === currentUser.uid) return existing.promise;
+
+    const requestId = ++loadRequestRef.current;
+    if (mountedRef.current) {
+      setLoading(true);
+      setError("");
     }
+
+    const promise = (async () => {
+      try {
+        const [m, g, p] = await Promise.all([
+          cachedFetch<Me>("/app/me", { force }),
+          cachedFetch<{ goals: Goal[]; limit: number | null }>("/app/goals", { force }),
+          cachedFetch<{ posts: Post[]; canWrite: boolean }>("/app/posts", { force }),
+        ]);
+        if (!mountedRef.current || requestId !== loadRequestRef.current) return;
+        setMe(m);
+        setGoalsData(g);
+        setPostsData(p);
+      } catch (e) {
+        if (!mountedRef.current || requestId !== loadRequestRef.current) return;
+        setError(e instanceof Error ? e.message : "서비스 데이터를 불러오지 못했습니다.");
+      } finally {
+        if (requestId === loadRequestRef.current) {
+          inFlightRef.current = null;
+          if (mountedRef.current) setLoading(false);
+        }
+      }
+    })();
+
+    inFlightRef.current = { uid: currentUser.uid, promise };
+    return promise;
   }, []);
 
   const reloadGoals = useCallback(async () => {
-    setGoalsData(await authFetch("/app/goals"));
+    const nextGoals = await cachedFetch<{ goals: Goal[]; limit: number | null }>("/app/goals", { force: true });
+    if (mountedRef.current) setGoalsData(nextGoals);
+  }, []);
+
+  const reloadPosts = useCallback(async () => {
+    invalidate("/app/posts");
+    const next = await cachedFetch<{ posts: Post[]; canWrite: boolean }>("/app/posts", { force: true });
+    if (mountedRef.current) setPostsData(next);
   }, []);
 
   useEffect(() => {
+    mountedRef.current = true;
     const off = onAuthStateChanged(auth, (u) => {
+      if (!mountedRef.current) return;
       setUser(u);
       setReady(true);
-      if (u) void loadAll();
+      if (u) {
+        // 캐시가 있으면 즉시 그려 체감 지연을 없앤다(그 뒤 백그라운드 검증).
+        const cm = peek<Me>("/app/me");
+        const cg = peek<{ goals: Goal[]; limit: number | null }>("/app/goals");
+        const cp = peek<{ posts: Post[]; canWrite: boolean }>("/app/posts");
+        if (cm) setMe(cm);
+        if (cg) setGoalsData(cg);
+        if (cp) setPostsData(cp);
+        void loadAll();
+        return;
+      }
+
+      loadRequestRef.current += 1;
+      inFlightRef.current = null;
+      invalidateAll();
+      setLoading(false);
+      setMe(null);
+      setGoalsData({ goals: [], limit: FREE_GOAL_LIMIT });
+      setPostsData({ posts: [], canWrite: false });
+      setError("");
     });
-    return off;
+    return () => {
+      mountedRef.current = false;
+      loadRequestRef.current += 1;
+      inFlightRef.current = null;
+      off();
+    };
   }, [loadAll]);
 
   /* 구독 게이트: 구독(PRO)이 아니면 구독 관리 대시보드로 이동 */
   useEffect(() => {
     if (me && !me.pro) router.replace("/dashboard");
   }, [me, router]);
+
+  const signout = () => {
+    setError("");
+    void signOut(auth).catch(() => {
+      if (mountedRef.current) setError("로그아웃하지 못했습니다. 잠시 후 다시 시도해 주세요.");
+    });
+  };
 
   if (!ready)
     return (
@@ -1015,20 +1225,85 @@ export default function AppHub() {
       <div className="grid min-h-dvh place-items-center px-5">
         <div className="glass w-full max-w-md rounded-2xl p-8 text-center">
           <p className="font-mono text-[10px] font-bold tracking-[0.28em] text-step-bright">MY BUILDERSTEP</p>
-          <h2 className="mt-2 text-xl font-extrabold text-ink">구글로 로그인하고 시작하세요</h2>
+          <h2 className="mt-2 text-xl font-extrabold text-ink">로그인하고 시작하세요</h2>
           <p className="mt-2 text-sm leading-relaxed text-ink-dim">
             내 빌더스텝은 구독 회원 전용 공간입니다. 로그인 후 구독 상태를 확인합니다.
           </p>
           <button
             onClick={() => void signInWithPopup(auth, googleProvider).catch(() => setError("구글 로그인에 실패했습니다."))}
-            className="btn-ember mt-5 inline-flex h-12 items-center justify-center gap-2.5 rounded-xl px-6 text-[15px] font-bold"
+            className="btn-ember mt-5 inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-xl px-6 text-[15px] font-bold"
           >
             구글로 로그인
           </button>
           <p aria-live="polite" className="mt-2 min-h-5 text-sm text-step-bright">{error}</p>
-          <Link href="/" className="mt-1 inline-block text-sm text-muted underline underline-offset-4 hover:text-ink">
+
+          <div className="my-4 flex items-center gap-3" aria-hidden="true">
+            <span className="h-px flex-1 bg-line" />
+            <span className="font-mono text-[10px] tracking-[0.2em] text-muted">또는 이메일로</span>
+            <span className="h-px flex-1 bg-line" />
+          </div>
+          <EmailAuthForm />
+
+          <Link href="/" className="mt-4 inline-block text-sm text-muted underline underline-offset-4 hover:text-ink">
             ← 홈으로
           </Link>
+        </div>
+      </div>
+    );
+
+  if (loading && !me)
+    return (
+      <div className="grid min-h-dvh place-items-center px-5">
+        <div className="glass w-full max-w-md rounded-2xl p-8 text-center" role="status">
+          <p className="font-mono text-[10px] font-bold tracking-[0.28em] text-step-bright">MY BUILDERSTEP</p>
+          <h2 className="mt-2 text-xl font-extrabold text-ink">워크스페이스에 연결하고 있습니다</h2>
+          <p className="mt-2 text-sm leading-relaxed text-ink-dim">
+            로그인과 구독 상태를 확인하는 중입니다. 잠시만 기다려 주세요.
+          </p>
+        </div>
+      </div>
+    );
+
+  if (!me)
+    return (
+      <div className="grid min-h-dvh place-items-center px-5">
+        <div className="glass w-full max-w-lg rounded-2xl border border-step/40 p-8 text-center">
+          <p className="font-mono text-[10px] font-bold tracking-[0.28em] text-step-bright">CONNECTION ERROR</p>
+          <h2 className="mt-2 text-xl font-extrabold text-ink">서비스 연결이 원활하지 않습니다</h2>
+          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-ink-dim">
+            로그인은 완료됐지만 빌더스텝 서비스 데이터를 불러오지 못했습니다.
+            잠시 후 다시 연결하거나 구독 상태를 확인해 주세요.
+          </p>
+          {error && (
+            <p
+              aria-live="polite"
+              className="mt-4 rounded-xl border border-line/70 bg-bg/50 px-4 py-3 text-left text-sm text-step-bright"
+            >
+              {error}
+            </p>
+          )}
+          <button
+            type="button"
+            onClick={() => void loadAll(true)}
+            className="btn-ember mt-5 inline-flex h-11 items-center justify-center rounded-xl px-6 text-sm font-bold"
+          >
+            다시 연결
+          </button>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm">
+            <Link href="/" className="text-muted underline underline-offset-4 hover:text-ink">
+              홈으로
+            </Link>
+            <Link href="/dashboard" className="text-muted underline underline-offset-4 hover:text-ink">
+              구독 상태 확인
+            </Link>
+            <button
+              type="button"
+              onClick={signout}
+              className="text-muted underline underline-offset-4 hover:text-ink"
+            >
+              로그아웃
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -1048,8 +1323,6 @@ export default function AppHub() {
       </div>
     );
 
-  const signout = () => void signOut(auth).then(() => setMe(null));
-
   return (
     <div className="flex min-h-dvh w-full">
       {/* ── 사이드바 (데스크톱) ── */}
@@ -1067,7 +1340,7 @@ export default function AppHub() {
           {NAV.map((n) => (
             <button
               key={n.key}
-              onClick={() => setTab(n.key)}
+              onClick={() => goTab(n.key)}
               aria-current={tab === n.key ? "page" : undefined}
               className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition-colors ${
                 tab === n.key
@@ -1118,7 +1391,7 @@ export default function AppHub() {
             {NAV.map((n) => (
               <button
                 key={n.key}
-                onClick={() => setTab(n.key)}
+                onClick={() => goTab(n.key)}
                 aria-current={tab === n.key ? "page" : undefined}
                 className={`shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-semibold transition-colors ${
                   tab === n.key ? "bg-step/15 text-step-bright" : "text-ink-dim hover:text-ink"
@@ -1162,7 +1435,7 @@ export default function AppHub() {
                   <DigestStrip me={me} goals={goalsData.goals} />
                   <div className="grid gap-4 lg:grid-cols-12">
                     <div className="lg:col-span-5">
-                      <DiagnosisSection me={me} onSaved={() => void loadAll()} />
+                      <DiagnosisSection me={me} onSaved={() => void loadAll(true)} />
                     </div>
                     <div className="lg:col-span-7">
                       <GoalsSection
@@ -1173,10 +1446,14 @@ export default function AppHub() {
                   </div>
                   <div className="grid gap-4 lg:grid-cols-12">
                     <div className="lg:col-span-7">
-                      <RoadmapPreview stageN={me.stage} onJump={() => setTab("roadmap")} />
+                      <RoadmapPreview stageN={me.stage} onJump={() => goTab("roadmap")} />
                     </div>
                     <div className="lg:col-span-5">
-                      <CommunityPreview posts={postsData.posts} onJump={() => setTab("community")} />
+                      <CommunityPreview
+                        posts={postsData.posts}
+                        onJump={() => goTab("community")}
+                        onOpen={(id) => openPost(id)}
+                      />
                     </div>
                   </div>
                 </>
@@ -1216,12 +1493,13 @@ export default function AppHub() {
               )}
 
               {tab === "community" && (
-                <div className="mx-auto max-w-3xl">
-                  <CommunitySection
-                    posts={postsData.posts} canWrite={postsData.canWrite}
-                    reload={() => { void authFetch<{ posts: Post[]; canWrite: boolean }>("/app/posts").then(setPostsData); }}
-                  />
-                </div>
+                <CommunitySection
+                  posts={postsData.posts}
+                  canWrite={postsData.canWrite}
+                  activePostId={activePostId}
+                  onSelect={openPost}
+                  reload={() => void reloadPosts()}
+                />
               )}
             </div>
           )}

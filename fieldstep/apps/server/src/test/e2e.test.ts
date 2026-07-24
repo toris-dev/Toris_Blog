@@ -1,13 +1,76 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import app from "../worker.js";
 import { createTestDb } from "./d1-shim.js";
+import { minimalParseablePdf } from "./pdf-fixture.js";
+import { MemoryR2 } from "./r2-shim.js";
+
+const TEST_PNG_DATA_URL = "data:image/png;base64,iVBORw0KGgo=";
+let mediaBucket: MemoryR2;
 
 function req(db: D1Database, path: string, init: RequestInit & { token?: string } = {}) {
   const { token, ...rest } = init;
   const headers = new Headers(rest.headers);
   if (token) headers.set("Authorization", `Bearer ${token}`);
   if (rest.body && !headers.has("Content-Type")) headers.set("Content-Type", "application/json");
-  return app.request(path, { ...rest, headers }, { DB: db });
+  return app.request(
+    path,
+    { ...rest, headers },
+    { DB: db, MEDIA: mediaBucket as unknown as R2Bucket },
+  );
+}
+
+function pauseFirstQueryContaining(
+  db: D1Database,
+  sqlFragment: string,
+  onPaused: () => void,
+  resume: Promise<void>,
+): D1Database {
+  let shouldPause = true;
+  return new Proxy(db, {
+    get(target, property) {
+      if (property !== "prepare") {
+        const value = Reflect.get(target, property);
+        return typeof value === "function" ? value.bind(target) : value;
+      }
+
+      return (sql: string) => {
+        const statement = target.prepare(sql);
+        if (!sql.includes(sqlFragment)) {
+          return statement;
+        }
+
+        const wrap = (current: D1PreparedStatement): D1PreparedStatement =>
+          new Proxy(current, {
+            get(statementTarget, statementProperty) {
+              if (statementProperty === "bind") {
+                return (...values: unknown[]) =>
+                  wrap(statementTarget.bind(...values));
+              }
+              if (statementProperty === "first") {
+                return async <T>(columnName?: string) => {
+                  const row =
+                    columnName === undefined
+                      ? await statementTarget.first<T>()
+                      : await statementTarget.first<T>(columnName);
+                  if (shouldPause) {
+                    shouldPause = false;
+                    onPaused();
+                    await resume;
+                  }
+                  return row;
+                };
+              }
+              const value = Reflect.get(statementTarget, statementProperty);
+              return typeof value === "function"
+                ? value.bind(statementTarget)
+                : value;
+            },
+          });
+
+        return wrap(statement);
+      };
+    },
+  });
 }
 
 async function signup(db: D1Database, orgName: string, email = "admin@a.com") {
@@ -24,6 +87,7 @@ describe("fieldstep-api e2e", () => {
 
   beforeEach(() => {
     db = createTestDb();
+    mediaBucket = new MemoryR2();
   });
 
   // -------------------------------------------------------------------------
@@ -211,7 +275,9 @@ describe("fieldstep-api e2e", () => {
     const admin = await signup(db, "E조직", "admin-e@x.com");
     const fieldToken = await inviteAndAccept(db, admin.token, "field-e@x.com", "field");
     const fieldMe = (await (await req(db, "/me", { token: fieldToken })).json()) as any;
-    const today = new Date().toISOString().slice(0, 10);
+    // 서버 대시보드는 서울(Asia/Seoul) 기준 오늘로 카운트하므로 테스트도 동일 기준을 써야 한다.
+    // UTC 날짜(toISOString)를 쓰면 UTC/서울 자정 사이 구간(예: 00~09시 KST)에서 하루가 어긋나 flaky.
+    const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Seoul" });
 
     const customer = await createCustomer(db, admin.token, "이엔지고객");
     const site = await createSite(db, admin.token, customer.id, "본사현장");
@@ -260,7 +326,7 @@ describe("fieldstep-api e2e", () => {
     const photoRes = await req(db, `/work-orders/${workOrder.id}/photos`, {
       method: "POST",
       token: fieldToken,
-      body: JSON.stringify({ kind: "before", dataUrl: "data:image/png;base64,AAA=" }),
+      body: JSON.stringify({ kind: "before", dataUrl: TEST_PNG_DATA_URL }),
     });
     expect(photoRes.status).toBe(200);
 
@@ -292,11 +358,16 @@ describe("fieldstep-api e2e", () => {
     expect(reportPutRes.status).toBe(200);
 
     // finalize (version 1)
-    const finalizeRes = await req(db, `/work-orders/${workOrder.id}/report/finalize`, { method: "POST", token: admin.token });
+    const finalizeRes = await req(db, `/work-orders/${workOrder.id}/report/finalize`, {
+      method: "POST",
+      token: admin.token,
+      body: JSON.stringify({ confirmedUncertainFields: [] }),
+    });
     expect(finalizeRes.status).toBe(200);
     const { reportVersion } = (await finalizeRes.json()) as { reportVersion: { version: number; reportNumber: string } };
     expect(reportVersion.version).toBe(1);
     expect(reportVersion.reportNumber).toBe(`FS-${today.replaceAll("-", "")}-001`);
+    await markReportPdfReady(db, workOrder.id, 1, admin.token);
 
     // approval-link 생성
     const linkRes = await req(db, `/work-orders/${workOrder.id}/approval-links`, { method: "POST", token: admin.token });
@@ -312,7 +383,7 @@ describe("fieldstep-api e2e", () => {
     // approve (서명)
     const approveRes = await req(db, `/public/approvals/${approvalToken}/approve`, {
       method: "POST",
-      body: JSON.stringify({ name: "고객담당자", title: "팀장", signatureDataUrl: "data:image/png;base64,BBB=", agree: true }),
+      body: JSON.stringify({ name: "고객담당자", title: "팀장", signatureDataUrl: TEST_PNG_DATA_URL, agree: true }),
     });
     expect(approveRes.status).toBe(200);
 
@@ -359,7 +430,7 @@ describe("fieldstep-api e2e", () => {
 
     await req(db, `/public/approvals/${approvalToken}/approve`, {
       method: "POST",
-      body: JSON.stringify({ name: "고객", signatureDataUrl: "data:image/png;base64,CCC=", agree: true }),
+      body: JSON.stringify({ name: "고객", signatureDataUrl: TEST_PNG_DATA_URL, agree: true }),
     });
 
     const putRes = await req(db, `/work-orders/${id}/report`, {
@@ -402,7 +473,7 @@ describe("fieldstep-api e2e", () => {
 
     const oldApprove = await req(db, `/public/approvals/${token1}/approve`, {
       method: "POST",
-      body: JSON.stringify({ name: "고객", signatureDataUrl: "data:image/png;base64,DDD=", agree: true }),
+      body: JSON.stringify({ name: "고객", signatureDataUrl: TEST_PNG_DATA_URL, agree: true }),
     });
     expect(oldApprove.status).toBe(410);
 
@@ -542,7 +613,7 @@ describe("fieldstep-api e2e", () => {
 
     const approveRes = await req(db, `/public/approvals/${approvalToken}/approve`, {
       method: "POST",
-      body: JSON.stringify({ name: "김승인", title: "팀장", signatureDataUrl: "data:image/png;base64,QUJD", agree: true }),
+      body: JSON.stringify({ name: "김승인", title: "팀장", signatureDataUrl: TEST_PNG_DATA_URL, agree: true }),
     });
     expect(approveRes.status).toBe(200);
 
@@ -552,7 +623,7 @@ describe("fieldstep-api e2e", () => {
     };
     expect(afterJson.reportVersion.lockedAt).not.toBeNull();
     expect(afterJson.reportVersion.signature?.name).toBe("김승인");
-    expect(afterJson.reportVersion.signature?.signatureDataUrl).toBe("data:image/png;base64,QUJD");
+    expect(afterJson.reportVersion.signature?.signatureDataUrl).toBe(TEST_PNG_DATA_URL);
   });
 
   it("보고서 버전 스냅샷 — 타 조직 404, 없는 버전 404", async () => {
@@ -579,6 +650,7 @@ describe("fieldstep-api e2e", () => {
       token: admin.token,
       body: JSON.stringify({ transcript: "6204 베어링 2개 교체 완료. 3개월 후 진동 재점검 권장." }),
     });
+    await addTestPhoto(db, id, admin.token);
     const res = await req(db, `/work-orders/${id}/submit`, { method: "POST", token: admin.token });
     expect(res.status).toBe(200);
     const json = (await res.json()) as { aiStatus: string; draft: { workSummary: string; usedParts: unknown[] } | null };
@@ -593,7 +665,7 @@ describe("fieldstep-api e2e", () => {
   // 신규: 완료/취소, revision, 부분저장, 사진 가드, 교차조직 방어
   // -------------------------------------------------------------------------
 
-  it("승인 revision 경로: 요청 → 상태/알림/코멘트 복원 → 재발송", async () => {
+  it("승인 revision 경로: 요청 → v2 확정 → 최신 버전 링크 재발송", async () => {
     const admin = await signup(db, "U조직", "admin-u@x.com");
     const { id, approvalToken } = await runToFinalized(db, admin.token, admin.org.id);
 
@@ -612,11 +684,63 @@ describe("fieldstep-api e2e", () => {
     };
     expect(notifs.notifications.some((n) => n.kind === "revision_requested")).toBe(true);
 
+    const prematureResend = await req(db, `/work-orders/${id}/approval-links`, {
+      method: "POST",
+      token: admin.token,
+    });
+    expect(prematureResend.status).toBe(409);
+
+    const beforeEdit = (await (
+      await req(db, `/work-orders/${id}`, { token: admin.token })
+    ).json()) as any;
+    const updateRes = await req(db, `/work-orders/${id}/report`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({
+        structured: {
+          ...beforeEdit.draft,
+          workSummary: "고객 요청을 반영한 수정본",
+        },
+      }),
+    });
+    expect(updateRes.status).toBe(200);
+
+    const finalizeV2 = await req(db, `/work-orders/${id}/report/finalize`, {
+      method: "POST",
+      token: admin.token,
+      body: JSON.stringify({ confirmedUncertainFields: [] }),
+    });
+    expect(finalizeV2.status).toBe(200);
+    const finalizeV2Json = (await finalizeV2.json()) as {
+      reportVersion: { version: number };
+    };
+    expect(finalizeV2Json.reportVersion.version).toBe(2);
+    await markReportPdfReady(db, id, 2, admin.token);
+
     const resendRes = await req(db, `/work-orders/${id}/approval-links`, { method: "POST", token: admin.token });
     expect(resendRes.status).toBe(200);
+    const { token: v2Token } = (await resendRes.json()) as { token: string };
 
     const detailAfterResend = (await (await req(db, `/work-orders/${id}`, { token: admin.token })).json()) as any;
     expect(detailAfterResend.workOrder.approvalStatus).toBe("pending");
+    expect(detailAfterResend.reportVersions.map((v: { version: number }) => v.version)).toEqual([1, 2]);
+
+    const v1 = (await (
+      await req(db, `/work-orders/${id}/report-versions/1`, { token: admin.token })
+    ).json()) as any;
+    const v2 = (await (
+      await req(db, `/work-orders/${id}/report-versions/2`, { token: admin.token })
+    ).json()) as any;
+    expect(v1.reportVersion.structured.workSummary).toBe("점검 완료");
+    expect(v2.reportVersion.structured.workSummary).toBe("고객 요청을 반영한 수정본");
+    expect(v2.reportVersion.reportNumber).toBe(
+      v1.reportVersion.reportNumber,
+    );
+
+    const publicV2 = (await (
+      await req(db, `/public/approvals/${v2Token}`)
+    ).json()) as any;
+    expect(publicV2.reportVersion.version).toBe(2);
   });
 
   it("PATCH 작업: 타 조직 customerId 주입은 400", async () => {
@@ -679,9 +803,141 @@ describe("fieldstep-api e2e", () => {
     const res = await req(db, `/work-orders/${id}/photos`, {
       method: "POST",
       token: admin.token,
-      body: JSON.stringify({ kind: "after", dataUrl: "data:image/png;base64,EEE=" }),
+      body: JSON.stringify({ kind: "after", dataUrl: TEST_PNG_DATA_URL }),
     });
     expect(res.status).toBe(409);
+  });
+
+  it("현장 제출은 사진과 비어 있지 않은 전사·요약을 모두 서버에서 요구하고 제출 후 사진을 잠근다", async () => {
+    const admin = await signup(db, "Z2조직", "admin-z2@x.com");
+    const { id } = await createFullWorkOrder(db, admin.token, admin.org.id);
+    await req(db, `/work-orders/${id}/start`, {
+      method: "POST",
+      token: admin.token,
+    });
+    await req(db, `/work-orders/${id}/field-record`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({ workSummary: "점검 완료" }),
+    });
+
+    const missingPhoto = await req(db, `/work-orders/${id}/submit`, {
+      method: "POST",
+      token: admin.token,
+    });
+    expect(missingPhoto.status).toBe(400);
+
+    const photo = await addTestPhoto(db, id, admin.token);
+    await req(db, `/work-orders/${id}/field-record`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({ workSummary: "   ", transcript: "\n\t" }),
+    });
+    const missingText = await req(db, `/work-orders/${id}/submit`, {
+      method: "POST",
+      token: admin.token,
+    });
+    expect(missingText.status).toBe(400);
+
+    await req(db, `/work-orders/${id}/field-record`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({ transcript: "정상 작동 확인" }),
+    });
+    const submitted = await req(db, `/work-orders/${id}/submit`, {
+      method: "POST",
+      token: admin.token,
+    });
+    expect(submitted.status).toBe(200);
+
+    const addAfterSubmit = await req(db, `/work-orders/${id}/photos`, {
+      method: "POST",
+      token: admin.token,
+      body: JSON.stringify({
+        kind: "after",
+        dataUrl: TEST_PNG_DATA_URL,
+      }),
+    });
+    expect(addAfterSubmit.status).toBe(409);
+    const deleteAfterSubmit = await req(
+      db,
+      `/work-orders/${id}/photos/${photo.id}`,
+      { method: "DELETE", token: admin.token },
+    );
+    expect(deleteAfterSubmit.status).toBe(409);
+  });
+
+  it("불확실 항목은 PUT으로 지울 수 없고 finalize 본문 확인 목록 없이는 확정할 수 없다", async () => {
+    const admin = await signup(db, "Z3조직", "admin-z3@x.com");
+    const { id } = await createFullWorkOrder(db, admin.token, admin.org.id);
+    await req(db, `/work-orders/${id}/start`, {
+      method: "POST",
+      token: admin.token,
+    });
+    await req(db, `/work-orders/${id}/field-record`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({ transcript: "필터 교체함" }),
+    });
+    await addTestPhoto(db, id, admin.token);
+    const submitRes = await req(db, `/work-orders/${id}/submit`, {
+      method: "POST",
+      token: admin.token,
+    });
+    expect(submitRes.status).toBe(200);
+
+    const detail = (await (
+      await req(db, `/work-orders/${id}`, { token: admin.token })
+    ).json()) as any;
+    expect(detail.draft.uncertainFields).toContain("usedParts[0].quantity");
+    const bypassPut = await req(db, `/work-orders/${id}/report`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({
+        structured: { ...detail.draft, uncertainFields: [] },
+      }),
+    });
+    expect(bypassPut.status).toBe(200);
+    const bypassPutJson = (await bypassPut.json()) as any;
+    expect(bypassPutJson.draft.uncertainFields).toContain(
+      "usedParts[0].quantity",
+    );
+
+    const missingBody = await req(db, `/work-orders/${id}/report/finalize`, {
+      method: "POST",
+      token: admin.token,
+    });
+    expect(missingBody.status).toBe(400);
+
+    const missingConfirmation = await req(
+      db,
+      `/work-orders/${id}/report/finalize`,
+      {
+        method: "POST",
+        token: admin.token,
+        body: JSON.stringify({ confirmedUncertainFields: [] }),
+      },
+    );
+    expect(missingConfirmation.status).toBe(409);
+
+    const confirmed = await req(db, `/work-orders/${id}/report/finalize`, {
+      method: "POST",
+      token: admin.token,
+      body: JSON.stringify({
+        confirmedUncertainFields: ["usedParts[0].quantity"],
+      }),
+    });
+    expect(confirmed.status).toBe(200);
+
+    const audit = await db
+      .prepare(
+        "SELECT detail_json FROM audit_events WHERE target = ? AND event = 'report_finalized' ORDER BY created_at DESC LIMIT 1",
+      )
+      .bind(id)
+      .first<{ detail_json: string }>();
+    expect(JSON.parse(audit!.detail_json).confirmedUncertainFields).toEqual([
+      "usedParts[0].quantity",
+    ]);
   });
 
   it("field-record 부분저장 시 next_inspection_date를 3-상태로 처리한다", async () => {
@@ -739,6 +995,1174 @@ describe("fieldstep-api e2e", () => {
     });
     expect(res.status).toBe(400);
   });
+
+  it("승인 완료 링크가 만료되어도 승인 상태와 서명 증빙은 보존된다", async () => {
+    const admin = await signup(db, "AC조직", "admin-ac@x.com");
+    const { id, approvalToken } = await runToFinalized(db, admin.token, admin.org.id);
+
+    const approveRes = await req(db, `/public/approvals/${approvalToken}/approve`, {
+      method: "POST",
+      body: JSON.stringify({
+        name: "김승인",
+        signatureDataUrl: TEST_PNG_DATA_URL,
+        agree: true,
+      }),
+    });
+    expect(approveRes.status).toBe(200);
+
+    await db
+      .prepare("UPDATE approval_requests SET expires_at = '2000-01-01T00:00:00.000Z' WHERE work_order_id = ?")
+      .bind(id)
+      .run();
+
+    const expiredGet = await req(db, `/public/approvals/${approvalToken}`);
+    expect(expiredGet.status).toBe(410);
+
+    const requestRow = await db
+      .prepare("SELECT status FROM approval_requests WHERE work_order_id = ?")
+      .bind(id)
+      .first<{ status: string }>();
+    expect(requestRow?.status).toBe("approved");
+
+    const versionRes = await req(db, `/work-orders/${id}/report-versions/1`, {
+      token: admin.token,
+    });
+    const versionJson = (await versionRes.json()) as {
+      reportVersion: { signature: { name: string } | null };
+    };
+    expect(versionJson.reportVersion.signature?.name).toBe("김승인");
+  });
+
+  it("수정 요청한 구 승인 토큰은 재발급 후 승인에 사용할 수 없다", async () => {
+    const admin = await signup(db, "AD조직", "admin-ad@x.com");
+    const { id, approvalToken: oldToken } = await runToFinalized(
+      db,
+      admin.token,
+      admin.org.id,
+    );
+
+    const revisionRes = await req(db, `/public/approvals/${oldToken}/revision`, {
+      method: "POST",
+      body: JSON.stringify({ comment: "사진을 교체해주세요" }),
+    });
+    expect(revisionRes.status).toBe(200);
+
+    const detail = (await (
+      await req(db, `/work-orders/${id}`, { token: admin.token })
+    ).json()) as any;
+    const updateRes = await req(db, `/work-orders/${id}/report`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({
+        structured: {
+          ...detail.draft,
+          workSummary: "사진 확인 후 수정본",
+        },
+      }),
+    });
+    expect(updateRes.status).toBe(200);
+    const finalizeV2 = await req(db, `/work-orders/${id}/report/finalize`, {
+      method: "POST",
+      token: admin.token,
+      body: JSON.stringify({ confirmedUncertainFields: [] }),
+    });
+    expect(finalizeV2.status).toBe(200);
+    await markReportPdfReady(db, id, 2, admin.token);
+
+    const resendRes = await req(db, `/work-orders/${id}/approval-links`, {
+      method: "POST",
+      token: admin.token,
+    });
+    expect(resendRes.status).toBe(200);
+    const { token: newToken } = (await resendRes.json()) as { token: string };
+
+    const staleApprove = await req(db, `/public/approvals/${oldToken}/approve`, {
+      method: "POST",
+      body: JSON.stringify({
+        name: "구 링크 승인자",
+        signatureDataUrl: TEST_PNG_DATA_URL,
+        agree: true,
+      }),
+    });
+    expect(staleApprove.status).toBe(410);
+
+    const currentGet = await req(db, `/public/approvals/${newToken}`);
+    expect(currentGet.status).toBe(200);
+
+    const workOrderRow = await db
+      .prepare("SELECT approval_status, billing_status FROM work_orders WHERE id = ?")
+      .bind(id)
+      .first<{ approval_status: string; billing_status: string }>();
+    expect(workOrderRow).toMatchObject({
+      approval_status: "pending",
+      billing_status: "none",
+    });
+  });
+
+  it("구 토큰 승인 조회와 재발급이 경합해도 무효 토큰은 승인 상태를 되살릴 수 없다", async () => {
+    const admin = await signup(db, "AD2조직", "admin-ad2@x.com");
+    const { id, approvalToken: oldToken } = await runToFinalized(
+      db,
+      admin.token,
+      admin.org.id,
+    );
+
+    let signalPaused!: () => void;
+    const paused = new Promise<void>((resolve) => {
+      signalPaused = resolve;
+    });
+    let signalResume!: () => void;
+    const resume = new Promise<void>((resolve) => {
+      signalResume = resolve;
+    });
+    const racingDb = pauseFirstQueryContaining(
+      db,
+      "FROM approval_requests WHERE token_hash = ?",
+      signalPaused,
+      resume,
+    );
+
+    const staleApprovePromise = req(
+      racingDb,
+      `/public/approvals/${oldToken}/approve`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          name: "경합한 구 링크 승인자",
+          signatureDataUrl: TEST_PNG_DATA_URL,
+          agree: true,
+        }),
+      },
+    );
+
+    await paused;
+    const resendRes = await req(db, `/work-orders/${id}/approval-links`, {
+      method: "POST",
+      token: admin.token,
+    });
+    expect(resendRes.status).toBe(200);
+    const { token: newToken } = (await resendRes.json()) as { token: string };
+    signalResume();
+
+    const staleApprove = await staleApprovePromise;
+    expect(staleApprove.status).toBe(410);
+
+    const currentGet = await req(db, `/public/approvals/${newToken}`);
+    expect(currentGet.status).toBe(200);
+    const requestRows = await db
+      .prepare(
+        "SELECT status FROM approval_requests WHERE work_order_id = ? ORDER BY sent_at ASC",
+      )
+      .bind(id)
+      .all<{ status: string }>();
+    expect((requestRows.results ?? []).map((row) => row.status).sort()).toEqual([
+      "pending",
+      "superseded",
+    ]);
+
+    const signatures = await db
+      .prepare(
+        `SELECT sig.id
+         FROM signatures sig
+         JOIN approval_requests ar ON ar.id = sig.approval_request_id
+         WHERE ar.work_order_id = ?`,
+      )
+      .bind(id)
+      .all<{ id: string }>();
+    expect(signatures.results ?? []).toHaveLength(0);
+  });
+
+  it("재발급 조회와 승인이 경합해도 완료된 승인을 pending으로 되돌릴 수 없다", async () => {
+    const admin = await signup(db, "AD3조직", "admin-ad3@x.com");
+    const { id, approvalToken } = await runToFinalized(
+      db,
+      admin.token,
+      admin.org.id,
+    );
+
+    let signalPaused!: () => void;
+    const paused = new Promise<void>((resolve) => {
+      signalPaused = resolve;
+    });
+    let signalResume!: () => void;
+    const resume = new Promise<void>((resolve) => {
+      signalResume = resolve;
+    });
+    const racingDb = pauseFirstQueryContaining(
+      db,
+      "SELECT * FROM work_orders WHERE org_id = ? AND id = ?",
+      signalPaused,
+      resume,
+    );
+
+    const resendPromise = req(racingDb, `/work-orders/${id}/approval-links`, {
+      method: "POST",
+      token: admin.token,
+    });
+    await paused;
+
+    const approveRes = await req(db, `/public/approvals/${approvalToken}/approve`, {
+      method: "POST",
+      body: JSON.stringify({
+        name: "정상 승인자",
+        signatureDataUrl: TEST_PNG_DATA_URL,
+        agree: true,
+      }),
+    });
+    expect(approveRes.status).toBe(200);
+    signalResume();
+
+    const resendRes = await resendPromise;
+    expect(resendRes.status).toBe(409);
+
+    const workOrderRow = await db
+      .prepare("SELECT approval_status, billing_status FROM work_orders WHERE id = ?")
+      .bind(id)
+      .first<{ approval_status: string; billing_status: string }>();
+    expect(workOrderRow).toMatchObject({
+      approval_status: "approved",
+      billing_status: "billable",
+    });
+
+    const requestRows = await db
+      .prepare("SELECT status FROM approval_requests WHERE work_order_id = ?")
+      .bind(id)
+      .all<{ status: string }>();
+    expect((requestRows.results ?? []).map((row) => row.status)).toEqual([
+      "approved",
+    ]);
+  });
+
+  it("서명 후 마스터와 작업을 수정해도 공개 보고서는 확정 당시 메타데이터를 유지한다", async () => {
+    const admin = await signup(db, "AE조직", "admin-ae@x.com");
+    const { id, approvalToken } = await runToFinalized(db, admin.token, admin.org.id);
+
+    const before = (await (
+      await req(db, `/public/approvals/${approvalToken}`)
+    ).json()) as {
+      reportVersion: {
+        customer: { id: string; name: string };
+        workOrder: { scheduledDate: string; workType: string };
+      };
+    };
+
+    const approveRes = await req(db, `/public/approvals/${approvalToken}/approve`, {
+      method: "POST",
+      body: JSON.stringify({
+        name: "고객",
+        signatureDataUrl: TEST_PNG_DATA_URL,
+        agree: true,
+      }),
+    });
+    expect(approveRes.status).toBe(200);
+
+    const customerPatch = await req(
+      db,
+      `/customers/${before.reportVersion.customer.id}`,
+      {
+        method: "PATCH",
+        token: admin.token,
+        body: JSON.stringify({ name: "서명 후 변경 고객" }),
+      },
+    );
+    expect(customerPatch.status).toBe(200);
+
+    const workOrderPatch = await req(db, `/work-orders/${id}`, {
+      method: "PATCH",
+      token: admin.token,
+      body: JSON.stringify({
+        scheduledDate: "2030-01-01",
+        workType: "서명 후 변경 작업",
+      }),
+    });
+    expect(workOrderPatch.status).toBe(200);
+
+    const after = (await (
+      await req(db, `/public/approvals/${approvalToken}`)
+    ).json()) as typeof before;
+    expect(after.reportVersion.customer.name).toBe(
+      before.reportVersion.customer.name,
+    );
+    expect(after.reportVersion.workOrder.scheduledDate).toBe(
+      before.reportVersion.workOrder.scheduledDate,
+    );
+    expect(after.reportVersion.workOrder.workType).toBe(
+      before.reportVersion.workOrder.workType,
+    );
+  });
+
+  it("작업 생성·수정에서 타 조직 또는 다른 현장의 장비를 연결할 수 없다", async () => {
+    const orgA = await signup(db, "AF조직", "admin-af@x.com");
+    const customerA = await createCustomer(db, orgA.token, "A고객");
+    const siteA = await createSite(db, orgA.token, customerA.id, "A현장");
+    const assetARes = await req(db, "/assets", {
+      method: "POST",
+      token: orgA.token,
+      body: JSON.stringify({
+        siteId: siteA.id,
+        name: "A조직 장비",
+        serialNo: "SECRET-A",
+      }),
+    });
+    const { asset: assetA } = (await assetARes.json()) as {
+      asset: { id: string };
+    };
+
+    const orgB = await signup(db, "AG조직", "admin-ag@x.com");
+    const customerB = await createCustomer(db, orgB.token, "B고객");
+    const siteB1 = await createSite(db, orgB.token, customerB.id, "B현장1");
+    const siteB2 = await createSite(db, orgB.token, customerB.id, "B현장2");
+    const assetBRes = await req(db, "/assets", {
+      method: "POST",
+      token: orgB.token,
+      body: JSON.stringify({ siteId: siteB1.id, name: "B현장1 장비" }),
+    });
+    const { asset: assetB } = (await assetBRes.json()) as {
+      asset: { id: string };
+    };
+
+    const crossOrgCreate = await req(db, "/work-orders", {
+      method: "POST",
+      token: orgB.token,
+      body: JSON.stringify({
+        scheduledDate: "2026-07-24",
+        workType: "점검",
+        customerId: customerB.id,
+        siteId: siteB2.id,
+        assetId: assetA.id,
+        assigneeIds: [],
+      }),
+    });
+    expect(crossOrgCreate.status).toBe(400);
+
+    const crossSiteCreate = await req(db, "/work-orders", {
+      method: "POST",
+      token: orgB.token,
+      body: JSON.stringify({
+        scheduledDate: "2026-07-24",
+        workType: "점검",
+        customerId: customerB.id,
+        siteId: siteB2.id,
+        assetId: assetB.id,
+        assigneeIds: [],
+      }),
+    });
+    expect(crossSiteCreate.status).toBe(400);
+
+    const validCreate = await req(db, "/work-orders", {
+      method: "POST",
+      token: orgB.token,
+      body: JSON.stringify({
+        scheduledDate: "2026-07-24",
+        workType: "점검",
+        customerId: customerB.id,
+        siteId: siteB2.id,
+        assigneeIds: [],
+      }),
+    });
+    expect(validCreate.status).toBe(200);
+    const { workOrder } = (await validCreate.json()) as {
+      workOrder: { id: string };
+    };
+
+    const crossOrgPatch = await req(db, `/work-orders/${workOrder.id}`, {
+      method: "PATCH",
+      token: orgB.token,
+      body: JSON.stringify({ assetId: assetA.id }),
+    });
+    expect(crossOrgPatch.status).toBe(400);
+
+    const crossSitePatch = await req(db, `/work-orders/${workOrder.id}`, {
+      method: "PATCH",
+      token: orgB.token,
+      body: JSON.stringify({ assetId: assetB.id }),
+    });
+    expect(crossSitePatch.status).toBe(400);
+  });
+
+  it("초안은 배정 시 예정으로 전환되고 배정 변경 이력·알림을 보존한다", async () => {
+    const admin = await signup(db, "작업수명주기", "admin-lifecycle@x.com");
+    const fieldToken = await inviteAndAccept(
+      db,
+      admin.token,
+      "field-lifecycle@x.com",
+      "field",
+    );
+    const fieldMe = (await (
+      await req(db, "/me", { token: fieldToken })
+    ).json()) as { user: { id: string } };
+
+    const customerRes = await req(db, "/customers", {
+      method: "POST",
+      token: admin.token,
+      body: JSON.stringify({
+        name: "보안 고객",
+        bizNo: "123-45-67890",
+        address: "서울시 고객로 1",
+        contactName: "김현장",
+        contactPhone: "010-1234-5678",
+        memo: "현장 사용자에게 숨길 내부 메모",
+      }),
+    });
+    const customer = ((await customerRes.json()) as { customer: { id: string } })
+      .customer;
+    const siteRes = await req(db, "/sites", {
+      method: "POST",
+      token: admin.token,
+      body: JSON.stringify({
+        customerId: customer.id,
+        name: "제1공장",
+        address: "서울시 산업로 99",
+        accessInfo: "정문 경비실에서 방문증 수령",
+      }),
+    });
+    const site = ((await siteRes.json()) as { site: { id: string } }).site;
+
+    const draftRes = await req(db, "/work-orders", {
+      method: "POST",
+      token: admin.token,
+      body: JSON.stringify({
+        scheduledDate: "2026-07-24",
+        scheduledTime: "09:30",
+        workType: "설비 정기점검",
+        customerId: customer.id,
+        siteId: site.id,
+        request: "가동 전 진동값 확인",
+        assigneeIds: [],
+        intent: "draft",
+      }),
+    });
+    expect(draftRes.status).toBe(200);
+    const draft = (await draftRes.json()) as {
+      workOrder: { id: string; workStatus: string };
+    };
+    expect(draft.workOrder.workStatus).toBe("draft");
+
+    const prematureStart = await req(
+      db,
+      `/work-orders/${draft.workOrder.id}/start`,
+      { method: "POST", token: admin.token },
+    );
+    expect(prematureStart.status).toBe(409);
+
+    const duplicate = await req(
+      db,
+      `/work-orders/${draft.workOrder.id}/assign`,
+      {
+        method: "POST",
+        token: admin.token,
+        body: JSON.stringify({
+          userIds: [fieldMe.user.id, fieldMe.user.id],
+        }),
+      },
+    );
+    expect(duplicate.status).toBe(400);
+
+    const assigned = await req(
+      db,
+      `/work-orders/${draft.workOrder.id}/assign`,
+      {
+        method: "POST",
+        token: admin.token,
+        body: JSON.stringify({ userIds: [fieldMe.user.id] }),
+      },
+    );
+    expect(assigned.status).toBe(200);
+    const assignedJson = (await assigned.json()) as {
+      workOrder: { workStatus: string };
+    };
+    expect(assignedJson.workOrder.workStatus).toBe("scheduled");
+
+    const fieldList = await req(
+      db,
+      "/work-orders?date=2026-07-24&mine=1",
+      { token: fieldToken },
+    );
+    expect(fieldList.status).toBe(200);
+    const fieldWork = (
+      (await fieldList.json()) as { workOrders: Record<string, unknown>[] }
+    ).workOrders[0]!;
+    expect(fieldWork).toMatchObject({
+      request: "가동 전 진동값 확인",
+      siteAddress: "서울시 산업로 99",
+      accessInfo: "정문 경비실에서 방문증 수령",
+      contactName: "김현장",
+      contactPhone: "010-1234-5678",
+    });
+    expect(fieldWork).not.toHaveProperty("approvalStatus");
+    expect(fieldWork).not.toHaveProperty("billingStatus");
+
+    const fieldDetail = await req(
+      db,
+      `/work-orders/${draft.workOrder.id}`,
+      { token: fieldToken },
+    );
+    expect(fieldDetail.status).toBe(200);
+    const fieldDetailJson = (await fieldDetail.json()) as any;
+    expect(fieldDetailJson.customer.memo).toBeUndefined();
+    expect(fieldDetailJson.customer.bizNo).toBeUndefined();
+    expect(fieldDetailJson.assignees[0].email).toBeUndefined();
+    expect(fieldDetailJson.workOrder.approvalStatus).toBeUndefined();
+    expect(fieldDetailJson.workOrder.billingStatus).toBeUndefined();
+    expect(fieldDetailJson.approval).toBeNull();
+    expect(fieldDetailJson.billing).toBeNull();
+    expect(fieldDetailJson.assignmentHistory).toEqual([]);
+    const hiddenReport = await req(
+      db,
+      `/work-orders/${draft.workOrder.id}/report-versions/1`,
+      { token: fieldToken },
+    );
+    expect(hiddenReport.status).toBe(403);
+
+    const reassigned = await req(
+      db,
+      `/work-orders/${draft.workOrder.id}/assign`,
+      {
+        method: "POST",
+        token: admin.token,
+        body: JSON.stringify({ userIds: [admin.user.id] }),
+      },
+    );
+    expect(reassigned.status).toBe(200);
+
+    const officeDetail = (await (
+      await req(db, `/work-orders/${draft.workOrder.id}`, {
+        token: admin.token,
+      })
+    ).json()) as any;
+    expect(
+      officeDetail.assignmentHistory.map(
+        (event: { userId: string; action: string }) => [
+          event.userId,
+          event.action,
+        ],
+      ),
+    ).toEqual(
+      expect.arrayContaining([
+        [fieldMe.user.id, "assigned"],
+        [fieldMe.user.id, "unassigned"],
+        [admin.user.id, "assigned"],
+      ]),
+    );
+    expect(
+      officeDetail.assignmentHistory.every(
+        (event: { actorUserId: string }) =>
+          event.actorUserId === admin.user.id,
+      ),
+    ).toBe(true);
+
+    const fieldNotifications = (await (
+      await req(db, "/notifications", { token: fieldToken })
+    ).json()) as { notifications: { kind: string }[] };
+    expect(fieldNotifications.notifications.map((item) => item.kind)).toEqual(
+      expect.arrayContaining(["assigned", "assignment_removed"]),
+    );
+  });
+
+  it("시작과 취소가 경합해도 CAS로 단 하나의 전이만 성공한다", async () => {
+    const admin = await signup(db, "CAS-시작취소", "admin-cas-start@x.com");
+    const { id } = await createFullWorkOrder(
+      db,
+      admin.token,
+      admin.org.id,
+    );
+
+    let release!: () => void;
+    let paused!: () => void;
+    const resume = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const waiting = new Promise<void>((resolve) => {
+      paused = resolve;
+    });
+    const delayedDb = pauseFirstQueryContaining(
+      db,
+      "SELECT * FROM work_orders WHERE org_id = ? AND id = ?",
+      paused,
+      resume,
+    );
+
+    const startPromise = req(delayedDb, `/work-orders/${id}/start`, {
+      method: "POST",
+      token: admin.token,
+    });
+    await waiting;
+    const cancel = await req(db, `/work-orders/${id}/cancel`, {
+      method: "POST",
+      token: admin.token,
+      body: JSON.stringify({ reason: "동시 취소" }),
+    });
+    release();
+    const start = await startPromise;
+
+    expect(cancel.status).toBe(200);
+    expect(start.status).toBe(409);
+    const row = await db
+      .prepare(
+        "SELECT work_status, started_at, canceled_at FROM work_orders WHERE id = ?",
+      )
+      .bind(id)
+      .first<{
+        work_status: string;
+        started_at: string | null;
+        canceled_at: string | null;
+      }>();
+    expect(row).toMatchObject({
+      work_status: "canceled",
+      started_at: null,
+    });
+    expect(row?.canceled_at).not.toBeNull();
+  });
+
+  it("동시 완료 요청은 CAS로 한 건만 성공한다", async () => {
+    const admin = await signup(db, "CAS-완료", "admin-cas-complete@x.com");
+    const { id } = await createFullWorkOrder(
+      db,
+      admin.token,
+      admin.org.id,
+    );
+    await db
+      .prepare(
+        "UPDATE work_orders SET work_status = 'reviewed', reviewed_at = ? WHERE id = ?",
+      )
+      .bind(new Date().toISOString(), id)
+      .run();
+
+    let release!: () => void;
+    let paused!: () => void;
+    const resume = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const waiting = new Promise<void>((resolve) => {
+      paused = resolve;
+    });
+    const delayedDb = pauseFirstQueryContaining(
+      db,
+      "SELECT * FROM work_orders WHERE org_id = ? AND id = ?",
+      paused,
+      resume,
+    );
+
+    const firstPromise = req(delayedDb, `/work-orders/${id}/complete`, {
+      method: "POST",
+      token: admin.token,
+    });
+    await waiting;
+    const second = await req(db, `/work-orders/${id}/complete`, {
+      method: "POST",
+      token: admin.token,
+    });
+    release();
+    const first = await firstPromise;
+
+    expect(second.status).toBe(200);
+    expect(first.status).toBe(409);
+    const audits = await db
+      .prepare(
+        "SELECT COUNT(*) AS n FROM audit_events WHERE target = ? AND event = 'work_completed'",
+      )
+      .bind(id)
+      .first<{ n: number }>();
+    expect(audits?.n).toBe(1);
+  });
+
+  it("초안 배정 CAS 패배 시 후속 배정·이력 쓰기를 모두 막는다", async () => {
+    const admin = await signup(db, "CAS-배정", "admin-cas-assign@x.com");
+    const fieldToken = await inviteAndAccept(
+      db,
+      admin.token,
+      "field-cas-assign@x.com",
+      "field",
+    );
+    const fieldMe = (await (
+      await req(db, "/me", { token: fieldToken })
+    ).json()) as { user: { id: string } };
+    const customer = await createCustomer(db, admin.token, "배정 고객");
+    const site = await createSite(db, admin.token, customer.id, "배정 현장");
+    const draftResponse = await req(db, "/work-orders", {
+      method: "POST",
+      token: admin.token,
+      body: JSON.stringify({
+        scheduledDate: "2026-07-24",
+        workType: "배정 경합 점검",
+        customerId: customer.id,
+        siteId: site.id,
+        assigneeIds: [],
+        intent: "draft",
+      }),
+    });
+    const draft = (await draftResponse.json()) as {
+      workOrder: { id: string };
+    };
+
+    let release!: () => void;
+    let paused!: () => void;
+    const resume = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const waiting = new Promise<void>((resolve) => {
+      paused = resolve;
+    });
+    const delayedDb = pauseFirstQueryContaining(
+      db,
+      "SELECT * FROM work_orders WHERE org_id = ? AND id = ?",
+      paused,
+      resume,
+    );
+    const stalePromise = req(
+      delayedDb,
+      `/work-orders/${draft.workOrder.id}/assign`,
+      {
+        method: "POST",
+        token: admin.token,
+        body: JSON.stringify({ userIds: [fieldMe.user.id] }),
+      },
+    );
+    await waiting;
+
+    const winner = await req(
+      db,
+      `/work-orders/${draft.workOrder.id}/assign`,
+      {
+        method: "POST",
+        token: admin.token,
+        body: JSON.stringify({ userIds: [admin.user.id] }),
+      },
+    );
+    expect(winner.status).toBe(200);
+    release();
+    const stale = await stalePromise;
+    expect(stale.status).toBe(409);
+
+    const assignments = await db
+      .prepare(
+        "SELECT user_id FROM assignments WHERE work_order_id = ? ORDER BY user_id",
+      )
+      .bind(draft.workOrder.id)
+      .all<{ user_id: string }>();
+    expect(assignments.results.map((row) => row.user_id)).toEqual([
+      admin.user.id,
+    ]);
+    const history = await db
+      .prepare(
+        `SELECT user_id, action
+         FROM assignment_events
+         WHERE work_order_id = ?
+         ORDER BY created_at, id`,
+      )
+      .bind(draft.workOrder.id)
+      .all<{ user_id: string; action: string }>();
+    expect(history.results).toEqual([
+      { user_id: admin.user.id, action: "assigned" },
+    ]);
+    const workOrder = await db
+      .prepare(
+        "SELECT work_status, revision, write_token FROM work_orders WHERE id = ?",
+      )
+      .bind(draft.workOrder.id)
+      .first<{
+        work_status: string;
+        revision: number;
+        write_token: string | null;
+      }>();
+    expect(workOrder).toMatchObject({
+      work_status: "scheduled",
+      revision: 1,
+    });
+    expect(workOrder?.write_token).toBeTruthy();
+  });
+
+  it("동시 일반 PATCH는 패배 요청의 필드·배정을 남기지 않는다", async () => {
+    const admin = await signup(db, "CAS-PATCH", "admin-cas-patch@x.com");
+    const fieldToken = await inviteAndAccept(
+      db,
+      admin.token,
+      "field-cas-patch@x.com",
+      "field",
+    );
+    const fieldMe = (await (
+      await req(db, "/me", { token: fieldToken })
+    ).json()) as { user: { id: string } };
+    const { id } = await createFullWorkOrder(
+      db,
+      admin.token,
+      admin.org.id,
+    );
+
+    let release!: () => void;
+    let paused!: () => void;
+    const resume = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const waiting = new Promise<void>((resolve) => {
+      paused = resolve;
+    });
+    const delayedDb = pauseFirstQueryContaining(
+      db,
+      "SELECT * FROM work_orders WHERE org_id = ? AND id = ?",
+      paused,
+      resume,
+    );
+    const stalePromise = req(delayedDb, `/work-orders/${id}`, {
+      method: "PATCH",
+      token: admin.token,
+      body: JSON.stringify({
+        request: "패배 요청의 메모",
+        assigneeIds: [fieldMe.user.id],
+      }),
+    });
+    await waiting;
+
+    const winner = await req(db, `/work-orders/${id}`, {
+      method: "PATCH",
+      token: admin.token,
+      body: JSON.stringify({ request: "승리 요청의 메모" }),
+    });
+    expect(winner.status).toBe(200);
+    release();
+    const stale = await stalePromise;
+    expect(stale.status).toBe(409);
+
+    const workOrder = await db
+      .prepare(
+        "SELECT request, revision, write_token FROM work_orders WHERE id = ?",
+      )
+      .bind(id)
+      .first<{
+        request: string | null;
+        revision: number;
+        write_token: string | null;
+      }>();
+    expect(workOrder).toMatchObject({
+      request: "승리 요청의 메모",
+      revision: 1,
+    });
+    expect(workOrder?.write_token).toBeTruthy();
+    const assignments = await db
+      .prepare("SELECT user_id FROM assignments WHERE work_order_id = ?")
+      .bind(id)
+      .all<{ user_id: string }>();
+    expect(assignments.results.map((row) => row.user_id)).toEqual([
+      admin.user.id,
+    ]);
+    const staleEvents = await db
+      .prepare(
+        "SELECT COUNT(*) AS n FROM assignment_events WHERE work_order_id = ? AND user_id = ?",
+      )
+      .bind(id, fieldMe.user.id)
+      .first<{ n: number }>();
+    expect(staleEvents?.n).toBe(0);
+  });
+
+  it("현장기록 INSERT 실행 전에 작업이 취소되면 기록을 남기지 않는다", async () => {
+    const admin = await signup(
+      db,
+      "CAS-현장기록-생성",
+      "admin-cas-field-insert@x.com",
+    );
+    const { id } = await createFullWorkOrder(
+      db,
+      admin.token,
+      admin.org.id,
+    );
+    await req(db, `/work-orders/${id}/start`, {
+      method: "POST",
+      token: admin.token,
+    });
+
+    let release!: () => void;
+    let paused!: () => void;
+    const resume = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const waiting = new Promise<void>((resolve) => {
+      paused = resolve;
+    });
+    const delayedDb = pauseFirstQueryContaining(
+      db,
+      "SELECT * FROM work_orders WHERE org_id = ? AND id = ?",
+      paused,
+      resume,
+    );
+    const stalePromise = req(delayedDb, `/work-orders/${id}/field-record`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({ transcript: "취소 뒤 남으면 안 되는 기록" }),
+    });
+    await waiting;
+
+    const canceled = await req(db, `/work-orders/${id}/cancel`, {
+      method: "POST",
+      token: admin.token,
+      body: JSON.stringify({ reason: "현장 중단" }),
+    });
+    expect(canceled.status).toBe(200);
+    release();
+    const stale = await stalePromise;
+    expect(stale.status).toBe(409);
+    const stored = await db
+      .prepare(
+        "SELECT COUNT(*) AS n FROM field_records WHERE work_order_id = ?",
+      )
+      .bind(id)
+      .first<{ n: number }>();
+    expect(stored?.n).toBe(0);
+  });
+
+  it("현장기록 UPDATE 실행 전에 작업이 취소되면 기존 기록을 보존한다", async () => {
+    const admin = await signup(
+      db,
+      "CAS-현장기록-수정",
+      "admin-cas-field-update@x.com",
+    );
+    const { id } = await createFullWorkOrder(
+      db,
+      admin.token,
+      admin.org.id,
+    );
+    await req(db, `/work-orders/${id}/start`, {
+      method: "POST",
+      token: admin.token,
+    });
+    const initial = await req(db, `/work-orders/${id}/field-record`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({ transcript: "보존할 기존 기록" }),
+    });
+    expect(initial.status).toBe(200);
+
+    let release!: () => void;
+    let paused!: () => void;
+    const resume = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const waiting = new Promise<void>((resolve) => {
+      paused = resolve;
+    });
+    const delayedDb = pauseFirstQueryContaining(
+      db,
+      "SELECT * FROM work_orders WHERE org_id = ? AND id = ?",
+      paused,
+      resume,
+    );
+    const stalePromise = req(delayedDb, `/work-orders/${id}/field-record`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({ transcript: "취소 뒤 덮으면 안 되는 기록" }),
+    });
+    await waiting;
+
+    const canceled = await req(db, `/work-orders/${id}/cancel`, {
+      method: "POST",
+      token: admin.token,
+      body: JSON.stringify({ reason: "현장 중단" }),
+    });
+    expect(canceled.status).toBe(200);
+    release();
+    const stale = await stalePromise;
+    expect(stale.status).toBe(409);
+    const stored = await db
+      .prepare(
+        "SELECT transcript FROM field_records WHERE work_order_id = ?",
+      )
+      .bind(id)
+      .first<{ transcript: string | null }>();
+    expect(stored?.transcript).toBe("보존할 기존 기록");
+  });
+
+  it("서로 다른 작업을 동시에 최초 확정해도 보고서 번호가 중복되지 않는다", async () => {
+    const admin = await signup(
+      db,
+      "CAS-보고서-번호",
+      "admin-cas-report-number@x.com",
+    );
+    const first = await runToSubmitted(db, admin.token, admin.org.id);
+    const second = await runToSubmitted(db, admin.token, admin.org.id);
+
+    let releaseFirst!: () => void;
+    let releaseSecond!: () => void;
+    let pausedFirst!: () => void;
+    let pausedSecond!: () => void;
+    const resumeFirst = new Promise<void>((resolve) => {
+      releaseFirst = resolve;
+    });
+    const resumeSecond = new Promise<void>((resolve) => {
+      releaseSecond = resolve;
+    });
+    const waitingFirst = new Promise<void>((resolve) => {
+      pausedFirst = resolve;
+    });
+    const waitingSecond = new Promise<void>((resolve) => {
+      pausedSecond = resolve;
+    });
+    const firstDb = pauseFirstQueryContaining(
+      db,
+      "SELECT COUNT(*) AS n FROM report_versions WHERE work_order_id = ?",
+      pausedFirst,
+      resumeFirst,
+    );
+    const secondDb = pauseFirstQueryContaining(
+      db,
+      "SELECT COUNT(*) AS n FROM report_versions WHERE work_order_id = ?",
+      pausedSecond,
+      resumeSecond,
+    );
+
+    const firstFinalize = req(
+      firstDb,
+      `/work-orders/${first.id}/report/finalize`,
+      {
+        method: "POST",
+        token: admin.token,
+        body: JSON.stringify({ confirmedUncertainFields: [] }),
+      },
+    );
+    await waitingFirst;
+    const secondFinalize = req(
+      secondDb,
+      `/work-orders/${second.id}/report/finalize`,
+      {
+        method: "POST",
+        token: admin.token,
+        body: JSON.stringify({ confirmedUncertainFields: [] }),
+      },
+    );
+    await waitingSecond;
+    releaseFirst();
+    releaseSecond();
+
+    const [firstResponse, secondResponse] = await Promise.all([
+      firstFinalize,
+      secondFinalize,
+    ]);
+    expect(firstResponse.status).toBe(200);
+    expect(secondResponse.status).toBe(200);
+    const firstJson = (await firstResponse.json()) as {
+      reportVersion: { reportNumber: string };
+    };
+    const secondJson = (await secondResponse.json()) as {
+      reportVersion: { reportNumber: string };
+    };
+    expect(
+      [firstJson.reportVersion.reportNumber, secondJson.reportVersion.reportNumber].sort(),
+    ).toEqual(["FS-20260724-001", "FS-20260724-002"]);
+  });
+
+  it("동시 보고서 PUT은 최신 초안 revision만 갱신한다", async () => {
+    const admin = await signup(
+      db,
+      "CAS-보고서-revision",
+      "admin-cas-report-revision@x.com",
+    );
+    const { id, draft } = await runToSubmitted(
+      db,
+      admin.token,
+      admin.org.id,
+    );
+
+    let release!: () => void;
+    let paused!: () => void;
+    const resume = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const waiting = new Promise<void>((resolve) => {
+      paused = resolve;
+    });
+    const delayedDb = pauseFirstQueryContaining(
+      db,
+      "FROM report_drafts WHERE work_order_id = ?",
+      paused,
+      resume,
+    );
+    const stalePromise = req(delayedDb, `/work-orders/${id}/report`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({
+        structured: { ...draft, workSummary: "패배한 초안" },
+      }),
+    });
+    await waiting;
+
+    const winner = await req(db, `/work-orders/${id}/report`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({
+        structured: { ...draft, workSummary: "승리한 초안" },
+      }),
+    });
+    expect(winner.status).toBe(200);
+    release();
+    const stale = await stalePromise;
+    expect(stale.status).toBe(409);
+
+    const stored = await db
+      .prepare(
+        "SELECT structured_json, revision FROM report_drafts WHERE work_order_id = ?",
+      )
+      .bind(id)
+      .first<{ structured_json: string; revision: number }>();
+    expect(JSON.parse(stored!.structured_json).workSummary).toBe(
+      "승리한 초안",
+    );
+    expect(stored?.revision).toBe(1);
+  });
+
+  it("보고서 PUT 실행 전에 허용 상태를 벗어나면 초안을 갱신하지 않는다", async () => {
+    const admin = await signup(
+      db,
+      "CAS-보고서-상태",
+      "admin-cas-report-state@x.com",
+    );
+    const { id, draft } = await runToSubmitted(
+      db,
+      admin.token,
+      admin.org.id,
+    );
+
+    let release!: () => void;
+    let paused!: () => void;
+    const resume = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const waiting = new Promise<void>((resolve) => {
+      paused = resolve;
+    });
+    const delayedDb = pauseFirstQueryContaining(
+      db,
+      "FROM report_drafts WHERE work_order_id = ?",
+      paused,
+      resume,
+    );
+    const stalePromise = req(delayedDb, `/work-orders/${id}/report`, {
+      method: "PUT",
+      token: admin.token,
+      body: JSON.stringify({
+        structured: { ...draft, workSummary: "상태 전이 뒤 초안" },
+      }),
+    });
+    await waiting;
+
+    await db
+      .prepare(
+        "UPDATE work_orders SET work_status = 'reviewed', reviewed_at = ?, updated_at = ? WHERE id = ?",
+      )
+      .bind(new Date().toISOString(), new Date().toISOString(), id)
+      .run();
+    release();
+    const stale = await stalePromise;
+    expect(stale.status).toBe(409);
+
+    const stored = await db
+      .prepare(
+        "SELECT structured_json, revision FROM report_drafts WHERE work_order_id = ?",
+      )
+      .bind(id)
+      .first<{ structured_json: string; revision: number }>();
+    expect(JSON.parse(stored!.structured_json).workSummary).toBe(
+      draft.workSummary,
+    );
+    expect(stored?.revision).toBe(0);
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -782,6 +2206,12 @@ async function inviteAndAccept(db: D1Database, adminToken: string, email: string
 }
 
 async function createFullWorkOrder(db: D1Database, token: string, _orgId: string, withAsset = false) {
+  const meRes = await app.request(
+    "/me",
+    { headers: { Authorization: `Bearer ${token}` } },
+    { DB: db },
+  );
+  const me = (await meRes.json()) as { user: { id: string } };
   const customer = await createCustomer(db, token, "기본고객");
   const site = await createSite(db, token, customer.id, "기본현장");
   let asset: { id: string } | undefined;
@@ -804,13 +2234,37 @@ async function createFullWorkOrder(db: D1Database, token: string, _orgId: string
         customerId: customer.id,
         siteId: site.id,
         assetId: asset?.id,
-        assigneeIds: [],
+        assigneeIds: [me.user.id],
+        intent: "schedule",
       }),
     },
     { DB: db },
   );
   const { workOrder } = (await woRes.json()) as { workOrder: { id: string } };
   return { id: workOrder.id, customer, site, asset };
+}
+
+async function runToSubmitted(db: D1Database, token: string, orgId: string) {
+  const { id } = await createFullWorkOrder(db, token, orgId);
+  await req(db, `/work-orders/${id}/start`, {
+    method: "POST",
+    token,
+  });
+  await req(db, `/work-orders/${id}/field-record`, {
+    method: "PUT",
+    token,
+    body: JSON.stringify({ transcript: "점검 완료" }),
+  });
+  await addTestPhoto(db, id, token);
+  const submitted = await req(db, `/work-orders/${id}/submit`, {
+    method: "POST",
+    token,
+  });
+  expect(submitted.status).toBe(200);
+  const detail = (await (
+    await req(db, `/work-orders/${id}`, { token })
+  ).json()) as { draft: Record<string, unknown> };
+  return { id, draft: detail.draft };
 }
 
 /** scheduled → in_progress → submitted → report finalize(version 1) → approval-link 발급까지 진행. */
@@ -822,9 +2276,71 @@ async function runToFinalized(db: D1Database, token: string, orgId: string) {
     { method: "PUT", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ transcript: "점검 완료" }) },
     { DB: db },
   );
+  await addTestPhoto(db, id, token);
   await app.request(`/work-orders/${id}/submit`, { method: "POST", headers: { Authorization: `Bearer ${token}` } }, { DB: db });
-  await app.request(`/work-orders/${id}/report/finalize`, { method: "POST", headers: { Authorization: `Bearer ${token}` } }, { DB: db });
-  const linkRes = await app.request(`/work-orders/${id}/approval-links`, { method: "POST", headers: { Authorization: `Bearer ${token}` } }, { DB: db });
+  await app.request(
+    `/work-orders/${id}/report/finalize`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ confirmedUncertainFields: [] }),
+    },
+    { DB: db },
+  );
+  await markReportPdfReady(db, id, 1, token);
+  const linkRes = await req(db, `/work-orders/${id}/approval-links`, {
+    method: "POST",
+    token,
+  });
   const { token: approvalToken } = (await linkRes.json()) as { token: string };
   return { id, approvalToken };
+}
+
+async function markReportPdfReady(
+  db: D1Database,
+  workOrderId: string,
+  version: number,
+  token: string,
+): Promise<void> {
+  const pdf = minimalParseablePdf(`e2e-${workOrderId}-v${version}`);
+  const digest = await crypto.subtle.digest("SHA-256", pdf);
+  const checksum = Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+  const response = await req(
+    db,
+    `/work-orders/${workOrderId}/report-versions/${version}/artifacts/approval`,
+    {
+      method: "PUT",
+      token,
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Length": String(pdf.byteLength),
+        "X-Content-SHA256": checksum,
+      },
+      body: new Blob([pdf.slice()], { type: "application/pdf" }),
+    },
+  );
+  expect(response.status).toBe(200);
+}
+
+async function addTestPhoto(
+  db: D1Database,
+  workOrderId: string,
+  token: string,
+): Promise<{ id: string }> {
+  const response = await req(db, `/work-orders/${workOrderId}/photos`, {
+    method: "POST",
+    token,
+    body: JSON.stringify({
+      kind: "before",
+      dataUrl: TEST_PNG_DATA_URL,
+    }),
+  });
+  expect(response.status).toBe(200);
+  const json = (await response.json()) as { photo: { id: string } };
+  return json.photo;
 }

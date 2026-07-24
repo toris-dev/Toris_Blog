@@ -12,6 +12,12 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  verification: {
+    // 네이버 서치어드바이저 사이트 소유 확인 (builder.toris.kr)
+    other: {
+      "naver-site-verification": "917169558158c68ae2368d71c419dc120baf7daa",
+    },
+  },
   openGraph: {
     title: "빌더스텝 (BuilderStep)",
     description: "혼자 만드는 제품, 다음 단계는 함께",

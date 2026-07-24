@@ -1,16 +1,12 @@
 "use client";
 
 import type { ApprovalStatus, BillingStatus, WorkStatus } from "@fieldstep/shared";
-import { WORK_STATUS_LABELS } from "@fieldstep/shared";
+import { toSeoulDateString, WORK_STATUS_LABELS } from "@fieldstep/shared";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { ApprovalStatusBadge, BillingStatusBadge, WorkStatusBadge } from "@/components/StatusBadge";
-
-function todayIso(): string {
-  return new Date().toISOString().slice(0, 10);
-}
 
 type WorkOrderSummary = Awaited<ReturnType<typeof api.workOrders.list>>["workOrders"][number];
 
@@ -18,7 +14,7 @@ function WorkListContent() {
   const router = useRouter();
   const params = useSearchParams();
   const scope = params.get("scope");
-  const dateFilter = scope === "today" ? todayIso() : params.get("date") ?? "";
+  const dateFilter = scope === "today" ? toSeoulDateString() : params.get("date") ?? "";
   const statusFilter = (params.get("status") as WorkStatus | null) ?? "";
   const approvalFilter = params.get("approvalStatus") as ApprovalStatus | null;
   const billingFilter = params.get("billingStatus") as BillingStatus | null;

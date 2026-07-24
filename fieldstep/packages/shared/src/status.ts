@@ -73,7 +73,7 @@ export const APPROVAL_STATUS_LABELS: Record<ApprovalStatus, string> = {
 const APPROVAL_TRANSITIONS: Record<ApprovalStatus, readonly ApprovalStatus[]> = {
   not_sent: ["pending"],
   pending: ["approved", "revision_requested", "expired"],
-  approved: [],
+  approved: ["revision_requested"],
   revision_requested: ["pending"],
   expired: ["pending"],
 };
@@ -84,6 +84,9 @@ export function canTransitionApproval(from: ApprovalStatus, to: ApprovalStatus):
 
 /** 승인 요청 링크 유효기간 (일). */
 export const APPROVAL_LINK_TTL_DAYS = 7;
+
+/** 고객이 전자서명 시 동의한 고정 문구의 버전. */
+export const APPROVAL_CONSENT_VERSION = "approval-consent-v1";
 
 // ---------------------------------------------------------------------------
 // 3. BillingStatus

@@ -1,6 +1,20 @@
 import type { Role } from "@fieldstep/shared";
 
-export type Bindings = { DB: D1Database; APP_ORIGIN?: string };
+export type Bindings = {
+  DB: D1Database;
+  /**
+   * Private R2 media storage. Optional so unit tests and the legacy D1 photo
+   * fallback can run before a remote bucket is provisioned.
+   */
+  MEDIA?: R2Bucket;
+  APP_ORIGIN?: string;
+  /**
+   * 통합관리자(서비스 운영자) allowlist — 쉼표로 구분한 이메일 목록.
+   * 이 목록에 있는 기존 사용자만 /ops 운영자 로그인·세션이 허용된다(PRD §14.3).
+   * 미설정 시 운영자 콘솔은 완전히 비활성(로그인 자체가 거부).
+   */
+  PLATFORM_OPERATOR_EMAILS?: string;
+};
 
 export type Variables = {
   userId: string;
@@ -9,6 +23,9 @@ export type Variables = {
   orgId: string;
   orgName: string;
   role: Role;
+  // /ops 운영자 라우트에서만 설정된다(조직 컨텍스트 없음).
+  operatorUserId: string;
+  operatorEmail: string;
 };
 
 export type AppEnv = { Bindings: Bindings; Variables: Variables };

@@ -1,15 +1,23 @@
 import { Hono } from "hono";
+import { toSeoulDateString } from "@fieldstep/shared";
 import type { AppEnv } from "../db.js";
 import { nowIso } from "../db.js";
 import { requireAuth } from "../middleware.js";
+import { materializeOverdueNotifications } from "../overdue-notifications.js";
 
 export const notificationRoutes = new Hono<AppEnv>();
-
 
 notificationRoutes.get("/notifications", requireAuth, async (c) => {
   const orgId = c.get("orgId");
   const userId = c.get("userId");
   const unreadOnly = c.req.query("unread") === "1";
+
+  // 알림 조회 자체가 연체 동기화 트리거다. INSERT OR IGNORE + UNIQUE 인덱스로
+  // 여러 사용자의 동시 새로고침에서도 작업/사용자별 한 행만 남는다.
+  await materializeOverdueNotifications(c.env.DB, {
+    orgId,
+    seoulToday: toSeoulDateString(),
+  });
 
   const sql = unreadOnly
     ? "SELECT id, type, message, work_order_id, read_at, created_at FROM notifications WHERE org_id = ? AND (user_id = ? OR user_id IS NULL) AND read_at IS NULL ORDER BY created_at DESC"

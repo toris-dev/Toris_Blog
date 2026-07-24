@@ -44,3 +44,9 @@ yarn-error.log*
 
 # builderstep 서브트리 문서는 추적 유지 (루트 docs/** 무시 규칙 예외)
 !builderstep/docs/**
+
+# 로컬 툴링 캐시·세션·산출물 (레포에 커밋하지 않음)
+.agents/
+.gjc/
+.playwright-mcp/
+graphify-out/

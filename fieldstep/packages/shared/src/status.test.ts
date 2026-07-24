@@ -39,6 +39,7 @@ describe("approval status transitions", () => {
     expect(canTransitionApproval("pending", "approved")).toBe(true);
     expect(canTransitionApproval("pending", "revision_requested")).toBe(true);
     expect(canTransitionApproval("pending", "expired")).toBe(true);
+    expect(canTransitionApproval("approved", "revision_requested")).toBe(true);
     expect(canTransitionApproval("revision_requested", "pending")).toBe(true);
     expect(canTransitionApproval("expired", "pending")).toBe(true);
   });
@@ -51,7 +52,7 @@ describe("approval status transitions", () => {
 
   it("canTransition 통합 헬퍼", () => {
     expect(canTransition("approval", "pending", "approved")).toBe(true);
-    expect(canTransition("approval", "approved", "pending")).toBe(false);
+    expect(canTransition("approval", "approved", "revision_requested")).toBe(true);
   });
 });
 

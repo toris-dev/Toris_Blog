@@ -38,7 +38,9 @@ function InviteForm() {
     <main className="flex min-h-dvh items-center justify-center bg-bg px-4">
       <form onSubmit={onSubmit} className="card w-full max-w-sm p-8">
         <h1 className="text-xl font-bold">초대 수락</h1>
-        <p className="mt-1 text-sm text-muted">이름과 비밀번호를 설정하고 조직에 합류하세요.</p>
+        <p className="mt-1 text-sm text-muted">
+          새 계정은 비밀번호를 설정하고, 이미 가입한 계정은 기존 비밀번호로 조직에 합류하세요.
+        </p>
         {!token && <p className="mt-4 text-sm text-red-600">초대 토큰이 없습니다. 링크를 다시 확인해주세요.</p>}
         <div className="mt-6 flex flex-col gap-4">
           <label className="flex flex-col gap-1 text-sm">
@@ -46,7 +48,7 @@ function InviteForm() {
             <input required className="input" value={name} onChange={(e) => setName(e.target.value)} />
           </label>
           <label className="flex flex-col gap-1 text-sm">
-            비밀번호 (8자 이상)
+            비밀번호 (기존 계정은 기존 비밀번호)
             <input
               type="password"
               required

@@ -290,6 +290,28 @@ h1, h2, h3 { word-break: keep-all; text-wrap: balance; }
   .btn-ghost:active { transform: none; }
 }
 
+/* Clickable list / preview cards — a quiet hover affordance that says "선택 가능" */
+.tap-card {
+  cursor: pointer;
+  transition: border-color .15s ease, background-color .15s ease,
+    box-shadow .15s ease, transform .12s ease;
+}
+.tap-card:hover {
+  border-color: color-mix(in srgb, var(--color-step) 45%, var(--color-line));
+  background: color-mix(in srgb, var(--color-step) 5%, var(--color-card));
+  box-shadow: 0 6px 20px -12px color-mix(in srgb, var(--color-ink) 40%, transparent);
+  transform: translateY(-1px);
+}
+.tap-card:active { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .tap-card,
+  .tap-card:hover,
+  .tap-card:active {
+    transform: none;
+    transition: border-color .15s ease, background-color .15s ease;
+  }
+}
+
 /* ---- Toast ---- */
 .dash-toast-wrap {
   position: fixed; z-index: 60; bottom: 1rem; right: 1rem;

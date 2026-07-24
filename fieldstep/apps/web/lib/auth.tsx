@@ -2,7 +2,12 @@
 
 import type { Role } from "@fieldstep/shared";
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
-import { api, clearToken, getToken } from "./api";
+import {
+  api,
+  clearFieldRecordDrafts,
+  clearToken,
+  getToken,
+} from "./api";
 
 interface AuthUser {
   id: string;
@@ -16,7 +21,7 @@ interface AuthState {
   role: Role | null;
   loading: boolean;
   refresh: () => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthState | null>(null);
@@ -54,12 +59,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     void refresh();
   }, [refresh]);
 
-  const logout = useCallback(() => {
-    clearToken();
-    setUser(null);
-    setOrg(null);
-    setRole(null);
-    if (typeof window !== "undefined") window.location.href = "/login";
+  const logout = useCallback(async () => {
+    try {
+      if (getToken()) await api.logout();
+    } catch {
+      // 서버 세션 정리에 실패해도 클라이언트 로그아웃은 항상 완료한다.
+    } finally {
+      clearToken();
+      clearFieldRecordDrafts();
+      setUser(null);
+      setOrg(null);
+      setRole(null);
+      if (typeof window !== "undefined") window.location.href = "/login";
+    }
   }, []);
 
   return (

@@ -9,6 +9,15 @@
   // 승인 링크 생성 시 공개 URL origin. 미설정 시 코드 폴백도 동일 값이지만 명시적으로 고정한다.
   "vars": { "APP_ORIGIN": "https://field.toris.kr" },
   "d1_databases": [
-    { "binding": "DB", "database_name": "fieldstep", "database_id": "0f23599b-0eb3-4d2c-a4dc-96b37b6a8788" }
+    {
+      "binding": "DB",
+      "database_name": "fieldstep",
+      "database_id": "0f23599b-0eb3-4d2c-a4dc-96b37b6a8788",
+      "migrations_dir": "d1"
+    }
+  ],
+  // 비공개 객체 저장소. 공개 도메인 없이 워커의 인증된 라우트에서만 읽고 쓴다.
+  "r2_buckets": [
+    { "binding": "MEDIA", "bucket_name": "fieldstep-media" }
   ]
 }

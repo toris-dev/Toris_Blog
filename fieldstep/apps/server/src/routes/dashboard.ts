@@ -1,19 +1,18 @@
 import { Hono } from "hono";
-import { computeBillingStatus } from "@fieldstep/shared";
+import { computeBillingStatus, toSeoulDateString } from "@fieldstep/shared";
 import type { AppEnv } from "../db.js";
-import { requireAuth } from "../middleware.js";
+import { requireAuth, requireOfficeOrAdmin } from "../middleware.js";
 
 export const dashboardRoutes = new Hono<AppEnv>();
-
 
 async function count(db: D1Database, sql: string, ...params: unknown[]): Promise<number> {
   const row = await db.prepare(sql).bind(...params).first<{ n: number }>();
   return row?.n ?? 0;
 }
 
-dashboardRoutes.get("/dashboard", requireAuth, async (c) => {
+dashboardRoutes.get("/dashboard", requireAuth, requireOfficeOrAdmin, async (c) => {
   const orgId = c.get("orgId");
-  const today = new Date().toISOString().slice(0, 10);
+  const today = toSeoulDateString();
 
   const [todayCount, inProgress, submitted, pendingApproval, revisionRequested, billable] = await Promise.all([
     count(c.env.DB, "SELECT COUNT(*) AS n FROM work_orders WHERE org_id = ? AND scheduled_date = ?", orgId, today),

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged, signInWithPopup, signOut, type User } from "firebase/auth";
 import { FEATURES, type Feature } from "@builderstep/shared";
 import { auth, googleProvider } from "@/lib/firebase";
+import EmailAuthForm from "@/components/EmailAuthForm";
 
 const API =
   process.env.NEXT_PUBLIC_API_URL ?? "https://api.builder.toris.kr";
@@ -130,7 +131,17 @@ export default function EntitlementPanel() {
         </button>
       )}
 
-      {/* ---- 이메일 직접 조회 (로그인 없이) ---- */}
+      {/* ---- 이메일·비밀번호 로그인 / 회원가입 ---- */}
+      {!user && (
+        <div className="glass mt-4 rounded-xl p-5">
+          <p className="mb-3 font-mono text-[10px] font-bold tracking-[0.24em] text-step-bright">
+            이메일로 로그인 · 회원가입
+          </p>
+          <EmailAuthForm />
+        </div>
+      )}
+
+      {/* ---- 이메일 직접 조회 (로그인 없이 구독만 확인) ---- */}
       {!user && (
         <form onSubmit={lookupByEmail} className="mt-4 flex flex-col gap-3 sm:flex-row">
           <label htmlFor="ent-email" className="sr-only">래피드 계정 이메일</label>

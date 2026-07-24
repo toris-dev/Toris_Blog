@@ -115,15 +115,33 @@ function BillingModal({ row, onClose, onSaved }: { row: Row; onClose: () => void
   const [error, setError] = useState<string | null>(null);
 
   async function save() {
-    setBusy(true);
     setError(null);
+    const numericAmount = amount ? Number(amount) : null;
+    if (numericAmount !== null && (!Number.isFinite(numericAmount) || numericAmount < 0)) {
+      setError("금액은 0 이상으로 입력해 주세요");
+      return;
+    }
+    if (!billedAt && (dueAt || paidAt)) {
+      setError("납기일과 입금일을 입력하려면 청구일이 필요합니다");
+      return;
+    }
+    if (billedAt && dueAt && dueAt < billedAt) {
+      setError("납기일은 청구일보다 빠를 수 없습니다");
+      return;
+    }
+    if (billedAt && paidAt && paidAt < billedAt) {
+      setError("입금일은 청구일보다 빠를 수 없습니다");
+      return;
+    }
+
+    setBusy(true);
     try {
       await api.workOrders.putBilling(row.workOrder.id, {
-        amount: amount ? Number(amount) : undefined,
-        billedAt: billedAt || undefined,
-        dueAt: dueAt || undefined,
-        paidAt: paidAt || undefined,
-        memo: memo || undefined,
+        amount: numericAmount,
+        billedAt: billedAt || null,
+        dueAt: dueAt || null,
+        paidAt: paidAt || null,
+        memo: memo || null,
       });
       onSaved();
     } catch (err) {
@@ -139,30 +157,55 @@ function BillingModal({ row, onClose, onSaved }: { row: Row; onClose: () => void
         <h2 className="font-semibold">{row.customerName} 청구 입력</h2>
         <label className="flex flex-col gap-1 text-sm">
           금액
-          <input type="number" className="input" value={amount} onChange={(e) => setAmount(e.target.value)} />
+          <input
+            type="number"
+            min="0"
+            className="input"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            disabled={busy}
+          />
         </label>
         <label className="flex flex-col gap-1 text-sm">
           청구일
-          <input type="date" className="input" value={billedAt} onChange={(e) => setBilledAt(e.target.value)} />
+          <input
+            type="date"
+            className="input"
+            value={billedAt}
+            onChange={(e) => setBilledAt(e.target.value)}
+            disabled={busy}
+          />
         </label>
         <label className="flex flex-col gap-1 text-sm">
           납기일
-          <input type="date" className="input" value={dueAt} onChange={(e) => setDueAt(e.target.value)} />
+          <input
+            type="date"
+            className="input"
+            value={dueAt}
+            onChange={(e) => setDueAt(e.target.value)}
+            disabled={busy}
+          />
         </label>
         <label className="flex flex-col gap-1 text-sm">
           입금일
-          <input type="date" className="input" value={paidAt} onChange={(e) => setPaidAt(e.target.value)} />
+          <input
+            type="date"
+            className="input"
+            value={paidAt}
+            onChange={(e) => setPaidAt(e.target.value)}
+            disabled={busy}
+          />
         </label>
         <label className="flex flex-col gap-1 text-sm">
           메모
-          <input className="input" value={memo} onChange={(e) => setMemo(e.target.value)} />
+          <input className="input" value={memo} onChange={(e) => setMemo(e.target.value)} disabled={busy} />
         </label>
         {error && <p className="text-sm text-red-600">{error}</p>}
         <div className="flex gap-2 pt-2">
           <button onClick={save} disabled={busy} className="btn-primary flex-1 rounded-lg py-2 text-sm font-medium">
             저장
           </button>
-          <button onClick={onClose} className="btn-ghost rounded-lg px-4 py-2 text-sm">
+          <button onClick={onClose} disabled={busy} className="btn-ghost rounded-lg px-4 py-2 text-sm">
             취소
           </button>
         </div>

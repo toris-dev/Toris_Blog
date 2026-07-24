@@ -3,9 +3,18 @@
   "name": "builderstep-api",
   "main": "src/worker.ts",
   "compatibility_date": "2026-07-01",
+  // 대시보드에서 관리하는 RAPID_SIGNATURE_HEADER 같은 일반 변수를 배포 시 보존한다.
+  "keep_vars": true,
   // custom_domain은 cafe24發 *.toris.kr 와일드카드 DNS와 충돌 — 기존 프록시드 레코드 위에서 동작하는 라우트 사용
   "routes": [{ "pattern": "api.builder.toris.kr/*", "zone_name": "toris.kr" }],
   "d1_databases": [
-    { "binding": "DB", "database_name": "builderstep", "database_id": "d834ea17-2a56-45fc-bbd0-bb03d056e8ac" }
+    {
+      "binding": "DB",
+      "database_name": "builderstep",
+      "database_id": "d834ea17-2a56-45fc-bbd0-bb03d056e8ac",
+      "migrations_dir": "d1",
+      // 데모 데이터용 seed_command_center.sql은 운영 migration ledger에서 제외한다.
+      "migrations_pattern": "d1/[0-9][0-9][0-9][0-9]_*.sql"
+    }
   ]
 }

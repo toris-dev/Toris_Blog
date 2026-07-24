@@ -3,6 +3,7 @@
  * 외부 STT/LLM 호출 없음 — 순수 함수만. 향후 STT/LLM 엔진으로 교체 가능하도록
  * DraftEngine 인터페이스로 추상화한다.
  */
+import type { ChecklistItem } from "./domain.js";
 
 export interface UsedPart {
   name: string;
@@ -15,6 +16,8 @@ export interface StructuredDraft {
   workSummary: string;
   actions: string[];
   usedParts: UsedPart[];
+  checklist: ChecklistItem[];
+  fieldNotes: string;
   issues: string[];
   recommendations: string[];
   nextInspectionDate: string | null;
@@ -25,7 +28,9 @@ export interface FieldRecordInput {
   transcript: string;
   workSummary?: string;
   parts?: UsedPart[];
+  checklist?: ChecklistItem[];
   issues?: string;
+  notes?: string;
   nextInspectionDate?: string | null;
 }
 
@@ -165,6 +170,8 @@ export function parseFieldNotes(input: FieldRecordInput): StructuredDraft {
     workSummary,
     actions,
     usedParts,
+    checklist: input.checklist ? input.checklist.map((item) => ({ ...item })) : [],
+    fieldNotes: input.notes?.trim() ?? "",
     issues,
     recommendations,
     nextInspectionDate,

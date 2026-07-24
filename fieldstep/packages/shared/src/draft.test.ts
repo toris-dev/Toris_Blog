@@ -144,11 +144,27 @@ describe("parseFieldNotes — workSummary / 빈 입력", () => {
       workSummary: "",
       actions: [],
       usedParts: [],
+      checklist: [],
+      fieldNotes: "",
       issues: [],
       recommendations: [],
       nextInspectionDate: null,
       uncertainFields: ["workSummary"],
     });
+  });
+
+  it("현장 메모와 체크리스트를 초안 근거로 보존한다", () => {
+    const draft = parseFieldNotes({
+      transcript: "펌프 점검 완료",
+      notes: "압력계 수치 정상",
+      checklist: [
+        { id: "safety", label: "안전 조치 확인", checked: true },
+      ],
+    });
+    expect(draft.fieldNotes).toBe("압력계 수치 정상");
+    expect(draft.checklist).toEqual([
+      { id: "safety", label: "안전 조치 확인", checked: true },
+    ]);
   });
 
   it("입력 issues는 그대로 신뢰되어 issues 배열 앞에 포함된다", () => {

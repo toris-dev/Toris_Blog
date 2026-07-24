@@ -18,6 +18,10 @@
   Cache-Control: private, no-store, max-age=0, must-revalidate
   X-Robots-Tag: noindex, nofollow, noarchive
 
+/ops*
+  Cache-Control: private, no-store, max-age=0, must-revalidate
+  X-Robots-Tag: noindex, nofollow, noarchive
+
 /signup*
   Cache-Control: private, no-store, max-age=0, must-revalidate
   X-Robots-Tag: noindex, nofollow, noarchive
