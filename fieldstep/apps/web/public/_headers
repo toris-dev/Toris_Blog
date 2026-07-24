@@ -1,0 +1,23 @@
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: frame-ancestors 'none'
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: geolocation=(), payment=(), usb=()
+
+/approval*
+  Cache-Control: private, no-store, max-age=0, must-revalidate
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/invite*
+  Cache-Control: private, no-store, max-age=0, must-revalidate
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/login*
+  Cache-Control: private, no-store, max-age=0, must-revalidate
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/signup*
+  Cache-Control: private, no-store, max-age=0, must-revalidate
+  X-Robots-Tag: noindex, nofollow, noarchive
