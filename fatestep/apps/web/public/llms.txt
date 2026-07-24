@@ -1,0 +1,25 @@
+# 운명의 카드 (Fate Card)
+
+> 운명의 카드(fate.toris.kr)는 질문을 정리하고 카드를 고르면 지금의 흐름과 오늘 할 수 있는 작은 행동을 제안하는 한국어 자기성찰 카드 리딩 서비스입니다. 미래를 맞히는 예언이 아니라 오늘의 선택을 돕는 도구이며, 회원가입·서버 없이 브라우저에서만 동작하는 완전 무료 웹앱입니다.
+
+## About
+
+- Service: 운명의 카드 (Fate Card) — 한국어 자기성찰 카드 리딩
+- Maker: 토리스 (Toris, https://toris.kr) · 대표이자 개발자 유주환
+- Site: https://fate.toris.kr
+- Language: ko-KR
+- Price: 무료 (결제·구독 없음)
+- Privacy: 익명·로컬 저장. 카드 뽑기·해석·기록이 모두 브라우저(localStorage)에서 동작하며 어떤 데이터도 서버로 전송하지 않습니다.
+- Contact: ironjustlikethat@gmail.com
+
+## What it does
+
+- 오늘의 한 장 / 운명의 세 장(씨앗·흐름·문) 스프레드로 카드를 뽑아 지금의 흐름을 읽습니다.
+- 예언·단정 대신 검수된 템플릿으로 자기성찰을 돕고, 민감한 질문(위기·건강·법률·금전)은 현실의 도움을 먼저 안내합니다.
+- 리딩 기록·회고·오늘의 작은 행동을 기기에 저장합니다.
+
+## Key pages
+
+- [홈](https://fate.toris.kr): 카드 리딩 시작
+- [이용약관](https://fate.toris.kr/terms)
+- [개인정보 처리방침](https://fate.toris.kr/privacy)

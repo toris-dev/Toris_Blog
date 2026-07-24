@@ -2,5 +2,54 @@ User-agent: *
 Allow: /
 Disallow: /app/
 Disallow: /field/
+Disallow: /approval
+Disallow: /invite
+Disallow: /login
+Disallow: /signup
+
+# AI 검색·인용 크롤러 명시 허용 (GEO) — 공개 마케팅 콘텐츠 인용 노출용.
+# Cloudflare가 주입하는 AI 봇 Disallow를 최소제약 규칙으로 덮는다.
+User-agent: GPTBot
+Allow: /
+Disallow: /app/
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /app/
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /app/
+User-agent: ClaudeBot
+Allow: /
+Disallow: /app/
+User-agent: Claude-Web
+Allow: /
+Disallow: /app/
+User-agent: anthropic-ai
+Allow: /
+Disallow: /app/
+User-agent: PerplexityBot
+Allow: /
+Disallow: /app/
+User-agent: Perplexity-User
+Allow: /
+Disallow: /app/
+User-agent: Google-Extended
+Allow: /
+Disallow: /app/
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /app/
+User-agent: CCBot
+Allow: /
+Disallow: /app/
+User-agent: Bytespider
+Allow: /
+Disallow: /app/
+User-agent: meta-externalagent
+Allow: /
+Disallow: /app/
+User-agent: Amazonbot
+Allow: /
+Disallow: /app/
 
 Sitemap: https://field.toris.kr/sitemap.xml

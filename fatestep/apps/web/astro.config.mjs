@@ -1,5 +1,6 @@
 // @ts-check
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 
 // fate.toris.kr — 운명의 카드. 순수 정적 Astro + 클라이언트 React 아일랜드.
@@ -12,5 +13,5 @@ export default defineConfig({
   trailingSlash: 'ignore',
   // 루트 toris.kr과 동일하게 <경로>.html 로 생성 → Workers Static Assets가 307 없이 200 서빙
   build: { format: 'file' },
-  integrations: [react()],
+  integrations: [react(), sitemap()],
 });

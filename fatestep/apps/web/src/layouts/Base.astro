@@ -15,6 +15,43 @@ const {
 
 const site = 'https://fate.toris.kr';
 const canonical = site + path;
+
+// AI·검색 엔진 엔티티 인식용 구조화 데이터 (GEO)
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://toris.kr/#org',
+      name: '토리스 (Toris)',
+      url: 'https://toris.kr',
+    },
+    {
+      '@type': 'WebSite',
+      '@id': site + '/#website',
+      url: site,
+      name: '운명의 카드',
+      inLanguage: 'ko-KR',
+      publisher: { '@id': 'https://toris.kr/#org' },
+    },
+    {
+      '@type': 'WebApplication',
+      '@id': site + '/#app',
+      name: '운명의 카드',
+      alternateName: 'Fate Card',
+      url: site,
+      applicationCategory: 'LifestyleApplication',
+      operatingSystem: 'Web',
+      browserRequirements: 'Requires JavaScript',
+      inLanguage: 'ko-KR',
+      description:
+        '질문을 정리하고 카드를 고르면 지금의 흐름과 오늘 할 수 있는 작은 행동을 제안하는 한국어 자기성찰 카드 리딩 서비스. 회원가입·서버 없이 브라우저에서 동작하는 무료 웹앱.',
+      isAccessibleForFree: true,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+      publisher: { '@id': 'https://toris.kr/#org' },
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -48,6 +85,8 @@ const canonical = site + path;
       href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
   </head>
   <body>
     <div class="aurora" aria-hidden="true"></div>

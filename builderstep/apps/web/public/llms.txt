@@ -1,0 +1,21 @@
+# 빌더스텝 (BuilderStep)
+
+> 빌더스텝(builder.toris.kr)은 1인 개발자가 아이디어 검증부터 출시, 첫 매출, 사업 성장까지 단계적으로 나아가도록 돕는 사업화 지원 플랫폼입니다. 현재 단계를 진단하고, 그 단계에서 바로 실행할 구체적인 다음 행동을 제안합니다.
+
+## About
+
+- Service: 빌더스텝 (BuilderStep) — 1인 개발자 사업화 지원 플랫폼
+- Maker: 토리스 (Toris, https://toris.kr) · 대표이자 개발자 유주환
+- Site: https://builder.toris.kr
+- Language: ko-KR
+- Contact: korea@toris.kr
+
+## What it does
+
+- 아이디어·검증·출시·매출·성장 중 지금 어느 단계에 있는지 진단합니다.
+- 막연한 조언 대신 현재 단계에서 바로 실행할 구체적인 다음 행동을 제안합니다.
+- 웹과 모바일 앱으로 어디서든 제품의 다음 단계를 이어갑니다.
+
+## Key pages
+
+- [홈](https://builder.toris.kr): 단계 진단 시작
